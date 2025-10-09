@@ -1,0 +1,213 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc22076f42b01844ea7067027cbe6bdb, type: 3}
+  m_Name: ExperienceTable
+  m_EditorClassIdentifier: Assembly-CSharp::ExpTable
+  levels:
+  - level: 1
+    experience: 0
+  - level: 2
+    experience: 20
+  - level: 3
+    experience: 53
+  - level: 4
+    experience: 101
+  - level: 5
+    experience: 166
+  - level: 6
+    experience: 251
+  - level: 7
+    experience: 359
+  - level: 8
+    experience: 493
+  - level: 9
+    experience: 657
+  - level: 10
+    experience: 856
+  - level: 11
+    experience: 1094
+  - level: 12
+    experience: 1378
+  - level: 13
+    experience: 1715
+  - level: 14
+    experience: 2112
+  - level: 15
+    experience: 2579
+  - level: 16
+    experience: 3126
+  - level: 17
+    experience: 3765
+  - level: 18
+    experience: 4510
+  - level: 19
+    experience: 5376
+  - level: 20
+    experience: 6382
+  - level: 21
+    experience: 7549
+  - level: 22
+    experience: 8901
+  - level: 23
+    experience: 10466
+  - level: 24
+    experience: 12276
+  - level: 25
+    experience: 14367
+  - level: 26
+    experience: 16782
+  - level: 27
+    experience: 19569
+  - level: 28
+    experience: 22784
+  - level: 29
+    experience: 26492
+  - level: 30
+    experience: 30766
+  - level: 31
+    experience: 35691
+  - level: 32
+    experience: 41365
+  - level: 33
+    experience: 47900
+  - level: 34
+    experience: 55425
+  - level: 35
+    experience: 64089
+  - level: 36
+    experience: 74062
+  - level: 37
+    experience: 85541
+  - level: 38
+    experience: 98752
+  - level: 39
+    experience: 113955
+  - level: 40
+    experience: 131448
+  - level: 41
+    experience: 151575
+  - level: 42
+    experience: 174731
+  - level: 43
+    experience: 201371
+  - level: 44
+    experience: 232017
+  - level: 45
+    experience: 267270
+  - level: 46
+    experience: 307820
+  - level: 47
+    experience: 354463
+  - level: 48
+    experience: 408112
+  - level: 49
+    experience: 469819
+  - level: 50
+    experience: 540792
+  - level: 51
+    experience: 622421
+  - level: 52
+    experience: 716304
+  - level: 53
+    experience: 824280
+  - level: 54
+    experience: 948462
+  - level: 55
+    experience: 1091281
+  - level: 56
+    experience: 1255533
+  - level: 57
+    experience: 1444433
+  - level: 58
+    experience: 1661678
+  - level: 59
+    experience: 1911520
+  - level: 60
+    experience: 2198848
+  - level: 61
+    experience: 2529285
+  - level: 62
+    experience: 2909298
+  - level: 63
+    experience: 3346323
+  - level: 64
+    experience: 3848911
+  - level: 65
+    experience: 4426898
+  - level: 66
+    experience: 5091592
+  - level: 67
+    experience: 5856000
+  - level: 68
+    experience: 6735080
+  - level: 69
+    experience: 7746032
+  - level: 70
+    experience: 8908637
+  - level: 71
+    experience: 10245642
+  - level: 72
+    experience: 11783208
+  - level: 73
+    experience: 13551419
+  - level: 74
+    experience: 15584872
+  - level: 75
+    experience: 17923352
+  - level: 76
+    experience: 20612614
+  - level: 77
+    experience: 23705276
+  - level: 78
+    experience: 27261846
+  - level: 79
+    experience: 31351912
+  - level: 80
+    experience: 36055500
+  - level: 81
+    experience: 41464636
+  - level: 82
+    experience: 47685152
+  - level: 83
+    experience: 54838752
+  - level: 84
+    experience: 63065404
+  - level: 85
+    experience: 72526064
+  - level: 86
+    experience: 83405832
+  - level: 87
+    experience: 95917576
+  - level: 88
+    experience: 110306088
+  - level: 89
+    experience: 126852888
+  - level: 90
+    experience: 145881712
+  - level: 91
+    experience: 167764880
+  - level: 92
+    experience: 192930528
+  - level: 93
+    experience: 221871040
+  - level: 94
+    experience: 255152624
+  - level: 95
+    experience: 293426464
+  - level: 96
+    experience: 337441376
+  - level: 97
+    experience: 388058560
+  - level: 98
+    experience: 446268320
+  - level: 99
+    experience: 513209536

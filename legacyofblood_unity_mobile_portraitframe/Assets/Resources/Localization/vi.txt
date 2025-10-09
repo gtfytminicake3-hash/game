@@ -1,0 +1,145 @@
+# --- Bootloader ---
+loading_format=Đang tải... {0}%
+
+# --- Main Menu / Hero List Buttons ---
+button_world_map=Bản Đồ
+button_breeding=Lai Tạo
+button_hospital=Bệnh Viện
+button_arena=Đấu Trường
+button_inventory=Túi Đồ
+
+# --- General UI ---
+level_format_short=Cấp {0}
+cp_format_short=CP: {0}
+
+# --- Breeding Panel ---
+breeding_error_same_gender=Lai tạo thất bại: Cha mẹ phải khác giới tính.
+breeding_select_father=Chọn Cha
+breeding_select_mother=Chọn Mẹ
+breeding_button_breed=Lai Tạo
+breeding_select_father_title=Chọn một Hero Cha
+breeding_select_mother_title=Chọn một Hero Mẹ
+breeding_change_father=Đổi Cha
+breeding_change_mother=Đổi Mẹ
+breeding_error_select_father_first=Vui lòng chọn cha trước.
+breeding_failed=Lai tạo thất bại. Vui lòng thử lại.
+
+# --- Hero Names ---
+male_name_1=An
+male_name_2=Bảo
+male_name_3=Cường
+male_name_4=Dũng
+male_name_5=Hải
+male_name_6=Hiếu
+male_name_7=Hoàng
+male_name_8=Hùng
+male_name_9=Khải
+male_name_10=Kiên
+male_name_11=Lâm
+male_name_12=Long
+male_name_13=Mạnh
+male_name_14=Minh
+male_name_15=Nam
+male_name_16=Nghĩa
+male_name_17=Phong
+male_name_18=Phúc
+male_name_19=Quân
+male_name_20=Sơn
+male_name_21=Tài
+male_name_22=Thắng
+male_name_23=Thành
+male_name_24=Thiện
+male_name_25=Trung
+male_name_26=Tuấn
+male_name_27=Việt
+female_name_1=Anh
+female_name_2=Bích
+female_name_3=Châu
+female_name_4=Diệp
+female_name_5=Giang
+female_name_6=Hà
+female_name_7=Hạnh
+female_name_8=Hoa
+female_name_9=Hương
+female_name_10=Khánh
+female_name_11=Lan
+female_name_12=Linh
+female_name_13=Ly
+female_name_14=Mai
+female_name_15=My
+female_name_16=Nga
+female_name_17=Ngọc
+female_name_18=Nhi
+female_name_19=Oanh
+female_name_20=Phương
+female_name_21=Quỳnh
+female_name_22=Thảo
+female_name_23=Thu
+female_name_24=Thủy
+female_name_25=Trang
+female_name_26=Tú
+female_name_27=Yến
+
+# --- Inventory & DataManager ---
+inventory_error_no_playerdata=InventoryManager không thể lấy được PlayerData từ DataManager!
+inventory_error_not_enough_resource=Không đủ {0} để chi tiêu. Cần: {1}, Có: {2}
+inventory_not_enough_resource_notification=Không đủ {0}!
+inventory_error_not_enough_item=Không đủ vật phẩm '{0}' để sử dụng. Cần: {1}, Có: {2}
+datamanager_error_no_gameconfig=GameConfig chưa được gán trong DataManager Inspector!
+datamanager_warning_duplicate_trait=Tìm thấy Trait ID trùng lặp: {0}
+datamanager_info_process_game_config=Đã xử lý xong Game Config: {0} Traits, {1} Skills.
+datamanager_info_load_success=Tải game thành công từ: {0}
+datamanager_error_load_failed=Lỗi khi đọc file save! Tạo game mới. Lỗi: {0}
+datamanager_info_no_save_file=Không tìm thấy file save. Tạo game mới.
+datamanager_info_save_success=Lưu game thành công tại: {0}
+datamanager_error_save_failed=Lỗi khi lưu game! Lỗi: {0}
+starting_hero_male_name=Adam
+starting_hero_female_name=Eva
+
+# --- Arena ---
+arena_error_not_enough_heroes=Cần ít nhất {0} hero sẵn sàng!
+arena_squad_selection_title=Chọn Đội Hình Đấu Trường
+arena_squad_selected_log=Đội hình đã được chọn với {0} hero. Bắt đầu trận đấu!
+arena_combat_result_win=Bạn đã chiến thắng!
+arena_combat_result_lose=Bạn đã thất bại!
+arena_combat_report_header=--- BÁO CÁO CHIẾN ĐẤU ---
+arena_combat_report_footer=-------------------------
+arena_dummy_enemy_name=Kẻ Địch {0}
+
+# --- Hospital ---
+hospital_title=Bệnh Viện
+hospital_section_severe=Thương Nặng
+hospital_section_light=Thương Nhẹ
+hospital_label_ready=Sẵn sàng
+hospital_label_time_left=Còn lại: {0}
+hospital_button_heal=Chữa trị
+hospital_button_recover=Hồi phục
+
+# --- World Map & POI ---
+poi_name_format={0} #{1}
+poi_type_Dungeon=Hầm ngục
+poi_type_RescueMission=Nhiệm vụ giải cứu
+poi_difficulty_format=Độ khó: {0}
+poi_recommended_cp_format=CP đề nghị: {0}
+worldmap_select_squad_title_format=Chọn đội hình cho: {0}
+
+# --- Hero Info Panel ---
+level_format=Cấp {0}
+profession_format=Nghề: {0}
+gender_format=Giới tính: {0}
+stats_hp_format_detailed=HP: {0} (+{1})
+stats_atk_format_detailed=ATK: {0} (+{1})
+stats_def_format_detailed=DEF: {0} (+{1})
+stats_spd_format_detailed=SPD: {0} (+{1})
+stats_potential_format=Tiềm năng: {0}
+unknown=Không rõ
+description_not_found=Không tìm thấy mô tả.
+
+# --- Squad Selection Panel ---
+total_cp_format=Tổng CP: {0}
+
+# --- Breeding Result Panel ---
+stats_hp_format=HP: {0}
+stats_atk_format=ATK: {0}
+stats_def_format=DEF: {0}
+stats_spd_format=SPD: {0}

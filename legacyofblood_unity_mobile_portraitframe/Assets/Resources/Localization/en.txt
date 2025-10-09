@@ -1,0 +1,145 @@
+# --- Bootloader ---
+loading_format=Loading... {0}%
+
+# --- Main Menu / Hero List Buttons ---
+button_world_map=World Map
+button_breeding=Breeding
+button_hospital=Hospital
+button_arena=Arena
+button_inventory=Inventory
+
+# --- General UI ---
+level_format_short=Lv. {0}
+cp_format_short=CP: {0}
+
+# --- Breeding Panel ---
+breeding_error_same_gender=Breeding failed: Parents must be of different genders.
+breeding_select_father=Select Father
+breeding_select_mother=Select Mother
+breeding_button_breed=Breed
+breeding_select_father_title=Select a Father
+breeding_select_mother_title=Select a Mother
+breeding_change_father=Change Father
+breeding_change_mother=Change Mother
+breeding_error_select_father_first=Please select a father first.
+breeding_failed=Breeding failed. Please try again.
+
+# --- Hero Names ---
+male_name_1=An
+male_name_2=Bao
+male_name_3=Cuong
+male_name_4=Dung
+male_name_5=Hai
+male_name_6=Hieu
+male_name_7=Hoang
+male_name_8=Hung
+male_name_9=Khai
+male_name_10=Kien
+male_name_11=Lam
+male_name_12=Long
+male_name_13=Manh
+male_name_14=Minh
+male_name_15=Nam
+male_name_16=Nghia
+male_name_17=Phong
+male_name_18=Phuc
+male_name_19=Quan
+male_name_20=Son
+male_name_21=Tai
+male_name_22=Thang
+male_name_23=Thanh
+male_name_24=Thien
+male_name_25=Trung
+male_name_26=Tuan
+male_name_27=Viet
+female_name_1=Anh
+female_name_2=Bich
+female_name_3=Chau
+female_name_4=Diep
+female_name_5=Giang
+female_name_6=Ha
+female_name_7=Hanh
+female_name_8=Hoa
+female_name_9=Huong
+female_name_10=Khanh
+female_name_11=Lan
+female_name_12=Linh
+female_name_13=Ly
+female_name_14=Mai
+female_name_15=My
+female_name_16=Nga
+female_name_17=Ngoc
+female_name_18=Nhi
+female_name_19=Oanh
+female_name_20=Phuong
+female_name_21=Quynh
+female_name_22=Thao
+female_name_23=Thu
+female_name_24=Thuy
+female_name_25=Trang
+female_name_26=Tu
+female_name_27=Yen
+
+# --- Inventory & DataManager ---
+inventory_error_no_playerdata=InventoryManager could not get PlayerData from DataManager!
+inventory_error_not_enough_resource=Not enough {0} to spend. Required: {1}, Have: {2}
+inventory_not_enough_resource_notification=Not enough {0}!
+inventory_error_not_enough_item=Not enough item '{0}' to use. Required: {1}, Have: {2}
+datamanager_error_no_gameconfig=GameConfig has not been assigned in the DataManager Inspector!
+datamanager_warning_duplicate_trait=Found duplicate Trait ID: {0}
+datamanager_info_process_game_config=Game Config processed: {0} Traits, {1} Skills.
+datamanager_info_load_success=Game loaded successfully from: {0}
+datamanager_error_load_failed=Error reading save file! Creating new game. Error: {0}
+datamanager_info_no_save_file=Save file not found. Creating new game.
+datamanager_info_save_success=Game saved successfully at: {0}
+datamanager_error_save_failed=Error saving game! Error: {0}
+starting_hero_male_name=Adam
+starting_hero_female_name=Eve
+
+# --- Arena ---
+arena_error_not_enough_heroes=Need at least {0} available heroes!
+arena_squad_selection_title=Select Arena Squad
+arena_squad_selected_log=Squad selected with {0} heroes. Starting match!
+arena_combat_result_win=You were victorious!
+arena_combat_result_lose=You were defeated!
+arena_combat_report_header=--- COMBAT REPORT ---
+arena_combat_report_footer=---------------------
+arena_dummy_enemy_name=Enemy {0}
+
+# --- Hospital ---
+hospital_title=Hospital
+hospital_section_severe=Severely Injured
+hospital_section_light=Lightly Injured
+hospital_label_ready=Ready
+hospital_label_time_left=Time left: {0}
+hospital_button_heal=Heal
+hospital_button_recover=Recover
+
+# --- World Map & POI ---
+poi_name_format={0} #{1}
+poi_type_Dungeon=Dungeon
+poi_type_RescueMission=Rescue Mission
+poi_difficulty_format=Difficulty: {0}
+poi_recommended_cp_format=Rec. CP: {0}
+worldmap_select_squad_title_format=Select squad for: {0}
+
+# --- Hero Info Panel ---
+level_format=Level {0}
+profession_format=Profession: {0}
+gender_format=Gender: {0}
+stats_hp_format_detailed=HP: {0} (+{1})
+stats_atk_format_detailed=ATK: {0} (+{1})
+stats_def_format_detailed=DEF: {0} (+{1})
+stats_spd_format_detailed=SPD: {0} (+{1})
+stats_potential_format=Potential: {0}
+unknown=Unknown
+description_not_found=Description not found.
+
+# --- Squad Selection Panel ---
+total_cp_format=Total CP: {0}
+
+# --- Breeding Result Panel ---
+stats_hp_format=HP: {0}
+stats_atk_format=ATK: {0}
+stats_def_format=DEF: {0}
+stats_spd_format=SPD: {0}

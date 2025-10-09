@@ -1,0 +1,4 @@
+repository "legacyofblood_unity_mobile_portraitframe/legacyofblood_unity_mobile_portraitframe@18968337057199@cloud"
+  path "/"
+    br "/main"
+    co "/main"
