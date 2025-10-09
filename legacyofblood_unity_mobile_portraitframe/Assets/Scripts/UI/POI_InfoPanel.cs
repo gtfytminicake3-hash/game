@@ -44,8 +44,18 @@ namespace LegendOfBlood
         {
             if (_currentPoiData == null) return; // Chưa có dữ liệu thì không làm gì
 
-            // Tính toán CP đề nghị (ví dụ)
-            int recommendedCp = _currentPoiData.difficultyLevel * 1000;
+            // --- THAY ĐỔI: TÍNH CP ĐỀ NGHỊ DỰA TRÊN QUÁI VẬT THỰC TẾ ---
+            int recommendedCp = 0;
+            if (_currentPoiData.monsterIDs != null)
+            {
+                foreach (var monsterId in _currentPoiData.monsterIDs)
+                {
+                    // Giả sử bạn có MonsterData và hàm GetMonsterByID trong DataManager
+                    // var monster = DataManager.Instance.GetMonsterByID(monsterId);
+                    // if (monster != null) recommendedCp += monster.GetCombatPower();
+                    recommendedCp += 500; // Tạm thời cộng dồn một giá trị giả lập
+                }
+            }
 
             // Cập nhật UI
             poiNameText.text = _currentPoiData.poiName; // Tên POI đã được dịch khi tạo ra

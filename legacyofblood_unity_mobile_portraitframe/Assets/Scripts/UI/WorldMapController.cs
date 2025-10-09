@@ -1,5 +1,6 @@
 namespace LegendOfBlood
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using UnityEngine;
@@ -33,6 +34,7 @@ namespace LegendOfBlood
         [SerializeField] private float minZoom = 0.5f;
         [SerializeField] private float maxZoom = 2.0f;
         [SerializeField] private float zoomSpeed = 0.1f;
+        [SerializeField] private float minPoiDistance = 100f; // Khoảng cách tối thiểu giữa các POI
         [SerializeField] private Vector2 mapSize = new Vector2(2000, 1500);
         [SerializeField] private int numberOfDungeons = 10;
         [SerializeField] private int numberOfRescues = 5;
@@ -44,6 +46,7 @@ namespace LegendOfBlood
         private Vector2 _lastPanPosition;
         private bool _isPanning;
         private bool _isZooming;
+        private Dictionary<string, GameObject> _activePoiObjects = new Dictionary<string, GameObject>();
         private Dictionary<string, GameObject> _activeTravelCarts = new Dictionary<string, GameObject>();
 
         #region Unity Lifecycle & Event Subscription
@@ -59,18 +62,22 @@ namespace LegendOfBlood
 
         private void OnEnable()
         {
-            EventManager.StartListening<Expedition>(GameEvents.OnExpeditionStarted, HandleExpeditionStarted);
-            EventManager.StartListening<Expedition>(GameEvents.OnExpeditionReturning, HandleExpeditionReturning);
-            EventManager.StartListening<Expedition>(GameEvents.OnExpeditionFinished, HandleExpeditionFinished);
-            GenerateRandomPOIs();
+            // Thay đổi event manager cũ bằng event tĩnh mới cho dễ quản lý
+            ExpeditionManager.OnExpeditionStarted += HandleExpeditionStarted;
+            ExpeditionManager.OnExpeditionReturning += HandleExpeditionReturning;
+            ExpeditionManager.OnExpeditionFinished += HandleExpeditionFinished;
+            ExpeditionManager.OnPOICleared += HandlePOICleared;
+
+            InitializeWorldMap();
         }
 
         private void OnDisable()
         {
-            EventManager.StopListening<Expedition>(GameEvents.OnExpeditionStarted, HandleExpeditionStarted);
-            EventManager.StopListening<Expedition>(GameEvents.OnExpeditionReturning, HandleExpeditionReturning);
-            EventManager.StopListening<Expedition>(GameEvents.OnExpeditionFinished, HandleExpeditionFinished);
-            DOTween.Kill(this);
+            ExpeditionManager.OnExpeditionStarted -= HandleExpeditionStarted;
+            ExpeditionManager.OnExpeditionReturning -= HandleExpeditionReturning;
+            ExpeditionManager.OnExpeditionFinished -= HandleExpeditionFinished;
+            ExpeditionManager.OnPOICleared -= HandlePOICleared;
+            DOTween.Kill(this); // Giữ lại để hủy các tween
         }
 
         private void Update()
@@ -166,47 +173,131 @@ namespace LegendOfBlood
 
         #region POI & Expedition Logic
 
-        private void GenerateRandomPOIs()
+        /// <summary>
+        /// Khởi tạo bản đồ: tải POI từ DataManager hoặc tạo mới nếu cần.
+        /// </summary>
+        private void InitializeWorldMap()
         {
+            // Xóa các POI và xe ngựa cũ trên UI trước khi vẽ lại
             foreach (Transform child in generatedPOIsContainer)
             {
                 Destroy(child.gameObject);
             }
-            for (int i = 0; i < numberOfDungeons; i++)
+            _activePoiObjects.Clear();
+
+            var worldPois = DataManager.Instance.Player.WorldPois;
+
+            if (worldPois == null || worldPois.Count == 0)
             {
-                CreatePOI(dungeonPoiPrefab, POIType.Dungeon, i);
+                Debug.Log("Không tìm thấy dữ liệu POI, tạo mới...");
+                // Tạo mới nếu chưa có dữ liệu
+                for (int i = 0; i < numberOfDungeons; i++)
+                {
+                    GenerateAndRegisterNewPOI(POIType.Dungeon);
+                }
+                for (int i = 0; i < numberOfRescues; i++)
+                {
+                    GenerateAndRegisterNewPOI(POIType.RescueMission);
+                }
             }
-            for (int i = 0; i < numberOfRescues; i++)
+            else
             {
-                CreatePOI(rescuePoiPrefab, POIType.RescueMission, i);
+                Debug.Log($"Tải {worldPois.Count} POI từ DataManager.");
+                // Vẽ lại các POI đã có từ dữ liệu
+                foreach (var poiData in worldPois)
+                {
+                    InstantiatePOI(poiData);
+                }
             }
         }
 
-        private void CreatePOI(GameObject poiPrefab, POIType type, int index)
+        /// <summary>
+        /// Tạo ra một POI mới, đảm bảo vị trí không trùng lặp, và đăng ký vào DataManager.
+        /// </summary>
+        private void GenerateAndRegisterNewPOI(POIType type)
         {
-            if (poiPrefab == null)
+            Vector2 newPosition;
+            int attempts = 0;
+            const int maxAttempts = 100; // Ngăn vòng lặp vô hạn
+
+            do
             {
-                Debug.LogError($"Prefab cho POIType '{type}' chưa được gán!");
-                return;
+                float x = UnityEngine.Random.Range(-mapSize.x / 2, mapSize.x / 2);
+                float y = UnityEngine.Random.Range(-mapSize.y / 2, mapSize.y / 2);
+                newPosition = new Vector2(x, y);
+                attempts++;
+                if (attempts > maxAttempts)
+                {
+                    Debug.LogError($"Không thể tìm vị trí hợp lệ cho POI loại {type} sau {maxAttempts} lần thử.");
+                    return;
+                }
             }
-            GameObject poiInstance = Instantiate(poiPrefab, generatedPOIsContainer);
-            RectTransform poiRect = poiInstance.GetComponent<RectTransform>();
-            float x = Random.Range(-mapSize.x / 2, mapSize.x / 2);
-            float y = Random.Range(-mapSize.y / 2, mapSize.y / 2);
-            poiRect.anchoredPosition = new Vector2(x, y);
+            while (!IsPositionValid(newPosition));
+
+            string newId = Guid.NewGuid().ToString();
             POIData poiData = new POIData
             {
-                poiId = $"{type}_{index}",
-                poiName = string.Format(global::LocalizationSystem.GetText("poi_name_format"), global::LocalizationSystem.GetText($"poi_type_{type}"), index + 1),
+                poiId = newId,
+                poiName = string.Format(global::LocalizationSystem.GetText("poi_name_format"), global::LocalizationSystem.GetText($"poi_type_{type}"), UnityEngine.Random.Range(10, 999)),
                 type = type,
-                position = poiRect.anchoredPosition,
-                difficultyLevel = Random.Range(1, 10)
+                position = newPosition,
+                difficultyLevel = UnityEngine.Random.Range(1, 10)
+                // monsterIDs sẽ được tạo ngay sau đây
             };
+
+            // --- THÊM MỚI: TẠO QUÁI VẬT NGẪU NHIÊN CHO POI ---
+            poiData.monsterIDs = GenerateMonstersForPOI(poiData);
+
+            // Thêm vào DataManager và instantiate trên bản đồ
+            DataManager.Instance.Player.WorldPois.Add(poiData);
+            InstantiatePOI(poiData);
+        }
+
+        /// <summary>
+        /// Hàm giả lập để tạo danh sách ID quái vật dựa trên độ khó của POI.
+        /// Bạn cần thay thế logic này bằng logic thực tế của game.
+        /// </summary>
+        private List<string> GenerateMonstersForPOI(POIData poiData)
+        {
+            var monsterList = new List<string>();
+            // Ví dụ: số lượng quái vật = độ khó
+            int numberOfMonsters = poiData.difficultyLevel;
+
+            // TODO: Viết logic phức tạp hơn ở đây.
+            // Ví dụ: Lấy danh sách tất cả quái vật từ DataManager, lọc ra những con phù hợp với độ khó,
+            // và chọn ngẫu nhiên 'numberOfMonsters' con từ danh sách đã lọc.
+            // Tạm thời, chúng ta sẽ thêm các ID giả lập.
+            for (int i = 0; i < numberOfMonsters; i++)
+            {
+                // Giả sử bạn có các monster ID như "goblin_1", "orc_2",...
+                monsterList.Add($"monster_placeholder_{i}");
+            }
+            Debug.Log($"Đã tạo {monsterList.Count} quái vật cho POI '{poiData.poiName}'.");
+            return monsterList;
+        }
+
+        /// <summary>
+        /// Tạo GameObject cho một POI từ dữ liệu có sẵn.
+        /// </summary>
+        private void InstantiatePOI(POIData poiData)
+        {
+            GameObject poiPrefab = poiData.type == POIType.Dungeon ? dungeonPoiPrefab : rescuePoiPrefab;
+            if (poiPrefab == null)
+            {
+                Debug.LogError($"Prefab cho POIType '{poiData.type}' chưa được gán!");
+                return;
+            }
+
+            GameObject poiInstance = Instantiate(poiPrefab, generatedPOIsContainer);
+            RectTransform poiRect = poiInstance.GetComponent<RectTransform>();
+            poiRect.anchoredPosition = poiData.position;
+
             Button poiButton = poiInstance.GetComponent<Button>();
             if (poiButton != null)
             {
                 poiButton.onClick.AddListener(() => OnPOIClicked(poiData));
             }
+            _activePoiObjects[poiData.poiId] = poiInstance;
         }
 
         private void OnPOIClicked(POIData poiData)
@@ -260,6 +351,36 @@ namespace LegendOfBlood
             );
         }
 
+        /// <summary>
+        /// Xử lý khi một POI được hoàn thành.
+        /// </summary>
+        private void HandlePOICleared(POIData clearedPoiData)
+        {
+            Debug.Log($"POI '{clearedPoiData.poiName}' đã được hoàn thành. Đang xóa và tạo mới.");
+
+            // Xóa khỏi UI
+            if (_activePoiObjects.TryGetValue(clearedPoiData.poiId, out GameObject poiObject))
+            {
+                Destroy(poiObject);
+                _activePoiObjects.Remove(clearedPoiData.poiId);
+            }
+
+            // Xóa khỏi DataManager
+            DataManager.Instance.Player.WorldPois.RemoveAll(p => p.poiId == clearedPoiData.poiId);
+
+            // Tạo một cái mới cùng loại
+            GenerateAndRegisterNewPOI(clearedPoiData.type);
+        }
+
+        /// <summary>
+        /// Kiểm tra xem một vị trí có đủ xa các POI khác không.
+        /// </summary>
+        private bool IsPositionValid(Vector2 position)
+        {
+            var allPois = DataManager.Instance.Player.WorldPois;
+            return allPois.All(poi => Vector2.Distance(poi.position, position) >= minPoiDistance);
+        }
+
         #endregion
 
         #region Expedition Visualization
@@ -274,7 +395,7 @@ namespace LegendOfBlood
 
             _activeTravelCarts.Add(expedition.id, cart);
 
-            float duration = Vector3.Distance(startPos, endPos) / 100f; // Tốc độ di chuyển
+            float duration = Vector3.Distance(startPos, endPos) / 150f; // Tốc độ di chuyển, có thể điều chỉnh
             cart.transform.DOLocalMove(endPos, duration).SetEase(Ease.Linear).OnComplete(() => {
                 cart.SetActive(false); // Ẩn xe ngựa khi đến nơi
             }).SetId(this); // Gán ID để có thể hủy tween
@@ -288,7 +409,7 @@ namespace LegendOfBlood
                 Vector3 startPos = expedition.destination.position;
                 Vector3 endPos = Vector3.zero; // Về làng
 
-                float duration = Vector3.Distance(startPos, endPos) / 100f;
+                float duration = Vector3.Distance(startPos, endPos) / 150f;
                 cart.transform.DOLocalMove(endPos, duration).SetEase(Ease.Linear).SetId(this);
             }
         }
@@ -308,6 +429,8 @@ namespace LegendOfBlood
 
         public void GoBackToVillage()
         {
+            // Tải lại scene chính của game.
+            // GameManager và các hệ thống cốt lõi sẽ không bị hủy nhờ DontDestroyOnLoad.
             SceneManager.LoadScene("MainScene");
         }
 

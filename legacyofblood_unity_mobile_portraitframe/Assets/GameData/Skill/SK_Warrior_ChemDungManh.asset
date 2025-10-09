@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1c2b8f0d7b4b5e40b1877418c22cfdf, type: 3}
-  m_Name: New Skill
-  m_EditorClassIdentifier: Assembly-CSharp::SkillData
+  m_Script: {fileID: 11500000, guid: 521587128dc1e094b92bf9fa2b326995, type: 3}
+  m_Name: SK_Warrior_ChemDungManh
+  m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Skill
   id: 
-  name: 
+  skillName: 
   description: 
+  type: 0
+  requiredProfession: 0

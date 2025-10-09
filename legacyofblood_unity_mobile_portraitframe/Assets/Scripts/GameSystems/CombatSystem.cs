@@ -1,178 +1,475 @@
-namespace LegendOfBlood
+// Vị trí gợi ý: Assets/Scripts/GameSystems/Combat/CombatSystem.cs
+
+// Cần using namespace nơi bạn định nghĩa Skill.cs và các enum
+using LegendOfBlood; 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
+namespace LegendOfBlood.Combat
 {
-    using System.Collections.Generic;
-    using System.Linq;
-    using UnityEngine;
-
+    #region 0. LỚP DỮ LIỆU KẾT QUẢ TRẬN ĐẤU (GỘP TỪ COMBATRESULT.CS)
     /// <summary>
-    /// Chứa logic mô phỏng các trận đấu (Thường và Boss).
-    /// Hoàn toàn độc lập với UI, chỉ xử lý dữ liệu và trả về kết quả.
+    /// Chứa kết quả của một trận đấu mô phỏng.
     /// </summary>
-    public class CombatSystem
+    [System.Serializable]
+    public class CombatResult
     {
-        // Hằng số ID của Trait đặc biệt
-        private const string TRAIT_ROYAL_GUARD = "SS_08";
-        private const string TRAIT_REBIRTH = "S_01";
-        private const string TRAIT_PREDATOR = "SS_06";
-        private const string TRAIT_LEADERSHIP = "A_05"; // Chưa triển khai logic hàng
+        public bool IsVictory { get; set; }
+        public List<string> CombatLog { get; set; }
+
+        // Có thể mở rộng thêm thông tin nếu cần
+        // public List<string> SurvivorHeroIDs { get; set; }
+        // public List<string> CasualtyHeroIDs { get; set; }
+        // public Dictionary<string, float> HpRemaining { get; set; }
+    }
+    #endregion
+
+        #region 1. CÁC LỚP DỮ LIỆU PLACEHOLDER VÀ PHỤ TRỢ
+        // Các lớp này được định nghĩa ở đây để file có thể tự biên dịch được.
+        // Trong dự án thực tế, chúng có thể nằm ở các file riêng.
 
         /// <summary>
-        /// Mô phỏng một trận đấu thường.
+        /// Placeholder cho dữ liệu gốc của Hero.
         /// </summary>
-        /// <param name="playerHeroes">Đội hình hero của người chơi</param>
-        /// <param name="enemyHeroes">Đội hình kẻ địch</param>
-        /// <returns>Đối tượng CombatResult chứa kết quả trận đấu</returns>
-        public CombatResult SimulateNormalBattle(List<HeroData> playerHeroes, List<HeroData> enemyHeroes)
+        public class HeroData
         {
-            var combatLog = new List<string>();
-            var playerCombatants = playerHeroes.Select(h => new Combatant(h, true)).ToList();
-            var enemyCombatants = enemyHeroes.Select(h => new Combatant(h, false)).ToList();
+            public string id;
+            public string heroName;
+            public int Level;
+            public HeroClass Class;
+            public HeroStats stats; // Assuming HeroStats is a class/struct you have
+            public float hp;
+            public float atk;
+            public float def;
+            public float spd;
+            public float critChance = 0.05f; // Tỉ lệ chí mạng cơ bản 5%
+            public float critDamage = 1.5f;  // Sát thương chí mạng cơ bản 150%
+        }
 
-            combatLog.Add("<b>Trận đấu bắt đầu!</b>");
+        /// <summary>
+        /// Enum định danh vị trí trong đội hình.
+        /// </summary>
+        public enum RowPosition { Front, Middle, Back }
 
-            // --- GIAI ĐOẠN ĐẦU TRẬN (ÁP DỤNG AURA) ---
-            ApplyPreBattleAuras(playerCombatants, enemyCombatants, combatLog);
-            ApplyPreBattleAuras(enemyCombatants, playerCombatants, combatLog);
+        /// <summary>
+        /// Đại diện cho một hiệu ứng trạng thái đang hoạt động trên một Combatant.
+        /// </summary>
+        public class ActiveStatusEffect
+        {
+            public StatusEffectType Type { get; }
+            public int Duration { get; set; }
+            public float Value { get; } // Sức mạnh của hiệu ứng
+            public Combatant Caster { get; }
 
-            // --- VÒNG LẶP CHIẾN ĐẤU ---
-            int turn = 1;
-            while (IsTeamAlive(playerCombatants) && IsTeamAlive(enemyCombatants))
+            public ActiveStatusEffect(StatusEffectType type, int duration, float value, Combatant caster)
             {
-                combatLog.Add($"\n<color=yellow>--- Vòng {turn} ---</color>");
+                Type = type;
+                Duration = duration;
+                Value = value;
+                Caster = caster;
+            }
+        }
 
-                var turnOrder = playerCombatants.Concat(enemyCombatants)
-                                                 .Where(c => c.IsAlive())
-                                                 .OrderByDescending(c => c.Spd)
-                                                 .ToList();
+        /// <summary>
+        /// Đại diện cho một hành động được AI lựa chọn.
+        /// </summary>
+        public class CombatAction
+        {
+            public Combatant Actor { get; set; }
+            public Skill Skill { get; set; } // Sẽ là NULL nếu là tấn công thường
+            public bool IsBasicAttack => Skill == null;
+        }
 
-                foreach (var attacker in turnOrder)
+        #endregion
+
+        #region 2. LỚP COMBATANT - TRÁI TIM CỦA HỆ THỐNG
+
+        /// <summary>
+        /// Lớp "wrapper" quan trọng, chứa mọi trạng thái của một nhân vật trong trận chiến.
+        /// </summary>
+        public class Combatant
+        {
+            public HeroData HeroRef { get; }
+            public bool IsPlayerTeam { get; }
+            public string InstanceID { get; }
+            public RowPosition Position { get; set; }
+
+            public List<Skill> Skills { get; private set; }
+            public Dictionary<string, int> SkillCooldowns { get; private set; }
+
+            public float MaxHp { get; private set; }
+            public float CurrentHp { get; set; }
+            public List<ActiveStatusEffect> ActiveEffects { get; private set; }
+
+            public Combatant(HeroData heroData, bool isPlayer, int instanceIndex)
+            {
+                HeroRef = heroData;
+                IsPlayerTeam = isPlayer;
+                InstanceID = $"{(isPlayer ? "P" : "E")}_{HeroRef.Class}_{instanceIndex}";
+
+                MaxHp = HeroRef.hp;
+                CurrentHp = HeroRef.hp;
+
+                Skills = new List<Skill>();
+                SkillCooldowns = new Dictionary<string, int>();
+                ActiveEffects = new List<ActiveStatusEffect>();
+            }
+
+            public float GetCurrentAtk() => HeroRef.atk;
+            public float GetCurrentDef() => HeroRef.def + ActiveEffects.Where(e => e.Type == StatusEffectType.DefDown).Sum(e => e.Value);
+            public float GetCurrentSpd() => HeroRef.spd + ActiveEffects.Where(e => e.Type == StatusEffectType.Slow).Sum(e => e.Value);
+            public float GetCurrentCritChance() => HeroRef.critChance + ActiveEffects.Where(e => e.Type == StatusEffectType.CritUp).Sum(e => e.Value);
+            public bool IsAlive() => CurrentHp > 0;
+
+            public void AssignSkills(List<Skill> availableSkills, System.Random rng)
+            {
+                var classSkills = availableSkills.Where(s => s.type == SkillType.Active && s.requiredClass == HeroRef.Class).ToList();
+                int skillCount = (HeroRef.Level >= 40) ? 2 : 1;
+
+                Skills = classSkills.OrderBy(s => rng.Next()).Take(skillCount).ToList();
+                foreach (var skill in Skills)
                 {
-                    if (!attacker.IsAlive()) continue; // Bị hạ gục trong cùng một lượt
-
-                    var targetTeam = attacker.IsPlayerTeam ? enemyCombatants : playerCombatants;
-                    var target = GetRandomLivingTarget(targetTeam);
-                    if (target == null) break; // Toàn bộ team địch đã bị hạ gục
-
-                    // Tấn công
-                    PerformAttack(attacker, target, combatLog);
+                    SkillCooldowns[skill.id] = 0;
                 }
-                turn++;
-                if (turn > 50) { combatLog.Add("Trận đấu quá dài, kết quả hòa!"); break; } // Chống lặp vô hạn
             }
-
-            // --- GIAI ĐOẠN KẾT THÚC TRẬN ---
-            bool playerWon = IsTeamAlive(playerCombatants) && !IsTeamAlive(enemyCombatants);
-            combatLog.Add(playerWon ? "\n<color=green><b>CHIẾN THẮNG!</b></color>" : "\n<color=red><b>THẤT BẠI!</b></color>");
-
-            return new CombatResult
-            {
-                DidPlayerWin = playerWon,
-                PlayerSurvivors = playerCombatants.Where(c => c.IsAlive()).Select(c => c.HeroRef).ToList(),
-                PlayerCasualties = playerCombatants.Where(c => !c.IsAlive()).Select(c => c.HeroRef).ToList(),
-                CombatLog = combatLog
-            };
-        }
-        
-        /// <summary>
-        /// Xử lý một lượt tấn công cơ bản.
-        /// </summary>
-        private void PerformAttack(Combatant attacker, Combatant target, List<string> log)
-        {
-            // Công thức sát thương cơ bản từ GDD_03
-            int damageFloor = Mathf.FloorToInt(attacker.Atk * 0.1f);
-            int damageDealt = Mathf.Max(damageFloor, Mathf.FloorToInt(attacker.Atk - target.Def));
-
-            string logMessage = $"{attacker.HeroRef.heroName} tấn công {target.HeroRef.heroName}.";
-
-            // Áp dụng sát thương
-            int remainingDamage = damageDealt;
-            if (target.CurrentShield > 0)
-            {
-                int shieldDamage = Mathf.Min(remainingDamage, target.CurrentShield);
-                target.CurrentShield -= shieldDamage;
-                remainingDamage -= shieldDamage;
-                logMessage += $" Phá <color=cyan>{shieldDamage}</color> giáp.";
-            }
-
-            if (remainingDamage > 0)
-            {
-                target.CurrentHp -= remainingDamage;
-                logMessage += $" Gây <color=red>{remainingDamage}</color> sát thương.";
-            }
-
-            log.Add(logMessage + $" ({target.HeroRef.heroName} còn {target.CurrentHp} HP)");
-
-            // Xử lý khi mục tiêu bị hạ gục
-            if (!target.IsAlive())
-            {
-                HandleTargetDefeated(attacker, target, log);
-            }
-        }
-
-        /// <summary>
-        /// Xử lý các sự kiện khi một mục tiêu bị hạ gục.
-        /// </summary>
-        private void HandleTargetDefeated(Combatant attacker, Combatant defeatedTarget, List<string> log)
-        {
-            log.Add($"<color=grey>{defeatedTarget.HeroRef.heroName} đã bị hạ gục!</color>");
-
-            // Xử lý Trait Tái Sinh (S_01)
-            if (defeatedTarget.TraitIDs.Contains(TRAIT_REBIRTH) && Random.value < 0.5f) // 50% cơ hội
-            {
-                int revivedHp = Mathf.FloorToInt(defeatedTarget.MaxHp * 0.25f);
-                defeatedTarget.CurrentHp = revivedHp;
-                log.Add($"<color=green>...Nhưng {defeatedTarget.HeroRef.heroName} đã Tái Sinh với {revivedHp} HP!</color>");
-                return; // Không kích hoạt các hiệu ứng "khi hạ gục" khác
-            }
-
-            // Xử lý Trait Kẻ Săn Mồi (SS_06) của kẻ tấn công
-            if (attacker.TraitIDs.Contains(TRAIT_PREDATOR))
-            {
-                float oldAtk = attacker.Atk;
-                attacker.Atk *= 1.20f; // Tăng 20% ATK
-                log.Add($"<color=orange>{attacker.HeroRef.heroName} kích hoạt Kẻ Săn Mồi, ATK tăng từ {oldAtk:F0} lên {attacker.Atk:F0}!</color>");
-            }
-        }
-
-        /// <summary>
-        /// Áp dụng các hiệu ứng Aura đầu trận.
-        /// </summary>
-        private void ApplyPreBattleAuras(List<Combatant> team, List<Combatant> enemyTeam, List<string> log)
-        {
-            foreach (var combatant in team)
-            {
-                // Trait Hộ Vệ Hoàng Gia (SS_08)
-                if (combatant.TraitIDs.Contains(TRAIT_ROYAL_GUARD))
-                {
-                    int shieldAmount = Mathf.FloorToInt(combatant.MaxHp * 0.15f);
-                    // Áp dụng cho toàn đội
-                    foreach (var ally in team)
-                    {
-                        ally.CurrentShield += shieldAmount;
-                    }
-                    log.Add($"<color=cyan>{combatant.HeroRef.heroName} kích hoạt Hộ Vệ Hoàng Gia, tạo {shieldAmount} giáp cho toàn đội!</color>");
-                }
-                
-                // TODO: Trait Lãnh Đạo (A_05) cần logic về "hàng"
-            }
-        }
-
-        #region Helper Methods
-        private bool IsTeamAlive(List<Combatant> team) => team.Any(c => c.IsAlive());
-
-        private Combatant GetRandomLivingTarget(List<Combatant> team)
-        {
-            var livingTargets = team.Where(c => c.IsAlive()).ToList();
-            if (livingTargets.Count == 0) return null;
-            return livingTargets[Random.Range(0, livingTargets.Count)];
         }
         #endregion
 
-        // TODO: Viết hàm SimulateBossBattle dựa trên GDD
-        public CombatResult SimulateBossBattle(List<HeroData> vanguardSquad, List<HeroData> coreSquad, List<HeroData> supportSquad, BossData boss)
+        #region 3. HỆ THỐNG CHIẾN ĐẤU CHÍNH
+
+        /// <summary>
+        /// Chứa toàn bộ logic mô phỏng trận đấu. Hệ thống này độc lập với UI.
+        /// </summary>
+        public class CombatSystem
         {
-            // ... Logic cho trận đấu Boss sẽ được triển khai ở đây
-            return new CombatResult { DidPlayerWin = false, CombatLog = new List<string> { "Chức năng đấu Boss chưa được triển khai." } };
+            private System.Random _rng;
+            private List<Combatant> _playerTeam;
+            private List<Combatant> _enemyTeam;
+            private List<string> _combatLog;
+            private readonly List<Skill> _allAvailableSkills;
+
+            /// <summary>
+            /// Khởi tạo hệ thống chiến đấu.
+            /// </summary>
+            /// <param name="seed">Hạt giống cho hệ thống ngẫu nhiên để có thể tái hiện trận đấu.</param>
+            /// <param name="allSkills">Danh sách tất cả các ScriptableObject Skill trong game.</param>
+            public CombatSystem(int seed, List<Skill> allSkills)
+            {
+                _rng = new System.Random(seed);
+                _allAvailableSkills = allSkills ?? new List<Skill>();
+            }
+
+            /// <summary>
+            /// Chạy mô phỏng một trận đấu hoàn chỉnh và trả về kết quả.
+            /// </summary>
+            public CombatResult Simulate(List<HeroData> playerHeroes, List<string> enemyMonsterIDs)
+            {
+                _combatLog = new List<string> { "<b>Trận đấu bắt đầu!</b>" };
+
+                // 1. Khởi tạo các đối tượng Combatant
+                _playerTeam = playerHeroes.Select((h, i) => new Combatant(h, true, i)).ToList();
+
+                // --- THAY ĐỔI: Tạo kẻ địch từ ID ---
+                // Giả sử bạn có một phương thức để lấy dữ liệu quái vật/hero từ ID
+                var enemyHeroes = enemyMonsterIDs.Select(id => (HeroData)null /*DataManager.Instance.GetHeroByID(id) ?? DataManager.Instance.GetMonsterByID(id)*/)
+                                                 .Where(h => h != null)
+                                                 .ToList();
+                _enemyTeam = enemyHeroes.Select((h, i) => new Combatant(h, false, i)).ToList();
+                // ------------------------------------
+
+                // 2. Gán kỹ năng ngẫu nhiên cho mỗi Combatant
+                _playerTeam.ForEach(c => c.AssignSkills(_allAvailableSkills, _rng));
+                _enemyTeam.ForEach(c => c.AssignSkills(_allAvailableSkills, _rng));
+
+                // 3. Tự động sắp xếp đội hình
+                ArrangeFormation(_playerTeam);
+                ArrangeFormation(_enemyTeam);
+
+                LogFormation(_playerTeam, "Đội hình người chơi");
+                LogFormation(_enemyTeam, "Đội hình địch");
+
+                // 4. Vòng lặp chiến đấu chính
+                int turn = 1;
+                while (IsTeamAlive(_playerTeam) && IsTeamAlive(_enemyTeam))
+                {
+                    _combatLog.Add($"\n<color=yellow>--- Vòng {turn} ---</color>");
+
+                    var turnOrder = _playerTeam.Concat(_enemyTeam)
+                                               .Where(c => c.IsAlive())
+                                               .OrderByDescending(c => c.GetCurrentSpd())
+                                               .ToList();
+
+                    foreach (var combatant in turnOrder)
+                    {
+                        if (!combatant.IsAlive()) continue;
+
+                        ProcessStartOfTurnEffects(combatant);
+                        if (!combatant.IsAlive()) continue; // Có thể chết do độc
+
+                        TickCooldowns(combatant);
+
+                        var action = DecideAction(combatant);
+                        ExecuteAction(action);
+
+                        // Dừng vòng lặp lượt đi nếu một trong hai đội đã bị hạ gục
+                        if (!IsTeamAlive(_playerTeam) || !IsTeamAlive(_enemyTeam)) break;
+                    }
+
+                    turn++;
+                    if (turn > 50) { _combatLog.Add("Trận đấu quá dài, kết quả hòa!"); break; }
+                }
+
+                // 5. Kết luận trận đấu
+                bool playerWon = IsTeamAlive(_playerTeam) && !IsTeamAlive(_enemyTeam);
+                _combatLog.Add(playerWon ? "\n<color=green><b>CHIẾN THẮNG!</b></color>" : "\n<color=red><b>THẤT BẠI!</b></color>");
+
+                // 6. Trả về đối tượng kết quả
+                return new CombatResult
+                {
+                    IsVictory = playerWon,
+                    CombatLog = _combatLog
+                };
+            }
+
+            #region Logic Cốt Lõi của Trận Đấu
+
+            private CombatAction DecideAction(Combatant actor)
+            {
+                var usableSkills = actor.Skills
+                    .Where(s => actor.SkillCooldowns.ContainsKey(s.id) && actor.SkillCooldowns[s.id] == 0)
+                    .ToList();
+
+                if (usableSkills.Any())
+                {
+                    if (actor.HeroRef.Class == HeroClass.Healer)
+                    {
+                        var allies = actor.IsPlayerTeam ? _playerTeam : _enemyTeam;
+                        bool needsHealing = allies.Any(a => a.IsAlive() && a.CurrentHp / a.MaxHp < 0.6f);
+                        var healingSkill = usableSkills.FirstOrDefault(s => s.targeting == TargetingType.LowestHpAlly || s.targeting == TargetingType.AllAllies);
+
+                        if (needsHealing && healingSkill != null)
+                        {
+                            return new CombatAction { Actor = actor, Skill = healingSkill };
+                        }
+                    }
+                    return new CombatAction { Actor = actor, Skill = usableSkills[_rng.Next(usableSkills.Count)] };
+                }
+
+                return new CombatAction { Actor = actor, Skill = null };
+            }
+
+            private void ExecuteAction(CombatAction action)
+            {
+                var actor = action.Actor;
+                var allies = actor.IsPlayerTeam ? _playerTeam : _enemyTeam;
+                var enemies = actor.IsPlayerTeam ? _enemyTeam : _playerTeam;
+
+                if (action.IsBasicAttack)
+                {
+                    var target = GetTargets(actor, TargetingType.SingleFrontEnemy, allies, enemies).FirstOrDefault();
+                    if (target != null) PerformAttack(actor, target, 1.0f, null);
+                }
+                else
+                {
+                    var skill = action.Skill;
+                    var targets = GetTargets(actor, skill.targeting, allies, enemies);
+                    if (!targets.Any()) return;
+
+                    _combatLog.Add($"<color=lightblue>{actor.HeroRef.heroName} dùng kỹ năng [{skill.skillName}]!</color>");
+
+                    for (int i = 0; i < skill.hitCount; i++)
+                    {
+                        // Nếu là skill đánh nhiều lần ngẫu nhiên, chọn lại mục tiêu mỗi lần
+                        var currentTargets = (skill.hitCount > 1 && skill.targeting == TargetingType.RandomEnemy)
+                                           ? GetTargets(actor, skill.targeting, allies, enemies)
+                                           : targets;
+
+                        foreach (var target in currentTargets)
+                        {
+                            switch (actor.HeroRef.Class)
+                            {
+                                case HeroClass.Healer:
+                                    PerformHeal(actor, target, skill);
+                                    break;
+                                default: // Warrior, Archer, Mage
+                                    PerformAttack(actor, target, skill.powerRatio, skill);
+                                    break;
+                            }
+                        }
+                    }
+                    actor.SkillCooldowns[skill.id] = skill.cooldown + 1;
+                }
+            }
+
+            private void PerformAttack(Combatant attacker, Combatant target, float powerRatio, Skill skill)
+            {
+                float baseDamage = attacker.GetCurrentAtk() * powerRatio;
+                float finalDamage = Mathf.Max(1, baseDamage - target.GetCurrentDef());
+
+                float critChance = attacker.GetCurrentCritChance() + (skill?.id == "SK_ARCHER_01" ? 0.4f : 0f);
+                bool isCrit = _rng.NextDouble() < critChance;
+                if (isCrit) finalDamage *= attacker.HeroRef.critDamage;
+
+                int damageInt = Mathf.FloorToInt(finalDamage);
+                target.CurrentHp -= damageInt;
+
+                string log = $"{attacker.HeroRef.heroName} tấn công {target.HeroRef.heroName}, gây <color=red>{damageInt}</color> sát thương.";
+                if (isCrit) log += " <color=orange>(Chí mạng!)</color>";
+                _combatLog.Add(log);
+
+                if (skill != null && skill.appliedEffect != StatusEffectType.None)
+                {
+                    if (_rng.NextDouble() < skill.effectChance)
+                    {
+                        ApplyStatusEffect(attacker, target, skill);
+                    }
+                }
+
+                if (!target.IsAlive())
+                {
+                    _combatLog.Add($"<color=grey>{target.HeroRef.heroName} đã bị hạ gục!</color>");
+                }
+            }
+
+            private void PerformHeal(Combatant healer, Combatant target, Skill skill)
+            {
+                if (skill.id == "SK_HEALER_03") // Thanh Tẩy
+                {
+                    var debuffs = target.ActiveEffects.Where(e => e.Type == StatusEffectType.DefDown || e.Type == StatusEffectType.Poison || e.Type == StatusEffectType.Slow).ToList();
+                    if (debuffs.Any())
+                    {
+                        target.ActiveEffects.Remove(debuffs.First());
+                        _combatLog.Add($"{healer.HeroRef.heroName} thanh tẩy hiệu ứng xấu cho {target.HeroRef.heroName}.");
+                    }
+                }
+
+                float healAmount = healer.GetCurrentAtk() * skill.powerRatio;
+                int healInt = Mathf.FloorToInt(healAmount);
+                target.CurrentHp = Mathf.Min(target.MaxHp, target.CurrentHp + healInt);
+                _combatLog.Add($"{healer.HeroRef.heroName} hồi <color=green>{healInt}</color> HP cho {target.HeroRef.heroName}.");
+
+                if (skill.appliedEffect != StatusEffectType.None)
+                {
+                    ApplyStatusEffect(healer, target, skill);
+                }
+            }
+            #endregion
+
+            #region Logic Phụ Trợ
+
+            private void ArrangeFormation(List<Combatant> team)
+            {
+                var warriors = team.Where(c => c.HeroRef.Class == HeroClass.Warrior).ToList();
+                var healers = team.Where(c => c.HeroRef.Class == HeroClass.Healer).ToList();
+                var others = team.Except(warriors).Except(healers).ToList();
+
+                foreach (var w in warriors) w.Position = RowPosition.Front;
+                foreach (var h in healers) h.Position = RowPosition.Back;
+                foreach (var o in others) o.Position = RowPosition.Middle;
+            }
+
+            private List<Combatant> GetTargets(Combatant actor, TargetingType targeting, List<Combatant> allies, List<Combatant> enemies)
+            {
+                var livingAllies = allies.Where(c => c.IsAlive()).ToList();
+                var livingEnemies = enemies.Where(c => c.IsAlive()).ToList();
+                if (!livingEnemies.Any()) return new List<Combatant>();
+
+                switch (targeting)
+                {
+                    case TargetingType.SingleFrontEnemy:
+                        var front = livingEnemies.Where(e => e.Position == RowPosition.Front).ToList();
+                        if (front.Any()) return new List<Combatant> { front[_rng.Next(front.Count)] };
+                        var middle = livingEnemies.Where(e => e.Position == RowPosition.Middle).ToList();
+                        if (middle.Any()) return new List<Combatant> { middle[_rng.Next(middle.Count)] };
+                        var back = livingEnemies.Where(e => e.Position == RowPosition.Back).ToList();
+                        if (back.Any()) return new List<Combatant> { back[_rng.Next(back.Count)] };
+                        return new List<Combatant>();
+
+                    case TargetingType.LowestHpAlly:
+                        return livingAllies.Any() ? livingAllies.OrderBy(a => a.CurrentHp / a.MaxHp).Take(1).ToList() : new List<Combatant>();
+
+                    case TargetingType.AllEnemies: return livingEnemies;
+                    case TargetingType.AllAllies: return livingAllies;
+                    case TargetingType.AllAlliesInRow: return livingAllies.Where(a => a.Position == actor.Position).ToList();
+                    case TargetingType.RandomEnemy: return new List<Combatant> { livingEnemies[_rng.Next(livingEnemies.Count)] };
+                    case TargetingType.Self: return new List<Combatant> { actor };
+
+                    case TargetingType.AdjacentEnemies: // Logic đơn giản hóa: tấn công 1 mục tiêu ngẫu nhiên
+                        return GetTargets(actor, TargetingType.SingleFrontEnemy, allies, enemies);
+
+                    default: return new List<Combatant>();
+                }
+            }
+
+            private void ApplyStatusEffect(Combatant caster, Combatant target, Skill skill)
+            {
+                float value = 0;
+                switch (skill.appliedEffect)
+                {
+                    case StatusEffectType.Poison: value = caster.GetCurrentAtk() * 0.2f; break;
+                    case StatusEffectType.Slow: value = -20; break;
+                    case StatusEffectType.CritUp: value = 0.15f; break;
+                    case StatusEffectType.DefDown: value = target.HeroRef.def * -0.15f; break;
+                    case StatusEffectType.HealOverTime: value = caster.GetCurrentAtk() * 0.5f; break;
+                    case StatusEffectType.Shield: value = caster.GetCurrentDef() * skill.powerRatio; break;
+                }
+
+                // Ghi đè hiệu ứng cũ nếu có
+                target.ActiveEffects.RemoveAll(e => e.Type == skill.appliedEffect);
+                var newEffect = new ActiveStatusEffect(skill.appliedEffect, skill.effectDuration, value, caster);
+                target.ActiveEffects.Add(newEffect);
+                _combatLog.Add($"{target.HeroRef.heroName} bị ảnh hưởng bởi <color=magenta>{skill.appliedEffect}</color> trong {skill.effectDuration} lượt.");
+            }
+
+            private void ProcessStartOfTurnEffects(Combatant combatant)
+            {
+                var effectsToProcess = combatant.ActiveEffects.ToList();
+                foreach (var effect in effectsToProcess)
+                {
+                    switch (effect.Type)
+                    {
+                        case StatusEffectType.Poison:
+                            int poisonDmg = Mathf.FloorToInt(effect.Value);
+                            combatant.CurrentHp -= poisonDmg;
+                            _combatLog.Add($"{combatant.HeroRef.heroName} nhận <color=purple>{poisonDmg}</color> sát thương từ Độc.");
+                            break;
+                        case StatusEffectType.HealOverTime:
+                            int hotHeal = Mathf.FloorToInt(effect.Value);
+                            combatant.CurrentHp = Mathf.Min(combatant.MaxHp, combatant.CurrentHp + hotHeal);
+                            _combatLog.Add($"{combatant.HeroRef.heroName} được hồi <color=green>{hotHeal}</color> HP từ Hồi Phục.");
+                            break;
+                    }
+                    effect.Duration--;
+                }
+                combatant.ActiveEffects.RemoveAll(e => e.Duration <= 0);
+            }
+
+            private void TickCooldowns(Combatant combatant)
+            {
+                foreach (var skillId in combatant.SkillCooldowns.Keys.ToList())
+                {
+                    if (combatant.SkillCooldowns[skillId] > 0)
+                    {
+                        combatant.SkillCooldowns[skillId]--;
+                    }
+                }
+            }
+
+            private bool IsTeamAlive(List<Combatant> team) => team.Any(c => c.IsAlive());
+
+            private void LogFormation(List<Combatant> team, string teamName)
+            {
+                _combatLog.Add($"<b>--- {teamName} ---</b>");
+                var front = string.Join(", ", team.Where(c => c.Position == RowPosition.Front).Select(c => c.HeroRef.heroName));
+                var middle = string.Join(", ", team.Where(c => c.Position == RowPosition.Middle).Select(c => c.HeroRef.heroName));
+                var back = string.Join(", ", team.Where(c => c.Position == RowPosition.Back).Select(c => c.HeroRef.heroName));
+                _combatLog.Add($"<b>Hàng trước:</b> {(string.IsNullOrEmpty(front) ? "Trống" : front)}");
+                _combatLog.Add($"<b>Hàng giữa:</b> {(string.IsNullOrEmpty(middle) ? "Trống" : middle)}");
+                _combatLog.Add($"<b>Hàng sau:</b> {(string.IsNullOrEmpty(back) ? "Trống" : back)}");
+            }
+            #endregion
         }
+        #endregion
     }
-}

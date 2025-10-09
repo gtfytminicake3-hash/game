@@ -1,9 +1,36 @@
 namespace LegendOfBlood
 {
+    using LegendOfBlood.Combat; // Cần using để thấy CombatResult
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using UnityEngine;
+
+    #region LỚP DỮ LIỆU EXPEDITION (GỘP TỪ EXPEDITION.CS)
+
+    public enum ExpeditionStatus
+    {
+        Traveling,
+        Exploring,
+        Returning,
+        Finished
+    }
+
+    [Serializable]
+    public class Expedition
+    {
+        public string id;
+        public List<string> squadHeroIDs;
+        public POIData destination;
+        public ExpeditionStatus status;
+        public long startTime;
+        public long endTime;
+        
+        // Kết quả chiến đấu sẽ được lưu ở đây sau khi đến nơi
+        public CombatResult combatResult; 
+    }
+
+    #endregion
 
     /// <summary>
     /// Quản lý trạng thái, thời gian và kết quả của tất cả các chuyến thám hiểm đang hoạt động.
@@ -18,6 +45,7 @@ namespace LegendOfBlood
         public static event Action<Expedition> OnExpeditionStarted;
         public static event Action<Expedition> OnExpeditionReturning;
         public static event Action<Expedition> OnExpeditionFinished;
+        public static event Action<POIData> OnPOICleared; // Event mới để báo POI đã hoàn thành
 
         private void Start()
         {
@@ -94,14 +122,23 @@ namespace LegendOfBlood
                     Debug.Log($"Expedition {expedition.id} arrived at destination.");
                     expedition.status = ExpeditionStatus.Exploring;
                     
-                    // TODO: Gọi CombatSystem để mô phỏng trận đấu
-                    // var combatResult = GameManager.Instance.CombatSystem.Simulate(...)
+                    // --- THAY ĐỔI: GỌI COMBATSYSTEM ĐỂ MÔ PHỎNG TRẬN ĐẤU ---
+                    // 1. Lấy dữ liệu các hero trong đội
+                    var heroSquad = expedition.squadHeroIDs
+                                        .Select(id => (HeroData)null /*DataManager.Instance.GetHeroByID(id)*/)
+                                        .Where(h => h != null && h.currentHp > 0) // Chỉ những hero còn sống mới tham gia
+                                        .ToList();
+
+                    // 2. Gọi hàm mô phỏng
+                    var combatResult = GameManager.Instance.CombatSystem.Simulate(heroSquad, expedition.destination.monsterIDs);
                     
-                    long explorationTime = 30000; // Giả sử 30 giây khám phá
-                    expedition.endTime = currentTime + explorationTime;
+                    // 3. Lưu kết quả vào expedition để xử lý ở bước sau
+                    expedition.combatResult = combatResult;
                     
-                    // Phát sự kiện để UI (xe ngựa) có thể biến mất
-                    // (Hoặc có thể gộp với OnExpeditionReturning)
+                    // 4. Trận đấu diễn ra ngay lập tức, không cần chờ. Chuyển ngay sang trạng thái trở về.
+                    // Chúng ta vẫn có thể thêm một khoảng chờ nhỏ nếu muốn.
+                    long explorationTime = 2000; // 2 giây giả lập "dọn dẹp chiến trường"
+                    expedition.endTime = currentTime + explorationTime; 
                     break;
                     
                 case ExpeditionStatus.Exploring:
@@ -131,13 +168,33 @@ namespace LegendOfBlood
         /// </summary>
         private void FinalizeExpedition(Expedition expedition)
         {
-            // TODO: Trao thưởng dựa trên kết quả combat
-            GameManager.Instance.InventoryManager.AddResource(ResourceType.Gold, 100);
-            
-            // TODO: Áp dụng trạng thái bị thương cho các hero sống sót/thất bại
-            // GameManager.Instance.HospitalSystem.AdmitHero(...)
+            // --- THAY ĐỔI: XỬ LÝ KẾT QUẢ DỰA TRÊN COMBATRESULT ---
+            if (expedition.combatResult == null)
+            {
+                Debug.LogError($"Expedition {expedition.id} hoàn thành nhưng không có kết quả chiến đấu!");
+                return;
+            }
+
+            var result = expedition.combatResult;
+            if (result.IsVictory)
+            {
+                // Trao thưởng khi thắng
+                int goldReward = expedition.destination.difficultyLevel * 50;
+                GameManager.Instance.InventoryManager.AddResource(ResourceType.Gold, goldReward);
+                GameManager.Instance.UINotificationManager.ShowNotification($"Thắng trận! Nhận được {goldReward} vàng.");
+
+                // Xử lý hero bị thương nhẹ (nếu HP không đầy)
+            }
+            else
+            {
+                // Xử lý hero bị thương nặng khi thua
+                // GameManager.Instance.HospitalSystem.AdmitHeroesForSevereInjury(result.CasualtyHeroIDs);
+            }
             
             OnExpeditionFinished?.Invoke(expedition);
+
+            // Bắn sự kiện báo rằng POI này đã được hoàn thành
+            OnPOICleared?.Invoke(expedition.destination);
         }
 
         /// <summary>
