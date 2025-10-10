@@ -36,7 +36,7 @@ namespace LegendOfBlood
         public SkillType type;
         
         [Tooltip("Nghề nghiệp có thể học kỹ năng này.")]
-        public HeroClass requiredClass; // Đổi tên 'Profession' thành 'HeroClass' cho nhất quán
+        public HeroClass requiredProfession; // Đổi tên 'Profession' thành 'HeroClass' cho nhất quán
 
         // --- PHẦN BỔ SUNG CHO LOGIC CHIẾN ĐẤU ---
         [Header("Logic Chiến Đấu")]

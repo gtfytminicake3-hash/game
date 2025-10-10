@@ -2,8 +2,7 @@
 namespace LegendOfBlood
 {
     using LegendOfBlood.Combat;
-    using System;
-    using System.Collections.Generic;
+    using System;    using System.Collections.Generic;
     using UnityEngine;
 
     /// <summary>
@@ -156,9 +155,7 @@ namespace LegendOfBlood
             BreedingSystem = new BreedingSystem();
             // Cần cung cấp seed và danh sách skill cho CombatSystem
             // Ở đây ta dùng giá trị mặc định, bạn cần thay thế bằng logic thực tế
-            // LỖI: DataManager.GetAllSkills() không tồn tại.
-            // FIX: Truyền vào một list rỗng. Bạn cần tạo hàm GetAllSkills() trong DataManager.
-            // Ví dụ: public List<Skill> GetAllSkills() => _gameConfig.allSkills;
+            // TODO: Cần tạo hàm GetAllSkills() trong DataManager để lấy danh sách skill từ GameConfig hoặc nơi khác.
             var allSkills = new List<Skill>(); // FIX: DataManager.GetAllGameSkills() không tồn tại.
             CombatSystem = new CombatSystem(Environment.TickCount, allSkills);
             EvolutionSystem = new EvolutionSystem();

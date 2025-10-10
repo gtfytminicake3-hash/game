@@ -1,12 +1,34 @@
 namespace LegendOfBlood
 {
+    // Bỏ 'using LegendOfBlood.Combat;' nếu không có lớp nào khác cần nó trực tiếp
     using System;
     using System.Collections.Generic;
     using UnityEngine;
 
-    /// <summary>
-    /// Lớp con để chứa các loại tài nguyên chính, giúp code gọn gàng hơn.
-    /// </summary>
+    // Các enum và lớp dữ liệu nên được tập trung ở đây để dễ quản lý.
+    
+    public enum ExpeditionStatus
+    {
+        Traveling,
+        Exploring,
+        Returning,
+        Finished
+    }
+
+    [Serializable]
+    public class Expedition
+    {
+        public string id;
+        public List<string> squadHeroIDs;
+        public POIData destination;
+        public ExpeditionStatus status;
+        public long startTime;
+        public long endTime;
+        
+        // --- SỬA LỖI: Chỉ định namespace đầy đủ để loại bỏ mọi sự nhầm lẫn ---
+        public Combat.CombatResult combatResult; 
+    }
+
     [Serializable]
     public class PlayerResources
     {
@@ -15,59 +37,32 @@ namespace LegendOfBlood
         public int stone;
     }
 
-    /// <summary>
-    /// Chứa tất cả dữ liệu liên quan đến người chơi, như tài nguyên và vật phẩm.
-    /// Triển khai ISerializationCallbackReceiver để xử lý việc lưu/tải Dictionary.
-    /// </summary>
     [Serializable]
     public class PlayerData : ISerializationCallbackReceiver
     {
         public string playerName;
-
-        // --- Dữ liệu Tài nguyên & Vật phẩm ---
         public PlayerResources resources;
         public Dictionary<string, int> items;
-
-        // --- Dữ liệu Gameplay chính ---
-        // Các danh sách này sẽ được quản lý bởi DataManager, nhưng được lưu trữ ở đây.
-        // Tuy nhiên, trong thiết kế hiện tại, chúng được lưu trong lớp SaveData.
-        // Để tránh nhầm lẫn và dữ liệu trùng lặp, chúng ta nên xóa chúng khỏi đây
-        // và chỉ giữ chúng trong lớp SaveData của DataManager.
-        // public List<HeroData> AllHeroes; // Sẽ được quản lý bởi DataManager.SaveData
+        
         public List<POIData> WorldPois;
         public List<Expedition> ActiveExpeditions;
         public Dictionary<BuildingType, int> BuildingLevels;
 
-        // --- BIẾN TRUNG GIAN ĐỂ SERIALIZE DICTIONARY ---
-        // JsonUtility không thể serialize Dictionary trực tiếp, nên chúng ta dùng các List này.
-        // For 'items'
         [SerializeField] private List<string> _serializedItemIDs = new List<string>();
         [SerializeField] private List<int> _serializedItemCounts = new List<int>();
-
-        // For 'BuildingLevels'
         [SerializeField] private List<BuildingType> _serializedBuildingTypes = new List<BuildingType>();
         [SerializeField] private List<int> _serializedBuildingLevels = new List<int>();
-
-        /// <summary>
-        /// Constructor cho người chơi mới.
-        /// </summary>
+        
         public PlayerData()
         {
             playerName = "Nhà Lai Tạo";
-            // Tài nguyên khởi đầu
             resources = new PlayerResources { gold = 500, wood = 100, stone = 100 };
             items = new Dictionary<string, int>();
-
-            // AllHeroes = new List<HeroData>();
             WorldPois = new List<POIData>();
             ActiveExpeditions = new List<Expedition>();
             BuildingLevels = new Dictionary<BuildingType, int>();
         }
 
-        /// <summary>
-        /// Được gọi ngay trước khi Unity serialize đối tượng này (ví dụ: khi lưu game).
-        /// Chuyển dữ liệu từ Dictionary sang hai List.
-        /// </summary>
         public void OnBeforeSerialize()
         {
             _serializedItemIDs.Clear();
@@ -81,7 +76,6 @@ namespace LegendOfBlood
                 _serializedItemCounts.Add(kvp.Value);
             }
 
-            // BuildingLevels có thể null nếu đây là dữ liệu cũ chưa có, cần kiểm tra
             if (BuildingLevels != null)
             {
                 foreach (var kvp in BuildingLevels)
@@ -91,24 +85,18 @@ namespace LegendOfBlood
                 }
             }
         }
-
-        /// <summary>
-        /// Được gọi ngay sau khi Unity deserialize đối tượng này (ví dụ: khi tải game).
-        /// Xây dựng lại Dictionary từ dữ liệu trong hai List.
-        /// </summary>
+        
         public void OnAfterDeserialize()
         {
             items = new Dictionary<string, int>();
             BuildingLevels = new Dictionary<BuildingType, int>();
-
-            // Khởi tạo các list nếu chúng là null (quan trọng khi tải dữ liệu cũ)
-            // AllHeroes ??= new List<HeroData>();
+            
             WorldPois ??= new List<POIData>();
             ActiveExpeditions ??= new List<Expedition>();
 
             if (_serializedItemIDs.Count != _serializedItemCounts.Count)
             {
-                Debug.LogError("Dữ liệu vật phẩm bị lỗi: số lượng ID và số đếm không khớp!");
+                Debug.LogError("Item data is corrupt: ID and count lists do not match!");
                 return;
             }
 
@@ -119,7 +107,7 @@ namespace LegendOfBlood
 
             if (_serializedBuildingTypes.Count != _serializedBuildingLevels.Count)
             {
-                Debug.LogError("Dữ liệu cấp độ công trình bị lỗi: số lượng Type và Level không khớp!");
+                Debug.LogError("Building level data is corrupt: Type and Level lists do not match!");
                 return;
             }
 
@@ -128,5 +116,5 @@ namespace LegendOfBlood
                 BuildingLevels.Add(_serializedBuildingTypes[i], _serializedBuildingLevels[i]);
             }
         }
-    } // End of PlayerData class
-} // End of namespace
+    }
+}

@@ -8,10 +8,13 @@ namespace LegendOfBlood
     [Serializable]
     public class HeroStats
     {
-        public int hp;
-        public int atk;
-        public int def;
-        public int spd;
+        // --- THAY ĐỔI: Chuyển sang float để tính toán chính xác hơn ---
+        public float hp;
+        public float atk;
+        public float def;
+        public float spd;
+        public float critChance = 0.05f; // Tỉ lệ chí mạng cơ bản 5%
+        public float critDamage = 1.5f;  // Sát thương chí mạng cơ bản 150%
     }
 
     public enum Gender { Male, Female }
@@ -19,7 +22,7 @@ namespace LegendOfBlood
 
     /// <summary>
     /// Lớp dữ liệu trung tâm, chứa tất cả thông tin về một Anh hùng.
-    /// Kế thừa ISerializationCallbackReceiver để khởi tạo list an toàn khi tải từ JSON.
+    /// Đây là định nghĩa DUY NHẤT cho HeroData trong toàn bộ dự án.
     /// </summary>
     [Serializable]
     public class HeroData : ISerializationCallbackReceiver
@@ -28,16 +31,14 @@ namespace LegendOfBlood
         public string id;
         public string heroName;
         public Gender gender;
-
-        [Tooltip("Chỉ số của avatar trong pool của AvatarManager, được gán ngẫu nhiên khi tạo hero.")]
         public int avatarIndex; 
-
         public int level;
         public int experience;
-        public int potential; // Tiềm năng
-
+        public int potential;
         public HeroStats baseStats;
-        public int currentHp;
+        
+        // SỬA LỖI TIỀM TÀNG: Đổi currentHp thành float để khớp với HeroStats.hp
+        public float currentHp; 
 
         public List<string> traitIDs;
         public List<string> skillIDs;
@@ -45,61 +46,43 @@ namespace LegendOfBlood
         #endregion
 
         #region Status & Timers
-        // Trạng thái và Thời gian kết thúc (Unix Millisecond Timestamps)
         public bool isMature;
         public long maturationEndTime;
-
         public bool isLightlyInjured;
         public long lightInjuryEndTime;
-
         public bool isSeverelyInjured;
         public long injuryEndTime;
         #endregion
 
-        // Sự kiện được phát ra khi hero này lên cấp để các hệ thống khác lắng nghe
         public static event Action<HeroData> OnHeroLeveledUp;
 
         #region Constructors
         
-        /// <summary>
-        /// Constructor để tạo một hero HOÀN TOÀN MỚI.
-        /// Tự động gán một avatar ngẫu nhiên và lưu lại index của nó.
-        /// </summary>
-        /// <param name="heroId">ID duy nhất cho hero.</param>
-        /// <param name="name">Tên của hero.</param>
-        /// <param name="heroGender">Giới tính của hero.</param>
         public HeroData(string heroId, string name, Gender heroGender)
         {
-            // Khởi tạo các giá trị cơ bản
             this.id = heroId;
             this.heroName = name;
             this.gender = heroGender;
             this.level = 1;
-            this.baseStats = new HeroStats(); // Khởi tạo với chỉ số ban đầu
+            this.baseStats = new HeroStats();
+            this.currentHp = this.baseStats.hp; // Khởi tạo máu đầy
             
-            // Khởi tạo các list để tránh lỗi
             traitIDs = new List<string>();
             skillIDs = new List<string>();
 
-            // GỌI AVATAR MANAGER ĐỂ LẤY INDEX NGẪU NHIÊN VÀ LƯU LẠI
             if (AvatarManager.Instance != null)
             {
                 this.avatarIndex = AvatarManager.Instance.GetRandomAvatarIndex(this.gender);
             }
             else
             {
-                Debug.LogError("AvatarManager chưa được khởi tạo! Không thể gán avatar ngẫu nhiên.");
-                this.avatarIndex = -1; // -1 biểu thị lỗi hoặc chưa được gán
+                Debug.LogError("AvatarManager not initialized! Cannot assign random avatar.");
+                this.avatarIndex = -1;
             }
         }
 
-        /// <summary>
-        /// Constructor mặc định. Rất QUAN TRỌNG cho việc Deserialization (tải dữ liệu từ JSON/file).
-        /// Không nên dùng để tạo hero mới.
-        /// </summary>
         public HeroData()
         {
-            // Chỉ khởi tạo các list để đảm bảo chúng không bao giờ null sau khi tải
             traitIDs = new List<string>();
             skillIDs = new List<string>();
         }
@@ -108,26 +91,15 @@ namespace LegendOfBlood
 
         #region Helper Properties & Methods
 
-        /// <summary>
-        /// Lấy đối tượng Sprite của avatar hero này từ AvatarManager.
-        /// Đây là cầu nối giữa dữ liệu (avatarIndex) và asset hình ảnh (Sprite).
-        /// </summary>
-        /// <returns>Sprite avatar tương ứng.</returns>
         public Sprite GetAvatarSprite()
         {
             if (AvatarManager.Instance != null)
-            {
                 return AvatarManager.Instance.GetAvatar(this.gender, this.avatarIndex);
-            }
             
-            Debug.LogError("Cố gắng lấy avatar nhưng AvatarManager không tồn tại.");
-            return null; // Trả về null nếu manager không tồn tại để tránh lỗi
+            Debug.LogError("Attempted to get avatar but AvatarManager does not exist.");
+            return null;
         }
         
-        /// <summary>
-        /// Kiểm tra xem hero có đang trong bất kỳ trạng thái bận nào không.
-        /// (Chưa trưởng thành, bị thương, đang đi thám hiểm).
-        /// </summary>
         public bool IsBusy()
         {
             long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
@@ -146,9 +118,6 @@ namespace LegendOfBlood
             return false;
         }
 
-        /// <summary>
-        /// Tính toán chỉ số cuối cùng sau khi áp dụng hiệu ứng từ Trait.
-        /// </summary>
         public HeroStats GetFinalStats()
         {
             var finalStats = new HeroStats
@@ -156,7 +125,9 @@ namespace LegendOfBlood
                 hp = baseStats.hp,
                 atk = baseStats.atk,
                 def = baseStats.def,
-                spd = baseStats.spd
+                spd = baseStats.spd,
+                critChance = baseStats.critChance,
+                critDamage = baseStats.critDamage
             };
             float multiplyHp = 1.0f, multiplyAtk = 1.0f, multiplyDef = 1.0f, multiplySpd = 1.0f;
             foreach (string traitId in traitIDs)
@@ -188,9 +159,6 @@ namespace LegendOfBlood
             return finalStats;
         }
 
-        /// <summary>
-        /// Tính toán Sức mạnh Chiến đấu (CP) của hero.
-        /// </summary>
         public int GetCombatPower()
         {
             var finalStats = GetFinalStats();
@@ -198,9 +166,6 @@ namespace LegendOfBlood
             return Mathf.FloorToInt(cp);
         }
         
-        /// <summary>
-        /// Cho hero nhận kinh nghiệm và xử lý lên cấp.
-        /// </summary>
         public void GainExp(int amount)
         {
             experience += amount;
@@ -216,22 +181,20 @@ namespace LegendOfBlood
                 baseStats.def += distributionPoints;
                 currentHp = GetFinalStats().hp;
                 OnHeroLeveledUp?.Invoke(this);
-                Debug.Log($"{heroName} đã lên cấp {level}!");
+                Debug.Log($"{heroName} leveled up to {level}!");
                 if (!expTable.ContainsKey(level)) break;
             }
         }
         #endregion
 
         #region Serialization Callbacks
-        // Được gọi sau khi Unity tải dữ liệu từ JSON.
-        // Dùng để đảm bảo các list không bao giờ bị null.
         public void OnAfterDeserialize()
         {
             traitIDs ??= new List<string>();
             skillIDs ??= new List<string>();
         }
 
-        public void OnBeforeSerialize() { } // Không cần làm gì trước khi lưu
+        public void OnBeforeSerialize() { }
         #endregion
     }
 }

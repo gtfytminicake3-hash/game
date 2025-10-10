@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 521587128dc1e094b92bf9fa2b326995, type: 3}
   m_Name: SK_Warrior_ChemDungManh
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Skill
-  id: 
-  skillName: 
-  description: 
+  id: SK_WARRIOR_01
+  skillName: "Ch\xE9m D\u0169ng M\xE3nh"
+  description: "G\xE2y 150% ATK l\xEAn m\u1ED9t m\u1EE5c ti\xEAu h\xE0ng tr\u01B0\u1EDBc"
   type: 0
-  requiredProfession: 0
+  requiredProfession: 1

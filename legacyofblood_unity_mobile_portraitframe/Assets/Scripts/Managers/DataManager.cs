@@ -3,6 +3,7 @@ namespace LegendOfBlood
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq; // THÊM using này để có thể dùng .FirstOrDefault()
     using UnityEngine;
 
     /// <summary>
@@ -67,13 +68,8 @@ namespace LegendOfBlood
         /// </summary>
         private void InitializeDataManager()
         {
-            // Thiết lập đường dẫn lưu file một cách an toàn trên mọi nền tảng
             _saveFilePath = Path.Combine(Application.persistentDataPath, SAVE_FILE_NAME);
-
-            // 1. Xử lý dữ liệu cấu hình game trước tiên
             ProcessGameConfiguration();
-
-            // 2. Tải dữ liệu người chơi hoặc tạo mới nếu chưa có
             LoadPlayerData();
         }
 
@@ -88,29 +84,23 @@ namespace LegendOfBlood
                 return;
             }
 
-            // Chuyển danh sách Trait thành Dictionary
             AllTraits = new Dictionary<string, Trait>();
             foreach (var trait in _gameConfig.AllTraits)
             {
                 if (!AllTraits.ContainsKey(trait.id))
-                {
                     AllTraits.Add(trait.id, trait);
-                }
                 else
-                {
                     Debug.LogWarning($"Tìm thấy Trait ID trùng lặp: {trait.id}");
-                }
             }
 
-            // Tương tự cho Skills, Bosses, ExpTable...
             AllSkills = new Dictionary<string, Skill>();
-            // ... (code tương tự)
+            // ... (code xử lý AllSkills của bạn)
 
             AllBosses = new Dictionary<string, BossData>();
-            // ... (code tương tự)
+            // ... (code xử lý AllBosses của bạn)
 
             ExpTable = new Dictionary<int, int>();
-            // ... (code tương tự)
+            // ... (code xử lý ExpTable của bạn)
 
             Debug.Log($"Đã xử lý xong Game Config: {AllTraits.Count} Traits, {AllSkills.Count} Skills.");
         }
@@ -119,9 +109,6 @@ namespace LegendOfBlood
 
         #region Save/Load Logic
 
-        /// <summary>
-        /// Tải dữ liệu người chơi từ file. Nếu file không tồn tại, tạo dữ liệu mới.
-        /// </summary>
         public void LoadPlayerData()
         {
             if (File.Exists(_saveFilePath))
@@ -130,12 +117,9 @@ namespace LegendOfBlood
                 {
                     string json = File.ReadAllText(_saveFilePath);
                     SaveData loadedData = JsonUtility.FromJson<SaveData>(json);
-
-                    // Khôi phục dữ liệu từ file đã tải
                     Player = loadedData.Player;
                     AllHeroes = loadedData.AllHeroes;
                     AllBuildings = loadedData.AllBuildings;
-
                     Debug.Log($"Tải game thành công từ: {_saveFilePath}");
                 }
                 catch (Exception e)
@@ -150,20 +134,15 @@ namespace LegendOfBlood
                 CreateNewPlayerData();
             }
             
-            // Phát sự kiện để báo cho UI và các hệ thống khác cập nhật
             OnPlayerDataLoaded?.Invoke();
             OnHeroListChanged?.Invoke();
         }
 
-        /// <summary>
-        /// Tạo một bộ dữ liệu mới cho người chơi lần đầu.
-        /// </summary>
         private void CreateNewPlayerData()
         {
-            Player = new PlayerData(); // Giả sử constructor sẽ khởi tạo tài nguyên ban đầu
-            AllBuildings = new List<Building>(); // Khởi tạo các công trình ban đầu
+            Player = new PlayerData();
+            AllBuildings = new List<Building>();
             
-            // Tạo 2 hero khởi đầu để người chơi có thể bắt đầu lai tạo
             AllHeroes = new List<HeroData>();
             HeroData startingMale = CreateStartingHero(Gender.Male, "Adam");
             HeroData startingFemale = CreateStartingHero(Gender.Female, "Eva");
@@ -171,9 +150,6 @@ namespace LegendOfBlood
             AllHeroes.Add(startingFemale);
         }
 
-        /// <summary>
-        /// Lưu trạng thái hiện tại của người chơi vào file JSON.
-        /// </summary>
         public void SavePlayerData()
         {
             SaveData saveData = new SaveData
@@ -185,7 +161,7 @@ namespace LegendOfBlood
 
             try
             {
-                string json = JsonUtility.ToJson(saveData, true); // `true` để format JSON cho dễ đọc
+                string json = JsonUtility.ToJson(saveData, true);
                 File.WriteAllText(_saveFilePath, json);
                 Debug.Log($"Lưu game thành công tại: {_saveFilePath}");
             }
@@ -200,9 +176,6 @@ namespace LegendOfBlood
 
         // --- HERO MANAGEMENT ---
 
-        /// <summary>
-        /// Thêm một hero mới vào danh sách và phát sự kiện.
-        /// </summary>
         public void AddHero(HeroData newHero)
         {
             if (newHero == null) return;
@@ -210,12 +183,9 @@ namespace LegendOfBlood
             OnHeroListChanged?.Invoke();
         }
 
-        /// <summary>
-        /// Xóa một hero khỏi danh sách bằng ID và phát sự kiện.
-        /// </summary>
         public void RemoveHero(string heroId)
         {
-            HeroData heroToRemove = AllHeroes.Find(h => h.id == heroId);
+            HeroData heroToRemove = GetHeroByID(heroId); // Tái sử dụng hàm GetHeroByID
             if (heroToRemove != null)
             {
                 AllHeroes.Remove(heroToRemove);
@@ -223,59 +193,84 @@ namespace LegendOfBlood
             }
         }
 
-        // --- CONFIG DATA ACCESSORS ---
+        // --- BỔ SUNG CÁC HÀM TRUY CẬP DỮ LIỆU CẦN THIẾT ---
 
         /// <summary>
-        /// Lấy một Trait từ config bằng ID.
+        /// Lấy một hero từ danh sách AllHeroes bằng ID.
         /// </summary>
+        public HeroData GetHeroByID(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return null;
+            return AllHeroes.FirstOrDefault(h => h.id == id);
+        }
+
+        /// <summary>
+        /// Lấy dữ liệu của một quái vật bằng ID.
+        /// </summary>
+        public HeroData GetMonsterByID(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return null;
+
+            // TODO: Hoàn thiện logic này sau khi bạn có dữ liệu quái vật trong GameConfig.
+            // Ví dụ: MonsterConfigData monsterCfg = _gameConfig.AllMonsters.FirstOrDefault(m => m.id == id);
+            // if (monsterCfg != null) { return ConvertMonsterToHeroData(monsterCfg); }
+
+            // Tạm thời trả về một quái vật giả để các hệ thống khác không bị lỗi.
+            Debug.LogWarning($"GetMonsterByID chưa được triển khai đầy đủ. Trả về quái vật giả cho ID: {id}");
+            return new HeroData
+            {
+                id = id,
+                heroName = $"Quái vật {id}",
+                level = 5,
+                profession = Profession.Warrior, // Giả sử quái vật cũng có profession
+                baseStats = new HeroStats { hp = 200, atk = 20, def = 15, spd = 10 },
+                currentHp = 200,
+                isMature = true // Quái vật luôn sẵn sàng chiến đấu
+            };
+        }
+
+        // --- CONFIG DATA ACCESSORS ---
+
         public Trait GetTraitByID(string id)
         {
             if (string.IsNullOrEmpty(id) || !AllTraits.ContainsKey(id))
             {
-                //Debug.LogWarning($"Không tìm thấy Trait với ID: {id}");
                 return null;
             }
             return AllTraits[id];
         }
 
-        /// <summary>
-        /// Lấy một Skill từ config bằng ID.
-        /// </summary>
         public Skill GetSkillByID(string id)
         {
-            // ... (Tương tự GetTraitByID)
-            return null;
+            if (string.IsNullOrEmpty(id) || !AllSkills.ContainsKey(id))
+            {
+                return null;
+            }
+            return AllSkills[id];
         }
 
         #endregion
 
         #region Utility Methods
         
-        /// <summary>
-        /// Hàm tiện ích để tạo hero khởi đầu.
-        /// </summary>
         private HeroData CreateStartingHero(Gender gender, string name)
         {
-            return new HeroData
+            // Sử dụng constructor có tham số để đảm bảo ID và tên được gán
+            var hero = new HeroData(Guid.NewGuid().ToString(), name, gender)
             {
-                id = Guid.NewGuid().ToString(),
-                heroName = name,
-                gender = gender,
                 level = 1,
-                potential = 50, // Tiềm năng trung bình
+                potential = 50,
                 baseStats = new HeroStats { hp = 100, atk = 10, def = 8, spd = 12 },
-                currentHp = 100,
                 isMature = true
             };
+            // Đảm bảo máu hiện tại bằng máu tối đa khi tạo mới
+            hero.currentHp = hero.GetFinalStats().hp; 
+            return hero;
         }
 
         #endregion
     }
 
-    /// <summary>
-    /// Lớp bao bọc (wrapper class) để gom tất cả dữ liệu cần lưu vào một đối tượng.
-    /// Điều này giúp việc chuyển đổi sang JSON dễ dàng hơn với JsonUtility.
-    /// </summary>
     [Serializable]
     public class SaveData
     {
