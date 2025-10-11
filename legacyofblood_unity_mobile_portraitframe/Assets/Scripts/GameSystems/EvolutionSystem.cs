@@ -1,5 +1,6 @@
 namespace LegendOfBlood
 {
+    using System.Linq;
     using UnityEngine;
 
     /// <summary>
@@ -34,84 +35,52 @@ namespace LegendOfBlood
         /// <param name="hero">Hero vừa lên cấp</param>
         private void HandleHeroLeveledUp(HeroData hero)
         {
-            // Kiểm tra các mốc tiến hóa dựa trên GDD_02_Progression_And_Status.md
-            switch (hero.level)
-            {
-                case 30:
-                    GrantEvolutionReward(hero, 30);
-                    break;
-                case 50:
-                    GrantEvolutionReward(hero, 50);
-                    break;
-                case 70:
-                    GrantEvolutionReward(hero, 70);
-                    break;
-                case 100:
-                    GrantEvolutionReward(hero, 100);
-                    break;
-                // Không phải mốc tiến hóa, không làm gì cả
-                default:
-                    return;
-            }
+            // Thay vì kiểm tra các mốc cố định, giờ chúng ta sẽ kiểm tra xem có phần thưởng nào ở cấp độ hiện tại không.
+            GrantEvolutionReward(hero);
         }
 
         /// <summary>
         /// Lấy phần thưởng từ DataManager và gán cho hero.
         /// </summary>
-        private void GrantEvolutionReward(HeroData hero, int levelMilestone)
+        private void GrantEvolutionReward(HeroData hero)
         {
-            // Giả định rằng GameConfig sẽ có một cấu trúc dữ liệu để lưu phần thưởng tiến hóa
-            // và DataManager có một phương thức để truy xuất nó.
-            // Ví dụ: EvolutionReward reward = DataManager.Instance.GetEvolutionRewardFor(hero.profession, levelMilestone);
-            
-            // --- PHẦN GIẢ LẬP DỮ LIỆU PHẦN THƯỞNG (sẽ được thay bằng GameConfig thật) ---
-            string rewardId = GetPlaceholderRewardId(hero.profession, levelMilestone);
-            // --- KẾT THÚC PHẦN GIẢ LẬP ---
+            // Lấy dữ liệu phần thưởng từ DataManager thay vì dùng hàm giả lập
+            var reward = DataManager.Instance.EvolutionRewards.FirstOrDefault(r => 
+                r.profession == hero.profession && r.requiredLevel == hero.level
+            );
 
-            if (string.IsNullOrEmpty(rewardId))
+            // Nếu tìm thấy phần thưởng cho cấp độ và nghề nghiệp này
+            if (reward != null)
             {
-                Debug.LogWarning($"Không tìm thấy phần thưởng tiến hóa cho nghề {hero.profession} ở cấp {levelMilestone}.");
-                return;
-            }
+                string rewardId = reward.rewardID;
 
-            // Phân loại phần thưởng dựa trên ID (ví dụ: SK_ là Skill, TR_ là Trait)
-            if (rewardId.StartsWith("SK_")) // Đây là một Skill
-            {
-                if (!hero.skillIDs.Contains(rewardId))
+                if (string.IsNullOrEmpty(rewardId))
                 {
-                    hero.skillIDs.Add(rewardId);
-                    // Lấy tên Skill từ DataManager để log cho đẹp
-                    string skillName = DataManager.Instance.GetSkillByID(rewardId)?.skillName ?? rewardId;
-                    Debug.Log($"<color=cyan>Tiến Hóa!</color> {hero.heroName} đã học được kỹ năng mới: [{skillName}] ở cấp {levelMilestone}.");
+                    Debug.LogWarning($"Tìm thấy phần thưởng tiến hóa cho nghề {hero.profession} ở cấp {hero.level}, nhưng rewardID rỗng.");
+                    return;
+                }
+
+                // Phân loại phần thưởng dựa trên ID (ví dụ: SK_ là Skill, TR_ là Trait)
+                if (rewardId.StartsWith("SK_")) // Đây là một Skill
+                {
+                    if (!hero.skillIDs.Contains(rewardId))
+                    {
+                        hero.skillIDs.Add(rewardId);
+                        // Lấy tên Skill từ DataManager để log cho đẹp
+                        string skillName = DataManager.Instance.GetSkillByID(rewardId)?.skillName ?? rewardId;
+                        Debug.Log($"<color=cyan>Tiến Hóa!</color> {hero.heroName} đã học được kỹ năng mới: [{skillName}] ở cấp {hero.level}.");
+                    }
+                }
+                else if (rewardId.StartsWith("TR_")) // Đây là một Trait
+                {
+                    if (!hero.traitIDs.Contains(rewardId))
+                    {
+                        hero.traitIDs.Add(rewardId);
+                        string traitName = DataManager.Instance.GetTraitByID(rewardId)?.traitName ?? rewardId;
+                        Debug.Log($"<color=cyan>Tiến Hóa!</color> {hero.heroName} đã nhận được đặc tính mới: [{traitName}] ở cấp {hero.level}.");
+                    }
                 }
             }
-            else if (rewardId.StartsWith("TR_")) // Đây là một Trait
-            {
-                if (!hero.traitIDs.Contains(rewardId))
-                {
-                    hero.traitIDs.Add(rewardId);
-                    string traitName = DataManager.Instance.GetTraitByID(rewardId)?.traitName ?? rewardId;
-                    Debug.Log($"<color=cyan>Tiến Hóa!</color> {hero.heroName} đã nhận được đặc tính mới: [{traitName}] ở cấp {levelMilestone}.");
-                }
-            }
-        }
-
-        /// <summary>
-        /// HÀM GIẢ LẬP: Thay thế bằng logic lấy dữ liệu từ GameConfig/DataManager.
-        /// </summary>
-        private string GetPlaceholderRewardId(Profession profession, int level)
-        {
-            switch (profession)
-            {
-                case Profession.Warrior:
-                    if (level == 30) return "SK_WARRIOR_02";
-                    if (level == 50) return "TR_WARRIOR_PASSIVE";
-                    break;
-                case Profession.Archer:
-                    if (level == 30) return "SK_ARCHER_02";
-                    break;
-            }
-            return null;
         }
     }
 }

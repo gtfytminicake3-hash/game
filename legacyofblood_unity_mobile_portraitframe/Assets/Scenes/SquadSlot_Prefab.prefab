@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ab331165be1af94ba905f90c81460e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.SquadSlotCard
-  placeholderBackground: {fileID: 0}
+  placeholderBackground: {fileID: 4696831284074177684}
   emptyIconObject: {fileID: 2561700034449847163}
   heroAvatarImage: {fileID: 6724751303423349529}
   heroNameText: {fileID: 7069928685263561825}

@@ -1,60 +1,75 @@
-# GDD - Hệ thống Tiến triển & Trạng thái
+# GDD - Hệ thống Tiến triển & Trạng thái (Cập nhật theo Code)
 
-Tài liệu này mô tả các hệ thống quản lý vòng đời và trạng thái của một anh hùng sau khi được sinh ra.
+Tài liệu này mô tả các hệ thống quản lý vòng đời, trạng thái, và sự tiến triển của anh hùng và người chơi, dựa trên mã nguồn C# hiện tại.
 
-## 1. Hệ thống Trưởng thành (`MaturationSystem.ts`)
+## 1. Hệ thống Trưởng thành (`MaturationSystem.cs`)
 
-*   **Mục đích:** Quản lý quá trình một hero sơ sinh trở thành một chiến binh sẵn sàng chiến đấu.
-*   **Kích hoạt:** Được gọi bởi `BreedingSystem` sau khi một hero được tạo ra.
-*   **Thời gian:** Cố định là **1 phút** (60,000 ms).
-*   **Trait ảnh hưởng:** "Lớn Nhanh" (D_08) giảm 5% thời gian này.
-*   **Quá trình Thức tỉnh:** Khi trưởng thành, hero sẽ:
-    1.  Nhận ngẫu nhiên 1 trong 4 **Nghề nghiệp** (`Warrior`, `Archer`, `Mage`, `Healer`).
-    2.  Nhận ngẫu nhiên 1 trong 3 **Kỹ năng** khởi đầu của nghề đó.
+*   **Mục đích:** Quản lý quá trình một hero sơ sinh "thức tỉnh" để có thể sử dụng.
+*   **Cơ chế Kích hoạt:**
+    1.  `BreedingSystem` sau khi tạo ra hero sẽ đặt một mốc thời gian `maturationEndTime` (hiện tại là 1 phút sau khi sinh).
+    2.  `MaturationSystem.Tick()` (được gọi liên tục bởi `GameManager`) sẽ kiểm tra và tìm các hero đã vượt qua mốc thời gian này.
+*   **Quá trình Thức tỉnh (`MatureHero`):
+    1.  Cờ `isMature` được đặt thành `true`.
+    2.  Hero được gán ngẫu nhiên 1 trong 4 **Nghề nghiệp** (`Warrior`, `Archer`, `Mage`, `Healer`).
+    3.  **TÍNH NĂNG CHƯA HOÀN THIỆN:** Việc gán một kỹ năng khởi đầu ngẫu nhiên đã được viết trong code nhưng đang bị vô hiệu hóa (comment out), chờ cấu hình trong `GameConfig`.
+*   **LƯU Ý:** Trait "Lớn Nhanh" (D_08) được đề cập trong GDD cũ **chưa được triển khai** trong code.
 
-## 2. Hệ thống Lên cấp (`HeroData.ts`)
+## 2. Hệ thống Lên cấp & Tiến hóa
 
-*   **Kích hoạt:** Phương thức `gainExp(amount)` được gọi.
-*   **Công thức EXP Yêu cầu:** `EXP(N) = round((EXP(N-1) * 1.15) + (N * 10))` (N là cấp độ hiện tại).
-*   **Công thức Tăng chỉ số khi Lên cấp:**
+### 2.1. Lên cấp (`HeroData.cs`)
+
+*   **Kích hoạt:** Phương thức `GainExp(int amount)` được gọi khi hero nhận kinh nghiệm.
+*   **Bảng Kinh nghiệm:**
+    *   **QUAN TRỌNG:** Game **KHÔNG** sử dụng công thức toán học để tính EXP cần thiết. Thay vào đó, game sử dụng một bảng kinh nghiệm được định nghĩa sẵn trong `Assets/GameData/ExperienceTable.asset`.
+    *   `DataManager` sẽ tải và cung cấp dữ liệu từ file này.
+*   **Công thức Tăng chỉ số khi Lên cấp (Đã xác thực - Chính xác):**
     *   `Điểm Phân phối = floor(Tiềm năng / 2)`
     *   `HP tăng thêm = floor(Điểm Phân phối * 1.5)`
     *   `ATK tăng thêm = Điểm Phân phối`
     *   `DEF tăng thêm = Điểm Phân phối`
 
-## 3. Hệ thống Tiến hóa (`EvolutionSystem.ts`)
+### 2.2. Tiến hóa (`EvolutionSystem.cs`)
 
-*   **Kích hoạt:** Lắng nghe sự kiện toàn cục `hero-leveled-up` do `HeroData` phát ra.
-*   **Logic:** Khi hero đạt các mốc cấp độ, hệ thống sẽ trao phần thưởng tương ứng với nghề nghiệp từ file `EvolutionData.ts`.
-    *   **Cấp 30:** Nhận kỹ năng thứ 2.
-    *   **Cấp 50:** Nhận Trait/Skill bị động của nghề.
-    *   **Cấp 70:** Nhận kỹ năng thứ 3.
-    *   **Cấp 100:** Nhận Trait/Skill tối thượng.
+*   **Kích hoạt:** Hệ thống lắng nghe sự kiện `HeroData.OnHeroLeveledUp`.
+*   **Logic:** Khi hero đạt các mốc cấp độ **30, 50, 70, 100**, hệ thống sẽ trao phần thưởng.
+*   **Phần thưởng:** Dựa trên nghề nghiệp và cấp độ, hero sẽ nhận được ID của `Skill` hoặc `Trait` mới. 
+    *   **LƯU Ý:** Logic phần thưởng hiện tại đang là **giả lập (placeholder)** trong `EvolutionSystem.cs` và cần được chuyển sang `GameConfig` để quản lý tập trung.
 
-## 4. Hệ thống Bệnh viện (`HospitalSystem.ts`)
+## 3. Hệ thống Trạng thái & Hồi phục (`HospitalSystem.cs`)
+
+Đây là hệ thống quản lý các trạng thái bất lợi của hero.
 
 *   **Bị thương nhẹ:**
-    *   **Điều kiện:** Sống sót sau trận đấu nhưng `currentHp < maxHp`. Được kích hoạt bởi `CombatSystem`.
-    *   **Hậu quả:** Không thể tham gia hoạt động trong **5 phút**.
-    *   **Phục hồi:** Tự động hồi phục sau 5 phút hoặc trả phí Vàng để hồi phục ngay lập tức.
+    *   **Điều kiện:** Một hệ thống khác (ví dụ: `CombatSystem`) gọi `InflictLightInjury(hero)`.
+    *   **Hậu quả:** Hero `isLightlyInjured` và không thể hoạt động trong **5 phút**.
+    *   **Phục hồi:**
+        1.  Tự động hồi phục khi hết giờ (xử lý trong `HospitalSystem.Tick()`).
+        2.  Trả phí Vàng để hồi phục ngay lập tức (`HealLightInjuryInstantly`).
     *   **Chi phí:** `floor(CP / 50) + 10` Vàng.
 
 *   **Bị thương nặng:**
-    *   **Điều kiện:** `currentHp <= 0` trong các chế độ chơi có rủi ro (Boss, Giải cứu). Được kích hoạt bởi `CombatSystem`.
-    *   **Hậu quả:** Không thể tham gia hoạt động trong **8 giờ**.
-    *   **Phục hồi:** Phải trả phí Vàng để cứu thương. Nếu không, hero sẽ **biến mất vĩnh viễn** sau 8 giờ.
+    *   **Điều kiện:** Một hệ thống khác gọi `AdmitForSevereInjury(hero)`.
+    *   **Hậu quả:** Hero `isSeverelyInjured` và sẽ **biến mất vĩnh viễn** sau **8 giờ** nếu không được cứu.
+    *   **Phục hồi:** **BẮT BUỘC** phải trả phí Vàng để cứu thương (`HealSevereInjury`). Không có tự động hồi phục.
     *   **Chi phí:** `floor(CP / 10) + 50` Vàng.
+    *   Nếu hết 8 giờ, `HospitalSystem.Tick()` sẽ xóa hero khỏi `DataManager`.
 
-## 5. Hệ thống Xây dựng (`BuildingSystem.ts`)
+## 4. Hệ thống Xây dựng (`BuildingSystem.cs`)
 
-*   **Logic:** Quản lý việc xây dựng và nâng cấp các công trình.
-*   **Trạng thái:** Một công trình có thể đang `isUnderConstruction` với một `constructionEndTime`.
-*   **Hoàn thành:** Hệ thống kiểm tra định kỳ, khi `constructionEndTime` đã qua, `isUnderConstruction` được đặt thành `false` và `level` tăng lên 1.
+*   **Mục đích:** Quản lý việc xây và nâng cấp các công trình.
+*   **Cơ chế:**
+    1.  Người chơi nhấn nút nâng cấp, UI gọi `StartUpgrade(buildingId)`.
+    2.  Hệ thống kiểm tra và trừ tài nguyên (Vàng, Gỗ,...) cần thiết.
+    3.  Công trình được đặt trạng thái `isUnderConstruction = true` và một mốc `constructionEndTime` được thiết lập.
+    4.  `BuildingSystem.Tick()` sẽ kiểm tra và gọi `CompleteConstruction()` khi tới giờ.
+    5.  `CompleteConstruction()` đặt `isUnderConstruction = false` và tăng `level` của công trình lên 1.
+*   **LƯU Ý:** Chi phí và thời gian nâng cấp hiện đang là **giả lập (placeholder)** trong code.
 
----
+## 5. Dữ liệu Tiến trình Người chơi (`PlayerData.cs`)
 
-### Lỗ hổng & Cơ hội Phát triển
-
-*   **Đã giải quyết:** Hệ thống tài nguyên (`InventoryManager`) đã được triển khai và chi phí đã được áp dụng.
-*   **Đã giải quyết:** Hệ thống thông báo (`UINotificationManager`) đã được triển khai để phản hồi các hành động (ví dụ: không đủ tài nguyên).
-*   **Cần làm:** Tạo các biểu tượng thông báo (badge) trên các nút ở màn hình chính (ví dụ: Bệnh viện có hero đã hồi phục xong).
+Đây là file lưu trữ chính cho toàn bộ tiến trình của người chơi, bao gồm:
+*   `resources`: Vàng, Gỗ, Đá.
+*   `items`: Kho vật phẩm.
+*   `BuildingLevels`: Cấp độ của tất cả các công trình.
+*   `ActiveExpeditions`: Các đoàn thám hiểm đang hoạt động.
+*   `WorldPois`: Trạng thái các địa điểm trên bản đồ thế giới.

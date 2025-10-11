@@ -47,14 +47,14 @@ namespace LegendOfBlood
             professions.Remove(Profession.None); // Loại bỏ trạng thái "None"
             hero.profession = professions[UnityEngine.Random.Range(0, professions.Count)];
 
-            // 2. Gán ngẫu nhiên 1 trong 3 kỹ năng khởi đầu của nghề đó
-            // Yêu cầu: GameConfig phải có định nghĩa các kỹ năng khởi đầu cho mỗi nghề.
-            // Ví dụ: var startingSkills = DataManager.Instance.GetStartingSkills(hero.profession);
-            // if(startingSkills.Count > 0)
-            // {
-            //     string randomSkillID = startingSkills[UnityEngine.Random.Range(0, startingSkills.Count)];
-            //     hero.skillIDs.Add(randomSkillID);
-            // }
+            // 2. Gán ngẫu nhiên một kỹ năng khởi đầu của nghề đó
+            var startingSkills = DataManager.Instance.GetStartingSkills(hero.profession);
+            if(startingSkills != null && startingSkills.Count > 0)
+            {
+                string randomSkillID = startingSkills[UnityEngine.Random.Range(0, startingSkills.Count)];
+                hero.skillIDs.Add(randomSkillID);
+                Debug.Log($"Hero đã học được kỹ năng khởi đầu: {randomSkillID}");
+            }
 
             Debug.Log($"Hero {hero.heroName} (ID: {hero.id}) đã trưởng thành! Thức tỉnh thành nghề: {hero.profession}.");
 

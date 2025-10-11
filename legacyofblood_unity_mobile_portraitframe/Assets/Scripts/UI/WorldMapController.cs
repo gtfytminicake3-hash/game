@@ -260,18 +260,49 @@ namespace LegendOfBlood
         private List<string> GenerateMonstersForPOI(POIData poiData)
         {
             var monsterList = new List<string>();
-            // Ví dụ: số lượng quái vật = độ khó
-            int numberOfMonsters = poiData.difficultyLevel;
+            var monsterConfig = DataManager.Instance.POIMonsterConfig;
 
-            // TODO: Viết logic phức tạp hơn ở đây.
-            // Ví dụ: Lấy danh sách tất cả quái vật từ DataManager, lọc ra những con phù hợp với độ khó,
-            // và chọn ngẫu nhiên 'numberOfMonsters' con từ danh sách đã lọc.
-            // Tạm thời, chúng ta sẽ thêm các ID giả lập.
+            if (monsterConfig == null || monsterConfig.monsterGroups == null)
+            {
+                Debug.LogWarning("POIMonsterConfig is not set in DataManager. Cannot generate monsters.");
+                return monsterList;
+            }
+
+            // 1. Find all monster groups that match the difficulty
+            var validGroups = monsterConfig.monsterGroups.Where(g => 
+                poiData.difficultyLevel >= g.minDifficulty && poiData.difficultyLevel <= g.maxDifficulty
+            ).ToList();
+
+            if (validGroups.Count == 0)
+            {
+                Debug.LogWarning($"No monster groups found for difficulty level {poiData.difficultyLevel}.");
+                return monsterList;
+            }
+
+            // 2. Create a pool of all possible monsters from the valid groups
+            var monsterPool = new List<string>();
+            foreach (var group in validGroups)
+            {
+                monsterPool.AddRange(group.monsterIDs);
+            }
+
+            if (monsterPool.Count == 0)
+            {
+                Debug.LogWarning($"Monster groups for difficulty {poiData.difficultyLevel} are empty.");
+                return monsterList;
+            }
+
+            // 3. Randomly select monsters from the pool
+            int numberOfMonsters = poiData.difficultyLevel; // Or another logic, e.g., Random.Range(min, max)
             for (int i = 0; i < numberOfMonsters; i++)
             {
-                // Giả sử bạn có các monster ID như "goblin_1", "orc_2",...
-                monsterList.Add($"monster_placeholder_{i}");
+                if (monsterPool.Count == 0) break; // Should not happen if checked before, but as a safeguard
+                int randomIndex = UnityEngine.Random.Range(0, monsterPool.Count);
+                monsterList.Add(monsterPool[randomIndex]);
+                // Optional: remove from pool to avoid duplicates, if desired
+                // monsterPool.RemoveAt(randomIndex);
             }
+
             Debug.Log($"Đã tạo {monsterList.Count} quái vật cho POI '{poiData.poiName}'.");
             return monsterList;
         }

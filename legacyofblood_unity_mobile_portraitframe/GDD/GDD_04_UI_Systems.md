@@ -1,60 +1,66 @@
-# GDD - Hệ thống Giao diện Người dùng (UI)
+# GDD - Hệ thống Giao diện Người dùng (UI) (Cập nhật theo Code)
 
-Tài liệu này mô tả kiến trúc và các thành phần UI đã được triển khai logic.
+Tài liệu này mô tả kiến trúc, luồng hoạt động và các thành phần chính của hệ thống UI, dựa trên mã nguồn C# hiện tại.
 
-## 1. Kiến trúc (`UIManager.ts`)
+## 1. Kiến trúc Cốt lõi
 
-*   Sử dụng một `UIManager` trung tâm để quản lý việc hiển thị và ẩn các panel.
-*   Mỗi màn hình chính là một `UIPanel` được định danh bằng `UIPanelType`.
-*   `UIManager` chứa một danh sách các Prefab/Node panel và hiển thị chúng dựa trên `panelType`.
+Hệ thống UI được xây dựng theo mô hình Event-Driven và được quản lý bởi một `UIManager` trung tâm.
 
-## 2. Các Thành phần UI đã có Logic
+### 1.1. `UIManager.cs`
 
-*   **`UIMainController` (Màn hình chính/Doanh trại):**
-    *   Hiển thị danh sách tất cả các hero bằng cách `instantiate` các `HeroCard_Prefab`.
-    *   Lắng nghe sự kiện `hero-card-clicked` để mở `HeroInfoPanel`.
-    *   Lắng nghe sự kiện toàn cục `hero-list-changed` để tự động làm mới danh sách khi có hero mới (ví dụ: sau khi lai tạo).
-    *   Cung cấp các hàm điều hướng (`onBreedingClicked`, `onHospitalClicked`, `onArenaClicked`) để mở các panel khác.
+Đây là bộ não của hệ thống UI, chịu trách nhiệm quản lý vòng đời của các panel.
 
-*   **`HeroInfoPanel`:**
-    *   Hiển thị đầy đủ thông tin của một hero được truyền vào, bao gồm chỉ số, giới tính, nghề nghiệp, traits và skills.
-    *   Sử dụng `InfoItem_Prefab` để hiển thị các dòng Trait/Skill.
+*   **Tự động Đăng ký Panel:** Khi một scene mới được tải (`OnSceneLoaded`), `UIManager` sẽ tự động tìm tất cả các `GameObject` có gắn script `UIPanel` và đăng ký chúng vào một `Dictionary`. Điều này giúp hệ thống linh hoạt, không cần gán prefab thủ công.
+*   **Quản lý Lịch sử:** `UIManager` sử dụng một `Stack` để lưu lại lịch sử các panel đã được mở. Chức năng `GoBack()` sẽ lấy panel từ đỉnh stack ra để quay lại màn hình trước đó.
+*   **API:** Cung cấp các hàm `ShowPanel(type, hideCurrent)`, `HidePanel(type)`, và `GoBack()`.
 
-*   **`BreedingUIController`:**
-    *   Sử dụng `HeroPickerPanel` để cho phép người chơi chọn Bố/Mẹ từ một danh sách trực quan.
-    *   Danh sách chọn Mẹ sẽ tự động lọc các hero Nữ sau khi Bố đã được chọn.
-    *   Gọi `BreedingSystem.breed()` và hiển thị kết quả.
+### 1.2. `UIPanel.cs`
 
-*   **`HospitalPanel`:**
-    *   Hiển thị 2 danh sách riêng biệt cho hero bị thương nặng và nhẹ.
-    *   Sử dụng `InjuredHeroCard_Prefab` để hiển thị từng hero.
-    *   Cho phép gọi hàm chữa trị trong `HospitalSystem` khi nhấn nút.
+Một script rất đơn giản, chỉ chứa một biến `public UIPanelType PanelType`. Nó đóng vai trò là một "thẻ đánh dấu" để `UIManager` có thể nhận diện và đăng ký các panel.
 
-*   **`ArenaPanel`:**
-    *   Tích hợp `SquadSelectionPanel`.
-    *   Khi nhấn "Thách đấu", nó sẽ mở `SquadSelectionPanel` để người chơi chọn đội hình 5 người.
-    *   Sau khi xác nhận, nó gọi `ArenaMode.startArenaMatch()` với đội hình đã chọn.
+### 1.3. Hệ thống Sự kiện (`EventManager` & `GameEvents`)
 
-*   **`SquadSelectionPanel`:**
-    *   Panel đa dụng để chọn đội hình với số lượng ô trống tùy chỉnh.
-    *   Hỗ trợ cơ chế "nhấn để thêm" hero vào ô trống và "nhấn để loại bỏ".
-    *   Tự động tính toán và hiển thị tổng CP của đội hình.
+UI hoạt động chủ yếu dựa trên sự kiện, thay vì các lời gọi hàm trực tiếp. Điều này giúp các thành phần độc lập với nhau.
 
-*   **`HeroPickerPanel`:**
-    *   Panel đa dụng để chọn một hero từ danh sách.
-    *   Tự động sắp xếp danh sách hero theo CP giảm dần.
+*   **Ví dụ:** Khi một `HeroCard` được nhấn, nó không trực tiếp gọi `HeroInfoPanel`. Thay vào đó, nó phát ra sự kiện `GameEvents.OnHeroCardClicked` với dữ liệu của hero. `HeroInfoPanel` (đã được kích hoạt bởi `UIManager`) sẽ lắng nghe sự kiện này và tự điền dữ liệu.
+*   Các sự kiện quan trọng khác: `OnResourceChanged`, `OnHeroListChanged`, `OnPlayerDataLoaded`.
 
-*   **`UIResourceBar`:**
-    *   Thanh hiển thị tài nguyên (Vàng, Gỗ, Đá) của người chơi.
-    *   Lắng nghe sự kiện `resources-changed` để tự động cập nhật.
+## 2. Luồng Hoạt động & Điều hướng
 
-*   **`UINotificationManager`:**
-    *   Hệ thống hiển thị các thông báo ngắn (toast) cho người chơi, ví dụ "Không đủ tài nguyên!".
+1.  **`Bootloader.cs` (Entry Point):** Khi game bắt đầu, `Bootloader` sẽ được chạy. Nó có nhiệm vụ khởi tạo `CoreSystems` (chứa các Manager) và tải `MainScene` một cách bất đồng bộ.
+2.  **`MainScene`:** Chứa các công trình của làng và các `UIPanel` chính.
+3.  **`BottomNavigationController.cs` (Điều hướng chính):** Đây là thanh điều hướng dưới cùng của màn hình. Các nút trên thanh này gọi trực tiếp các hàm public trong script này (ví dụ: `OpenHospitalPanel()`, `OpenBreedingPanel()`), và các hàm này sẽ ra lệnh cho `UIManager` hiển thị panel tương ứng.
 
----
+## 3. Các Panel Đa dụng (Smart Panels)
 
-### Lỗ hổng & Cơ hội Phát triển
+Đây là các panel được thiết kế để có thể tái sử dụng ở nhiều nơi.
 
-*   **Chế độ chơi PvE:** Các màn hình cho `Dungeon` và `Rescue` vẫn còn trống, cần được tích hợp `SquadSelectionPanel` tương tự như `ArenaPanel`.
-*   **Túi đồ:** Cần xây dựng `InventoryPanel` để người chơi xem và sử dụng các vật phẩm tiêu thụ.
-*   **UX:** Cần thêm chức năng kéo-thả vào `SquadSelectionPanel` để có trải nghiệm tốt hơn.
+*   **`HeroPickerPanel.cs`:**
+    *   **Chức năng:** Một popup để chọn **một** hero từ một danh sách cho trước.
+    *   **Cách hoạt động:** Được gọi bởi một controller khác (ví dụ: `BreedingUIController`) thông qua hàm `Show(title, heroList)`. Khi người chơi chọn một hero, panel này sẽ phát ra sự kiện tĩnh `public static event Action<HeroData> OnHeroPicked`. Controller đã gọi nó sẽ lắng nghe sự kiện này để nhận kết quả.
+
+*   **`SquadSelectionPanel.cs`:**
+    *   **Chức năng:** Một popup để chọn một đội hình với số lượng hero tùy chỉnh.
+    *   **Cách hoạt động:** Được gọi bởi một controller khác (ví dụ: `ArenaPanel`) thông qua hàm `Show(title, heroList, squadSize, callback)`. Tham số cuối cùng `callback` là một `Action<List<string>>`. Khi người chơi xác nhận đội hình, panel sẽ gọi hàm callback này và truyền vào danh sách ID của các hero đã chọn.
+
+## 4. Tổng quan các Panel Chức năng
+
+| Tên Panel | Script Điều khiển | Mô tả & Hoạt động |
+| --- | --- | --- |
+| **Màn hình chính** | `UIMainController.cs` | Hiển thị danh sách tất cả hero, sắp xếp theo CP. Lắng nghe `OnHeroListChanged` để tự làm mới. |
+| **Thông tin Hero** | `HeroInfoPanel.cs` | Hiện đè lên màn hình chính. Lắng nghe `OnHeroCardClicked` để nhận dữ liệu và hiển thị chi tiết chỉ số, traits, skills. |
+| **Lai tạo** | `BreedingUIController.cs` | Có 2 trạng thái: Chọn lựa và Kết quả. Sử dụng `HeroPickerPanel` để chọn Bố/Mẹ. Gọi `BreedingSystem` và hiển thị hero con. |
+| **Bệnh viện** | `HospitalPanel.cs` | Hiển thị 2 danh sách hero bị thương nặng và nhẹ. Sử dụng `InjuredHeroCard` để hiển thị timer và nút chữa trị. Gọi `HospitalSystem`. |
+| **Đấu trường** | `ArenaPanel.cs` | Sử dụng `SquadSelectionPanel` để người chơi chọn đội hình 5 người. Sau đó gọi `CombatSystem.Simulate()` để bắt đầu trận đấu. |
+
+## 5. Các Thành phần UI cơ bản
+
+*   **`HeroCard.cs`:** Hiển thị thông tin tóm tắt của một hero. Khi được click, nó yêu cầu `UIManager` mở `HeroInfoPanel` và sau đó phát sự kiện `OnHeroCardClicked`.
+*   **`InjuredHeroCard.cs`:** Kế thừa `HeroCard`, thêm vào một đồng hồ đếm ngược và nút "Chữa trị".
+*   **`HeroPickerCard.cs`:** Một script phụ trợ được thêm vào `HeroCard` khi nó nằm trong `HeroPickerPanel` để ghi đè hành vi click.
+*   **`SquadSlotCard.cs`:** Đại diện cho một ô trong đội hình đang chọn, có thể ở trạng thái trống hoặc đã có hero.
+*   **`UIResourceBar.cs`:** Thanh tài nguyên Vàng, Gỗ, Đá. Lắng nghe sự kiện `OnResourceChanged` để tự cập nhật.
+
+## 6. Hệ thống Thông báo Toàn cục
+
+*   **`UINotificationManager.cs`:** Quản lý việc hiển thị các thông báo ngắn (toast). Nó sử dụng một hàng đợi (`Queue`) để đảm bảo các thông báo được hiển thị lần lượt, không bị đè lên nhau.

@@ -45,7 +45,10 @@ namespace LegendOfBlood
         public Dictionary<string, Skill> AllSkills { get; private set; }
         public Dictionary<string, BossData> AllBosses { get; private set; }
         public Dictionary<int, int> ExpTable { get; private set; }
-
+        public List<EvolutionRewardData> EvolutionRewards { get; private set; }
+        public Dictionary<Profession, List<string>> StartingSkillsByProfession { get; private set; }
+        public Dictionary<BuildingType, BuildingConfig> BuildingConfigs { get; private set; }
+        public POIMonsterConfig POIMonsterConfig { get; private set; }
         // Dữ liệu trạng thái của người chơi (runtime data)
         public PlayerData Player { get; private set; }
         public List<HeroData> AllHeroes { get; private set; }
@@ -84,25 +87,45 @@ namespace LegendOfBlood
                 return;
             }
 
-            AllTraits = new Dictionary<string, Trait>();
-            foreach (var trait in _gameConfig.AllTraits)
+            AllTraits = _gameConfig.AllTraits.ToDictionary(t => t.id, t => t);
+            AllSkills = _gameConfig.AllSkills.ToDictionary(s => s.id, s => s);
+            AllBosses = new Dictionary<string, BossData>(); // Giữ lại vì chưa có AllBosses trong GameConfig
+            ExpTable = _gameConfig.ExperienceTable.ToDictionary(e => e.level, e => e.experienceRequired);
+
+            if (_gameConfig.EvolutionTable != null)
             {
-                if (!AllTraits.ContainsKey(trait.id))
-                    AllTraits.Add(trait.id, trait);
-                else
-                    Debug.LogWarning($"Tìm thấy Trait ID trùng lặp: {trait.id}");
+                EvolutionRewards = _gameConfig.EvolutionTable.rewards;
+            }
+            else
+            {
+                EvolutionRewards = new List<EvolutionRewardData>();
+                Debug.LogWarning("EvolutionTable is not set in GameConfig.");
             }
 
-            AllSkills = new Dictionary<string, Skill>();
-            // ... (code xử lý AllSkills của bạn)
+            StartingSkillsByProfession = new Dictionary<Profession, List<string>>();
+            foreach (var profSkills in _gameConfig.StartingSkills)
+            {
+                if (!StartingSkillsByProfession.ContainsKey(profSkills.profession))
+                {
+                    StartingSkillsByProfession.Add(profSkills.profession, profSkills.startingSkillIDs);
+                }
+            }
 
-            AllBosses = new Dictionary<string, BossData>();
-            // ... (code xử lý AllBosses của bạn)
+            BuildingConfigs = new Dictionary<BuildingType, BuildingConfig>();
+            if (_gameConfig.BuildingConfigs != null)
+            {
+                foreach (var config in _gameConfig.BuildingConfigs)
+                {
+                    if (!BuildingConfigs.ContainsKey(config.type))
+                    {
+                        BuildingConfigs.Add(config.type, config);
+                    }
+                }
+            }
 
-            ExpTable = new Dictionary<int, int>();
-            // ... (code xử lý ExpTable của bạn)
+            POIMonsterConfig = _gameConfig.POIMonsterConfig;
 
-            Debug.Log($"Đã xử lý xong Game Config: {AllTraits.Count} Traits, {AllSkills.Count} Skills.");
+            Debug.Log($"Đã xử lý xong Game Config: {AllTraits.Count} Traits, {AllSkills.Count} Skills, {BuildingConfigs.Count} BuildingConfigs.");
         }
 
         #endregion
@@ -247,6 +270,15 @@ namespace LegendOfBlood
                 return null;
             }
             return AllSkills[id];
+        }
+
+        public List<string> GetStartingSkills(Profession profession)
+        {
+            if (StartingSkillsByProfession.TryGetValue(profession, out var skillList))
+            {
+                return skillList;
+            }
+            return new List<string>(); // Trả về danh sách rỗng nếu không tìm thấy
         }
 
         #endregion

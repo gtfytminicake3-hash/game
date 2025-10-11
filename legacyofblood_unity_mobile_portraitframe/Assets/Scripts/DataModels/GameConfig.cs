@@ -31,6 +31,16 @@ namespace LegendOfBlood
         // Ví dụ:
         // public EvolutionData EvolutionTable;
         // public BuildingData BuildingTable;
+
+        [Header("Hero Progression")]
+        public EvolutionTable EvolutionTable;
+        public List<ProfessionStartingSkills> StartingSkills;
+
+        [Header("Building Data")]
+        public List<BuildingConfig> BuildingConfigs;
+
+        [Header("World Map Data")]
+        public POIMonsterConfig POIMonsterConfig;
     }
     
     /// <summary>
@@ -41,5 +51,12 @@ namespace LegendOfBlood
     {
         public int level;
         public int experienceRequired;
+    }
+
+    [System.Serializable]
+    public class ProfessionStartingSkills
+    {
+        public Profession profession;
+        public List<string> startingSkillIDs;
     }
 }

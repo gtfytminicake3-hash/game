@@ -36,14 +36,27 @@ namespace LegendOfBlood
             }
 
             int nextLevel = building.level + 1;
-            
-            // Lấy chi phí và thời gian từ DataManager (giả định có trong GameConfig)
-            // BuildingUpgradeInfo info = DataManager.Instance.GetBuildingUpgradeInfo(building.type, nextLevel);
-            
-            // --- PHẦN GIẢ LẬP DỮ LIỆU NÂNG CẤP ---
-            var cost = new PlayerResources { gold = nextLevel * 100, wood = nextLevel * 50 };
-            long durationMs = nextLevel * 30 * 1000; // 30 giây mỗi cấp
-            // --- KẾT THÚC PHẦN GIẢ LẬP ---
+
+            // Lấy cấu hình từ DataManager
+            if (!DataManager.Instance.BuildingConfigs.TryGetValue(building.type, out var config))
+            {
+                Debug.LogError($"Không tìm thấy cấu hình nâng cấp cho loại công trình: {building.type}");
+                return false;
+            }
+
+            // Tìm dữ liệu nâng cấp cho cấp độ tiếp theo
+            var upgradeData = config.upgradeTiers.FirstOrDefault(t => t.level == nextLevel);
+
+            if (upgradeData == null)
+            {
+                Debug.LogWarning($"Đã đạt cấp độ tối đa cho {building.type} hoặc không tìm thấy dữ liệu nâng cấp cho cấp {nextLevel}.");
+                GameManager.Instance.UINotificationManager.ShowNotification("Công trình đã đạt cấp tối đa!");
+                return false;
+            }
+
+            // Sử dụng dữ liệu từ file config
+            var cost = new PlayerResources { gold = upgradeData.goldCost, wood = upgradeData.woodCost, stone = upgradeData.stoneCost };
+            long durationMs = (long)(upgradeData.constructionTimeInSeconds * 1000);
 
             // Kiểm tra và chi tiêu tài nguyên
             if (!CanAfford(cost))
@@ -55,6 +68,7 @@ namespace LegendOfBlood
             // Chi tiêu tài nguyên
             InventoryManager.Instance.SpendResource(ResourceType.Gold, cost.gold);
             InventoryManager.Instance.SpendResource(ResourceType.Wood, cost.wood);
+            InventoryManager.Instance.SpendResource(ResourceType.Stone, cost.stone);
             
             // Cập nhật trạng thái công trình
             building.isUnderConstruction = true;
