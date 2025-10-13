@@ -10,7 +10,9 @@ namespace LegendOfBlood
     public enum POIType
     {
         Dungeon,
-        RescueMission
+        RescueMission,
+        // --- NEW: Added Tower of Trials --- 
+        TowerOfTrials 
     }
 
     /// <summary>
@@ -25,10 +27,10 @@ namespace LegendOfBlood
         public POIType type;
         public Vector2 position;
         public int difficultyLevel;
-
-        // --- THÊM MỚI: Danh sách quái vật trong POI ---
-        // Giả sử bạn sẽ có một lớp MonsterData tương tự như HeroData.
-        // Ở đây chúng ta chỉ cần lưu ID của chúng.
         public List<string> monsterIDs;
+
+        // --- NEW: Fields specific to the Tower of Trials ---
+        public int currentFloor;       // The floor the tower is currently at.
+        public long recoveryEndTime;    // Timestamp until which the tower progress is saved.
     }
 }

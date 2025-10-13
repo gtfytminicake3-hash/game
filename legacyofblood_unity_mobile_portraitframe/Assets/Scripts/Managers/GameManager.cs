@@ -106,6 +106,7 @@ namespace LegendOfBlood
         [SerializeField] private ExpeditionManager _expeditionManager;
         [SerializeField] private UIManager _uiManager;
         [SerializeField] private UINotificationManager _uiNotificationManager;
+        [SerializeField] private ArenaSystem _arenaSystem; // Thêm dòng này
 
         // Các lớp logic không nhất thiết phải là MonoBehaviour
         // Chúng ta sẽ tạo các thể hiện của chúng
@@ -122,6 +123,7 @@ namespace LegendOfBlood
         public ExpeditionManager ExpeditionManager => _expeditionManager;
         public UIManager UIManager => _uiManager;
         public UINotificationManager UINotificationManager => _uiNotificationManager;
+        public ArenaSystem ArenaSystem => _arenaSystem; // Thêm dòng này
 
         #endregion
 
@@ -131,6 +133,9 @@ namespace LegendOfBlood
         {
             // Thiết lập trạng thái ban đầu của game sau khi mọi thứ đã được khởi tạo
             UpdateGameState(GameState.Playing); // Hoặc GameState.MainMenu nếu có
+
+            // Gọi kiểm tra vé đấu trường hàng ngày
+            _arenaSystem.CheckDailyTicketRefresh();
         }
 
         /// <summary>
@@ -143,7 +148,7 @@ namespace LegendOfBlood
             global::LocalizationSystem.LoadLocalizedText((global::Language)LanguageManager.CurrentLanguage);
 
             // Xác thực rằng tất cả các tham chiếu đã được gán trong Inspector
-            if (_dataManager == null || _inventoryManager == null || _expeditionManager == null || _uiManager == null || _uiNotificationManager == null)
+            if (_dataManager == null || _inventoryManager == null || _expeditionManager == null || _uiManager == null || _uiNotificationManager == null || _arenaSystem == null) // Thêm _arenaSystem
             {
                 Debug.LogError("GAME MANAGER: Một hoặc nhiều Manager chưa được gán trong Inspector!");
                 // Vô hiệu hóa component để tránh lỗi NullReferenceException
@@ -182,7 +187,7 @@ namespace LegendOfBlood
             MaturationSystem.Tick(deltaTime);
             HospitalSystem.Tick(deltaTime);
             BuildingSystem.Tick(deltaTime);
-            ExpeditionManager.Tick(deltaTime);
+            ExpeditionManager.Tick();
         }
 
         #endregion

@@ -165,23 +165,42 @@ namespace LegendOfBlood
             float cp = finalStats.hp / 10f + finalStats.atk * 2f + finalStats.def * 3f + finalStats.spd * 1.5f;
             return Mathf.FloorToInt(cp);
         }
-        
-        public void GainExp(int amount)
+
+        /// <summary>
+        /// Creates a shallow copy of this HeroData object.
+        /// </summary>
+        public HeroData Clone()
         {
+            return (HeroData)this.MemberwiseClone();
+        }
+        
+        public void AddExperience(int amount)
+        {
+            if (amount <= 0) return;
             experience += amount;
+            
             var expTable = DataManager.Instance.ExpTable;
-            if (expTable == null || !expTable.ContainsKey(level)) return;
-            while (experience >= expTable[level])
+            if (expTable == null) return;
+
+            // Loop in case of multiple level-ups from a large XP gain
+            while (expTable.ContainsKey(level) && experience >= expTable[level])
             {
                 experience -= expTable[level];
                 level++;
+                
+                // Improve stats on level up based on potential
                 int distributionPoints = Mathf.FloorToInt(potential / 2f);
                 baseStats.hp += Mathf.FloorToInt(distributionPoints * 1.5f);
                 baseStats.atk += distributionPoints;
                 baseStats.def += distributionPoints;
+                
+                // Restore HP to full after leveling up
                 currentHp = GetFinalStats().hp;
+                
                 OnHeroLeveledUp?.Invoke(this);
                 Debug.Log($"{heroName} leveled up to {level}!");
+
+                // If the hero reaches a level not in the table, stop.
                 if (!expTable.ContainsKey(level)) break;
             }
         }

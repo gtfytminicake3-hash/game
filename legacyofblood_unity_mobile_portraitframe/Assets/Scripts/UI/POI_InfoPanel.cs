@@ -2,21 +2,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Collections;
 
 namespace LegendOfBlood
 {
-    // Thêm ILocalizable vào đây
     public class POI_InfoPanel : MonoBehaviour, ILocalizable
     {
-        [Header("UI References")]
+        [Header("Standard UI References")]
         [SerializeField] private TextMeshProUGUI poiNameText;
         [SerializeField] private TextMeshProUGUI difficultyText;
         [SerializeField] private TextMeshProUGUI recommendedCpText;
         [SerializeField] private Button exploreButton;
         [SerializeField] private Button closeButton;
 
+        [Header("Tower of Trials UI")]
+        [SerializeField] private GameObject towerInfoContainer; // A parent object for all tower-specific UI
+        [SerializeField] private TextMeshProUGUI currentFloorText;
+        [SerializeField] private TextMeshProUGUI recoveryTimeText;
+
         private POIData _currentPoiData;
-        private Action _onExploreCallback; // Callback để báo cho WorldMapController biết nút "Khám phá" đã được nhấn
+        private Action _onExploreCallback;
+        private Coroutine _countdownCoroutine;
 
         private void Awake()
         {
@@ -24,64 +30,93 @@ namespace LegendOfBlood
             closeButton.onClick.AddListener(ClosePanel);
         }
 
-        /// <summary>
-        /// Hiển thị panel với thông tin của một POI cụ thể.
-        /// </summary>
         public void Show(POIData poiData, Action onExplore)
         {
             _currentPoiData = poiData;
             _onExploreCallback = onExplore;
 
-            UpdateLocalizedText(); // Gọi hàm cập nhật text
-
+            UpdateLocalizedText();
             gameObject.SetActive(true);
+
+            // Handle Tower of Trials specific UI and logic
+            if (poiData.type == POIType.TowerOfTrials)
+            {
+                towerInfoContainer.SetActive(true);
+                // Start a coroutine to update the countdown timer
+                if (_countdownCoroutine != null) StopCoroutine(_countdownCoroutine);
+                _countdownCoroutine = StartCoroutine(CountdownTimer());
+            }
+            else
+            {
+                towerInfoContainer.SetActive(false);
+            }
         }
 
-        /// <summary>
-        /// Cập nhật lại toàn bộ text trên panel.
-        /// </summary>
         public void UpdateLocalizedText()
         {
-            if (_currentPoiData == null) return; // Chưa có dữ liệu thì không làm gì
+            if (_currentPoiData == null) return;
 
-            // --- THAY ĐỔI: TÍNH CP ĐỀ NGHỊ DỰA TRÊN QUÁI VẬT THỰC TẾ ---
-            int recommendedCp = 0;
-            if (_currentPoiData.monsterIDs != null)
+            poiNameText.text = _currentPoiData.poiName;
+
+            // Hide regular info for the tower and show tower-specific info
+            if (_currentPoiData.type == POIType.TowerOfTrials)
             {
-                foreach (var monsterId in _currentPoiData.monsterIDs)
-                {
-                    // Giả sử bạn có MonsterData và hàm GetMonsterByID trong DataManager
-                    // var monster = DataManager.Instance.GetMonsterByID(monsterId);
-                    // if (monster != null) recommendedCp += monster.GetCombatPower();
-                    recommendedCp += 500; // Tạm thời cộng dồn một giá trị giả lập
-                }
-            }
+                difficultyText.gameObject.SetActive(false);
+                recommendedCpText.gameObject.SetActive(false);
 
-            // Cập nhật UI
-            poiNameText.text = _currentPoiData.poiName; // Tên POI đã được dịch khi tạo ra
-            difficultyText.text = string.Format(LocalizationSystem.GetText("poi_difficulty_format"), _currentPoiData.difficultyLevel);
-            recommendedCpText.text = string.Format(LocalizationSystem.GetText("poi_recommended_cp_format"), recommendedCp);
+                currentFloorText.text = string.Format(LocalizationSystem.GetText("tower_current_floor_format"), _currentPoiData.currentFloor);
+            }
+            else
+            {
+                difficultyText.gameObject.SetActive(true);
+                recommendedCpText.gameObject.SetActive(true);
+
+                int recommendedCp = 0;
+                if (_currentPoiData.monsterIDs != null)
+                {
+                    foreach (var monsterId in _currentPoiData.monsterIDs) recommendedCp += 500; // Placeholder
+                }
+                difficultyText.text = string.Format(LocalizationSystem.GetText("poi_difficulty_format"), _currentPoiData.difficultyLevel);
+                recommendedCpText.text = string.Format(LocalizationSystem.GetText("poi_recommended_cp_format"), recommendedCp);
+            }
+        }
+
+        private IEnumerator CountdownTimer()
+        {
+            while (towerInfoContainer.activeSelf && _currentPoiData != null && _currentPoiData.type == POIType.TowerOfTrials)
+            {
+                long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                long remainingTime = _currentPoiData.recoveryEndTime - currentTime;
+
+                if (remainingTime > 0)
+                {
+                    TimeSpan timeSpan = TimeSpan.FromMilliseconds(remainingTime);
+                    recoveryTimeText.text = string.Format("Cooldown: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+                    exploreButton.interactable = false; // Can't explore while on cooldown
+                }
+                else
+                {
+                    recoveryTimeText.text = "<color=green>Ready</color>";
+                    exploreButton.interactable = true;
+                    // Stop the coroutine once it's ready
+                    yield break; 
+                }
+                yield return new WaitForSeconds(1f);
+            }
         }
 
         private void OnExploreClicked()
-    {
-        Debug.Log("Nút 'Explore' đã được nhấn. Đang cố gắng gọi callback...");
-
-        // Gọi callback để thực hiện hành động tiếp theo (mở SquadSelectionPanel)
-        if (_onExploreCallback != null)
         {
-            _onExploreCallback.Invoke();
-            Debug.Log("Callback đã được gọi thành công!");
+            _onExploreCallback?.Invoke();
         }
-        else
-        {
-            Debug.LogError("LỖI: _onExploreCallback đang bị NULL!");
-        }
-        // ClosePanel(); // Panel này sẽ được đóng bởi WorldMapController
-    }
 
         private void ClosePanel()
         {
+            if (_countdownCoroutine != null)
+            {
+                StopCoroutine(_countdownCoroutine);
+                _countdownCoroutine = null;
+            }
             gameObject.SetActive(false);
         }
     }

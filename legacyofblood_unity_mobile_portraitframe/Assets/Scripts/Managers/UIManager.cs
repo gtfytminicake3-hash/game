@@ -18,7 +18,8 @@ namespace LegendOfBlood
         WorldMap,
         SquadSelection,
         HeroPicker,
-        Inventory
+        Inventory,
+        ArenaShop
     }
 
     /// <summary>

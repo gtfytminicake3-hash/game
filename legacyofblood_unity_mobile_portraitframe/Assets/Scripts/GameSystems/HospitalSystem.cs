@@ -20,6 +20,23 @@ namespace LegendOfBlood
         #region Public API (Methods called by other systems like Combat or UI)
 
         /// <summary>
+        /// Admits a hero to the hospital system after being a casualty in an expedition.
+        /// This will inflict a severe injury.
+        /// </summary>
+        public void AdmitHero(string heroId)
+        {
+            var hero = DataManager.Instance.GetHeroByID(heroId);
+            if (hero != null)
+            {
+                AdmitForSevereInjury(hero);
+            }
+            else
+            {
+                Debug.LogWarning($"Attempted to admit a hero with ID {heroId} who could not be found.");
+            }
+        }
+
+        /// <summary>
         /// Gây ra trạng thái bị thương nhẹ cho một hero.
         /// </summary>
         public void InflictLightInjury(HeroData hero)

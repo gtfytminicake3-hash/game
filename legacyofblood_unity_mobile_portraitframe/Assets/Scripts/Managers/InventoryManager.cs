@@ -81,6 +81,14 @@ namespace LegendOfBlood
         #region Resource Management
 
         /// <summary>
+        /// A convenience method to add gold.
+        /// </summary>
+        public void AddGold(int amount)
+        {
+            AddResource(ResourceType.Gold, amount);
+        }
+
+        /// <summary>
         /// Lấy số lượng hiện tại của một loại tài nguyên.
         /// </summary>
         public int GetResourceAmount(ResourceType type)

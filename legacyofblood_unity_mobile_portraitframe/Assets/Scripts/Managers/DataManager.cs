@@ -228,6 +228,15 @@ namespace LegendOfBlood
         }
 
         /// <summary>
+        /// Lấy một POI từ danh sách WorldPois bằng ID.
+        /// </summary>
+        public POIData GetPOIByID(string poiId)
+        {
+            if (string.IsNullOrEmpty(poiId) || Player?.WorldPois == null) return null;
+            return Player.WorldPois.FirstOrDefault(p => p.poiId == poiId);
+        }
+
+        /// <summary>
         /// Lấy dữ liệu của một quái vật bằng ID.
         /// </summary>
         public HeroData GetMonsterByID(string id)

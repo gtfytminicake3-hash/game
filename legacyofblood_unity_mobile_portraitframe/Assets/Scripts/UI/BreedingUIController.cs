@@ -201,6 +201,19 @@ namespace LegendOfBlood
                 return;
             }
 
+            // --- KIỂM TRA LỖI ---
+            if (GameManager.Instance == null)
+            {
+                Debug.LogError("LỖI NGHIÊM TRỌNG: GameManager.Instance đang bị null! Hãy kiểm tra xem có GameObject GameManager trong scene không.");
+                return;
+            }
+            if (GameManager.Instance.BreedingSystem == null)
+            {
+                Debug.LogError("LỖI NGHIÊM TRỌNG: GameManager.Instance.BreedingSystem đang bị null! Hãy kiểm tra xem component BreedingSystem đã được gán/thêm vào GameManager chưa.");
+                return;
+            }
+            // --- KẾT THÚC KIỂM TRA ---
+
             // Gọi hệ thống logic để thực hiện lai tạo
             BreedingSystem breedingSystem = GameManager.Instance.BreedingSystem;
             List<HeroData> offspringList = breedingSystem.Breed(_selectedFather, _selectedMother);

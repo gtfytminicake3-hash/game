@@ -1,33 +1,54 @@
 namespace LegendOfBlood
 {
-    // Bỏ 'using LegendOfBlood.Combat;' nếu không có lớp nào khác cần nó trực tiếp
     using System;
     using System.Collections.Generic;
     using UnityEngine;
 
-    // Các enum và lớp dữ liệu nên được tập trung ở đây để dễ quản lý.
-    
-    public enum ExpeditionStatus
+    // =====================================================================================
+    // NEW DATA STRUCTURES FOR "FIRE-AND-FORGET" EXPEDITION SYSTEM
+    // =====================================================================================
+
+    [Serializable]
+    public class LootData
     {
-        Traveling,
-        Exploring,
-        Returning,
-        Finished
+        public Dictionary<string, int> items;
+        // Can be extended with gold, wood, etc. if needed
+        public int gold;
+
+        public LootData()
+        {
+            items = new Dictionary<string, int>();
+            gold = 0;
+        }
     }
 
     [Serializable]
-    public class Expedition
+    public class ExpeditionReport
     {
-        public string id;
-        public List<string> squadHeroIDs;
-        public POIData destination;
-        public ExpeditionStatus status;
-        public long startTime;
-        public long endTime;
-        
-        // --- SỬA LỖI: Chỉ định namespace đầy đủ để loại bỏ mọi sự nhầm lẫn ---
-        public Combat.CombatResult combatResult; 
+        public string poiId;
+        public string poiName;
+        public Combat.CombatResult combatResult;
+        public LootData loot;
+        public int experienceGained;
+        // Add any other data needed for the report
     }
+
+    [Serializable]
+    public class ActiveExpedition
+    {
+        public string expeditionId;
+        public List<string> heroIds;
+        public string poiId;
+        public long completionTimestamp;
+
+        // The most important field: the pre-calculated result
+        public ExpeditionReport preCalculatedReport;
+    }
+
+
+    // =====================================================================================
+    // EXISTING DATA STRUCTURES
+    // =====================================================================================
 
     [Serializable]
     public class PlayerResources
@@ -43,9 +64,19 @@ namespace LegendOfBlood
         public string playerName;
         public PlayerResources resources;
         public Dictionary<string, int> items;
+        public int arenaPoints;
+        public int arenaTickets;
+        public long lastTicketRefreshTimestamp;
+        public int arenaCoins;
         
         public List<POIData> WorldPois;
-        public List<Expedition> ActiveExpeditions;
+        
+        // --- MODIFIED: Using the new ActiveExpedition structure ---
+        public List<ActiveExpedition> ActiveExpeditions;
+
+        // --- NEW: For the mailbox system ---
+        public List<ExpeditionReport> UnclaimedReports;
+
         public Dictionary<BuildingType, int> BuildingLevels;
 
         [SerializeField] private List<string> _serializedItemIDs = new List<string>();
@@ -59,8 +90,13 @@ namespace LegendOfBlood
             resources = new PlayerResources { gold = 500, wood = 100, stone = 100 };
             items = new Dictionary<string, int>();
             WorldPois = new List<POIData>();
-            ActiveExpeditions = new List<Expedition>();
+            ActiveExpeditions = new List<ActiveExpedition>();
+            UnclaimedReports = new List<ExpeditionReport>(); // Initialize the new list
             BuildingLevels = new Dictionary<BuildingType, int>();
+            arenaPoints = 0;
+            arenaTickets = 5;
+            lastTicketRefreshTimestamp = 0;
+            arenaCoins = 0;
         }
 
         public void OnBeforeSerialize()
@@ -92,7 +128,8 @@ namespace LegendOfBlood
             BuildingLevels = new Dictionary<BuildingType, int>();
             
             WorldPois ??= new List<POIData>();
-            ActiveExpeditions ??= new List<Expedition>();
+            ActiveExpeditions ??= new List<ActiveExpedition>();
+            UnclaimedReports ??= new List<ExpeditionReport>(); // Ensure list is not null after deserialization
 
             if (_serializedItemIDs.Count != _serializedItemCounts.Count)
             {
