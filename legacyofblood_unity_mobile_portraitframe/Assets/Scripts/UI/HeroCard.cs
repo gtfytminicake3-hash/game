@@ -20,6 +20,11 @@ namespace LegendOfBlood
         [SerializeField] private GameObject busyIndicator; // Một icon/overlay để báo hero đang bận
         [SerializeField] private Button cardButton;
 
+        [Header("Asset References")]
+        [Tooltip("Sprite cho icon giới tính Nam")]
+        [SerializeField] private Sprite maleIcon;
+        [Tooltip("Sprite cho icon giới tính Nữ")]
+        [SerializeField] private Sprite femaleIcon;
         // Lưu trữ dữ liệu của hero mà thẻ bài này đang hiển thị
         private HeroData _heroData;
 
@@ -66,8 +71,11 @@ namespace LegendOfBlood
             combatPowerText.text = string.Format(global::LocalizationSystem.GetText("cp_format_short"), _heroData.GetCombatPower());
 
             // Cập nhật Icons (giả sử bạn có Sprite cho chúng)
-            // genderIcon.sprite = GetGenderSprite(_heroData.gender);
+            if (genderIcon != null) genderIcon.sprite = GetGenderSprite(_heroData.gender);
             // professionIcon.sprite = GetProfessionSprite(_heroData.profession);
+            
+            // Cập nhật Avatar
+            if (avatarImage != null) avatarImage.sprite = _heroData.GetAvatarSprite();
 
             // Hiển thị chỉ báo bận
             // Dựa trên hàm IsBusy() trong HeroData.cs
@@ -96,6 +104,19 @@ namespace LegendOfBlood
     //    và nhận dữ liệu này để tự cập nhật.
     EventManager.TriggerEvent(GameEvents.OnHeroCardClicked, _heroData);
 }
+
+        /// <summary>
+        /// Lấy Sprite tương ứng với giới tính.
+        /// </summary>
+        private Sprite GetGenderSprite(Gender gender)
+        {
+            switch (gender)
+            {
+                case Gender.Male: return maleIcon;
+                case Gender.Female: return femaleIcon;
+                default: return null;
+            }
+        }
         // --- UNITY LIFECYCLE ---
 
         private void OnValidate()

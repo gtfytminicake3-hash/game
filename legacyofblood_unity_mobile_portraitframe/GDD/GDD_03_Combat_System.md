@@ -88,3 +88,8 @@ Trận đấu là một vòng lặp theo lượt, tối đa 50 lượt để tr�
 ## 6. Hậu quả sau Trận đấu
 
 `CombatSystem` không trực tiếp gây ra trạng thái bị thương. Nó chỉ cập nhật `currentHp` trong `HeroData` và trả về `CombatResult`. Hệ thống gọi `CombatSystem` (ví dụ: `ExpeditionManager`) sẽ có trách nhiệm đọc `CombatResult` và gọi `HospitalSystem` để xử lý các hero bị thương hoặc hy sinh.
+
+
+
+Trait tăng cấp tối đa
+chọn nhanh mạnh nhất hoặc yếu nhất để đi thám hiểm, đánh nhau ( nút + logic)

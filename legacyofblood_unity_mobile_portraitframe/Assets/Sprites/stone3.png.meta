@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: bbb5875554362064e94a60ba0d705617
+guid: 4bcef27e3db36a14da9430d6fd8bd55e
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8715109530920454850
-    second: icon_gender_female_0
+      213: -2304528872710641871
+    second: stone3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: icon_gender_female_0
+      name: stone3_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 100
-        height: 102
+        width: 200
+        height: 171
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e357dd66e06bd0780800000000000000
-      internalID: -8715109530920454850
+      spriteID: 137637f333ba400e0800000000000000
+      internalID: -2304528872710641871
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      icon_gender_female_0: -8715109530920454850
+      stone3_0: -2304528872710641871
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

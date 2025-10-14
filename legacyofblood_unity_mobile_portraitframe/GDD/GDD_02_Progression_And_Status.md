@@ -73,3 +73,16 @@ Tài liệu này mô tả các hệ thống quản lý vòng đời, trạng th�
 *   `BuildingLevels`: Cấp độ của tất cả các công trình.
 *   `ActiveExpeditions`: Các đoàn thám hiểm đang hoạt động.
 *   `WorldPois`: Trạng thái các địa điểm trên bản đồ thế giới.
+
+
+nâng cấp nhà cần tính toán làm sao để sau 1 tiếng chơi liên tục nhà lên được cấp 5 10 tiếng liên tục thì là cấp 13 1 tuần liên tục thì full cấp
+
+những vật phầm có thể có trong game/ mỗi 1 hero có giới hạn sinh sản là 10 lần
+tăng giới hạn sinh sản +2 tối đa 20 /nvaatj
+tăng tốc nói chung
+tăng tỉ lệ đột biến ss ( tăng tỉ lệ ra trait tốt hơn )
+tăng tốc ss , trưởng thành trong 30 p
+thẻ kinh nghiệm rơi khi đánh quái, mua trong shop
+
+Tháp thử thách cho từng nghề , để thu tài nguyên của từng nghề. để healer là 1 nghề 
+khiên thịt, khiên ảo , berseker. cung băng, hỏa, cây. băng, hỏa ,heal

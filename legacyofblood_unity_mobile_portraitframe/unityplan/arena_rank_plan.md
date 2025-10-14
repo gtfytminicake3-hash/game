@@ -145,3 +145,4 @@ Vé Tái tạo Trait	50,000	1 lần/mùa
 Đồng hồ Cát (1 giờ)	200	5 lần/ngày
 Thuốc Biến Dị	500	Không giới hạn
 Hero "Đấu sĩ Vô địch"	25,000	1 lần duy nhất
+đội hình do bot tạo ra theo rank và dựa trên base CP

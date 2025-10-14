@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.50425196, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1059,6 +1059,8 @@ MonoBehaviour:
   avatarImage: {fileID: 787245446025866282}
   busyIndicator: {fileID: 5811103611929009209}
   cardButton: {fileID: 8130985545954922392}
+  maleIcon: {fileID: 21300000, guid: 901d1f3495179e44383898e08ce2a7fb, type: 3}
+  femaleIcon: {fileID: 21300000, guid: bbb5875554362064e94a60ba0d705617, type: 3}
 --- !u!114 &8130985545954922392
 MonoBehaviour:
   m_ObjectHideFlags: 0

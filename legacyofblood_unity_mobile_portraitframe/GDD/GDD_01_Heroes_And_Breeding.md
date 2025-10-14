@@ -14,7 +14,7 @@ Mỗi anh hùng được định nghĩa bởi lớp `HeroData`. Dữ liệu đư
 | `atk` | `float` | Sức tấn công. |
 | `def` | `float` | Sức phòng thủ. |
 | `spd` | `float` | Tốc độ. |
-| `critChance` | `float` | Tỉ lệ chí mạng (cơ bản là `0.05f` tức 5%). |
+| `critChance` | `float` | Tỉ lệ chí mạng (cơ bản là `0.00f` tức 0%). |
 | `critDamage` | `float` | Sát thương chí mạng (cơ bản là `1.5f` tức 150%). |
 
 ### 1.2. Lớp `HeroData` (Dữ liệu chính)
@@ -130,3 +130,16 @@ Hệ thống này hoàn toàn mới và chưa có trong GDD cũ.
     *   Phần thưởng có thể là một `Skill` (ID bắt đầu bằng `SK_`) hoặc `Trait` (ID bắt đầu bằng `TR_`).
     *   ID của phần thưởng sẽ được thêm vào danh sách `skillIDs` hoặc `traitIDs` của hero.
     *   **Lưu ý:** Logic lấy phần thưởng hiện tại đang là giả lập (`GetPlaceholderRewardId`), cần được thay thế bằng cách đọc từ `GameConfig`.
+ Thêm hệ thông tuyển người bên ngoài bằng cách gacha có garntie rank điểm tiềm năng random trait. 
+ điểm tiềm năng dùng để gaachsa trong sinh đẻ, mỗi 20 cấp nhận trait mới trừ cấp 60 và 100 cho phép nâng trait 
+ điểm tiềm năng và trait có 5 rank green, blue, tím, vàng, đỏ 60% 30 6,5 3 0,5
+ làm bảng 20 trait
+ nhân vật sinh ra chắc chắn có 3 trait, và nhận thêm 3 trait trong quá trình lên cấp
+ nếu nhân vật đã có 4 trailt đầu là A thì chắc chắn trait tiếp theo nhận được là B trở xuống
+
+
+ nhà nên để 20 cấp
+ nhà sinh sản nâng cấp để tăng số lượng có thể sinh sản cùng lúc
+nhà chính tăng cấp cuối cùng 200 dân số lv1 là 100 vượt quá phải chọn người để đuổi
+
+nhiệm vụ của game . ban đầu giới thiệu cac nhà ban đầu , khóa màn hình, arena sẽ mở sau khi chơi đc 30p và nhà chính lên cấp 5 . sau đó nhiệm vụ sẽ là nvuj ngày , tuần , thành tựu ( thưởng ít. nhưng nhận nhiều lần. nhận nhỏ giọt)
