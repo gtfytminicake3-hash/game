@@ -1,7 +1,9 @@
+// --- START OF FILE BossData.cs (FIXED) ---
+
+using UnityEngine;
+
 namespace LegendOfBlood
 {
-    using UnityEngine;
-
     /// <summary>
     /// Lớp con chứa thông tin về cơ chế đặc biệt của Boss.
     /// </summary>
@@ -54,7 +56,18 @@ namespace LegendOfBlood
         public GameObject modelPrefab;
 
         [Header("Combat Stats")]
-        [Tooltip("Các chỉ số cơ bản của Boss.")]
+        [Tooltip("Cấp độ của Boss.")]
+        public int level;
+        [Tooltip("Máu cơ bản.")]
+        public int baseHp;
+        [Tooltip("Tấn công cơ bản.")]
+        public int baseAtk;
+        [Tooltip("Phòng thủ cơ bản.")]
+        public int baseDef;
+        [Tooltip("Tốc độ cơ bản.")]
+        public int baseSpd;
+
+        [Tooltip("Các chỉ số cơ bản của Boss (có thể dùng cho các hệ thống khác).")]
         public HeroStats stats;
 
         [Tooltip("Thông tin về các kỹ năng của Boss.")]
@@ -79,3 +92,4 @@ namespace LegendOfBlood
         }
     }
 }
+// --- END OF FILE BossData.cs (FIXED) ---

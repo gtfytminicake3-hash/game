@@ -3,86 +3,72 @@ namespace LegendOfBlood
     using System;
     using System.Linq;
     using UnityEngine;
+    using LegendOfBlood.GameConfigs;
 
-    /// <summary>
-    /// Quản lý trạng thái, thời gian chờ và logic nâng cấp của các công trình.
-    /// </summary>
     public class BuildingSystem
     {
-        // Events để thông báo cho các hệ thống khác (chủ yếu là UI)
         public static event Action<Building> OnBuildingUpgradeStarted;
         public static event Action<Building> OnBuildingUpgradeCompleted;
 
-        /// <summary>
-        /// Bắt đầu quá trình nâng cấp cho một công trình.
-        /// Được gọi từ UI khi người chơi nhấn nút "Nâng cấp".
-        /// </summary>
-        /// <param name="buildingId">ID của công trình cần nâng cấp</param>
-        /// <returns>True nếu việc nâng cấp bắt đầu thành công, False nếu thất bại.</returns>
         public bool StartUpgrade(string buildingId)
         {
             var building = DataManager.Instance.AllBuildings.FirstOrDefault(b => b.id == buildingId);
 
             if (building == null)
             {
-                Debug.LogError($"Không tìm thấy công trình với ID: {buildingId}");
+                Debug.LogError($"Building with ID: {buildingId} not found for the player.");
                 return false;
             }
 
             if (building.isUnderConstruction)
             {
-                GameManager.Instance.UINotificationManager.ShowNotification("Công trình đang được xây dựng!");
+                GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("notification_building_already_upgrading"));
                 return false;
             }
 
             int nextLevel = building.level + 1;
 
-            // Lấy cấu hình từ DataManager
-            if (!DataManager.Instance.BuildingConfigs.TryGetValue(building.type, out var config))
+            // REFACTOR: Use BuildingUpgradeData ScriptableObject
+            BuildingUpgradeData upgradeConfig = DataManager.Instance.GetBuildingUpgradeData(building.id);
+            if (upgradeConfig == null)
             {
-                Debug.LogError($"Không tìm thấy cấu hình nâng cấp cho loại công trình: {building.type}");
+                Debug.LogError($"No upgrade configuration found for building ID: {building.id}");
                 return false;
             }
 
-            // Tìm dữ liệu nâng cấp cho cấp độ tiếp theo
-            var upgradeData = config.upgradeTiers.FirstOrDefault(t => t.level == nextLevel);
-
-            if (upgradeData == null)
+            var levelData = upgradeConfig.GetLevelData(nextLevel);
+            if (levelData == null)
             {
-                Debug.LogWarning($"Đã đạt cấp độ tối đa cho {building.type} hoặc không tìm thấy dữ liệu nâng cấp cho cấp {nextLevel}.");
-                GameManager.Instance.UINotificationManager.ShowNotification("Công trình đã đạt cấp tối đa!");
+                GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("notification_building_max_level"));
                 return false;
             }
 
-            // Sử dụng dữ liệu từ file config
-            var cost = new PlayerResources { gold = upgradeData.goldCost, wood = upgradeData.woodCost, stone = upgradeData.stoneCost };
-            long durationMs = (long)(upgradeData.constructionTimeInSeconds * 1000);
-
-            // Kiểm tra và chi tiêu tài nguyên
-            if (!CanAfford(cost))
+            // REFACTOR: Check and spend resources based on the new data structure
+            if (!CanAfford(levelData.costs))
             {
-                GameManager.Instance.UINotificationManager.ShowNotification("Không đủ tài nguyên!");
+                GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("notification_not_enough_resources"));
                 return false;
             }
             
-            // Chi tiêu tài nguyên
-            InventoryManager.Instance.SpendResource(ResourceType.Gold, cost.gold);
-            InventoryManager.Instance.SpendResource(ResourceType.Wood, cost.wood);
-            InventoryManager.Instance.SpendResource(ResourceType.Stone, cost.stone);
+            foreach (var cost in levelData.costs)
+            {
+                // SỬA LỖI: Chuyển đổi string ID thành enum ResourceType một cách an toàn
+                if (Enum.TryParse<ResourceType>(cost.resourceId, true, out var resourceType))
+                {
+                    InventoryManager.Instance.SpendResource(resourceType, cost.amount);
+                }
+            }
             
-            // Cập nhật trạng thái công trình
+            long durationMs = levelData.duration * 1000;
             building.isUnderConstruction = true;
             building.constructionEndTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + durationMs;
 
-            Debug.Log($"Bắt đầu nâng cấp {building.type} lên cấp {nextLevel}. Sẽ hoàn thành sau {durationMs / 1000} giây.");
+            Debug.Log($"Starting upgrade for {building.id} to level {nextLevel}. Completion in {levelData.duration} seconds.");
             
             OnBuildingUpgradeStarted?.Invoke(building);
             return true;
         }
 
-        /// <summary>
-        /// Hàm tick được gọi bởi GameManager để kiểm tra các công trình đã hoàn thành.
-        /// </summary>
         public void Tick(float deltaTime)
         {
             var buildings = DataManager.Instance.AllBuildings;
@@ -90,7 +76,8 @@ namespace LegendOfBlood
 
             long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
-            foreach (var building in buildings)
+            // Use a copy to avoid modification issues during iteration
+            foreach (var building in buildings.ToList())
             {
                 if (building.isUnderConstruction && currentTime >= building.constructionEndTime)
                 {
@@ -99,28 +86,30 @@ namespace LegendOfBlood
             }
         }
 
-        /// <summary>
-        /// Hoàn thành việc xây dựng cho một công trình.
-        /// </summary>
         private void CompleteConstruction(Building building)
         {
             building.isUnderConstruction = false;
             building.level++;
             
-            Debug.Log($"<color=green>Hoàn thành!</color> Công trình {building.type} đã được nâng cấp lên cấp {building.level}.");
+            Debug.Log($"<color=green>Upgrade Complete!</color> {building.id} has been upgraded to level {building.level}.");
             OnBuildingUpgradeCompleted?.Invoke(building);
         }
 
-        /// <summary>
-        /// Hàm tiện ích để kiểm tra xem người chơi có đủ tài nguyên hay không.
-        /// </summary>
-        private bool CanAfford(PlayerResources cost)
+        // REFACTOR: Updated CanAfford to use the new UpgradeCost list
+        private bool CanAfford(System.Collections.Generic.List<UpgradeCost> costs)
         {
-            bool hasEnough = true;
-            if (InventoryManager.Instance.GetResourceAmount(ResourceType.Gold) < cost.gold) hasEnough = false;
-            if (InventoryManager.Instance.GetResourceAmount(ResourceType.Wood) < cost.wood) hasEnough = false;
-            if (InventoryManager.Instance.GetResourceAmount(ResourceType.Stone) < cost.stone) hasEnough = false;
-            return hasEnough;
+            foreach (var cost in costs)
+            {
+                // SỬA LỖI: Chuyển đổi string ID thành enum ResourceType một cách an toàn
+                if (Enum.TryParse<ResourceType>(cost.resourceId, true, out var resourceType))
+                {
+                    if (InventoryManager.Instance.GetResourceAmount(resourceType) < cost.amount)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }

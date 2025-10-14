@@ -1,8 +1,10 @@
+// --- START OF FILE Trait.cs (FIXED) ---
+
+using System.Collections.Generic;
+using UnityEngine;
+
 namespace LegendOfBlood
 {
-    using System.Collections.Generic;
-    using UnityEngine;
-
     /// <summary>
     /// Các loại hiệu ứng mà một Trait có thể gây ra.
     /// </summary>
@@ -33,7 +35,7 @@ namespace LegendOfBlood
         public int def;
         [Tooltip("SPD: Cộng thẳng giá trị.")]
         public int spd;
-        
+
         [Header("For SPECIAL & AURA")]
         [Tooltip("Mô tả hiệu ứng để game designer dễ nhận biết.")]
         [TextArea(2, 4)]
@@ -47,16 +49,23 @@ namespace LegendOfBlood
     [CreateAssetMenu(fileName = "NewTrait", menuName = "LegendOfBlood/Trait", order = 1)]
     public class Trait : ScriptableObject
     {
+        public enum RarityRank { D, C, B, A, S }
+
         [Header("Basic Information")]
         [Tooltip("ID duy nhất của Trait, ví dụ: 'S_04', 'SS_07'. Rất quan trọng, không được trùng.")]
         public string id;
 
         [Tooltip("Tên của Trait sẽ hiển thị trong game.")]
         public string traitName;
-        
+
         [Tooltip("Mô tả chi tiết về Trait, sẽ hiển thị cho người chơi.")]
         [TextArea(3, 5)]
         public string description;
+
+        [Header("Trait Evolution")]
+        public RarityRank rank;
+        public string familyId; // Ví dụ: "ATK_UP", "HP_ON_HIT"
+        public string nextUpgradeTraitID; // ID của Trait kế tiếp trong cùng family
 
         [Header("Trait Effects")]
         [Tooltip("Danh sách tất cả các hiệu ứng mà Trait này gây ra.")]
@@ -89,3 +98,4 @@ namespace LegendOfBlood
         }
     }
 }
+// --- END OF FILE Trait.cs (FIXED) ---

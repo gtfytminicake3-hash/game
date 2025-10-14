@@ -1,0 +1,423 @@
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\danh_sach.txt
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\DefaultVolumeProfile.asset
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\DefaultVolumeProfile.asset.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\InputSystem_Actions.inputactions
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\InputSystem_Actions.inputactions.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\New Actions.inputactions
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\New Actions.inputactions.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Resources
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Resources.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Settings
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Settings.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\test
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\test.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\UniversalRenderPipelineGlobalSettings.asset
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\UniversalRenderPipelineGlobalSettings.asset.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\_Recovery
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\_Recovery.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData\ExperienceTable.asset
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData\ExperienceTable.asset.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData\Skill
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData\Skill.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData\Sprites
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData\Sprites.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData\Skill\SK_Warrior_ChemDungManh.asset
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData\Skill\SK_Warrior_ChemDungManh.asset.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData\Sprites\Avatars
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData\Sprites\Avatars.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData\Sprites\Avatars\Female
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData\Sprites\Avatars\Female.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData\Sprites\Avatars\Male
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\GameData\Sprites\Avatars\Male.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Demigiant.DOTween.asmdef
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Demigiant.DOTween.asmdef.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\DOTween.dll
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\DOTween.dll.mdb
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\DOTween.dll.mdb.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\DOTween.dll.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\DOTween.XML
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\DOTween.XML.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\readme.txt
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\readme.txt.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\DOTweenEditor.dll
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\DOTweenEditor.dll.mdb
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\DOTweenEditor.dll.mdb.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\DOTweenEditor.dll.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\DOTweenEditor.XML
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\DOTweenEditor.XML.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\Imgs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\Imgs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\Imgs\DOTweenIcon.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\Imgs\DOTweenIcon.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\Imgs\DOTweenMiniIcon.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\Imgs\DOTweenMiniIcon.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\Imgs\Footer.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\Imgs\Footer.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\Imgs\Footer_dark.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\Imgs\Footer_dark.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\Imgs\Header.jpg
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Editor\Imgs\Header.jpg.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleAudio.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleAudio.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleEPOOutline.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleEPOOutline.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModulePhysics.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModulePhysics.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModulePhysics2D.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModulePhysics2D.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleSprite.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleSprite.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleUI.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleUI.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleUtils.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Plugins\Demigiant\DOTween\Modules\DOTweenModuleUtils.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Resources\BillingMode.json
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Resources\BillingMode.json.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Resources\DOTweenSettings.asset
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Resources\DOTweenSettings.asset.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Resources\Localization
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Resources\Localization.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Resources\Localization\en.txt
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Resources\Localization\en.txt.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Resources\Localization\vi.txt
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Resources\Localization\vi.txt.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\Boot_Scene.unity
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\Boot_Scene.unity.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\CORE_SYSTEMS.prefab
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\CORE_SYSTEMS.prefab.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\DungeonPoi_Prefab.prefab
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\DungeonPoi_Prefab.prefab.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\HeroCard_Prefab.prefab
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\HeroCard_Prefab.prefab.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\InfoItem_Prefab.prefab
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\InfoItem_Prefab.prefab.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\InfoItem_Prefeb.prefab
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\InfoItem_Prefeb.prefab.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\InjuredHeroCard_prefab.prefab
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\InjuredHeroCard_prefab.prefab.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\MainScene.unity
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\MainScene.unity.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\Notification_FadeIn_Out.anim
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\Notification_FadeIn_Out.anim.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\Notification_Prefab.prefab
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\Notification_Prefab.prefab.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\rescuepoi_prefab.prefab
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\rescuepoi_prefab.prefab.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\SampleScene.unity
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\SampleScene.unity.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\SquadSlot_Prefab.prefab
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\SquadSlot_Prefab.prefab.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\TravelCart_Prefab.prefab
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\TravelCart_Prefab.prefab.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\UIResourceBar_Prefab.prefab
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\UIResourceBar_Prefab.prefab.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\WorldMap_Scene.unity
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scenes\WorldMap_Scene.unity.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameConfig.asset
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameConfig.asset.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\LegendOfBlood.Gameplay.asmdef
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\LegendOfBlood.Gameplay.asmdef.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\ArenaRankData.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\ArenaRankData.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\BossData.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\BossData.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\Building.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\Building.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfig.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfig.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\HeroData.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\HeroData.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\ItemData.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\ItemData.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\PlayerData.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\PlayerData.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\POIData.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\POIData.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\Skill.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\Skill.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\Trait.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\Trait.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs\BuildingConfig.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs\BuildingConfig.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs\BuildingUpgradeData.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs\BuildingUpgradeData.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs\EvolutionRewardData.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs\EvolutionRewardData.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs\EvolutionTable.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs\EvolutionTable.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs\POIMonsterConfig.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs\POIMonsterConfig.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs\POIMonsterGroup.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs\POIMonsterGroup.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs\QuestData.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\GameConfigs\QuestData.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\BreedingSystem.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\BreedingSystem.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\BuildingSystem.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\BuildingSystem.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\CombatSystem.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\CombatSystem.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\EvolutionSystem.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\EvolutionSystem.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\ExpeditionManager.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\ExpeditionManager.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\HospitalSystem.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\HospitalSystem.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\ILocalizable.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\ILocalizable.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\LanguageManager.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\LanguageManager.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\LocalizationSystem.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\LocalizationSystem.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\MaturationSystem.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\MaturationSystem.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\RecruitmentSystem.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\RecruitmentSystem.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\ArenaSystem.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\ArenaSystem.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\AvatarManager.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\AvatarManager.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\CoreSystems.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\CoreSystems.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\DataManager.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\DataManager.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\EventManager.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\EventManager.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\GameManager.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\GameManager.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\InventoryManager.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\InventoryManager.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\Language.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\Language.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\QuestManager.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\QuestManager.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\TraitDatabase.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\TraitDatabase.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\UIManager.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\UIManager.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\UINotificationManager.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\UINotificationManager.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\ArenaPanel.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\ArenaPanel.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\ArenaShopPanel.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\ArenaShopPanel.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\Bootloader.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\Bootloader.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\BottomNavigationController.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\BottomNavigationController.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\BreedingUIController.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\BreedingUIController.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\ClickableBuilding.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\ClickableBuilding.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\ExpeditionReportItem.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\ExpeditionReportItem.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\HeroCard.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\HeroCard.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\HeroInfoPanel.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\HeroInfoPanel.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\HeroPickerCard.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\HeroPickerCard.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\HeroPickerPanel.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\HeroPickerPanel.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\HospitalPanel.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\HospitalPanel.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\InjuredHeroCard.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\InjuredHeroCard.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\MailboxPanel.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\MailboxPanel.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\POI_InfoPanel.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\POI_InfoPanel.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\PopulationManagerPanel.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\PopulationManagerPanel.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\QuestPanel.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\QuestPanel.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\RecruitmentPanel.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\RecruitmentPanel.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\SquadSelectionPanel.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\SquadSelectionPanel.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\SquadSlotCard.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\SquadSlotCard.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\StatAllocationPanel.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\StatAllocationPanel.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\TraitUpgradePanel.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\TraitUpgradePanel.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\UIMainController.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\UIMainController.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\UIPanel.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\UIPanel.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\UIResourceBar.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\UIResourceBar.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\WorldMapController.cs
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\UI\WorldMapController.cs.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Settings\Lit2DSceneTemplate.scenetemplate
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Settings\Lit2DSceneTemplate.scenetemplate.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Settings\Renderer2D.asset
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Settings\Renderer2D.asset.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Settings\Scenes
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Settings\Scenes.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Settings\UniversalRP.asset
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Settings\UniversalRP.asset.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Settings\Scenes\URP2DSceneTemplate.unity
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Settings\Scenes\URP2DSceneTemplate.unity.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\arenalv1.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\arenalv1.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\baracklv1.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\baracklv1.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\Close_Button_X.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\Close_Button_X.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\confirrm.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\confirrm.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\confirrm_press.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\confirrm_press.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\dungeon.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\dungeon.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\Generated Image October 13, 2025 - 3_09PM.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\Generated Image October 13, 2025 - 3_09PM.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\hospitallv1.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\hospitallv1.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\icon_gender_female.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\icon_gender_female.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\icon_gender_male.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\icon_gender_male.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\innlv1.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\innlv1.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\map.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\map.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\panel_doc.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\panel_doc.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\panel_ngang.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\panel_ngang.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\rescue.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\rescue.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\stone3.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\stone3.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\tienvang2.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\tienvang2.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\wood.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Sprites\wood.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\test\LegendOfBlood.Tests.asmdef
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\test\LegendOfBlood.Tests.asmdef.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Fonts
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Fonts.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Sprites
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Sprites.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Fonts\LiberationSans.ttf
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Fonts\LiberationSans.ttf.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Fonts & Materials
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Fonts & Materials.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Sprite Assets
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Sprite Assets.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Style Sheets
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Style Sheets.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\TMP Settings.asset
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\TMP Settings.asset.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Drop Shadow.mat
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Drop Shadow.mat.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Fallback.asset
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Fallback.asset.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Outline.mat
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF - Outline.mat.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF.asset
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Fonts & Materials\LiberationSans SDF.asset.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Sprite Assets\EmojiOne.asset
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Sprite Assets\EmojiOne.asset.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Style Sheets\Default Style Sheet.asset
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Resources\Style Sheets\Default Style Sheet.asset.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\SDFFunctions.hlsl.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMPro.cginc
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMPro.cginc.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMPro_Mobile.cginc.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Custom-Atlas.shader.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_Bitmap-Mobile.shader.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF Overlay.shader.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF SSD.shader.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-HDRP LIT.shadergraph
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-HDRP LIT.shadergraph.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-HDRP UNLIT.shadergraph
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-HDRP UNLIT.shadergraph.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile-2-Pass.shader
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile-2-Pass.shader.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile.shader.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-Surface.shader.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-URP Lit.shadergraph
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-URP Lit.shadergraph.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-URP Unlit.shadergraph
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF-URP Unlit.shadergraph.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF.shader
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_SDF.shader.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_Sprite.shader
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Shaders\TMP_Sprite.shader.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Sprites\EmojiOne.json
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Sprites\EmojiOne.json.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Sprites\EmojiOne.png
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\TextMesh Pro\Sprites\EmojiOne.png.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\_Recovery\0 (1).unity
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\_Recovery\0 (1).unity.meta
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\_Recovery\0.unity
+E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\_Recovery\0.unity.meta

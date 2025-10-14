@@ -1,6 +1,6 @@
-# GDD - Hệ thống Chiến đấu (Cập nhật theo Code)
+# GDD - Hệ thống Chiến đấu (Đã cập nhật)
 
-**CẢNH BÁO:** Tài liệu GDD cũ đã hoàn toàn lỗi thời. Đây là mô tả chính xác về hệ thống chiến đấu theo lượt được triển khai trong `CombatSystem.cs`.
+Đây là mô tả chính xác về hệ thống chiến đấu theo lượt được triển khai trong `CombatSystem.cs`.
 
 ## 1. Các Khái niệm Cốt lõi
 
@@ -48,7 +48,7 @@ Trận đấu là một vòng lặp theo lượt, tối đa 50 lượt để tr�
 
 *   **Chí mạng (Critical Hit):**
     *   Một cơ chế **đã được triển khai**. Tỉ lệ chí mạng được tính từ chỉ số của hero cộng với hiệu ứng.
-    *   Khi chí mạng, `Sát thương cuối` được nhân với chỉ số `critDamage` (mặc định 150%).
+    *   Khi chí mạng, `Sát thương cuối` được nhân với chỉ số `critDamage` (mặc định `1.5f` tức 150%).
 
 *   **Công thức Hồi máu (`PerformHeal`):**
     *   `Lượng hồi máu = floor(ATK_Healer * PowerRatio_KỹNăng)`.
@@ -79,17 +79,12 @@ Trận đấu là một vòng lặp theo lượt, tối đa 50 lượt để tr�
     *   Hệ thống kỹ năng, cooldown, và AI chọn hành động.
     *   Hệ thống hiệu ứng trạng thái đầy đủ.
     *   Cơ chế đội hình Trước-Giữa-Sau.
-    *   Cơ chế tính sát thương, hồi máu, và chí mạng.
+    *   Cơ chế tính sát thương, hồi máu, và chí mạng (`critChance`, `critDamage`).
 
 *   **CHƯA TRIỂN KHAI (So với GDD cũ):**
     *   **Logic Trận đấu Boss:** Cơ chế gộp các `Squad` thành một thực thể duy nhất là **KHÔNG TỒN TẠI**. Hệ thống chiến đấu hiện tại xử lý Boss như một `Combatant` bình thường.
-    *   **Traits Kích hoạt trong Combat:** Các Trait có hiệu ứng đặc biệt trong chiến đấu (Aura, Tái Sinh, Kẻ Săn Mồi,...) **CHƯA** có logic xử lý trong `CombatSystem.cs`.
+    *   **Traits Kích hoạt trong Combat:** Các Trait có hiệu ứng đặc biệt trong chiến đấu (Aura, Tái Sinh, Kẻ Săn Mồi,...) **CHƯA** có logic xử lý trong `CombatSystem.cs`. Hiện tại, Trait chỉ có tác dụng cộng chỉ số (`ADD_STAT`, `MULTIPLY_STAT`).
 
 ## 6. Hậu quả sau Trận đấu
 
 `CombatSystem` không trực tiếp gây ra trạng thái bị thương. Nó chỉ cập nhật `currentHp` trong `HeroData` và trả về `CombatResult`. Hệ thống gọi `CombatSystem` (ví dụ: `ExpeditionManager`) sẽ có trách nhiệm đọc `CombatResult` và gọi `HospitalSystem` để xử lý các hero bị thương hoặc hy sinh.
-
-
-
-Trait tăng cấp tối đa
-chọn nhanh mạnh nhất hoặc yếu nhất để đi thám hiểm, đánh nhau ( nút + logic)

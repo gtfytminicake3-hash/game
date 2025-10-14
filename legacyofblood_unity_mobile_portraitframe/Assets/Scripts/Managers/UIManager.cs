@@ -1,6 +1,7 @@
 namespace LegendOfBlood
 {
     using System.Collections.Generic;
+    using System.Linq;
     using UnityEngine;
     using UnityEngine.SceneManagement; // Thêm vào để quản lý scene
 
@@ -36,6 +37,10 @@ namespace LegendOfBlood
         
         private UIPanelType _currentPanel = UIPanelType.None;
 
+        // --- Feature Lock ---
+        private bool IsArenaUnlocked { get; set; } = false;
+        // private bool IsTowerUnlocked { get; set; } = false; // Example for future features
+
         #region Scene Management & Panel Registration
 
         private void OnEnable()
@@ -44,6 +49,7 @@ namespace LegendOfBlood
             SceneManager.sceneLoaded += OnSceneLoaded;
             // Đăng ký lắng nghe sự kiện khi ngôn ngữ thay đổi
             global::LocalizationSystem.OnLanguageChanged += UpdateAllVisiblePanelsText;
+            DataManager.OnPlayerDataLoaded += UpdateFeatureLocks;
         }
 
         private void OnDisable()
@@ -52,6 +58,7 @@ namespace LegendOfBlood
             SceneManager.sceneLoaded -= OnSceneLoaded;
             // Hủy đăng ký sự kiện ngôn ngữ
             global::LocalizationSystem.OnLanguageChanged -= UpdateAllVisiblePanelsText;
+            DataManager.OnPlayerDataLoaded -= UpdateFeatureLocks;
         }
 
         // Hàm này sẽ được gọi mỗi khi một scene mới tải xong
@@ -112,6 +119,13 @@ namespace LegendOfBlood
         public void ShowPanel(UIPanelType panelType, bool hideCurrent = true)
         {
             if (panelType == UIPanelType.None || panelType == _currentPanel) return;
+
+            // Check feature lock before showing panel
+            if (!IsFeatureUnlocked(panelType))
+            {
+                GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("notification_feature_locked"));
+                return;
+            }
 
             if (_panelDictionary.TryGetValue(panelType, out GameObject panelToShow))
             {
@@ -193,6 +207,41 @@ namespace LegendOfBlood
                 }
             }
         }
+        #endregion
+
+        #region Feature Lock Logic
+
+        private void UpdateFeatureLocks()
+        {
+            if (DataManager.Instance == null || DataManager.Instance.AllBuildings == null) return;
+
+            // Arena Unlock Condition
+            var mainHall = DataManager.Instance.AllBuildings.FirstOrDefault(b => b.id == "MainHall");
+            if (mainHall != null && mainHall.level >= 5)
+            {
+                IsArenaUnlocked = true;
+            }
+
+            // TODO: Add other feature lock conditions here (e.g., Tower)
+            Debug.Log($"Feature Lock Status: Arena Unlocked = {IsArenaUnlocked}");
+            // After updating locks, you might want to refresh the main UI to show/hide buttons.
+            // This can be done via an event.
+        }
+
+        private bool IsFeatureUnlocked(UIPanelType panelType)
+        {
+            switch (panelType)
+            {
+                case UIPanelType.Arena:
+                case UIPanelType.ArenaShop:
+                    return IsArenaUnlocked;
+                // case UIPanelType.Tower: // Example
+                //     return IsTowerUnlocked;
+                default:
+                    return true; // All other panels are unlocked by default
+            }
+        }
+
         #endregion
     }
 }

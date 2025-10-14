@@ -53,21 +53,19 @@ namespace LegendOfBlood
             Gender offspringGender = (Random.value < 0.5f) ? Gender.Male : Gender.Female;
             string offspringName = GetRandomName(offspringGender);
 
-            // Sử dụng constructor để đảm bảo các giá trị cơ bản được khởi tạo đúng
             var offspring = new HeroData(System.Guid.NewGuid().ToString(), offspringName, offspringGender)
             {
                 level = 1,
                 potential = (father.potential + mother.potential) / 2
             };
 
-            offspring.baseStats = InheritStats(father.baseStats, mother.baseStats, options);
+            CalculateBaseStats(offspring);
             offspring.traitIDs = InheritTraits(father.traitIDs, mother.traitIDs, options);
             
             if (father.traitIDs.Contains(TRAIT_ELITE_BLOODLINE) || mother.traitIDs.Contains(TRAIT_ELITE_BLOODLINE))
             {
                 if (Random.value < 0.10f)
                 {
-                    // SỬA LỖI: Gán trực tiếp giá trị float, không cần FloorToInt
                     offspring.baseStats.hp *= 1.05f;
                     offspring.baseStats.atk *= 1.05f;
                     offspring.baseStats.def *= 1.05f;
@@ -75,8 +73,7 @@ namespace LegendOfBlood
                 }
             }
             
-            // Đảm bảo máu hiện tại bằng máu tối đa sau khi đã tính toán tất cả
-            offspring.currentHp = offspring.baseStats.hp;
+            offspring.currentHp = offspring.GetFinalStats().hp;
 
             offspring.isMature = false;
             long maturationDuration = 60000;
@@ -85,99 +82,86 @@ namespace LegendOfBlood
             return offspring;
         }
 
-        private HeroStats InheritStats(HeroStats fatherStats, HeroStats motherStats, BreedingOptions options)
+        private void CalculateBaseStats(HeroData newHero)
         {
-            float mutationChance = options.UseMutationPotion ? 0.5f : 0.1f;
+            newHero.baseStats = new HeroStats();
+            newHero.baseStats.hp = newHero.potential * Random.Range(8, 11);
+            newHero.baseStats.atk = newHero.potential * Random.Range(8, 11);
+            newHero.baseStats.def = newHero.potential * Random.Range(8, 11);
+            newHero.baseStats.spd = newHero.potential * Random.Range(8, 11);
 
-            return new HeroStats
-            {
-                // Các hàm này bây giờ nhận và trả về float, không còn lỗi
-                hp = CalculateInheritedStat(fatherStats.hp, motherStats.hp, mutationChance),
-                atk = CalculateInheritedStat(fatherStats.atk, motherStats.atk, mutationChance),
-                def = CalculateInheritedStat(fatherStats.def, motherStats.def, mutationChance),
-                spd = CalculateInheritedStat(fatherStats.spd, motherStats.spd, mutationChance)
-            };
-        }
-
-        /// <summary>
-        /// SỬA LỖI: Thay đổi chữ ký của hàm để nhận và trả về float.
-        /// </summary>
-        private float CalculateInheritedStat(float fatherStat, float motherStat, float mutationChance)
-        {
-            float roll = Random.value;
-            float average = (fatherStat + motherStat) / 2.0f;
-            
-            float fatherChance = mutationChance + 0.3f;
-            float motherChance = fatherChance + 0.3f;
-
-            float result;
-            if (roll < mutationChance) // Đột biến
-            {
-                result = average + (0.1f * average);
-            }
-            else if (roll < fatherChance) // Nhận chỉ số của Bố
-            {
-                result = fatherStat;
-            }
-            else if (roll < motherChance) // Nhận chỉ số của Mẹ
-            {
-                result = motherStat;
-            }
-            else // Ngẫu nhiên trong khoảng
-            {
-                result = Random.Range(Mathf.Min(fatherStat, motherStat), Mathf.Max(fatherStat, motherStat));
-            }
-            
-            // Làm tròn kết quả cuối cùng để có số đẹp, nhưng vẫn giữ kiểu float
-            return Mathf.Floor(result);
+            newHero.addedStats = new HeroStats();
+            newHero.freeStatPoints = 0;
+            newHero.evasionRate = 0f;
+            newHero.damageReduction = 0f;
+            newHero.damageIncrease = 0f;
         }
 
         private List<string> InheritTraits(List<string> fatherTraits, List<string> motherTraits, BreedingOptions options)
         {
-            var childTraits = new HashSet<string>();
+            var inheritedTraits = new HashSet<string>();
 
+            // 1. Guaranteed Trait (if any)
             if (!string.IsNullOrEmpty(options.GuaranteedTraitID))
             {
-                childTraits.Add(options.GuaranteedTraitID);
+                inheritedTraits.Add(options.GuaranteedTraitID);
             }
 
-            for (int i = 0; i < 3 && childTraits.Count < 3; i++)
+            // 2. Get trait from father
+            var traitFromFather = GetTraitFromParent(fatherTraits, inheritedTraits);
+            if (traitFromFather != null)
             {
-                float roll = Random.value;
+                inheritedTraits.Add(traitFromFather);
+            }
 
-                if (roll < 0.30f && fatherTraits.Any())
+            // 3. Get trait from mother
+            var traitFromMother = GetTraitFromParent(motherTraits, inheritedTraits);
+            if (traitFromMother != null)
+            {
+                inheritedTraits.Add(traitFromMother);
+            }
+
+            // 4. Get random traits until we have 3, respecting uniqueness
+            // SỬA LỖI: Lấy Trait từ DataManager, không dùng TraitDatabase
+            var allTraits = DataManager.Instance.AllTraits.Values.ToList(); 
+            while (inheritedTraits.Count < 3 && allTraits.Any())
+            {
+                var randomTrait = allTraits[Random.Range(0, allTraits.Count)];
+                if (randomTrait != null && !inheritedTraits.Contains(randomTrait.id))
                 {
-                    childTraits.Add(fatherTraits[Random.Range(0, fatherTraits.Count)]);
-                }
-                else if (roll < 0.60f && motherTraits.Any())
-                {
-                    childTraits.Add(motherTraits[Random.Range(0, motherTraits.Count)]);
-                }
-                else if (roll < 0.70f)
-                {
-                    var allTraitIds = DataManager.Instance.AllTraits.Keys.ToList();
-                    if (allTraitIds.Any())
-                    {
-                        childTraits.Add(allTraitIds[Random.Range(0, allTraitIds.Count)]);
-                    }
+                    inheritedTraits.Add(randomTrait.id);
                 }
             }
 
-            return childTraits.ToList();
+            return inheritedTraits.ToList();
         }
-        
+
+        private string GetTraitFromParent(List<string> parentTraits, HashSet<string> existingTraits)
+        {
+            if (parentTraits == null || parentTraits.Count == 0)
+            {
+                return null;
+            }
+
+            var validTraits = parentTraits.Where(t => !existingTraits.Contains(t)).ToList();
+            if (validTraits.Count == 0)
+            {
+                return null;
+            }
+
+            return validTraits[Random.Range(0, validTraits.Count)];
+        }
+
         private string GetRandomName(Gender gender)
         {
-            string nameKey;
             if (gender == Gender.Male)
             {
-                nameKey = $"male_name_{Random.Range(1, MALE_NAME_COUNT + 1)}";
+                return $"MaleName_{Random.Range(1, MALE_NAME_COUNT + 1)}";
             }
             else
             {
-                nameKey = $"female_name_{Random.Range(1, FEMALE_NAME_COUNT + 1)}";
+                return $"FemaleName_{Random.Range(1, FEMALE_NAME_COUNT + 1)}";
             }
-            return LocalizationSystem.GetText(nameKey);
         }
     }
 }

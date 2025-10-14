@@ -1,6 +1,7 @@
 namespace LegendOfBlood
 {
     using System;
+    using LegendOfBlood.Managers; // Thêm using để truy cập PlayerQuestStatus
     using System.Collections.Generic;
     using UnityEngine;
 
@@ -77,6 +78,11 @@ namespace LegendOfBlood
         // --- NEW: For the mailbox system ---
         public List<ExpeditionReport> UnclaimedReports;
 
+        // --- NEW: Player's core progression data ---
+        public List<HeroData> Heroes;
+        public List<PlayerQuestStatus> QuestStatuses;
+
+        // --- EXISTING: For serialization ---
         public Dictionary<BuildingType, int> BuildingLevels;
 
         [SerializeField] private List<string> _serializedItemIDs = new List<string>();
@@ -92,6 +98,8 @@ namespace LegendOfBlood
             WorldPois = new List<POIData>();
             ActiveExpeditions = new List<ActiveExpedition>();
             UnclaimedReports = new List<ExpeditionReport>(); // Initialize the new list
+            Heroes = new List<HeroData>(); // Khởi tạo danh sách Heroes
+            QuestStatuses = new List<PlayerQuestStatus>(); // Khởi tạo danh sách QuestStatuses
             BuildingLevels = new Dictionary<BuildingType, int>();
             arenaPoints = 0;
             arenaTickets = 5;
@@ -130,6 +138,8 @@ namespace LegendOfBlood
             WorldPois ??= new List<POIData>();
             ActiveExpeditions ??= new List<ActiveExpedition>();
             UnclaimedReports ??= new List<ExpeditionReport>(); // Ensure list is not null after deserialization
+            Heroes ??= new List<HeroData>(); // Đảm bảo không null sau khi tải
+            QuestStatuses ??= new List<PlayerQuestStatus>(); // Đảm bảo không null sau khi tải
 
             if (_serializedItemIDs.Count != _serializedItemCounts.Count)
             {

@@ -1,12 +1,13 @@
-// File: Assets/Scripts/Skills/Skill.cs (Vị trí file của bạn)
+// --- START OF FILE Skill.cs (FIXED) ---
+
+using UnityEngine;
+
 namespace LegendOfBlood
 {
-    using UnityEngine;
-
     // Các enum này nên được đặt ở một nơi chung để Skill.cs và CombatSystem.cs đều có thể truy cập
     public enum HeroClass { Warrior, Archer, Mage, Healer }
     public enum SkillType { Active, Passive }
-    public enum TargetingType 
+    public enum TargetingType
     {
         SingleFrontEnemy, LowestHpAlly, AllEnemies, Self,
         AdjacentEnemies, RandomEnemy, AllAlliesInRow, AllAllies
@@ -30,11 +31,11 @@ namespace LegendOfBlood
         [Tooltip("Mô tả chi tiết về Skill, sẽ hiển thị cho người chơi.")]
         [TextArea(3, 5)]
         public string description;
-        
+
         [Header("Thuộc tính Kỹ năng")]
         [Tooltip("Loại kỹ năng: Chủ động hay Bị động.")]
         public SkillType type;
-        
+
         [Tooltip("Nghề nghiệp có thể học kỹ năng này.")]
         public HeroClass requiredProfession; // Đổi tên 'Profession' thành 'HeroClass' cho nhất quán
 
@@ -42,7 +43,7 @@ namespace LegendOfBlood
         [Header("Logic Chiến Đấu")]
         [Tooltip("Số lượt cần chờ để có thể tái sử dụng kỹ năng.")]
         public int cooldown;
-        
+
         [Tooltip("Cách kỹ năng này chọn mục tiêu.")]
         public TargetingType targeting;
 
@@ -55,11 +56,11 @@ namespace LegendOfBlood
         [Header("Hiệu ứng Trạng thái")]
         [Tooltip("Hiệu ứng mà kỹ năng này áp dụng lên mục tiêu.")]
         public StatusEffectType appliedEffect;
-        
+
         [Tooltip("Số lượt hiệu ứng tồn tại.")]
         [Range(0, 10)]
         public int effectDuration;
-        
+
         [Tooltip("Tỉ lệ áp dụng hiệu ứng thành công (0 = 0%, 1 = 100%).")]
         [Range(0, 1)]
         public float effectChance;
@@ -80,3 +81,4 @@ namespace LegendOfBlood
         }
     }
 }
+// --- END OF FILE Skill.cs (FIXED) ---

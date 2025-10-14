@@ -1,0 +1,26 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // Use IntelliSense to find out which attributes exist for C# debugging
+            // Use hover for the description of the existing attributes
+            // For further information visit https://github.com/dotnet/vscode-csharp/blob/main/debugger-launchjson.md
+            "name": ".NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "C:/Users/NGOCMINHPC/AppData/Local/Temp/dotnet/runfile/DataManager-4db67b9bc9b25c881b6dcbf8b5d073d91489c7d3c5a8b55b742f0743a4c7fc53/bin/Debug/net9.0/DataManager.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/legacyofblood_unity_mobile_portraitframe/Assets/Scripts/Managers",
+            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        }
+    ]
+}

@@ -284,7 +284,7 @@ namespace LegendOfBlood.Combat
             var healers = team.Where(c => c.HeroRef.profession == Profession.Healer).ToList();
             var others = team.Except(warriors).Except(healers).ToList();
             foreach (var w in warriors) w.Position = RowPosition.Front;
-            // SỬA LỖI: Sửa 'w.Position' thành 'h.Position'
+            // SỬA LỖI: Sửa 'w.Position' thành 'h.Position' cho Healer
             foreach (var h in healers) h.Position = RowPosition.Back;
             foreach (var o in others) o.Position = RowPosition.Middle;
         }

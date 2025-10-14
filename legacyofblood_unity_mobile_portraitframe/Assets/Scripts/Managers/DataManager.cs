@@ -1,11 +1,16 @@
+// --- START OF FILE DataManager.cs (FIXED AGAIN) ---
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using LegendOfBlood.GameConfigs; // Dùng GameConfig từ namespace này
+using LegendOfBlood.Managers;   // Dùng PlayerQuestStatus từ namespace này
+// using LegendOfBlood.DataModels; // SỬA LỖI: XÓA DÒNG NÀY
+using UnityEngine;
+
 namespace LegendOfBlood
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq; // THÊM using này để có thể dùng .FirstOrDefault()
-    using UnityEngine;
-
     /// <summary>
     /// DataManager là một Singleton chịu trách nhiệm:
     /// 1. Tải và cung cấp dữ liệu cấu hình game (Traits, Skills, etc.) từ ScriptableObjects.
@@ -38,20 +43,23 @@ namespace LegendOfBlood
         [Header("Game Configuration")]
         [SerializeField]
         [Tooltip("Kéo ScriptableObject chứa toàn bộ data config của game vào đây.")]
-        private GameConfig _gameConfig;
+        private GameConfigs.GameConfig _gameConfig;
 
         // Dữ liệu cấu hình game (được tối ưu hóa để truy cập nhanh bằng Dictionary)
         public Dictionary<string, Trait> AllTraits { get; private set; }
         public Dictionary<string, Skill> AllSkills { get; private set; }
         public Dictionary<string, BossData> AllBosses { get; private set; }
         public Dictionary<int, int> ExpTable { get; private set; }
-        public List<EvolutionRewardData> EvolutionRewards { get; private set; }
+        // SỬA LỖI: Chỉ định rõ namespace cho EvolutionRewardData để giải quyết lỗi CS0029
+        public List<GameConfigs.EvolutionRewardData> EvolutionRewards { get; private set; }
         public Dictionary<Profession, List<string>> StartingSkillsByProfession { get; private set; }
-        public Dictionary<BuildingType, BuildingConfig> BuildingConfigs { get; private set; }
+        public Dictionary<string, BuildingUpgradeData> BuildingUpgradeConfigs { get; private set; }
         public POIMonsterConfig POIMonsterConfig { get; private set; }
+        public Dictionary<string, QuestData> AllQuests { get; private set; }
+
         // Dữ liệu trạng thái của người chơi (runtime data)
         public PlayerData Player { get; private set; }
-        public List<HeroData> AllHeroes { get; private set; }
+        public List<HeroData> AllHeroes => Player.Heroes;
         public List<Building> AllBuildings { get; private set; }
 
         // Tên file lưu
@@ -89,7 +97,6 @@ namespace LegendOfBlood
 
             AllTraits = _gameConfig.AllTraits.ToDictionary(t => t.id, t => t);
             AllSkills = _gameConfig.AllSkills.ToDictionary(s => s.id, s => s);
-            AllBosses = new Dictionary<string, BossData>(); // Giữ lại vì chưa có AllBosses trong GameConfig
             ExpTable = _gameConfig.ExperienceTable.ToDictionary(e => e.level, e => e.experienceRequired);
 
             if (_gameConfig.EvolutionTable != null)
@@ -98,7 +105,7 @@ namespace LegendOfBlood
             }
             else
             {
-                EvolutionRewards = new List<EvolutionRewardData>();
+                EvolutionRewards = new List<GameConfigs.EvolutionRewardData>();
                 Debug.LogWarning("EvolutionTable is not set in GameConfig.");
             }
 
@@ -111,21 +118,24 @@ namespace LegendOfBlood
                 }
             }
 
-            BuildingConfigs = new Dictionary<BuildingType, BuildingConfig>();
-            if (_gameConfig.BuildingConfigs != null)
+            BuildingUpgradeConfigs = new Dictionary<string, BuildingUpgradeData>();
+            if (_gameConfig.BuildingUpgradeDataList != null)
             {
-                foreach (var config in _gameConfig.BuildingConfigs)
+                foreach (var config in _gameConfig.BuildingUpgradeDataList)
                 {
-                    if (!BuildingConfigs.ContainsKey(config.type))
+                    if (config != null && !BuildingUpgradeConfigs.ContainsKey(config.buildingId))
                     {
-                        BuildingConfigs.Add(config.type, config);
+                        BuildingUpgradeConfigs.Add(config.buildingId, config);
                     }
                 }
             }
 
             POIMonsterConfig = _gameConfig.POIMonsterConfig;
+            
+            AllQuests = _gameConfig.AllQuestData?.ToDictionary(q => q.questId, q => q) ?? new Dictionary<string, QuestData>();
+            AllBosses = _gameConfig.AllBosses?.ToDictionary(b => b.id, b => b) ?? new Dictionary<string, BossData>(); 
 
-            Debug.Log($"Đã xử lý xong Game Config: {AllTraits.Count} Traits, {AllSkills.Count} Skills, {BuildingConfigs.Count} BuildingConfigs.");
+            Debug.Log($"Đã xử lý xong Game Config: {AllTraits.Count} Traits, {AllSkills.Count} Skills, {BuildingUpgradeConfigs.Count} BuildingConfigs. {AllQuests.Count} Quests.");
         }
 
         #endregion
@@ -140,8 +150,7 @@ namespace LegendOfBlood
                 {
                     string json = File.ReadAllText(_saveFilePath);
                     SaveData loadedData = JsonUtility.FromJson<SaveData>(json);
-                    Player = loadedData.Player;
-                    AllHeroes = loadedData.AllHeroes;
+                    Player = loadedData.Player ?? new PlayerData();
                     AllBuildings = loadedData.AllBuildings;
                     Debug.Log($"Tải game thành công từ: {_saveFilePath}");
                 }
@@ -157,6 +166,11 @@ namespace LegendOfBlood
                 CreateNewPlayerData();
             }
             
+            if (Player.Heroes == null) Player.Heroes = new List<HeroData>();
+            if (Player.QuestStatuses == null) Player.QuestStatuses = new List<LegendOfBlood.Managers.PlayerQuestStatus>();
+            if (Player.WorldPois == null) Player.WorldPois = new List<POIData>();
+            if (AllBuildings == null) AllBuildings = new List<Building>();
+
             OnPlayerDataLoaded?.Invoke();
             OnHeroListChanged?.Invoke();
         }
@@ -164,13 +178,15 @@ namespace LegendOfBlood
         private void CreateNewPlayerData()
         {
             Player = new PlayerData();
+            Player.Heroes = new List<HeroData>();
+            Player.QuestStatuses = new List<LegendOfBlood.Managers.PlayerQuestStatus>();
+            Player.WorldPois = new List<POIData>();
             AllBuildings = new List<Building>();
             
-            AllHeroes = new List<HeroData>();
             HeroData startingMale = CreateStartingHero(Gender.Male, "Adam");
             HeroData startingFemale = CreateStartingHero(Gender.Female, "Eva");
-            AllHeroes.Add(startingMale);
-            AllHeroes.Add(startingFemale);
+            Player.Heroes.Add(startingMale);
+            Player.Heroes.Add(startingFemale);
         }
 
         public void SavePlayerData()
@@ -178,7 +194,6 @@ namespace LegendOfBlood
             SaveData saveData = new SaveData
             {
                 Player = this.Player,
-                AllHeroes = this.AllHeroes,
                 AllBuildings = this.AllBuildings
             };
 
@@ -197,88 +212,101 @@ namespace LegendOfBlood
 
         #region Public API (Helpers & Modifiers)
 
-        // --- HERO MANAGEMENT ---
+        public int GetPopulationCapacity()
+        {
+            var mainHall = AllBuildings.FirstOrDefault(b => b.id == "MainHall");
+            if (mainHall != null)
+            {
+                return 10 + (mainHall.level * 2);
+            }
+            return 10;
+        }
+
+        public bool IsPopulationFull()
+        {
+            return Player.Heroes.Count >= GetPopulationCapacity();
+        }
 
         public void AddHero(HeroData newHero)
         {
             if (newHero == null) return;
-            AllHeroes.Add(newHero);
+
+            if (IsPopulationFull())
+            {
+                Debug.LogWarning("Population is full! Cannot add new hero.");
+                GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("notification_population_full"));
+                return;
+            }
+
+            Player.Heroes.Add(newHero);
             OnHeroListChanged?.Invoke();
+            Debug.Log($"Added hero {newHero.heroName}. Total heroes: {Player.Heroes.Count}/{GetPopulationCapacity()}");
         }
 
         public void RemoveHero(string heroId)
         {
-            HeroData heroToRemove = GetHeroByID(heroId); // Tái sử dụng hàm GetHeroByID
+            HeroData heroToRemove = GetHeroByID(heroId);
             if (heroToRemove != null)
             {
-                AllHeroes.Remove(heroToRemove);
+                Player.Heroes.Remove(heroToRemove);
                 OnHeroListChanged?.Invoke();
             }
         }
 
-        // --- BỔ SUNG CÁC HÀM TRUY CẬP DỮ LIỆU CẦN THIẾT ---
-
-        /// <summary>
-        /// Lấy một hero từ danh sách AllHeroes bằng ID.
-        /// </summary>
         public HeroData GetHeroByID(string id)
         {
             if (string.IsNullOrEmpty(id)) return null;
-            return AllHeroes.FirstOrDefault(h => h.id == id);
+            return Player.Heroes.FirstOrDefault(h => h.id == id);
         }
 
-        /// <summary>
-        /// Lấy một POI từ danh sách WorldPois bằng ID.
-        /// </summary>
         public POIData GetPOIByID(string poiId)
         {
             if (string.IsNullOrEmpty(poiId) || Player?.WorldPois == null) return null;
             return Player.WorldPois.FirstOrDefault(p => p.poiId == poiId);
         }
 
-        /// <summary>
-        /// Lấy dữ liệu của một quái vật bằng ID.
-        /// </summary>
         public HeroData GetMonsterByID(string id)
         {
             if (string.IsNullOrEmpty(id)) return null;
 
-            // TODO: Hoàn thiện logic này sau khi bạn có dữ liệu quái vật trong GameConfig.
-            // Ví dụ: MonsterConfigData monsterCfg = _gameConfig.AllMonsters.FirstOrDefault(m => m.id == id);
-            // if (monsterCfg != null) { return ConvertMonsterToHeroData(monsterCfg); }
+            BossData bossCfg = AllBosses.TryGetValue(id, out var boss) ? boss : null;
+            if (bossCfg != null) 
+            {
+                 return new HeroData
+                {
+                    id = id,
+                    heroName = bossCfg.bossName,
+                    level = bossCfg.level,
+                    profession = Profession.Warrior,
+                    baseStats = new HeroStats { hp = bossCfg.baseHp, atk = bossCfg.baseAtk, def = bossCfg.baseDef, spd = bossCfg.baseSpd },
+                    currentHp = bossCfg.baseHp,
+                    isMature = true 
+                };
+            }
 
-            // Tạm thời trả về một quái vật giả để các hệ thống khác không bị lỗi.
-            Debug.LogWarning($"GetMonsterByID chưa được triển khai đầy đủ. Trả về quái vật giả cho ID: {id}");
+            Debug.LogWarning($"GetMonsterByID chưa tìm thấy trong AllBosses. Trả về quái vật giả cho ID: {id}");
             return new HeroData
             {
                 id = id,
                 heroName = $"Quái vật {id}",
                 level = 5,
-                profession = Profession.Warrior, // Giả sử quái vật cũng có profession
+                profession = Profession.Warrior,
                 baseStats = new HeroStats { hp = 200, atk = 20, def = 15, spd = 10 },
                 currentHp = 200,
-                isMature = true // Quái vật luôn sẵn sàng chiến đấu
+                isMature = true
             };
         }
 
-        // --- CONFIG DATA ACCESSORS ---
-
         public Trait GetTraitByID(string id)
         {
-            if (string.IsNullOrEmpty(id) || !AllTraits.ContainsKey(id))
-            {
-                return null;
-            }
-            return AllTraits[id];
+            AllTraits.TryGetValue(id, out var trait);
+            return trait;
         }
 
         public Skill GetSkillByID(string id)
         {
-            if (string.IsNullOrEmpty(id) || !AllSkills.ContainsKey(id))
-            {
-                return null;
-            }
-            return AllSkills[id];
+            AllSkills.TryGetValue(id, out var skill);
+            return skill;
         }
 
         public List<string> GetStartingSkills(Profession profession)
@@ -287,7 +315,27 @@ namespace LegendOfBlood
             {
                 return skillList;
             }
-            return new List<string>(); // Trả về danh sách rỗng nếu không tìm thấy
+            return new List<string>();
+        }
+
+        public BuildingUpgradeData GetBuildingUpgradeData(string buildingId)
+        {
+            if (string.IsNullOrEmpty(buildingId) || BuildingUpgradeConfigs == null)
+            {
+                return null;
+            }
+            BuildingUpgradeConfigs.TryGetValue(buildingId, out var data);
+            return data;
+        }
+
+        public QuestData GetQuestData(string questId)
+        {
+            if (string.IsNullOrEmpty(questId) || AllQuests == null)
+            {
+                return null;
+            }
+            AllQuests.TryGetValue(questId, out var data);
+            return data;
         }
 
         #endregion
@@ -296,7 +344,6 @@ namespace LegendOfBlood
         
         private HeroData CreateStartingHero(Gender gender, string name)
         {
-            // Sử dụng constructor có tham số để đảm bảo ID và tên được gán
             var hero = new HeroData(Guid.NewGuid().ToString(), name, gender)
             {
                 level = 1,
@@ -304,7 +351,6 @@ namespace LegendOfBlood
                 baseStats = new HeroStats { hp = 100, atk = 10, def = 8, spd = 12 },
                 isMature = true
             };
-            // Đảm bảo máu hiện tại bằng máu tối đa khi tạo mới
             hero.currentHp = hero.GetFinalStats().hp; 
             return hero;
         }
@@ -316,7 +362,7 @@ namespace LegendOfBlood
     public class SaveData
     {
         public PlayerData Player;
-        public List<HeroData> AllHeroes;
         public List<Building> AllBuildings;
     }
 }
+// --- END OF FILE DataManager.cs (FIXED AGAIN) ---

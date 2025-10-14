@@ -2,7 +2,10 @@
 namespace LegendOfBlood
 {
     using LegendOfBlood.Combat;
-    using System;    using System.Collections.Generic;
+    using LegendOfBlood.Managers;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq; // THÊM using này
     using UnityEngine;
 
     /// <summary>
@@ -107,6 +110,7 @@ namespace LegendOfBlood
         [SerializeField] private UIManager _uiManager;
         [SerializeField] private UINotificationManager _uiNotificationManager;
         [SerializeField] private ArenaSystem _arenaSystem; // Thêm dòng này
+        [SerializeField] private QuestManager _questManager;
 
         // Các lớp logic không nhất thiết phải là MonoBehaviour
         // Chúng ta sẽ tạo các thể hiện của chúng
@@ -116,6 +120,7 @@ namespace LegendOfBlood
         public HospitalSystem HospitalSystem { get; private set; }
         public MaturationSystem MaturationSystem { get; private set; }
         public BuildingSystem BuildingSystem { get; private set; }
+        public RecruitmentSystem RecruitmentSystem { get; private set; }
         
         // Public accessors để các script khác có thể truy cập an toàn
         public DataManager DataManager => _dataManager;
@@ -124,6 +129,7 @@ namespace LegendOfBlood
         public UIManager UIManager => _uiManager;
         public UINotificationManager UINotificationManager => _uiNotificationManager;
         public ArenaSystem ArenaSystem => _arenaSystem; // Thêm dòng này
+        public QuestManager QuestManager => _questManager;
 
         #endregion
 
@@ -148,7 +154,7 @@ namespace LegendOfBlood
             global::LocalizationSystem.LoadLocalizedText((global::Language)LanguageManager.CurrentLanguage);
 
             // Xác thực rằng tất cả các tham chiếu đã được gán trong Inspector
-            if (_dataManager == null || _inventoryManager == null || _expeditionManager == null || _uiManager == null || _uiNotificationManager == null || _arenaSystem == null) // Thêm _arenaSystem
+            if (_dataManager == null || _inventoryManager == null || _expeditionManager == null || _uiManager == null || _uiNotificationManager == null || _arenaSystem == null || _questManager == null)
             {
                 Debug.LogError("GAME MANAGER: Một hoặc nhiều Manager chưa được gán trong Inspector!");
                 // Vô hiệu hóa component để tránh lỗi NullReferenceException
@@ -159,14 +165,14 @@ namespace LegendOfBlood
             // Khởi tạo các hệ thống logic (POCO - Plain Old C# Object)
             BreedingSystem = new BreedingSystem();
             // Cần cung cấp seed và danh sách skill cho CombatSystem
-            // Ở đây ta dùng giá trị mặc định, bạn cần thay thế bằng logic thực tế
-            // TODO: Cần tạo hàm GetAllSkills() trong DataManager để lấy danh sách skill từ GameConfig hoặc nơi khác.
-            var allSkills = new List<Skill>(); // FIX: DataManager.GetAllGameSkills() không tồn tại.
+            // Sửa lỗi: Lấy danh sách skill từ DataManager đã được khởi tạo
+            var allSkills = DataManager.AllSkills.Values.ToList();
             CombatSystem = new CombatSystem(Environment.TickCount, allSkills);
             EvolutionSystem = new EvolutionSystem();
             HospitalSystem = new HospitalSystem();
             MaturationSystem = new MaturationSystem();
             BuildingSystem = new BuildingSystem();
+            RecruitmentSystem = new RecruitmentSystem();
             
             Debug.Log("Tất cả các hệ thống đã được khởi tạo thành công.");
         }

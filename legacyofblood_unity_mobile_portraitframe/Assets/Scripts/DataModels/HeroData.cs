@@ -36,6 +36,11 @@ namespace LegendOfBlood
         public int experience;
         public int potential;
         public HeroStats baseStats;
+        public HeroStats addedStats;
+        public int freeStatPoints;
+        public float evasionRate;
+        public float damageReduction;
+        public float damageIncrease;
         
         // SỬA LỖI TIỀM TÀNG: Đổi currentHp thành float để khớp với HeroStats.hp
         public float currentHp; 
@@ -65,6 +70,7 @@ namespace LegendOfBlood
             this.gender = heroGender;
             this.level = 1;
             this.baseStats = new HeroStats();
+            this.addedStats = new HeroStats();
             this.currentHp = this.baseStats.hp; // Khởi tạo máu đầy
             
             traitIDs = new List<string>();
@@ -85,6 +91,7 @@ namespace LegendOfBlood
         {
             traitIDs = new List<string>();
             skillIDs = new List<string>();
+            this.addedStats = new HeroStats();
         }
 
         #endregion
@@ -122,10 +129,10 @@ namespace LegendOfBlood
         {
             var finalStats = new HeroStats
             {
-                hp = baseStats.hp,
-                atk = baseStats.atk,
-                def = baseStats.def,
-                spd = baseStats.spd,
+                hp = baseStats.hp + addedStats.hp,
+                atk = baseStats.atk + addedStats.atk,
+                def = baseStats.def + addedStats.def,
+                spd = baseStats.spd + addedStats.spd,
                 critChance = baseStats.critChance,
                 critDamage = baseStats.critDamage
             };
@@ -188,11 +195,8 @@ namespace LegendOfBlood
                 experience -= expTable[level];
                 level++;
                 
-                // Improve stats on level up based on potential
-                int distributionPoints = Mathf.FloorToInt(potential / 2f);
-                baseStats.hp += Mathf.FloorToInt(distributionPoints * 1.5f);
-                baseStats.atk += distributionPoints;
-                baseStats.def += distributionPoints;
+                // Grant free stat points instead of auto-assigning
+                this.freeStatPoints += this.potential;
                 
                 // Restore HP to full after leveling up
                 currentHp = GetFinalStats().hp;
