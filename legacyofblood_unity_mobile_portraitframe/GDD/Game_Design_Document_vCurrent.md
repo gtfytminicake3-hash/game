@@ -77,3 +77,4 @@ Phần này tổng hợp các tính năng đã hoàn thiện và các hạng m�
 *   **Ưu tiên Thấp - Cải thiện Trải nghiệm Người dùng (UX):**
     *   Thêm chức năng kéo-thả vào `SquadSelectionPanel`.
     *   Thêm các biểu tượng thông báo (badge) trên các nút điều hướng (ví dụ: Bệnh viện có hero đã hồi phục xong).
+    \

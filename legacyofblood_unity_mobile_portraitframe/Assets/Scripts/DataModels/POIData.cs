@@ -32,5 +32,8 @@ namespace LegendOfBlood
         // --- NEW: Fields specific to the Tower of Trials ---
         public int currentFloor;       // The floor the tower is currently at.
         public long recoveryEndTime;    // Timestamp until which the tower progress is saved.
+        
+        // Optional: Require specific profession to enter (e.g. for Class Towers)
+        public Profession? requiredProfession; 
     }
 }

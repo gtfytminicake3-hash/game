@@ -156,11 +156,8 @@ namespace LegendOfBlood
                 foreach (var poiData in worldPois) InstantiatePOI(poiData);
             }
 
-            if (!worldPois.Any(p => p.type == POIType.TowerOfTrials))
-            {
-                Debug.Log("Tower of Trials not found. Generating a new one.");
-                GenerateTowerOfTrials();
-            }
+            // Luôn đảm bảo có đủ 3 tháp nghề nghiệp
+            GenerateProfessionTowers();
         }
 
         private void GenerateAndRegisterNewPOI(POIType type, string specificName)
@@ -185,25 +182,35 @@ namespace LegendOfBlood
             InstantiatePOI(poiData);
         }
         
-        private void GenerateTowerOfTrials()
+        private void GenerateProfessionTowers()
         {
-            Vector2 newPosition = FindValidPosition();
-            if (newPosition == Vector2.zero) return;
-
-            POIData towerData = new POIData
-            {
-                poiId = "TOWER_OF_TRIALS_" + Guid.NewGuid().ToString(),
-                poiName = "Tháp Thử Thách",
-                type = POIType.TowerOfTrials,
-                position = newPosition,
-                difficultyLevel = 99,
-                monsterIDs = new List<string>(),
-                currentFloor = 1,
-                recoveryEndTime = 0
-            };
+            Profession[] professions = { Profession.Warrior, Profession.Archer, Profession.Mage };
             
-            DataManager.Instance.Player.WorldPois.Add(towerData);
-            InstantiatePOI(towerData);
+            foreach (var profession in professions)
+            {
+                // Check if tower for this profession already exists
+                if (DataManager.Instance.Player.WorldPois.Any(p => p.type == POIType.TowerOfTrials && p.requiredProfession == profession))
+                    continue;
+
+                Vector2 newPosition = FindValidPosition();
+                if (newPosition == Vector2.zero) continue;
+
+                POIData towerData = new POIData
+                {
+                    poiId = $"TOWER_{profession}_{Guid.NewGuid()}",
+                    poiName = string.Format(LocalizationSystem.GetText("poi_tower_name_format"), profession), // "Tháp Chiến Binh", etc.
+                    type = POIType.TowerOfTrials,
+                    position = newPosition,
+                    difficultyLevel = 1,
+                    monsterIDs = new List<string>(),
+                    currentFloor = 1,
+                    recoveryEndTime = 0,
+                    requiredProfession = profession
+                };
+                
+                DataManager.Instance.Player.WorldPois.Add(towerData);
+                InstantiatePOI(towerData);
+            }
         }
 
         private Vector2 FindValidPosition()
@@ -283,7 +290,8 @@ namespace LegendOfBlood
                     squadSelectionPanel.gameObject.SetActive(false);
                     poiInfoPanel.gameObject.SetActive(false);
                     GameManager.Instance.ExpeditionManager.StartExpedition(selectedHeroIDs, poiData);
-                }
+                },
+                poiData.requiredProfession ?? Profession.None
             );
         }
 

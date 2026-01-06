@@ -201,5 +201,6 @@ namespace LegendOfBlood
 
         // UI
         public const string OnHeroCardClicked = "OnHeroCardClicked"; // Params: HeroData
+        public const string OnProfessionSelectionRequested = "OnProfessionSelectionRequested"; // Params: HeroData
     }
 }

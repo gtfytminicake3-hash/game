@@ -81,6 +81,10 @@ namespace LegendOfBlood
         // --- NEW: Player's core progression data ---
         public List<HeroData> Heroes;
         public List<PlayerQuestStatus> QuestStatuses;
+        
+        // --- NEW: Quest Reset Timestamps ---
+        public long lastDailyResetTimestamp;
+        public long lastWeeklyResetTimestamp;
 
         // --- EXISTING: For serialization ---
         public Dictionary<BuildingType, int> BuildingLevels;

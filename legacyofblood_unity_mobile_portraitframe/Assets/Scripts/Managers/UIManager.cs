@@ -20,7 +20,8 @@ namespace LegendOfBlood
         SquadSelection,
         HeroPicker,
         Inventory,
-        ArenaShop
+        ArenaShop,
+        ProfessionSelection
     }
 
     /// <summary>

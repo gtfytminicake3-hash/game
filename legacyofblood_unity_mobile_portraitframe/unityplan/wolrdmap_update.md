@@ -141,3 +141,7 @@ Chống Gian lận (Anti-Cheat): Vì kết quả được tính ngay lập tức
 Độ tin cậy Cao: Kể cả khi game bị crash hoặc người chơi mất kết nối, chuyến đi vẫn được lưu an toàn. Lần đăng nhập tiếp theo, hệ thống sẽ kiểm tra và trao kết quả một cách chính xác.
 Tối ưu Hiệu năng: Các tính toán nặng (chiến đấu) chỉ xảy ra một lần duy nhất tại một thời điểm người chơi chủ động yêu cầu. Các lần kiểm tra sau đó chỉ là so sánh thời gian, rất nhẹ nhàng.
 Trải nghiệm Người dùng Mượt mà: Người chơi có thể tự tin đóng game và biết rằng các hoạt động của họ vẫn đang tiến triển, tạo ra động lực để quay lại kiểm tra kết quả.
+
+
+quái vật di chuyển thay vì dungeon, độ khó dựa vào khoảng cách, càng xa càng khó
+khoảng cách spawn 400px nhiều lên

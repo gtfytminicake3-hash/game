@@ -1,3 +1,4 @@
+
 namespace LegendOfBlood
 {
     using System.Linq;
@@ -8,9 +9,10 @@ namespace LegendOfBlood
         public EvolutionSystem()
         {
             HeroData.OnHeroLeveledUp += HandleHeroLeveledUp;
-            Debug.Log("EvolutionSystem Initialized.");
+            Debug.Log("EvolutionSystem Initialized and Subscribed to Level Up event.");
         }
 
+        // Destructor to unsubscribe, good practice
         ~EvolutionSystem()
         {
             HeroData.OnHeroLeveledUp -= HandleHeroLeveledUp;
@@ -18,58 +20,97 @@ namespace LegendOfBlood
 
         private void HandleHeroLeveledUp(HeroData hero)
         {
+            // Grant new traits at specific evolution milestones
             switch (hero.level)
             {
                 case 20:
+                    EventManager.TriggerEvent(GameEvents.OnProfessionSelectionRequested, hero);
+                    GrantNewTrait_TwoRolls(hero);
+                    break;
                 case 40:
                 case 80:
                     GrantNewTrait_TwoRolls(hero);
                     break;
-                // Note: Levels 60 and 100 are for upgrades, handled by UI (TraitUpgradePanel)
+                // Note: Levels 60 and 100 are for upgrades, which are handled by the TraitUpgradePanel UI
+                // and do not need automatic logic here.
             }
         }
 
         private void GrantNewTrait_TwoRolls(HeroData hero)
         {
-            if (TraitDatabase.Instance == null) 
+            // REFACTOR: Changed to use the central DataManager singleton instead of the obsolete TraitDatabase
+            if (DataManager.Instance == null)
             {
-                Debug.LogError("TraitDatabase not found!");
+                Debug.LogError("DataManager not found! Cannot grant new trait.");
                 return;
             }
 
-            var allFamilies = TraitDatabase.Instance.GetAllFamilyIDs();
-            var ownedFamilies = hero.traitIDs.Select(id => TraitDatabase.Instance.GetTraitByID(id)?.familyId).ToHashSet();
-            var unownedFamilyPool = allFamilies.Where(f => !string.IsNullOrEmpty(f) && !ownedFamilies.Contains(f)).ToList();
+            // REFACTOR: Get all trait families directly from DataManager's collection
+            var allFamilies = DataManager.Instance.AllTraits.Values
+                                .Select(t => t.familyId)
+                                .Where(f => !string.IsNullOrEmpty(f))
+                                .Distinct()
+                                .ToList();
+
+            // REFACTOR: Get owned families using the correct DataManager method
+            var ownedFamilies = hero.traitIDs
+                                .Select(id => DataManager.Instance.GetTraitByID(id)?.familyId)
+                                .Where(f => f != null)
+                                .ToHashSet();
+
+            var unownedFamilyPool = allFamilies.Where(f => !ownedFamilies.Contains(f)).ToList();
 
             if (unownedFamilyPool.Count == 0)
             {
-                Debug.LogWarning($"{hero.heroName} has no new trait families to learn.");
+                Debug.LogWarning($"{hero.heroName} has no new trait families to learn. All families acquired.");
                 return;
             }
 
+            // Roll 1: Choose a content family the hero doesn't have
             string chosenFamily = unownedFamilyPool[Random.Range(0, unownedFamilyPool.Count)];
+            
+            // Roll 2: Choose a quality rank
             Trait.RarityRank chosenRank = RollForRarity();
 
-            Trait newTrait = TraitDatabase.Instance.GetTraitByFamilyAndRank(chosenFamily, chosenRank);
+            // REFACTOR: Find the resulting trait from DataManager's collection
+            Trait newTrait = DataManager.Instance.AllTraits.Values
+                                .FirstOrDefault(t => t.familyId == chosenFamily && t.rank == chosenRank);
+
             if (newTrait != null)
             {
                 hero.traitIDs.Add(newTrait.id);
-                Debug.Log($"<color=cyan>Evolution!</color> {hero.heroName} learned a new trait: [{newTrait.traitName}] at level {hero.level}.");
+                Debug.Log($"<color=cyan>Evolution!</color> {hero.heroName} learned a new trait: [{newTrait.traitName}] (Rank: {newTrait.rank}) at level {hero.level}.");
             }
             else
             {
-                Debug.LogWarning($"Could not find a trait for family '{chosenFamily}' with rank '{chosenRank}'.");
+                // This can happen if a family exists but doesn't have a trait for the rolled rarity (e.g., no 'S' rank trait)
+                Debug.LogWarning($"Could not find a trait for family '{chosenFamily}' with rank '{chosenRank}'. Trying to find any other rank in the same family as a fallback.");
+                
+                // Fallback: try to give any trait from the chosen family
+                Trait fallbackTrait = DataManager.Instance.AllTraits.Values
+                                        .Where(t => t.familyId == chosenFamily)
+                                        .OrderBy(t => t.rank) // Get the lowest rank as a fallback
+                                        .FirstOrDefault();
+                if(fallbackTrait != null)
+                {
+                    hero.traitIDs.Add(fallbackTrait.id);
+                    Debug.Log($"<color=yellow>Fallback Success!</color> {hero.heroName} learned a fallback trait: [{fallbackTrait.traitName}] (Rank: {fallbackTrait.rank}) at level {hero.level}.");
+                }
+                else
+                {
+                     Debug.LogError($"CRITICAL: Could not find any trait for family '{chosenFamily}' after fallback attempt.");
+                }
             }
         }
 
         private Trait.RarityRank RollForRarity()
         {
             float roll = Random.Range(0f, 100f);
-            if (roll < 0.5f) return Trait.RarityRank.S;
-            if (roll < 3.5f) return Trait.RarityRank.A;
-            if (roll < 10f) return Trait.RarityRank.B;
-            if (roll < 40f) return Trait.RarityRank.C;
-            return Trait.RarityRank.D;
+            if (roll < 0.5f) return Trait.RarityRank.S;    // 0.5%
+            if (roll < 3.5f) return Trait.RarityRank.A;    // 3%
+            if (roll < 10f) return Trait.RarityRank.B;     // 6.5%
+            if (roll < 40f) return Trait.RarityRank.C;     // 30%
+            return Trait.RarityRank.D;                        // 60%
         }
     }
 }

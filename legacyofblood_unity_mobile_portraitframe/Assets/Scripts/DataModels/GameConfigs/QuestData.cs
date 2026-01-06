@@ -5,6 +5,14 @@ using System.Collections.Generic;
 
 namespace LegendOfBlood.GameConfigs
 {
+    public enum QuestCategory
+    {
+        Main,
+        Daily,
+        Weekly,
+        Achievement
+    }
+
     public enum QuestType
     {
         UPGRADE_BUILDING,
@@ -26,6 +34,7 @@ namespace LegendOfBlood.GameConfigs
     {
         [Header("Quest Info")]
         public string questId;
+        public QuestCategory category; // New field
         public string questName;
         [TextArea(3, 5)]
         public string description;

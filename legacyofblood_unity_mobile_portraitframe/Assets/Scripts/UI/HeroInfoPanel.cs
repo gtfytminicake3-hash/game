@@ -20,6 +20,9 @@ namespace LegendOfBlood
         [SerializeField] private TextMeshProUGUI defText;
         [SerializeField] private TextMeshProUGUI spdText;
         [SerializeField] private TextMeshProUGUI potentialText;
+        [SerializeField] private TextMeshProUGUI evasionText; // THÊM DÒNG NÀY
+        [SerializeField] private TextMeshProUGUI dmgReductionText; // THÊM DÒNG NÀY
+        [SerializeField] private TextMeshProUGUI dmgIncreaseText; // THÊM DÒNG NÀY
         
         [Header("Traits & Skills References")]
         [SerializeField] private GameObject infoItemPrefab;
@@ -86,6 +89,14 @@ namespace LegendOfBlood
             defText.text = string.Format(global::LocalizationSystem.GetText("stats_def_format_detailed"), baseStats.def, finalStats.def - baseStats.def);
             spdText.text = string.Format(global::LocalizationSystem.GetText("stats_spd_format_detailed"), baseStats.spd, finalStats.spd - baseStats.spd);
             potentialText.text = string.Format(global::LocalizationSystem.GetText("stats_potential_format"), _currentHero.potential);
+
+            // THÊM CÁC DÒNG NÀY ĐỂ HIỂN THỊ CHỈ SỐ MỚI
+            evasionText.text = $"Evasion: {_currentHero.evasionRate:P0}";
+            dmgReductionText.text = $"Dmg. Reduction: {_currentHero.damageReduction:P0}";
+            dmgIncreaseText.text = $"Dmg. Increase: {_currentHero.damageIncrease:P0}";
+            evasionText.text = string.Format(global::LocalizationSystem.GetText("stats_evasion_format"), _currentHero.evasionRate);
+            dmgReductionText.text = string.Format(global::LocalizationSystem.GetText("stats_dmg_reduction_format"), _currentHero.damageReduction);
+            dmgIncreaseText.text = string.Format(global::LocalizationSystem.GetText("stats_dmg_increase_format"), _currentHero.damageIncrease);
 
             statAllocationButton.gameObject.SetActive(_currentHero.freeStatPoints > 0);
             traitUpgradeButton.gameObject.SetActive(_currentHero.level == 60 || _currentHero.level == 100);

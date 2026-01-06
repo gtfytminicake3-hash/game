@@ -27,6 +27,7 @@ namespace LegendOfBlood
         // --- State Variables ---
         private Action<List<string>> _onConfirmCallback; // Hàm callback để trả kết quả về cho người gọi
         private List<HeroData> _availableHeroes;
+        private Profession _requiredProfession = Profession.None;
         private HeroData[] _selectedHeroes; // Dùng mảng vì kích thước cố định
         private List<SquadSlotCard> _squadSlotCards = new List<SquadSlotCard>();
         private List<GameObject> _availableHeroCards = new List<GameObject>();
@@ -50,13 +51,15 @@ namespace LegendOfBlood
         /// <param name="availableHeroes">Danh sách hero người chơi có thể chọn.</param>
         /// <param name="squadSize">Số lượng hero cần chọn.</param>
         /// <param name="onConfirm">Hàm callback sẽ được gọi khi người chơi xác nhận.</param>
-        public void Show(string title, List<HeroData> availableHeroes, int squadSize, Action<List<string>> onConfirm)
+        /// <param name="requiredProfession">Nghề nghiệp yêu cầu (tùy chọn). Nếu khác None, chỉ hero có nghề này mới được chọn.</param>
+        public void Show(string title, List<HeroData> availableHeroes, int squadSize, Action<List<string>> onConfirm, Profession requiredProfession = Profession.None)
         {
             GameManager.Instance.UIManager.ShowPanel(UIPanelType.SquadSelection, false);
             
             titleText.text = title;
             _availableHeroes = availableHeroes;
             _onConfirmCallback = onConfirm;
+            _requiredProfession = requiredProfession;
 
             _selectedHeroes = new HeroData[squadSize]; // Khởi tạo mảng với kích thước yêu cầu
 
@@ -91,8 +94,15 @@ namespace LegendOfBlood
             foreach (var card in _availableHeroCards) Destroy(card);
             _availableHeroCards.Clear();
 
-            // Lọc ra những hero chưa được chọn
-            var heroesToShow = _availableHeroes.Where(h => !_selectedHeroes.Contains(h)).ToList();
+            // Lọc ra những hero chưa được chọn và hợp lệ
+            var heroesToShow = _availableHeroes.Where(h =>
+            {
+                bool isNotSelected = !_selectedHeroes.Contains(h);
+                bool meetsProfessionRequirement = (_requiredProfession == Profession.None) || (h.profession == _requiredProfession);
+                // Chỉ những hero đã trưởng thành (có nghề) mới được tham gia
+                return isNotSelected && h.isMature && meetsProfessionRequirement;
+            }).ToList();
+
             heroesToShow = heroesToShow.OrderByDescending(h => h.GetCombatPower()).ToList();
             
             foreach (var hero in heroesToShow)

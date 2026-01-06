@@ -79,7 +79,61 @@ namespace LegendOfBlood.Managers
             }
 
             SubscribeToEvents();
+            
+            CheckForResets();
+
             Debug.Log($"QuestManager initialized. {_playerQuests.Count} active player quests.");
+        }
+        
+        private void CheckForResets()
+        {
+            DateTime now = DateTime.UtcNow;
+            DateTime today = now.Date;
+            DateTime weekStart = now.Date.AddDays(-(int)now.DayOfWeek);
+
+            long todayTs = ((DateTimeOffset)today).ToUnixTimeSeconds();
+            long weekStartTs = ((DateTimeOffset)weekStart).ToUnixTimeSeconds();
+
+            var player = DataManager.Instance.Player;
+
+            // Daily Reset
+            if (player.lastDailyResetTimestamp < todayTs)
+            {
+                ResetQuestsByCategory(QuestCategory.Daily);
+                player.lastDailyResetTimestamp = todayTs;
+                Debug.Log("Daily Quests Reset!");
+            }
+
+            // Weekly Reset
+            if (player.lastWeeklyResetTimestamp < weekStartTs)
+            {
+                ResetQuestsByCategory(QuestCategory.Weekly);
+                player.lastWeeklyResetTimestamp = weekStartTs;
+                Debug.Log("Weekly Quests Reset!");
+            }
+        }
+
+        private void ResetQuestsByCategory(QuestCategory category)
+        {
+            var questsToReset = _allQuests.Values.Where(q => q.category == category).Select(q => q.questId).ToList();
+            
+            foreach (var qId in questsToReset)
+            {
+                var playerQuest = _playerQuests.FirstOrDefault(pq => pq.questId == qId);
+                if (playerQuest != null)
+                {
+                    // Reset state and progress
+                    playerQuest.state = QuestState.NotStarted;
+                    playerQuest.currentProgress = 0;
+                }
+            }
+            // Logic to re-activate daily quests if needed
+            // For now, we just reset them to NotStarted. 
+            // If they are "Auto-Activate", we should Activate them here or in a separate pass.
+             foreach (var qId in questsToReset)
+             {
+                 ActivateQuest(qId);
+             }
         }
 
         private void OnDestroy()

@@ -22,6 +22,8 @@ namespace LegendOfBlood
         //[SerializeField] private Button hospitalButton;
         //[SerializeField] private Button worldMapButton;
         [SerializeField] private Button backToVillageButton;
+        [Header("Popups")]
+        [SerializeField] private ProfessionSelectionPanel professionSelectionPanel;
 
         private List<GameObject> _instantiatedHeroCards = new List<GameObject>();
 
@@ -31,6 +33,7 @@ namespace LegendOfBlood
         {
             EventManager.StartListening(GameEvents.OnPlayerDataLoaded, RefreshHeroList);
             EventManager.StartListening(GameEvents.OnHeroListChanged, RefreshHeroList);
+            EventManager.StartListening<HeroData>(GameEvents.OnProfessionSelectionRequested, ShowProfessionSelection);
            // breedingButton.onClick.AddListener(OnBreedingClicked);
             //hospitalButton.onClick.AddListener(OnHospitalClicked);
            // worldMapButton.onClick.AddListener(OnWorldMapClicked);
@@ -44,6 +47,7 @@ namespace LegendOfBlood
         {
             EventManager.StopListening(GameEvents.OnPlayerDataLoaded, RefreshHeroList);
             EventManager.StopListening(GameEvents.OnHeroListChanged, RefreshHeroList);
+            EventManager.StopListening<HeroData>(GameEvents.OnProfessionSelectionRequested, ShowProfessionSelection);
            // breedingButton.onClick.RemoveListener(OnBreedingClicked);
            // hospitalButton.onClick.RemoveListener(OnHospitalClicked);
             //worldMapButton.onClick.RemoveListener(OnWorldMapClicked);
@@ -120,6 +124,21 @@ namespace LegendOfBlood
         private void BackToVillageView()
         {
             GameManager.Instance.UIManager.HidePanel(UIPanelType.MainScreen);
+        }
+
+        private void ShowProfessionSelection(HeroData hero)
+        {
+            if (professionSelectionPanel != null)
+            {
+                professionSelectionPanel.Show(hero, () => {
+                    // Refresh UI logic if needed, e.g. update Hero Info panel if open
+                    Debug.Log("Profession selection completed.");
+                });
+            }
+            else
+            {
+                Debug.LogError("ProfessionSelectionPanel reference is missing in UIMainController!");
+            }
         }
 
         #endregion
