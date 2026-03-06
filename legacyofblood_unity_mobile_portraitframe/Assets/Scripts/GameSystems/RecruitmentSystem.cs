@@ -88,16 +88,44 @@ namespace LegendOfBlood
 
         private Trait.RarityRank RollForRarity()
         {
-            float roll = Random.Range(0f, 100f);
-            if (roll < 0.5f) return Trait.RarityRank.S;     // 0.5%
-            if (roll < 3.5f) return Trait.RarityRank.A;     // 3%
-            if (roll < 10f) return Trait.RarityRank.B;      // 6.5%
-            if (roll < 40f) return Trait.RarityRank.C;      // 30%
+            var raritySettings = DataManager.Instance?.GameConfig?.RaritySettings;
+            if (raritySettings != null && raritySettings.Count > 0)
+            {
+                float roll = Random.Range(0f, 100f);
+                float cumulative = 0f;
+                // Sắp xếp tăng dần theo drop chance để chắc chắn việc check là hợp lý nhất, hoặc duyệt theo thứ tự khai báo.
+                foreach (var setting in raritySettings.OrderBy(r => r.dropChance))
+                {
+                    cumulative += setting.dropChance;
+                    if (roll <= cumulative) return setting.rank;
+                }
+                // Fallback nếu tổng < 100
+                return raritySettings.Last().rank;
+            }
+
+            // Fallback nếu chưa config
+            float simpleRoll = Random.Range(0f, 100f);
+            if (simpleRoll < 0.5f) return Trait.RarityRank.S;     // 0.5%
+            if (simpleRoll < 3.5f) return Trait.RarityRank.A;     // 3%
+            if (simpleRoll < 10f) return Trait.RarityRank.B;      // 6.5%
+            if (simpleRoll < 40f) return Trait.RarityRank.C;      // 30%
             return Trait.RarityRank.D;                      // 60%
         }
 
         private int GetPotentialFromRarity(Trait.RarityRank rarity)
         {
+            var raritySettings = DataManager.Instance?.GameConfig?.RaritySettings;
+            if (raritySettings != null && raritySettings.Count > 0)
+            {
+                var setting = raritySettings.FirstOrDefault(r => r.rank == rarity);
+                if (setting != null)
+                {
+                    // Lấy random trong khoảng min, max config
+                    return Random.Range(setting.minPotential, setting.maxPotential + 1);
+                }
+            }
+
+            // Fallback
             return rarity switch
             {
                 Trait.RarityRank.S => Random.Range(17, 21),

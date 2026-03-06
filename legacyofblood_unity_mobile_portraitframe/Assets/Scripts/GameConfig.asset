@@ -12,8 +12,192 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b603abc7bfcb7fe46b4ca476156398d0, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.GameConfig
-  AllTraits: []
-  AllSkills: []
+  AllTraits:
+  - {fileID: 11400000, guid: db023c430c528bd48bea4cc5829db8a0, type: 2}
+  - {fileID: 11400000, guid: 3533a52ae33326d4aad634047e914289, type: 2}
+  - {fileID: 11400000, guid: 97b3e0b498bf1464689c8c2e9130aec0, type: 2}
+  - {fileID: 11400000, guid: bf356eb270b3feb43bbf588a58b885d4, type: 2}
+  - {fileID: 11400000, guid: 45a1fb4dfa00190429ef1d1bb6959b28, type: 2}
+  AllSkills:
+  - {fileID: 11400000, guid: 60ed7ecd71141b1468b9c56d0464c025, type: 2}
+  - {fileID: 11400000, guid: 3998205a6675e8f48ba0a53c937dda7e, type: 2}
+  - {fileID: 11400000, guid: 45bec6c934ae7c249813deaa913c1d5a, type: 2}
+  - {fileID: 11400000, guid: 0edec98f4bc9919449249bf8d2a230f3, type: 2}
   ExperienceTable: []
+  EvolutionTable:
+    rewards: []
+  StartingSkills:
+  - profession: 1
+    startingSkillIDs:
+    - SK_WARRIOR_01
+  - profession: 2
+    startingSkillIDs:
+    - SK_ARCHER_01
+  - profession: 3
+    startingSkillIDs:
+    - SK_MAGE_01
+  - profession: 4
+    startingSkillIDs:
+    - SK_HEALER_01
+  POIMonsterConfig: {fileID: 0}
   AllBosses: []
-  AllItems: []
+  AllItems:
+  - {fileID: 11400000, guid: 731c172e8758a5042af456caa5172219, type: 2}
+  - {fileID: 11400000, guid: bff203e763f0cb542b1a764b408d3562, type: 2}
+  RaritySettings:
+  - rank: 4
+    dropChance: 0.5
+    minPotential: 17
+    maxPotential: 21
+  - rank: 3
+    dropChance: 3
+    minPotential: 13
+    maxPotential: 17
+  - rank: 2
+    dropChance: 6.5
+    minPotential: 9
+    maxPotential: 13
+  - rank: 1
+    dropChance: 30
+    minPotential: 5
+    maxPotential: 9
+  - rank: 0
+    dropChance: 60
+    minPotential: 1
+    maxPotential: 5
+  CombatSettings:
+    archerBonusCritChance: 0.4
+    poisonDamageRatio: 0.2
+    slowSpeedReduction: -20
+    critUpBonus: 0.15
+    defDownRatio: -0.15
+    healOverTimeRatio: 0.5
+  BuildingUpgradeDataList:
+  - {fileID: 11400000, guid: 4fb67c6fc37eb214fbc94339c2052237, type: 2}
+  - {fileID: 11400000, guid: c2c4ac0e455661d459367ca8e89c6f42, type: 2}
+  - {fileID: 11400000, guid: 90485e37bc702c3479d48418d2cf7e84, type: 2}
+  - {fileID: 11400000, guid: 32d4a19429c1f104a8a85cfdaf5f58b9, type: 2}
+  AllQuestData:
+  - {fileID: 11400000, guid: 95bbbdc274aa3154bb2e6d03c4929aa3, type: 2}
+  - {fileID: 11400000, guid: c777fc180db984e41ba08f2528d2cd46, type: 2}
+  TowerConfigs:
+  - floorIndex: 1
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 2
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 3
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 4
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 5
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 6
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 7
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 8
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 9
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 10
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 11
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 12
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 13
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 14
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 15
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 16
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 17
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 18
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 19
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0
+  - floorIndex: 20
+    monsterPool:
+    - MONSTER_ID_01
+    - MONSTER_ID_02
+    - MONSTER_ID_03
+    customMonsterCount: 0

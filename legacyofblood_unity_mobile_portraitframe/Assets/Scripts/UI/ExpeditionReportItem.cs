@@ -12,17 +12,17 @@ namespace LegendOfBlood
         [SerializeField] private TextMeshProUGUI poiNameText;
         [SerializeField] private TextMeshProUGUI outcomeText;
         [SerializeField] private Button claimButton;
+        [SerializeField] private Button replayButton; // Thêm biến cho nút Xem Lại
 
         private ExpeditionReport _report;
         private Action _onClaimCallback;
+        private Action _onReplayCallback;
 
         private void OnDestroy()
         {
             // Clean up the listener when the object is destroyed
-            if (claimButton != null)
-            {
-                claimButton.onClick.RemoveAllListeners();
-            }
+            if (claimButton != null) claimButton.onClick.RemoveAllListeners();
+            if (replayButton != null) replayButton.onClick.RemoveAllListeners();
         }
 
         /// <summary>
@@ -30,10 +30,12 @@ namespace LegendOfBlood
         /// </summary>
         /// <param name="report">The expedition result data.</param>
         /// <param name="onClaimCallback">The action to execute when the Claim button is clicked.</param>
-        public void Initialize(ExpeditionReport report, Action onClaimCallback)
+        /// <param name="onReplayCallback">The action to execute when the Replay button is clicked.</param>
+        public void Initialize(ExpeditionReport report, Action onClaimCallback, Action onReplayCallback = null)
         {
             _report = report;
             _onClaimCallback = onClaimCallback;
+            _onReplayCallback = onReplayCallback;
 
             // Populate UI elements
             if (poiNameText != null)
@@ -60,12 +62,24 @@ namespace LegendOfBlood
                 }
             }
 
-            // Set up the button
+            // Set up the claim button
             if (claimButton != null)
             {
                 claimButton.onClick.RemoveAllListeners(); // Clear previous listeners
                 claimButton.onClick.AddListener(HandleClaimButtonClick);
             }
+
+            // Set up the replay button
+            if (replayButton != null)
+            {
+                replayButton.onClick.RemoveAllListeners();
+                replayButton.onClick.AddListener(HandleReplayButtonClick);
+            }
+        }
+
+        private void HandleReplayButtonClick()
+        {
+            _onReplayCallback?.Invoke();
         }
 
         private void HandleClaimButtonClick()

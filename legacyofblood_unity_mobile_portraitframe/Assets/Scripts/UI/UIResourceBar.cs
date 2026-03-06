@@ -18,18 +18,15 @@ namespace LegendOfBlood
 
         private void OnEnable()
         {
-            // Bắt đầu lắng nghe sự kiện khi đối tượng được kích hoạt.
-            EventManager.StartListening<ResourceType, int>(GameEvents.OnResourceChanged, HandleResourceChange);
-            
-            // Cũng lắng nghe sự kiện tải dữ liệu xong để cập nhật lần đầu tiên.
-            EventManager.StartListening(GameEvents.OnPlayerDataLoaded, UpdateAllResources);
+            // Kết nối TRỰC TIẾP với kênh sóng "Analog" C# của Manager thay vì EventManager số hóa.
+            InventoryManager.OnResourceChanged += HandleResourceChange;
+            DataManager.OnPlayerDataLoaded += UpdateAllResources;
         }
 
         private void OnDisable()
         {
-            // Luôn hủy đăng ký để tránh lỗi.
-            EventManager.StopListening<ResourceType, int>(GameEvents.OnResourceChanged, HandleResourceChange);
-            EventManager.StopListening(GameEvents.OnPlayerDataLoaded, UpdateAllResources);
+            InventoryManager.OnResourceChanged -= HandleResourceChange;
+            DataManager.OnPlayerDataLoaded -= UpdateAllResources;
         }
 
         private void Start()

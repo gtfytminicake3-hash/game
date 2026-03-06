@@ -1,17 +1,14 @@
 # --- Bootloader ---
 loading_format=Loading... {0}%
-
 # --- Main Menu / Hero List Buttons ---
 button_world_map=World Map
 button_breeding=Breeding
 button_hospital=Hospital
 button_arena=Arena
 button_inventory=Inventory
-
 # --- General UI ---
 level_format_short=Lv. {0}
 cp_format_short=CP: {0}
-
 # --- Breeding Panel ---
 breeding_error_same_gender=Breeding failed: Parents must be of different genders.
 breeding_select_father=Select Father
@@ -23,7 +20,6 @@ breeding_change_father=Change Father
 breeding_change_mother=Change Mother
 breeding_error_select_father_first=Please select a father first.
 breeding_failed=Breeding failed. Please try again.
-
 # --- Hero Names ---
 male_name_1=An
 male_name_2=Bao
@@ -79,7 +75,6 @@ female_name_24=Thuy
 female_name_25=Trang
 female_name_26=Tu
 female_name_27=Yen
-
 # --- Inventory & DataManager ---
 inventory_error_no_playerdata=InventoryManager could not get PlayerData from DataManager!
 inventory_error_not_enough_resource=Not enough {0} to spend. Required: {1}, Have: {2}
@@ -95,7 +90,6 @@ datamanager_info_save_success=Game saved successfully at: {0}
 datamanager_error_save_failed=Error saving game! Error: {0}
 starting_hero_male_name=Adam
 starting_hero_female_name=Eve
-
 # --- Arena ---
 arena_error_not_enough_heroes=Need at least {0} available heroes!
 arena_squad_selection_title=Select Arena Squad
@@ -105,7 +99,6 @@ arena_combat_result_lose=You were defeated!
 arena_combat_report_header=--- COMBAT REPORT ---
 arena_combat_report_footer=---------------------
 arena_dummy_enemy_name=Enemy {0}
-
 # --- Hospital ---
 hospital_title=Hospital
 hospital_section_severe=Severely Injured
@@ -114,7 +107,6 @@ hospital_label_ready=Ready
 hospital_label_time_left=Time left: {0}
 hospital_button_heal=Heal
 hospital_button_recover=Recover
-
 # --- World Map & POI ---
 poi_name_format={0} #{1}
 poi_type_Dungeon=Dungeon
@@ -122,7 +114,6 @@ poi_type_RescueMission=Rescue Mission
 poi_difficulty_format=Difficulty: {0}
 poi_recommended_cp_format=Rec. CP: {0}
 worldmap_select_squad_title_format=Select squad for: {0}
-
 # --- Hero Info Panel ---
 level_format=Level {0}
 profession_format=Profession: {0}
@@ -134,12 +125,11 @@ stats_spd_format_detailed=SPD: {0} (+{1})
 stats_potential_format=Potential: {0}
 unknown=Unknown
 description_not_found=Description not found.
-
 # --- Squad Selection Panel ---
 total_cp_format=Total CP: {0}
-
 # --- Breeding Result Panel ---
 stats_hp_format=HP: {0}
 stats_atk_format=ATK: {0}
 stats_def_format=DEF: {0}
-stats_spd_format=SPD: {0}
+notification_feature_locked=This feature is locked!
+poi_tower_name_format=Tower of {0}

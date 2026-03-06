@@ -49,7 +49,7 @@ namespace LegendOfBlood.Managers
         private Dictionary<string, QuestData> _allQuests;
 
         [Header("Starting Quests")]
-        [SerializeField] private List<string> _startingQuestIds;
+        [SerializeField] private List<string> _startingQuestIds = new List<string>();
 
         private void Start()
         {

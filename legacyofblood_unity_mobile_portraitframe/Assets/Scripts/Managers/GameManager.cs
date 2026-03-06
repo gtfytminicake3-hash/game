@@ -36,8 +36,8 @@ namespace LegendOfBlood
                 // Nếu chưa có, gán Instance cho chính nó
                 Instance = this;
 
-                // Giữ cho GameManager không bị phá hủy khi chuyển scene
-                DontDestroyOnLoad(this.gameObject);
+                // Giữ cho phần Root chứa GameManager không bị phá hủy khi chuyển scene (nếu cần)
+                DontDestroyOnLoad(this.transform.root.gameObject);
 
                 // Sau khi thiết lập Singleton, tiến hành khởi tạo các hệ thống
                 InitializeSystems();
@@ -150,23 +150,29 @@ namespace LegendOfBlood
         /// </summary>
         private void InitializeSystems()
         {
+            // Tự động tìm các Manager nếu chưa được gán bằng tay trong Inspector (Auto-wiring)
+            if (_dataManager == null) { _dataManager = transform.root.GetComponentInChildren<DataManager>(true); if (_dataManager == null) _dataManager = gameObject.AddComponent<DataManager>(); }
+            if (_inventoryManager == null) { _inventoryManager = transform.root.GetComponentInChildren<InventoryManager>(true); if (_inventoryManager == null) _inventoryManager = gameObject.AddComponent<InventoryManager>(); }
+            if (_expeditionManager == null) { _expeditionManager = transform.root.GetComponentInChildren<ExpeditionManager>(true); if (_expeditionManager == null) _expeditionManager = gameObject.AddComponent<ExpeditionManager>(); }
+            if (_uiManager == null) { _uiManager = transform.root.GetComponentInChildren<UIManager>(true); if (_uiManager == null) _uiManager = gameObject.AddComponent<UIManager>(); }
+            if (_uiNotificationManager == null) { _uiNotificationManager = transform.root.GetComponentInChildren<UINotificationManager>(true); if (_uiNotificationManager == null) _uiNotificationManager = gameObject.AddComponent<UINotificationManager>(); }
+            if (_arenaSystem == null) { _arenaSystem = transform.root.GetComponentInChildren<ArenaSystem>(true); if (_arenaSystem == null) _arenaSystem = gameObject.AddComponent<ArenaSystem>(); }
+            if (_questManager == null) { _questManager = transform.root.GetComponentInChildren<QuestManager>(true); if (_questManager == null) _questManager = gameObject.AddComponent<QuestManager>(); }
+
             // Khởi tạo hệ thống dịch thuật
             global::LocalizationSystem.LoadLocalizedText((global::Language)LanguageManager.CurrentLanguage);
 
-            // Xác thực rằng tất cả các tham chiếu đã được gán trong Inspector
-            if (_dataManager == null || _inventoryManager == null || _expeditionManager == null || _uiManager == null || _uiNotificationManager == null || _arenaSystem == null || _questManager == null)
+            // GỌI KHỞI TẠO DATA TRƯỚC: Ép DataManager phải xong xuôi trước khi gọi CombatSystem
+            if (_dataManager != null)
             {
-                Debug.LogError("GAME MANAGER: Một hoặc nhiều Manager chưa được gán trong Inspector!");
-                // Vô hiệu hóa component để tránh lỗi NullReferenceException
-                this.enabled = false;
-                return;
+                _dataManager.InitializeDataManager();
             }
 
-            // Khởi tạo các hệ thống logic (POCO - Plain Old C# Object)
+            // Khởi tạo các hệ thống logic (POCO - Plain Old C# Object) - SẼ KHÔNG BAO GIỜ BỊ CHẶN NỮA
             BreedingSystem = new BreedingSystem();
             // Cần cung cấp seed và danh sách skill cho CombatSystem
             // Sửa lỗi: Lấy danh sách skill từ DataManager đã được khởi tạo
-            var allSkills = DataManager.AllSkills.Values.ToList();
+            var allSkills = _dataManager.AllSkills != null ? _dataManager.AllSkills.Values.ToList() : new List<LegendOfBlood.Skill>();
             CombatSystem = new CombatSystem(Environment.TickCount, allSkills);
             EvolutionSystem = new EvolutionSystem();
             HospitalSystem = new HospitalSystem();

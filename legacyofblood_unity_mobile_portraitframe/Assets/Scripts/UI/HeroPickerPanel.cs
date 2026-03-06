@@ -28,9 +28,9 @@ namespace LegendOfBlood
 
         #region Unity Lifecycle
 
-        private void Awake()
+        private void Start()
         {
-            closeButton.onClick.AddListener(ClosePanel);
+            if (closeButton != null) closeButton.onClick.AddListener(ClosePanel);
         }
 
         #endregion
@@ -81,6 +81,7 @@ namespace LegendOfBlood
             foreach (var hero in sortedHeroes)
             {Debug.Log($"Đang tạo thẻ bài cho {hero.heroName}...");
                 GameObject cardInstance = Instantiate(heroCardPrefab, listContainer);
+                cardInstance.SetActive(true); // Đảm bảo thẻ Tướng hiển thị, chống tàng hình từ Prefab
                 HeroPickerCard cardScript = cardInstance.AddComponent<HeroPickerCard>(); // Thêm một script phụ để xử lý click
                 cardScript.Setup(hero, this); // Truyền tham chiếu của panel này vào card
                 _instantiatedCards.Add(cardInstance);
@@ -101,14 +102,10 @@ namespace LegendOfBlood
 
         private void ClosePanel()
         {
-            GameManager.Instance.UIManager.HidePanel(UIPanelType.HeroPicker);
+            GameManager.Instance.UIManager.GoBack();
         }
 
         #endregion
     }
 
-    /// <summary>
-    /// Một script phụ nhỏ, được thêm vào các HeroCard trong HeroPickerPanel.
-    /// Nó ghi đè hành vi click mặc định.
-    /// </summary>
 }

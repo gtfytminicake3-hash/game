@@ -34,10 +34,10 @@ namespace LegendOfBlood
 
         #region Unity Lifecycle
 
-        private void Awake()
+        private void Start()
         {
-            confirmButton.onClick.AddListener(OnConfirmClicked);
-            closeButton.onClick.AddListener(ClosePanel);
+            if (confirmButton != null) confirmButton.onClick.AddListener(OnConfirmClicked);
+            if (closeButton != null) closeButton.onClick.AddListener(ClosePanel);
         }
         
         #endregion
@@ -108,12 +108,24 @@ namespace LegendOfBlood
             foreach (var hero in heroesToShow)
             {
                 GameObject cardInstance = Instantiate(heroCardPrefab, availableListContainer);
-                HeroCard heroCardScript = cardInstance.GetComponent<HeroCard>();
-                heroCardScript.Setup(hero);
+                SquadSelectionHeroCard selectionCardScript = cardInstance.GetComponent<SquadSelectionHeroCard>();
                 
-                // Thêm listener để khi click sẽ thêm hero vào đội hình
-                Button button = cardInstance.GetComponent<Button>();
-                button.onClick.AddListener(() => AddHeroToSquad(hero));
+                if (selectionCardScript != null)
+                {
+                    // Ưu tiên dùng Script thẻ chọn quân đặc thù nếu Prefab đã được gắn
+                    selectionCardScript.Setup(hero, this);
+                }
+                else
+                {
+                    // Fallback tương thích ngược: Dùng HeroCard thường và chèn Nút vào cả thẻ
+                    HeroCard heroCardScript = cardInstance.GetComponent<HeroCard>();
+                    heroCardScript.Setup(hero);
+                    
+                    Button button = cardInstance.GetComponent<Button>();
+                    button.onClick.RemoveAllListeners(); // Xóa listener cũ để click KHÔNG mở bảng InfoPanel nữa
+                    button.onClick.AddListener(() => AddHeroToSquad(hero));
+                }
+                
                 _availableHeroCards.Add(cardInstance);
             }
         }
@@ -169,13 +181,11 @@ namespace LegendOfBlood
 
         private void ClosePanel()
         {
-            GameManager.Instance.UIManager.HidePanel(UIPanelType.SquadSelection);
+            GameManager.Instance.UIManager.GoBack();
         }
 
         #endregion
     }
-}
 
-// NOTE: Bạn sẽ cần tạo một script "SquadSlotCard.cs" cho prefab của ô đội hình.
-// Script này sẽ chứa các tham chiếu UI (Image, Button) và gọi lại
+}
 // SquadSelectionPanel.RemoveHeroFromSquad(index) khi được click.

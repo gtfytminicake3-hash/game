@@ -42,6 +42,9 @@ namespace LegendOfBlood
         public float damageReduction;
         public float damageIncrease;
         
+        // --- NEW: Equipment ---
+        public Dictionary<EquipmentSlot, EquipmentData> Equipments;
+        
         // SỬA LỖI TIỀM TÀNG: Đổi currentHp thành float để khớp với HeroStats.hp
         public float currentHp; 
 
@@ -75,6 +78,7 @@ namespace LegendOfBlood
             
             traitIDs = new List<string>();
             skillIDs = new List<string>();
+            Equipments = new Dictionary<EquipmentSlot, EquipmentData>();
 
             if (AvatarManager.Instance != null)
             {
@@ -92,6 +96,7 @@ namespace LegendOfBlood
             traitIDs = new List<string>();
             skillIDs = new List<string>();
             this.addedStats = new HeroStats();
+            Equipments = new Dictionary<EquipmentSlot, EquipmentData>();
         }
 
         #endregion
@@ -137,6 +142,30 @@ namespace LegendOfBlood
                 critDamage = baseStats.critDamage
             };
             float multiplyHp = 1.0f, multiplyAtk = 1.0f, multiplyDef = 1.0f, multiplySpd = 1.0f;
+            
+            // --- CỘNG DỒN TRANG BỊ ---
+            if (Equipments != null)
+            {
+                foreach (var eq in Equipments.Values)
+                {
+                    if (eq == null) continue;
+                    // Flat stats
+                    finalStats.hp += eq.hpBonus;
+                    finalStats.atk += eq.atkBonus;
+                    finalStats.def += eq.defBonus;
+                    finalStats.spd += eq.spdBonus;
+                    finalStats.critChance += eq.critChanceBonus;
+                    finalStats.critDamage += eq.critDamageBonus;
+                    
+                    // Multiplier stats
+                    multiplyHp += eq.hpMultiplier;
+                    multiplyAtk += eq.atkMultiplier;
+                    multiplyDef += eq.defMultiplier;
+                    multiplySpd += eq.spdMultiplier;
+                }
+            }
+
+            // --- CỘNG DỒN TRAIT ---
             foreach (string traitId in traitIDs)
             {
                 Trait trait = DataManager.Instance.GetTraitByID(traitId);
@@ -178,7 +207,16 @@ namespace LegendOfBlood
         /// </summary>
         public HeroData Clone()
         {
-            return (HeroData)this.MemberwiseClone();
+            var cloned = (HeroData)this.MemberwiseClone();
+            if (this.Equipments != null)
+            {
+                cloned.Equipments = new Dictionary<EquipmentSlot, EquipmentData>();
+                foreach (var eq in this.Equipments)
+                {
+                    cloned.Equipments[eq.Key] = eq.Value?.Clone();
+                }
+            }
+            return cloned;
         }
         
         public void AddExperience(int amount)
@@ -215,6 +253,7 @@ namespace LegendOfBlood
         {
             traitIDs ??= new List<string>();
             skillIDs ??= new List<string>();
+            Equipments ??= new Dictionary<EquipmentSlot, EquipmentData>();
         }
 
         public void OnBeforeSerialize() { }

@@ -21,7 +21,15 @@ namespace LegendOfBlood
         HeroPicker,
         Inventory,
         ArenaShop,
-        ProfessionSelection
+        ProfessionSelection,
+        Recruitment,
+        Settings,
+        BuildingUpgrade,
+        Tutorial,
+        Bootloader,
+        Mailbox,
+        Barrack,
+        Battle
     }
 
     /// <summary>
@@ -44,10 +52,14 @@ namespace LegendOfBlood
 
         #region Scene Management & Panel Registration
 
+        private void Awake()
+        {
+            // Đăng ký toàn bộ Panel tĩnh từ đầu do quy về 1 Scene duy nhất
+            RegisterAllPanelsInScene();
+        }
+
         private void OnEnable()
         {
-            // Đăng ký lắng nghe sự kiện khi một scene được tải xong
-            SceneManager.sceneLoaded += OnSceneLoaded;
             // Đăng ký lắng nghe sự kiện khi ngôn ngữ thay đổi
             global::LocalizationSystem.OnLanguageChanged += UpdateAllVisiblePanelsText;
             DataManager.OnPlayerDataLoaded += UpdateFeatureLocks;
@@ -55,42 +67,45 @@ namespace LegendOfBlood
 
         private void OnDisable()
         {
-            // Hủy đăng ký để tránh lỗi
-            SceneManager.sceneLoaded -= OnSceneLoaded;
             // Hủy đăng ký sự kiện ngôn ngữ
             global::LocalizationSystem.OnLanguageChanged -= UpdateAllVisiblePanelsText;
             DataManager.OnPlayerDataLoaded -= UpdateFeatureLocks;
         }
 
-        // Hàm này sẽ được gọi mỗi khi một scene mới tải xong
-        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        /// <summary>
+        /// Tìm và đăng ký tất cả các đối tượng có script UIPanel trong dự án (kể cả bị ẩn).
+        /// </summary>
+        private void RegisterAllPanelsInScene()
         {
-            // Xóa tất cả các panel cũ từ scene trước đó để chuẩn bị cho scene mới
             _panelDictionary.Clear();
             _history.Clear();
             _currentPanel = UIPanelType.None;
-            
-            // Tìm tất cả các UIPanel trong scene vừa tải và đăng ký chúng
-            RegisterAllPanelsInScene(scene);
-        }
 
-        /// <summary>
-        /// Tìm và đăng ký tất cả các đối tượng có script UIPanel trong scene hiện tại.
-        /// </summary>
-        private void RegisterAllPanelsInScene(Scene scene)
-        {
-            // Sử dụng FindObjectsByType để tìm tất cả các UIPanel đang hoạt động trong scene
-            UIPanel[] allPanels = FindObjectsByType<UIPanel>(FindObjectsSortMode.None);
+            // Truy quét MỌI UIPanel bị ẩn và không ẩn trên cảnh
+            UIPanel[] allPanels = FindObjectsByType<UIPanel>(FindObjectsInactive.Include, FindObjectsSortMode.None);
             
-            Debug.Log($"[{scene.name}] Tìm thấy {allPanels.Length} panel, đang tiến hành đăng ký...");
+            Debug.Log($"[UIManager] Tìm thấy {allPanels.Length} panel (Kể cả bị ẩn), đang tiến hành đăng ký...");
 
             foreach (UIPanel panel in allPanels)
             {
+                if (panel.PanelType == UIPanelType.None) continue; // Bỏ qua Panel Type bằng None
+
                 if (!_panelDictionary.ContainsKey(panel.PanelType))
                 {
                     _panelDictionary.Add(panel.PanelType, panel.gameObject);
-                    // Luôn tắt panel sau khi đăng ký để đảm bảo trạng thái ban đầu sạch sẽ
-                    panel.gameObject.SetActive(false); 
+                    
+                    // Ngoại lệ sống còn: Không được ẩn Bootloader vì nó phải chạy ngay khi bật game
+                    if (panel.PanelType != UIPanelType.Bootloader)
+                    {
+                        panel.gameObject.SetActive(false); 
+                    }
+                    else
+                    {
+                        // CHỈ CHỈNH SỬA TẠI ĐÂY: Ép bật Bootloader và đưa lên hàng đầu nếu nó lỡ bị tắt trong Editor
+                        panel.gameObject.SetActive(true);
+                        _currentPanel = UIPanelType.Bootloader;
+                        panel.transform.SetAsLastSibling();
+                    }
                 }
                 else
                 {
@@ -130,20 +145,22 @@ namespace LegendOfBlood
 
             if (_panelDictionary.TryGetValue(panelType, out GameObject panelToShow))
             {
-                // Nếu cần ẩn panel hiện tại và có một panel đang mở
-                if (hideCurrent && _currentPanel != UIPanelType.None)
+                UIPanelType previousPanel = _currentPanel;
+
+                // Thêm panel hiện tại vào lịch sử *trước khi* ẩn nó đi
+                if (previousPanel != UIPanelType.None)
                 {
-                    HidePanel(_currentPanel);
+                    _history.Push(previousPanel);
                 }
 
-                // Thêm panel hiện tại vào lịch sử *trước khi* chuyển sang panel mới
-                // Chỉ thêm nếu nó là một panel hợp lệ
-                if (_currentPanel != UIPanelType.None)
+                // Nếu cần ẩn panel hiện tại và có một panel đang mở, VÀ ĐẶC BIỆT KHÔNG ĐƯỢC ẨN MAINSCREEN (Làng)
+                if (hideCurrent && previousPanel != UIPanelType.None && previousPanel != UIPanelType.MainScreen)
                 {
-                    _history.Push(_currentPanel);
+                    HidePanel(previousPanel);
                 }
 
                 panelToShow.SetActive(true);
+                panelToShow.transform.SetAsLastSibling(); // Vô cùng quan trọng: Đẩy thẻ bài lên Layer trên cùng để người chơi dễ dàng click!
                 _currentPanel = panelType;
             }
             else

@@ -1,0 +1,6 @@
+﻿<Solution>
+  <Project Path="LegendOfBlood.Gameplay.csproj" />
+  <Project Path="LegendOfBlood.Tests.PlayMode.csproj" />
+  <Project Path="Demigiant.DOTween.csproj" />
+  <Project Path="Tests.csproj" />
+</Solution>

@@ -223,7 +223,23 @@ namespace LegendOfBlood
         #region Placeholder Logic
         private List<string> GetMonstersForTowerFloor(int floor)
         {
-            // Placeholder: gets harder each floor
+            var towerConfigs = DataManager.Instance?.GameConfig?.TowerConfigs;
+            if (towerConfigs != null && towerConfigs.Count > 0)
+            {
+                var floorConfig = towerConfigs.FirstOrDefault(t => t.floorIndex == floor);
+                if (floorConfig != null && floorConfig.monsterPool != null && floorConfig.monsterPool.Count > 0)
+                {
+                    var resultMonsters = new List<string>();
+                    int count = floorConfig.customMonsterCount > 0 ? floorConfig.customMonsterCount : (1 + (floor / 5));
+                    for (int i = 0; i < count; i++)
+                    {
+                        resultMonsters.Add(floorConfig.monsterPool[UnityEngine.Random.Range(0, floorConfig.monsterPool.Count)]);
+                    }
+                    return resultMonsters;
+                }
+            }
+
+            // Fallback: gets harder each floor
             var monsterPool = new List<string> { "MONSTER_ID_01", "MONSTER_ID_02", "MONSTER_ID_03" };
             var monsters = new List<string>();
             int monsterCount = 1 + (floor / 5);

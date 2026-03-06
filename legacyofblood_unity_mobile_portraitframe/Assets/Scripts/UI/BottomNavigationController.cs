@@ -43,11 +43,31 @@ namespace LegendOfBlood
             }
         }
         
+        public void OpenBarrackPanel()
+        {
+            if (GameManager.Instance != null && GameManager.Instance.UIManager != null)
+            {
+                GameManager.Instance.UIManager.ShowPanel(UIPanelType.Barrack, true);
+            }
+        }
+
+        // Tương lai nếu gắn Mailbox vào Bottom Nav
+        public void OpenMailboxPanel()
+        {
+            if (GameManager.Instance != null && GameManager.Instance.UIManager != null)
+            {
+                GameManager.Instance.UIManager.ShowPanel(UIPanelType.Mailbox, true);
+            }
+        }
+        
         // Hàm này dùng cho nút bấm trên màn hình chính cũ để vào làng
         // hoặc nút bấm trên các panel để vào WorldMap Scene
         public void GoToWorldMapScene()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("WorldMap_Scene");
+            if (GameManager.Instance != null && GameManager.Instance.UIManager != null)
+            {
+                GameManager.Instance.UIManager.ShowPanel(UIPanelType.WorldMap, true);
+            }
         }
     }
 }

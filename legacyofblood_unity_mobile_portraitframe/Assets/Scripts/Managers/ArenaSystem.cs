@@ -44,6 +44,38 @@ namespace LegendOfBlood
             // In the future, this will involve matchmaking logic.
         }
 
+        public System.Collections.Generic.List<HeroData> FindOpponentSquad(int playerPoints)
+        {
+            Debug.Log("Generating opponent for player with " + playerPoints + " points.");
+            
+            // Generate a squad scaled by player's points
+            // base points are usually around 0 to 1000+
+            int scaledLevel = Mathf.Max(1, (playerPoints / 50) + 1);
+            float difficultyMultiplier = 1f + (playerPoints / 200f);
+            
+            var enemies = new System.Collections.Generic.List<HeroData>();
+            for (int i = 0; i < 5; i++)
+            {
+                var stats = new HeroStats 
+                { 
+                    hp = Mathf.RoundToInt(100 * difficultyMultiplier), 
+                    atk = Mathf.RoundToInt(10 * difficultyMultiplier), 
+                    def = Mathf.RoundToInt(8 * difficultyMultiplier), 
+                    spd = Mathf.RoundToInt(10 * difficultyMultiplier) 
+                };
+                
+                enemies.Add(new HeroData
+                {
+                    id = $"arena_bot_{System.Guid.NewGuid()}",
+                    heroName = $"Người Chơi Ảo {i + 1}",
+                    level = scaledLevel,
+                    baseStats = stats,
+                    currentHp = stats.hp
+                });
+            }
+            return enemies;
+        }
+
         public void ProcessMatchResult(bool victory, int playerPoints, int opponentPoints)
         {
             PlayerData playerData = DataManager.Instance.Player;

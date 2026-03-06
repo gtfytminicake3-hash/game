@@ -20,15 +20,22 @@ namespace LegendOfBlood
 
         #region Unity Lifecycle & Event Subscription
         
-        private void Awake()
+        private bool _isInitialized = false;
+
+        private void Start()
         {
-            closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.HidePanel(UIPanelType.Hospital)); 
+            if (closeButton != null) closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.HidePanel(UIPanelType.Hospital)); 
+            _isInitialized = true;
+            RefreshLists();
         }
 
         private void OnEnable()
         {
-            // Mỗi khi panel được mở, làm mới danh sách
-            RefreshLists();
+            // Mỗi khi panel được mở, làm mới danh sách (chỉ sau khi Start đã chạy để tránh NullReference)
+            if (_isInitialized)
+            {
+                RefreshLists();
+            }
             
             // Lắng nghe sự kiện để tự động cập nhật nếu có hero được chữa lành
             HospitalSystem.OnHeroHealed += HandleHeroHealed;
@@ -54,6 +61,8 @@ namespace LegendOfBlood
                 Destroy(card);
             }
             _instantiatedCards.Clear();
+
+            if (DataManager.Instance == null || DataManager.Instance.Player == null) return;
 
             // Lấy danh sách hero
             var allHeroes = DataManager.Instance.AllHeroes;

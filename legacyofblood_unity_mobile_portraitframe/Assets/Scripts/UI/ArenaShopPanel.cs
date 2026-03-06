@@ -40,10 +40,11 @@ namespace LegendOfBlood
         { 
             if (shopItemPrefab == null) return;
             GameObject itemGO = Instantiate(shopItemPrefab, itemContainer);
-            // Assuming the prefab has a script to set up the item details
-            // Example:
-            // ArenaShopItem item = itemGO.GetComponent<ArenaShopItem>();
-            // item.Setup(itemName, price);
+            ArenaShopItem item = itemGO.GetComponent<ArenaShopItem>();
+            if (item != null)
+            {
+                item.Setup(itemName, price);
+            }
             Debug.Log($"Created shop item: {itemName} for {price} Arena Coins.");
         }
     }

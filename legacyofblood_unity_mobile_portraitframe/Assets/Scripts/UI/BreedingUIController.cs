@@ -59,6 +59,15 @@ namespace LegendOfBlood
             breedButton.onClick.AddListener(OnBreedClicked);
             closeButton.onClick.AddListener(CloseBreedingPanel);
             confirmResultButton.onClick.AddListener(OnConfirmResultClicked);
+
+            if (heroPickerPanel == null)
+            {
+                heroPickerPanel = FindAnyObjectByType<HeroPickerPanel>(FindObjectsInactive.Include);
+                if (heroPickerPanel == null)
+                {
+                    Debug.LogError("[BreedingUIController] CẢNH BÁO: Không tìm thấy HeroPickerPanel nào trong Scene! Trò chơi sẽ bị lỗi nếu gọi bảng chọn tướng.");
+                }
+            }
         }
 
         private void OnEnable()
@@ -126,7 +135,15 @@ namespace LegendOfBlood
     }
     else
     {
-        Debug.LogError("THAM CHIẾU heroPickerPanel BỊ NULL!"); // Log lỗi
+        heroPickerPanel = FindAnyObjectByType<HeroPickerPanel>(FindObjectsInactive.Include);
+        if (heroPickerPanel != null)
+        {
+            heroPickerPanel.Show(global::LocalizationSystem.GetText("breeding_select_father_title"), validFathers);
+        }
+        else
+        {
+            Debug.LogError("THAM CHIẾU heroPickerPanel BỊ NULL! Xin hãy gắn HeroPickerPanel vào Inspector của BreedingUIController."); // Log lỗi
+        }
     }
         }
 
@@ -144,7 +161,13 @@ namespace LegendOfBlood
             var allHeroes = DataManager.Instance.AllHeroes;
             var validMothers = allHeroes.Where(h => h.gender == Gender.Female && !h.IsBusy()).ToList();
 
-            heroPickerPanel.Show(global::LocalizationSystem.GetText("breeding_select_mother_title"), validMothers);
+            if (heroPickerPanel == null) 
+                heroPickerPanel = FindAnyObjectByType<HeroPickerPanel>(FindObjectsInactive.Include);
+
+            if (heroPickerPanel != null)
+            {
+                heroPickerPanel.Show(global::LocalizationSystem.GetText("breeding_select_mother_title"), validMothers);
+            }
         }
 
         /// <summary>

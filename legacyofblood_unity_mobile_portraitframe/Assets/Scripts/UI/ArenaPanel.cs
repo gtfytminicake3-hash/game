@@ -21,12 +21,12 @@ namespace LegendOfBlood
 
         private const int ARENA_SQUAD_SIZE = 5;
 
-        private void Awake()
+        private void Start()
         {
-            challengeButton.onClick.AddListener(OnChallengeClicked);
-            closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.HidePanel(UIPanelType.Arena));
-            leaderboardButton.onClick.AddListener(OnLeaderboardClicked);
-            shopButton.onClick.AddListener(OnShopClicked);
+            if (challengeButton != null) challengeButton.onClick.AddListener(OnChallengeClicked);
+            if (closeButton != null) closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.HidePanel(UIPanelType.Arena));
+            if (leaderboardButton != null) leaderboardButton.onClick.AddListener(OnLeaderboardClicked);
+            if (shopButton != null) shopButton.onClick.AddListener(OnShopClicked);
         }
 
         private void OnEnable()
@@ -90,7 +90,9 @@ namespace LegendOfBlood
         private void OnArenaSquadSelected(List<string> selectedHeroIDs)
         {
             var playerSquad = DataManager.Instance.AllHeroes.Where(h => selectedHeroIDs.Contains(h.id)).ToList();
-            var enemySquad = CreateDummyEnemySquad(ARENA_SQUAD_SIZE);
+            
+            // Lấy đội hình Bot được random sức mạnh dựa trên Elo hiện tại
+            var enemySquad = ArenaSystem.Instance.FindOpponentSquad(DataManager.Instance.Player.arenaPoints);
 
             // SỬA LỖI: Khai báo tường minh kiểu CombatResult
             CombatResult result = GameManager.Instance.CombatSystem.Simulate(playerSquad, enemySquad);
@@ -134,22 +136,6 @@ namespace LegendOfBlood
             GameManager.Instance.UINotificationManager.ShowNotification(popupMessage);
         }
 
-        private List<HeroData> CreateDummyEnemySquad(int count)
-        {
-            var enemies = new List<HeroData>();
-            for (int i = 0; i < count; i++)
-            {
-                var stats = new HeroStats { hp = 150, atk = 15, def = 10, spd = 10 };
-                enemies.Add(new HeroData
-                {
-                    id = $"enemy_{i}",
-                    heroName = $"Kẻ Địch {i + 1}",
-                    level = 5,
-                    baseStats = stats,
-                    currentHp = stats.hp
-                });
-            }
-            return enemies;
-        }
+        // Phương thức CreateDummyEnemySquad đã được thay thế bởi ArenaSystem.FindOpponentSquad
     }
 }

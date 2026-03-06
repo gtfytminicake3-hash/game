@@ -1,0 +1,79 @@
+# HỆ THỐNG HIỆN TẠI CỦA PROJECT "LEGACY OF BLOOD"
+> Ngày cập nhật: 06/01/2026
+
+## 1. TỔNG QUAN HỆ THỐNG (BACKEND SUMMARY)
+
+Dự án sử dụng kiến trúc Service Locator (`GameManager`) kết hợp Singleton cho các Manager chính. Dữ liệu tách biệt giữa Config (ScriptableObjects) và Runtime (JSON).
+
+*   **Core Managers**: `GameManager`, `DataManager`, `EventManager`, `UIManager`.
+*   **Game Systems**: `BreedingSystem`, `EvolutionSystem`, `CombatSystem` (Auto), `ExpeditionManager` (Idle), `RecruitmentSystem`, `ArenaSystem`.
+
+---
+
+## 2. CHI TIẾT LOGIC & CÔNG THỨC (LOGIC & FORMULAS)
+
+### A. Hệ Thống Anh Hùng (Hero System)
+*   **Chỉ số cơ bản (Base Stats)**: Được tính khi khởi tạo dựa trên `Potential`.
+    *   Công thức: `Stat = Potential * Random(8, 11)` (áp dụng cho HP, Atk, Def, Spd).
+*   **Chỉ số chiến đấu (CP)**: `CP = HP/10 + Atk*2 + Def*3 + Spd*1.5`.
+*   **Lên cấp (Level Up)**:
+    *   Hero nhận điểm thưởng (`FreeStatPoints`) khi lên cấp.
+    *   Công thức thưởng: `Points += Potential`.
+*   **Thăng tiến (Evolution)**:
+    *   **Level 20**: Chọn nghề (`Profession`).
+    *   **Level 20, 40, 80**: Nhận thêm Trait mới.
+    *   **Tỉ lệ Rarity Trait**: S (0.5%), A (3%), B (6.5%), C (30%), D (60%).
+
+### B. Hệ Thống Lai Tạo (Breeding System) (`BreedingSystem.cs`)
+*   **Tiềm năng con (Child Potential)**: `(Potential Bố + Potential Mẹ) / 2`.
+*   **Di truyền Trait**:
+    *   1 Trait từ Bố (Random).
+    *   1 Trait từ Mẹ (Random).
+    *   Các slot còn lại (tối đa 3): Random từ bể Trait toàn server.
+*   **Sinh đôi**: 2% cơ hội nếu bố hoặc mẹ có trait `TWINS` (S_04).
+*   **Đột biến Elite**: 10% cơ hội tăng toàn bộ chỉ số 5% nếu bố/mẹ có `ELITE_BLOODLINE` (SS_07).
+
+### C. Hệ Thống Tuyển Mộ (Recruitment System) (`RecruitmentSystem.cs`)
+*   **Tỉ lệ Rarity**: Giống Evolution (S=0.5%, A=3%, B=6.5%, C=30%, D=60%).
+*   **Tiềm năng theo Rarity**:
+    *   S: 17-21 | A: 13-17 | B: 9-13 | C: 5-9 | D: 1-5.
+
+### D. Hệ Thống Chiến Đấu (Combat System) (`CombatSystem.cs`)
+*   **Cơ chế**: Turn-based, Auto-battler.
+*   **Thứ tự lượt**: Sắp xếp theo `Speed` giảm dần.
+*   **Công thức Sát thương**: `Damage = Max(1, (Atk * SkillRatio) - Def)`.
+*   **Chí mạng (Crit)**: Nếu Crit (cơ bản 5%), `Damage *= CritDamage` (cơ bản 150%).
+*   **Hồi máu**: `Heal = Atk * SkillRatio`.
+
+### E. Hệ Thống Thám Hiểm (Expedition System) (`ExpeditionManager.cs`)
+*   **Cơ chế**: Idle (Fire & Forget). Kết quả trận đấu được tính toán TRƯỚC (Pre-calculation) ngay khi bắt đầu.
+*   **Thời gian di chuyển**: `Distance * 100` (ms).
+*   **Tháp Thử Thách**: 3 tháp riêng biệt (Warrior/Archer/Mage).
+    *   Tiến độ tháp được lưu lại (`currentFloor`).
+    *   Nếu thua, phải chờ hồi phục (`TOWER_RECOVERY_DURATION_MS` = 2h).
+
+### F. Hệ Thống Đấu Trường (Arena System) (`ArenaSystem.cs`)
+*   **Vé**: Hồi 5 vé mỗi ngày (`CheckDailyTicketRefresh`).
+*   **Điểm xếp hạng (Elo đơn giản)**:
+    *   **Thắng**: `25 + (Điểm Địch - Điểm Ta)/10`. (Min 5).
+    *   **Thua**: `-20 + (Điểm Địch - Điểm Ta)/10`. (Max -5).
+*   **Xu Arena**: Thắng +30, Thua +10.
+
+---
+
+## 3. CÁC TÍNH NĂNG CÒN THIẾU HOẶC CHƯA HOÀN THIỆN (MISSING / INCOMPLETE)
+
+### Chưa Hoàn Thiện (Partial / Placeholder):
+1.  ~~**Arena Matchmaking**~~ *(Đã hoàn thành - Sử dụng Matchmaking dựa trên Elo mô phỏng đội hình ảo)*
+2.  ~~**Dữ liệu Quái vật Tháp**~~ *(Đã hoàn thành - Dữ liệu lấy từ GameConfig)*
+3.  ~~**Cân bằng Game**~~ *(Đã hoàn thành - Các chỉ số được tách ra RaritySettings, CombatSettings trong GameConfig)*
+
+### UI Còn Thiếu (Missing Panels in Manager):
+1.  ~~**Settings Panel**~~ *(Đã hoàn thành - Gen tự động bởi UIGeneratorTool)*
+2.  ~~**Building Upgrade UI**~~ *(Đã hoàn thành - Gen tự động bởi UIGeneratorTool)*
+3.  ~~**Help / Tutorial**~~ *(Đã hoàn thành - Gen tự động bởi UIGeneratorTool)*
+4.  ~~**Recruitment UI Integration**~~ *(Đã hoàn thành)*
+
+### Logic Backend Còn Thiếu:
+1.  ~~**Hệ thống Trang bị (Gear)**~~ *(Đã hoàn thành - Tích hợp `EquipmentData` vào `HeroData` và tính chỉ số)*
+2.  ~~**Mailbox Claim**~~ *(Đã hoàn thành - Hệ thống nhận quà `MailboxPanel` hoạt động cùng `InventoryManager`)*

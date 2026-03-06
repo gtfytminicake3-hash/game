@@ -43,6 +43,20 @@ namespace LegendOfBlood
 
         private void Awake()
         {
+            // AUTO-WIRE: Tự động đánh hơi tìm các Nút bị rớt (không được gắn trong Inspector)
+            if (statAllocationButton == null || traitUpgradeButton == null)
+            {
+                Button[] allButtons = GetComponentsInChildren<Button>(true);
+                foreach(var btn in allButtons)
+                {
+                    string btnName = btn.gameObject.name.ToLower();
+                    if (statAllocationButton == null && (btnName.Contains("stat") || btnName.Contains("alloc")))
+                        statAllocationButton = btn;
+                    if (traitUpgradeButton == null && (btnName.Contains("trait") || btnName.Contains("upgrade")))
+                        traitUpgradeButton = btn;
+                }
+            }
+
             if (closeButton != null) closeButton.onClick.AddListener(ClosePanel);
             if (statAllocationButton != null) statAllocationButton.onClick.AddListener(OpenStatAllocationPanel);
             if (traitUpgradeButton != null) traitUpgradeButton.onClick.AddListener(OpenTraitUpgradePanel);
@@ -90,16 +104,18 @@ namespace LegendOfBlood
             spdText.text = string.Format(global::LocalizationSystem.GetText("stats_spd_format_detailed"), baseStats.spd, finalStats.spd - baseStats.spd);
             potentialText.text = string.Format(global::LocalizationSystem.GetText("stats_potential_format"), _currentHero.potential);
 
-            // THÊM CÁC DÒNG NÀY ĐỂ HIỂN THỊ CHỈ SỐ MỚI
-            evasionText.text = $"Evasion: {_currentHero.evasionRate:P0}";
-            dmgReductionText.text = $"Dmg. Reduction: {_currentHero.damageReduction:P0}";
-            dmgIncreaseText.text = $"Dmg. Increase: {_currentHero.damageIncrease:P0}";
-            evasionText.text = string.Format(global::LocalizationSystem.GetText("stats_evasion_format"), _currentHero.evasionRate);
-            dmgReductionText.text = string.Format(global::LocalizationSystem.GetText("stats_dmg_reduction_format"), _currentHero.damageReduction);
-            dmgIncreaseText.text = string.Format(global::LocalizationSystem.GetText("stats_dmg_increase_format"), _currentHero.damageIncrease);
+            // THÊM CÁC DÒNG NÀY ĐỂ HIỂN THỊ CHỈ SỐ MỚI (CÓ BỌC CHỐNG NULL)
+            if (evasionText != null) 
+                evasionText.text = string.Format(global::LocalizationSystem.GetText("stats_evasion_format"), _currentHero.evasionRate);
+            if (dmgReductionText != null) 
+                dmgReductionText.text = string.Format(global::LocalizationSystem.GetText("stats_dmg_reduction_format"), _currentHero.damageReduction);
+            if (dmgIncreaseText != null) 
+                dmgIncreaseText.text = string.Format(global::LocalizationSystem.GetText("stats_dmg_increase_format"), _currentHero.damageIncrease);
 
-            statAllocationButton.gameObject.SetActive(_currentHero.freeStatPoints > 0);
-            traitUpgradeButton.gameObject.SetActive(_currentHero.level == 60 || _currentHero.level == 100);
+            if (statAllocationButton != null)
+                statAllocationButton.gameObject.SetActive(_currentHero.freeStatPoints > 0);
+            if (traitUpgradeButton != null)
+                traitUpgradeButton.gameObject.SetActive(_currentHero.level == 60 || _currentHero.level == 100);
 
             ClearInfoItems();
             PopulateInfoList(traitsContainer, _currentHero.traitIDs, true);
@@ -141,7 +157,17 @@ namespace LegendOfBlood
 
         private void OpenStatAllocationPanel()
         {
-            if (statAllocationPanel != null && _currentHero != null)
+            if (statAllocationPanel == null)
+            {
+                statAllocationPanel = FindFirstObjectByType<StatAllocationPanel>(FindObjectsInactive.Include);
+                if (statAllocationPanel == null) 
+                {
+                    Debug.LogError("Chưa tạo Panel tên là `StatAllocationPanel` trong Scene. Hãy tạo ra 1 Panel rỗng và dán script `StatAllocationPanel` vào!");
+                    return;
+                }
+            }
+
+            if (_currentHero != null)
             {
                 statAllocationPanel.Show(_currentHero);
             }
@@ -149,7 +175,17 @@ namespace LegendOfBlood
 
         private void OpenTraitUpgradePanel()
         {
-            if (traitUpgradePanel != null && _currentHero != null)
+            if (traitUpgradePanel == null)
+            {
+                traitUpgradePanel = FindFirstObjectByType<TraitUpgradePanel>(FindObjectsInactive.Include);
+                if (traitUpgradePanel == null) 
+                {
+                    Debug.LogError("Chưa tạo Panel tên là `TraitUpgradePanel` trong Scene. Hãy tạo ra 1 Panel rỗng và dán script `TraitUpgradePanel` vào!");
+                    return;
+                }
+            }
+
+            if (_currentHero != null)
             {
                 traitUpgradePanel.Show(_currentHero);
             }
@@ -157,7 +193,7 @@ namespace LegendOfBlood
 
         private void ClosePanel()
         {
-            GameManager.Instance.UIManager.HidePanel(UIPanelType.HeroInfo);
+            GameManager.Instance.UIManager.GoBack();
         }
     }
 }

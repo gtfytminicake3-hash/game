@@ -202,10 +202,10 @@ public class PlanUpdateVerificationTests
     public void P3_1_HeroBelowLevel20_HasNoProfession()
     {
         string testId = "[Checklist 3.1]";
-        Debug.Log($"_testId_ Bắt đầu: Kiểm tra hero dưới cấp 20 chưa có nghề.");
+        Debug.Log($"{testId} Bắt đầu: Kiểm tra hero dưới cấp 20 chưa có nghề.");
         var hero = new HeroData { level = 19 };
         Assert.AreEqual(Profession.None, hero.profession, "Hero dưới cấp 20 phải chưa có nghề (Profession.None).");
-        Assert.Pass($"_testId_ THÀNH CÔNG! Hero ở cấp _hero.level_ có trạng thái nghề là Profession.None.");
+        Assert.Pass($"{testId} THÀNH CÔNG! Hero ở cấp {hero.level} có trạng thái nghề là Profession.None.");
     }
 
     #endregion
@@ -216,7 +216,7 @@ public class PlanUpdateVerificationTests
     public void P4_3_AddHero_FailsWhenPopulationIsFull()
     {
         string testId = "[Checklist 4.3]";
-        Debug.Log($"_testId_ Bắt đầu: Kiểm tra không thể thêm hero khi dân số đầy.");
+        Debug.Log($"{testId} Bắt đầu: Kiểm tra không thể thêm hero khi dân số đầy.");
 
         // ARRANGE
         var playerData = DataManager.Instance.Player;
@@ -230,14 +230,14 @@ public class PlanUpdateVerificationTests
         playerData.Heroes.Clear();
         for(int i = 0; i < 20; i++)
         {
-            playerData.Heroes.Add(new HeroData { id = $"Hero__i_"});
+            
         }
         
         int initialHeroCount = playerData.Heroes.Count;
         Assert.AreEqual(20, initialHeroCount, "Setup failed: Hero list should be full.");
 
         // ACT
-        Debug.Log($"_testId_ Hành động: Dân số đang đầy (_initialHeroCount_/20). Thử thêm một hero mới.");
+        Debug.Log($"{testId} Hành động: Dân số đang đầy ({initialHeroCount}/20). Thử thêm một hero mới.");
         var extraHero = new HeroData { id = "ExtraHero" };
         DataManager.Instance.AddHero(extraHero);
 
@@ -245,7 +245,7 @@ public class PlanUpdateVerificationTests
         Assert.AreEqual(initialHeroCount, playerData.Heroes.Count, "Hero count should not have increased.");
         Assert.IsFalse(playerData.Heroes.Contains(extraHero), "The extra hero should not have been added to the list.");
 
-        Assert.Pass($"_testId_ THÀNH CÔNG! Không thể thêm hero mới khi dân số đã đầy.");
+        Assert.Pass($"{testId} THÀNH CÔNG! Không thể thêm hero mới khi dân số đã đầy.");
     }
 
     #endregion

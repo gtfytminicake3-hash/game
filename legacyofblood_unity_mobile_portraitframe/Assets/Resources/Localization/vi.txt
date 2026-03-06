@@ -1,17 +1,14 @@
 # --- Bootloader ---
 loading_format=Đang tải... {0}%
-
 # --- Main Menu / Hero List Buttons ---
 button_world_map=Bản Đồ
 button_breeding=Lai Tạo
 button_hospital=Bệnh Viện
 button_arena=Đấu Trường
 button_inventory=Túi Đồ
-
 # --- General UI ---
 level_format_short=Cấp {0}
 cp_format_short=CP: {0}
-
 # --- Breeding Panel ---
 breeding_error_same_gender=Lai tạo thất bại: Cha mẹ phải khác giới tính.
 breeding_select_father=Chọn Cha
@@ -23,7 +20,6 @@ breeding_change_father=Đổi Cha
 breeding_change_mother=Đổi Mẹ
 breeding_error_select_father_first=Vui lòng chọn cha trước.
 breeding_failed=Lai tạo thất bại. Vui lòng thử lại.
-
 # --- Hero Names ---
 male_name_1=An
 male_name_2=Bảo
@@ -79,7 +75,6 @@ female_name_24=Thủy
 female_name_25=Trang
 female_name_26=Tú
 female_name_27=Yến
-
 # --- Inventory & DataManager ---
 inventory_error_no_playerdata=InventoryManager không thể lấy được PlayerData từ DataManager!
 inventory_error_not_enough_resource=Không đủ {0} để chi tiêu. Cần: {1}, Có: {2}
@@ -95,7 +90,6 @@ datamanager_info_save_success=Lưu game thành công tại: {0}
 datamanager_error_save_failed=Lỗi khi lưu game! Lỗi: {0}
 starting_hero_male_name=Adam
 starting_hero_female_name=Eva
-
 # --- Arena ---
 arena_error_not_enough_heroes=Cần ít nhất {0} hero sẵn sàng!
 arena_squad_selection_title=Chọn Đội Hình Đấu Trường
@@ -105,7 +99,6 @@ arena_combat_result_lose=Bạn đã thất bại!
 arena_combat_report_header=--- BÁO CÁO CHIẾN ĐẤU ---
 arena_combat_report_footer=-------------------------
 arena_dummy_enemy_name=Kẻ Địch {0}
-
 # --- Hospital ---
 hospital_title=Bệnh Viện
 hospital_section_severe=Thương Nặng
@@ -114,7 +107,6 @@ hospital_label_ready=Sẵn sàng
 hospital_label_time_left=Còn lại: {0}
 hospital_button_heal=Chữa trị
 hospital_button_recover=Hồi phục
-
 # --- World Map & POI ---
 poi_name_format={0} #{1}
 poi_type_Dungeon=Hầm ngục
@@ -122,7 +114,6 @@ poi_type_RescueMission=Nhiệm vụ giải cứu
 poi_difficulty_format=Độ khó: {0}
 poi_recommended_cp_format=CP đề nghị: {0}
 worldmap_select_squad_title_format=Chọn đội hình cho: {0}
-
 # --- Hero Info Panel ---
 level_format=Cấp {0}
 profession_format=Nghề: {0}
@@ -134,12 +125,11 @@ stats_spd_format_detailed=SPD: {0} (+{1})
 stats_potential_format=Tiềm năng: {0}
 unknown=Không rõ
 description_not_found=Không tìm thấy mô tả.
-
 # --- Squad Selection Panel ---
 total_cp_format=Tổng CP: {0}
-
 # --- Breeding Result Panel ---
 stats_hp_format=HP: {0}
 stats_atk_format=ATK: {0}
 stats_def_format=DEF: {0}
-stats_spd_format=SPD: {0}
+notification_feature_locked=Tính năng này chưa được mở khóa!
+poi_tower_name_format=Tháp {0}

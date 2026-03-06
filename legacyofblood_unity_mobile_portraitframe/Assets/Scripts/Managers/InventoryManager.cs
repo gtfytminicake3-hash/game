@@ -55,8 +55,16 @@ namespace LegendOfBlood
 
         private void Start()
         {
-            // Đăng ký lắng nghe sự kiện từ DataManager để biết khi nào dữ liệu đã sẵn sàng
+            // Đăng ký lắng nghe sự kiện từ DataManager để biết khi nào dữ liệu đã sẵn sàng (Cho những lần load sau)
             DataManager.OnPlayerDataLoaded += LinkToPlayerData;
+
+            // XỬ LÝ LỖI CUỘC ĐUA (RACE CONDITION): 
+            // Do GameManager ép DataManager load từ trong Awake() nên Event OnPlayerDataLoaded đã bắn xong trước khi Inventory bật lên (Start).
+            // Ta phải gọi nạp dữ liệu bù bằng tay:
+            if (DataManager.Instance != null && DataManager.Instance.Player != null)
+            {
+                LinkToPlayerData();
+            }
         }
 
         private void OnDestroy()
@@ -74,6 +82,16 @@ namespace LegendOfBlood
             if (_playerData == null)
             {
                 Debug.LogError(LocalizationSystem.GetText("inventory_error_no_playerdata"));
+                return;
+            }
+            
+            // KIỂM TRA TÂN THỦ: Cấp Vốn Khởi Nghiệp (1000 Vàng, 1000 Gỗ)
+            if (GetResourceAmount(ResourceType.Gold) == 0 && GetResourceAmount(ResourceType.Wood) == 0)
+            {
+                Debug.Log("[InventoryManager] Phát hiện Tài khoản Mới! Đang Bơm 1000 Vàng và 1000 Gỗ khởi nghiệp...");
+                // Gán trực tiếp qua Data để không kích hoạt quá nhiều event trước khi game load xong
+                AddResource(ResourceType.Gold, 1000);
+                AddResource(ResourceType.Wood, 1000);
             }
         }
 

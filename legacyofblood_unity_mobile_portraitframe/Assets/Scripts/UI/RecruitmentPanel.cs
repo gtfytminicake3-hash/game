@@ -4,12 +4,17 @@ namespace LegendOfBlood.UI
     using UnityEngine.UI;
     using LegendOfBlood;
 
-    public class RecruitmentPanel : MonoBehaviour
+    public class RecruitmentPanel : UIPanel
     {
         [SerializeField] private Button recruitOneButton;
         [SerializeField] private Button recruitTenButton;
 
         private RecruitmentSystem _recruitmentSystem;
+
+        private void Awake()
+        {
+            PanelType = UIPanelType.Recruitment;
+        }
 
         private void Start()
         {

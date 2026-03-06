@@ -53,7 +53,24 @@ public class ClickableBuilding : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(sceneNameToLoad))
         {
-            SceneManager.LoadScene(sceneNameToLoad);
+            if (sceneNameToLoad.Contains("WorldMap"))
+            {
+                if (LegendOfBlood.GameManager.Instance?.UIManager != null)
+                {
+                    LegendOfBlood.GameManager.Instance.UIManager.ShowPanel(LegendOfBlood.UIPanelType.WorldMap);
+                }
+            }
+            else if (sceneNameToLoad.Contains("Barrack") || sceneNameToLoad.Contains("Hero"))
+            {
+                if (LegendOfBlood.GameManager.Instance?.UIManager != null)
+                {
+                    LegendOfBlood.GameManager.Instance.UIManager.ShowPanel(LegendOfBlood.UIPanelType.Barrack);
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"[ClickableBuilding] Yêu cầu chuyển sang {sceneNameToLoad} bị chặn lại vì game đang chạy ở chế độ Single Scene.");
+            }
         }
         else
         {

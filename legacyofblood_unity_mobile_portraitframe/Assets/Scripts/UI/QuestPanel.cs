@@ -63,12 +63,11 @@ namespace LegendOfBlood.UI
                      if (questStatus.state == Managers.QuestState.Active || questStatus.state == Managers.QuestState.Completed)
                      {
                         var questItem = Instantiate(questItemPrefab, questListContainer);
-                        // Assuming QuestItemUI exists or similar
-                         var questItemController = questItem.GetComponent<QuestItemUI>(); // Replace with actual component if known
-                         if(questItemController != null) 
-                            questItemController.Setup(questStatus);
-                         else
-                            Debug.LogWarning("QuestItemUI component missing on prefab.");
+                        var questItemController = questItem.GetComponent<QuestItemUI>(); 
+                        if(questItemController != null) 
+                           questItemController.Setup(questStatus);
+                        else
+                           Debug.LogWarning("QuestItemUI component missing on prefab.");
                      }
                 }
             }

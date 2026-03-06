@@ -17,10 +17,24 @@ namespace LegendOfBlood.Combat
     {
         public bool DidPlayerWin { get; set; }
         public List<string> CombatLog { get; set; }
+        public List<CombatEvent> EventLog { get; set; }
         public List<HeroData> PlayerSurvivors { get; set; }
         public List<HeroData> PlayerCasualties { get; set; }
         public List<HeroData> EnemySurvivors { get; set; }
         public List<HeroData> EnemyCasualties { get; set; }
+    }
+
+    public enum CombatEventType { TurnStart, SkillCast, Attack, Heal, TakeDamage, StatusEffect, Death, BattleEnd }
+
+    [System.Serializable]
+    public class CombatEvent
+    {
+        public CombatEventType EventType { get; set; }
+        public string SourceID { get; set; }
+        public string TargetID { get; set; }
+        public int Value { get; set; }
+        public bool IsCrit { get; set; }
+        public string Message { get; set; }
     }
     #endregion
 
@@ -110,6 +124,7 @@ namespace LegendOfBlood.Combat
         private List<Combatant> _playerTeam;
         private List<Combatant> _enemyTeam;
         private List<string> _combatLog;
+        private List<CombatEvent> _eventLog;
         private readonly List<Skill> _allAvailableSkills;
 
         public CombatSystem(int seed, List<Skill> allSkills)
@@ -138,6 +153,7 @@ namespace LegendOfBlood.Combat
         private CombatResult RunSimulation()
         {
             _combatLog = new List<string> { "<b>Trận đấu bắt đầu!</b>" };
+            _eventLog = new List<CombatEvent>();
 
             _playerTeam.ForEach(c => c.AssignSkills(_allAvailableSkills, _rng));
             _enemyTeam.ForEach(c => c.AssignSkills(_allAvailableSkills, _rng));
@@ -152,6 +168,7 @@ namespace LegendOfBlood.Combat
             while (IsTeamAlive(_playerTeam) && IsTeamAlive(_enemyTeam))
             {
                 _combatLog.Add($"\n<color=yellow>--- Vòng {turn} ---</color>");
+                _eventLog.Add(new CombatEvent { EventType = CombatEventType.TurnStart, Value = turn });
                 var turnOrder = _playerTeam.Concat(_enemyTeam).Where(c => c.IsAlive()).OrderByDescending(c => c.GetCurrentSpd()).ToList();
 
                 foreach (var combatant in turnOrder)
@@ -182,6 +199,7 @@ namespace LegendOfBlood.Combat
             {
                 DidPlayerWin = playerWon,
                 CombatLog = _combatLog,
+                EventLog = _eventLog,
                 PlayerSurvivors = _playerTeam.Where(c => c.IsAlive()).Select(c => c.HeroRef).ToList(),
                 PlayerCasualties = _playerTeam.Where(c => !c.IsAlive()).Select(c => c.HeroRef).ToList(),
                 EnemySurvivors = _enemyTeam.Where(c => c.IsAlive()).Select(c => c.HeroRef).ToList(),
@@ -223,6 +241,7 @@ namespace LegendOfBlood.Combat
                 var targets = GetTargets(actor, skill.targeting, allies, enemies);
                 if (!targets.Any()) return;
                 _combatLog.Add($"<color=lightblue>{actor.HeroRef.heroName} dùng kỹ năng [{skill.skillName}]!</color>");
+                _eventLog.Add(new CombatEvent { EventType = CombatEventType.SkillCast, SourceID = actor.InstanceID, Message = skill.skillName });
                 for (int i = 0; i < skill.hitCount; i++)
                 {
                     var currentTargets = (skill.hitCount > 1 && skill.targeting == TargetingType.RandomEnemy) ? GetTargets(actor, skill.targeting, allies, enemies) : targets;
@@ -243,7 +262,10 @@ namespace LegendOfBlood.Combat
         {
             float baseDamage = attacker.GetCurrentAtk() * powerRatio;
             float finalDamage = Mathf.Max(1, baseDamage - target.GetCurrentDef());
-            float critChance = attacker.GetCurrentCritChance() + (skill?.id == "SK_ARCHER_01" ? 0.4f : 0f);
+            
+            float archerBonus = DataManager.Instance?.GameConfig?.CombatSettings?.archerBonusCritChance ?? 0.4f;
+            float critChance = attacker.GetCurrentCritChance() + (skill?.id == "SK_ARCHER_01" ? archerBonus : 0f);
+
             bool isCrit = _rng.NextDouble() < critChance;
             if (isCrit) finalDamage *= attacker.GetCurrentCritDamage();
             int damageInt = Mathf.FloorToInt(finalDamage);
@@ -251,11 +273,17 @@ namespace LegendOfBlood.Combat
             string log = $"{attacker.HeroRef.heroName} tấn công {target.HeroRef.heroName}, gây <color=red>{damageInt}</color> sát thương.";
             if (isCrit) log += " <color=orange>(Chí mạng!)</color>";
             _combatLog.Add(log);
+            _eventLog.Add(new CombatEvent { EventType = CombatEventType.Attack, SourceID = attacker.InstanceID, TargetID = target.InstanceID, Value = damageInt, IsCrit = isCrit });
+
             if (skill != null && skill.appliedEffect != StatusEffectType.None)
             {
                 if (_rng.NextDouble() < skill.effectChance) ApplyStatusEffect(attacker, target, skill);
             }
-            if (!target.IsAlive()) _combatLog.Add($"<color=grey>{target.HeroRef.heroName} đã bị hạ gục!</color>");
+            if (!target.IsAlive()) 
+            {
+                _combatLog.Add($"<color=grey>{target.HeroRef.heroName} đã bị hạ gục!</color>");
+                _eventLog.Add(new CombatEvent { EventType = CombatEventType.Death, TargetID = target.InstanceID });
+            }
         }
 
         private void PerformHeal(Combatant healer, Combatant target, Skill skill)
@@ -273,6 +301,7 @@ namespace LegendOfBlood.Combat
             int healInt = Mathf.FloorToInt(healAmount);
             target.CurrentHp = Mathf.Min(target.MaxHp, target.CurrentHp + healInt);
             _combatLog.Add($"{healer.HeroRef.heroName} hồi <color=green>{healInt}</color> HP cho {target.HeroRef.heroName}.");
+            _eventLog.Add(new CombatEvent { EventType = CombatEventType.Heal, SourceID = healer.InstanceID, TargetID = target.InstanceID, Value = healInt });
             if (skill.appliedEffect != StatusEffectType.None) ApplyStatusEffect(healer, target, skill);
         }
         #endregion
@@ -318,13 +347,14 @@ namespace LegendOfBlood.Combat
         private void ApplyStatusEffect(Combatant caster, Combatant target, Skill skill)
         {
             float value = 0;
+            var conf = DataManager.Instance?.GameConfig?.CombatSettings;
             switch (skill.appliedEffect)
             {
-                case StatusEffectType.Poison: value = caster.GetCurrentAtk() * 0.2f; break;
-                case StatusEffectType.Slow: value = -20; break;
-                case StatusEffectType.CritUp: value = 0.15f; break;
-                case StatusEffectType.DefDown: value = target.GetCurrentDef() * -0.15f; break;
-                case StatusEffectType.HealOverTime: value = caster.GetCurrentAtk() * 0.5f; break;
+                case StatusEffectType.Poison: value = caster.GetCurrentAtk() * (conf?.poisonDamageRatio ?? 0.2f); break;
+                case StatusEffectType.Slow: value = conf?.slowSpeedReduction ?? -20f; break;
+                case StatusEffectType.CritUp: value = conf?.critUpBonus ?? 0.15f; break;
+                case StatusEffectType.DefDown: value = target.GetCurrentDef() * (conf?.defDownRatio ?? -0.15f); break;
+                case StatusEffectType.HealOverTime: value = caster.GetCurrentAtk() * (conf?.healOverTimeRatio ?? 0.5f); break;
                 case StatusEffectType.Shield: value = caster.GetCurrentDef() * skill.powerRatio; break;
             }
             target.ActiveEffects.RemoveAll(e => e.Type == skill.appliedEffect);
@@ -344,11 +374,13 @@ namespace LegendOfBlood.Combat
                         int poisonDmg = Mathf.FloorToInt(effect.Value);
                         combatant.CurrentHp -= poisonDmg;
                         _combatLog.Add($"{combatant.HeroRef.heroName} nhận <color=purple>{poisonDmg}</color> sát thương từ Độc.");
+                        _eventLog.Add(new CombatEvent { EventType = CombatEventType.TakeDamage, TargetID = combatant.InstanceID, Value = poisonDmg });
                         break;
                     case StatusEffectType.HealOverTime:
                         int hotHeal = Mathf.FloorToInt(effect.Value);
                         combatant.CurrentHp = Mathf.Min(combatant.MaxHp, combatant.CurrentHp + hotHeal);
                         _combatLog.Add($"{combatant.HeroRef.heroName} được hồi <color=green>{hotHeal}</color> HP từ Hồi Phục.");
+                        _eventLog.Add(new CombatEvent { EventType = CombatEventType.Heal, TargetID = combatant.InstanceID, Value = hotHeal });
                         break;
                 }
                 effect.Duration--;

@@ -10,7 +10,7 @@ namespace LegendOfBlood
     using DG.Tweening.Core;
     using UnityEngine.SceneManagement;
 
-    public class WorldMapController : MonoBehaviour
+    public class WorldMapController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IScrollHandler
     {
         [Header("Scene References")]
         [SerializeField] private RectTransform mapContainer;
@@ -25,7 +25,7 @@ namespace LegendOfBlood
         [SerializeField] private GameObject towerPoiPrefab;
         [SerializeField] private GameObject travelCartPrefab;
 
-        [Header("Map Settings")]
+        // ĐÃ UNCOMMENT ĐỂ DÙNG LẠI CHO EVENT SYSTEM DRAG / ZOOM MỚI
         [SerializeField] private float minZoom = 0.5f;
         [SerializeField] private float maxZoom = 2.0f;
         [SerializeField] private float zoomSpeed = 0.1f;
@@ -38,19 +38,59 @@ namespace LegendOfBlood
         [SerializeField] private Button backToVillageButton;
 
         private Vector2 _lastPanPosition;
-        private bool _isPanning;
         private bool _isZooming;
         private Dictionary<string, GameObject> _activePoiObjects = new Dictionary<string, GameObject>();
         private Dictionary<string, GameObject> _activeTravelCarts = new Dictionary<string, GameObject>();
 
         #region Unity Lifecycle & Event Subscription
 
+        private bool _isInitialized = false;
+
         private void Start()
         {
+            if (poiInfoPanel == null)
+            {
+                poiInfoPanel = FindFirstObjectByType<POI_InfoPanel>(FindObjectsInactive.Include);
+                if (poiInfoPanel != null) Debug.Log("[WorldMap] Đã Auto-Wire thành công POI_InfoPanel!");
+            }
+            if (squadSelectionPanel == null)
+            {
+                squadSelectionPanel = FindFirstObjectByType<SquadSelectionPanel>(FindObjectsInactive.Include);
+                if (squadSelectionPanel != null) Debug.Log("[WorldMap] Đã Auto-Wire thành công SquadSelectionPanel!");
+            }
+
+            // AUTO-FIX: Đưa nút Close (lối về làng) và TravelLayer vào trong MapContainer 
+            // để chúng di chuyển và phóng to/thu nhỏ cùng với bản đồ.
+            if (backToVillageButton != null && backToVillageButton.transform.parent != mapContainer)
+            {
+                backToVillageButton.transform.SetParent(mapContainer, false);
+                RectTransform btnRect = backToVillageButton.GetComponent<RectTransform>();
+                btnRect.anchorMin = new Vector2(0.5f, 0.5f);
+                btnRect.anchorMax = new Vector2(0.5f, 0.5f);
+                btnRect.pivot = new Vector2(0.5f, 0.5f);
+                btnRect.anchoredPosition = Vector2.zero; // Gắn cứng vào tâm (0,0) của Map
+                // Ưu tiên hiển thị lên trên
+                backToVillageButton.transform.SetAsLastSibling();
+            }
+
+            if (travelLayer != null && travelLayer.parent != mapContainer)
+            {
+                travelLayer.SetParent(mapContainer, false);
+                RectTransform tzRect = travelLayer.GetComponent<RectTransform>();
+                tzRect.anchorMin = new Vector2(0.5f, 0.5f);
+                tzRect.anchorMax = new Vector2(0.5f, 0.5f);
+                tzRect.pivot = new Vector2(0.5f, 0.5f);
+                tzRect.anchoredPosition = Vector2.zero; // Center
+                travelLayer.SetAsLastSibling();
+            }
+
             if (backToVillageButton != null)
             {
+                backToVillageButton.onClick.RemoveAllListeners();
                 backToVillageButton.onClick.AddListener(GoBackToVillage);
             }
+            _isInitialized = true;
+            InitializeWorldMap();
         }
 
         private void OnEnable()
@@ -60,7 +100,10 @@ namespace LegendOfBlood
             ExpeditionManager.OnPOICleared += HandlePOICleared;
             ExpeditionManager.OnTowerConquered += HandleTowerConquered;
 
-            InitializeWorldMap();
+            if (_isInitialized)
+            {
+                InitializeWorldMap();
+            }
         }
 
         private void OnDisable()
@@ -83,6 +126,9 @@ namespace LegendOfBlood
         
         private void HandleInput()
         {
+            // Tạm thời comment hệ thống Input.GetMouseButton cũ vì Unity báo lỗi Input Handling đã bị đổi qua gói Input System mới.
+            // Nếu bạn dùng Input System package, hãy cấu hình lại thẻ PlayerSettings hoặc viết lại bằng UnityEngine.InputSystem.Mouse.current.
+            /*
             // Handle Pan
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
@@ -103,6 +149,39 @@ namespace LegendOfBlood
 
             // Handle Zoom
             float scroll = Input.GetAxis("Mouse ScrollWheel");
+            if (scroll != 0.0f)
+            {
+                Vector3 newScale = mapContainer.localScale;
+                newScale.x += scroll * zoomSpeed;
+                newScale.y += scroll * zoomSpeed;
+                newScale.x = Mathf.Clamp(newScale.x, minZoom, maxZoom);
+                newScale.y = Mathf.Clamp(newScale.y, minZoom, maxZoom);
+                mapContainer.localScale = newScale;
+                ClampMapPosition();
+            }
+            */
+        }
+
+        // TÍNH NĂNG MỚI: Tận dụng EventSystem chuẩn UGUI để Kéo và Zoom, chạy được cả Input cũ lẫn mới!
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            // Không cần làm gì với OnBeginDrag trong logic này
+        }
+
+        public void OnDrag(PointerEventData eventData)
+        {
+            mapContainer.anchoredPosition += eventData.delta;
+            ClampMapPosition();
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            // Không cần làm gì với OnEndDrag trong logic này
+        }
+
+        public void OnScroll(PointerEventData eventData)
+        {
+            float scroll = eventData.scrollDelta.y;
             if (scroll != 0.0f)
             {
                 Vector3 newScale = mapContainer.localScale;
@@ -134,6 +213,8 @@ namespace LegendOfBlood
 
         private void InitializeWorldMap()
         {
+            if (DataManager.Instance == null || DataManager.Instance.Player == null) return;
+
             foreach (Transform child in generatedPOIsContainer) Destroy(child.gameObject);
             _activePoiObjects.Clear();
 
@@ -261,17 +342,33 @@ namespace LegendOfBlood
             if (poiPrefab == null) return;
 
             GameObject poiInstance = Instantiate(poiPrefab, generatedPOIsContainer);
+            poiInstance.SetActive(true); // Đảm bảo icon nổi lên
             poiInstance.GetComponent<RectTransform>().anchoredPosition = poiData.position;
 
             Button poiButton = poiInstance.GetComponent<Button>();
-            if (poiButton != null) poiButton.onClick.AddListener(() => OnPOIClicked(poiData));
+            if (poiButton != null) 
+            {
+                poiButton.onClick.AddListener(() => OnPOIClicked(poiData));
+            }
+            else 
+            {
+                Debug.LogError($"[WorldMap] CẢNH BÁO QUAN TRỌNG: Prefab {poiPrefab.name} không có component Button! Người chơi KHÔNG THỂ click vào nó được!");
+            }
             
             _activePoiObjects[poiData.poiId] = poiInstance;
         }
 
         private void OnPOIClicked(POIData poiData)
         {
-            if (poiInfoPanel == null) return;
+            Debug.Log($"[WorldMap] Đã click vào POI: {poiData.poiName} (Type: {poiData.type})");
+            
+            if (poiInfoPanel == null) 
+            {
+                Debug.LogError($"[WorldMap HƯỚNG DẪN KHẮC PHỤC]: Bản đồ tìm không thấy POI_InfoPanel nên không thể hiển thị thông tin.\n" +
+                               "==> LỖI CỦA BẠN LÀ: Bạn CHƯA KÉO cục Prefab 'POI_InfoPanel' vào lưới UI (Hierarchy) trên Scene! Hãy mở tab Project (Thư mục Prefabs/UI), nắm kéo thả file POI_InfoPanel vào trong Canvas của bạn. Sau đó Game sẽ tự dính nó lại.");
+                return;
+            }
+            
             poiInfoPanel.Show(poiData, () =>
             {
                 OpenSquadSelectionForPOI(poiData);
@@ -317,7 +414,7 @@ namespace LegendOfBlood
             }
             DataManager.Instance.Player.WorldPois.RemoveAll(p => p.poiId == towerData.poiId);
             
-            GenerateTowerOfTrials();
+            GenerateProfessionTowers(); // Sử dụng phương thức chính xác
         }
 
         private bool IsPositionValid(Vector2 position)
@@ -334,11 +431,13 @@ namespace LegendOfBlood
         {
             if (travelCartPrefab == null) return;
 
+            // Đã trả lại travelLayer (Vui lòng không xài POI Container nữa)
+            // Vì ở hàm Start(), TravelLayer đã tự động được nhét vào trong MapContainer.
             GameObject cartInstance = Instantiate(travelCartPrefab, travelLayer);
             _activeTravelCarts[displayData.expeditionId] = cartInstance;
 
             RectTransform cartRect = cartInstance.GetComponent<RectTransform>();
-            cartRect.anchoredPosition = Vector2.zero; // Start from village (center)
+            cartRect.anchoredPosition = Vector2.zero; // Start from village (center map)
 
             // Animate travel to destination and back
             cartRect.DOAnchorPos(displayData.destination.position, displayData.totalDuration / 2)
@@ -366,8 +465,8 @@ namespace LegendOfBlood
         
         private void GoBackToVillage()
         {
-            // Assuming your main village/hub scene is named "MainScene"
-            SceneManager.LoadScene("MainScene");
+            // Thay vì LoadScene, giờ gọi UIManager lật trang MainScreen
+            GameManager.Instance.UIManager.ShowPanel(UIPanelType.MainScreen);
         }
 
         #endregion

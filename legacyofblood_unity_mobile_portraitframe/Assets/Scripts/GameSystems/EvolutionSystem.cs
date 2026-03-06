@@ -105,11 +105,25 @@ namespace LegendOfBlood
 
         private Trait.RarityRank RollForRarity()
         {
-            float roll = Random.Range(0f, 100f);
-            if (roll < 0.5f) return Trait.RarityRank.S;    // 0.5%
-            if (roll < 3.5f) return Trait.RarityRank.A;    // 3%
-            if (roll < 10f) return Trait.RarityRank.B;     // 6.5%
-            if (roll < 40f) return Trait.RarityRank.C;     // 30%
+            var raritySettings = DataManager.Instance?.GameConfig?.RaritySettings;
+            if (raritySettings != null && raritySettings.Count > 0)
+            {
+                float roll = Random.Range(0f, 100f);
+                float cumulative = 0f;
+                foreach (var setting in raritySettings.OrderBy(r => r.dropChance))
+                {
+                    cumulative += setting.dropChance;
+                    if (roll <= cumulative) return setting.rank;
+                }
+                return raritySettings.Last().rank;
+            }
+
+            // Fallback
+            float simpleRoll = Random.Range(0f, 100f);
+            if (simpleRoll < 0.5f) return Trait.RarityRank.S;    // 0.5%
+            if (simpleRoll < 3.5f) return Trait.RarityRank.A;    // 3%
+            if (simpleRoll < 10f) return Trait.RarityRank.B;     // 6.5%
+            if (simpleRoll < 40f) return Trait.RarityRank.C;     // 30%
             return Trait.RarityRank.D;                        // 60%
         }
     }

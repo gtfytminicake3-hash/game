@@ -21,6 +21,17 @@ namespace LegendOfBlood
             }
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            // Dự phòng: Tự động tải từ Resources nếu Inspector bị trống
+            if (maleAvatars == null || maleAvatars.Count == 0)
+            {
+                maleAvatars = new List<Sprite>(Resources.LoadAll<Sprite>("Avatars/Male"));
+            }
+
+            if (femaleAvatars == null || femaleAvatars.Count == 0)
+            {
+                femaleAvatars = new List<Sprite>(Resources.LoadAll<Sprite>("Avatars/Female"));
+            }
         }
         // -------------------------
 
@@ -43,7 +54,9 @@ namespace LegendOfBlood
 
             if (targetPool == null || targetPool.Count == 0)
             {
-                Debug.LogError($"Avatar pool cho giới tính {gender} chưa được thiết lập hoặc bị rỗng!");
+                // Thay vì văng lỗi liên tục vào Console, chỉ trả về null để Image tự tàng hình.
+                // Thêm một cảnh báo nhẹ một lần là đủ.
+                Debug.LogWarning($"[AvatarManager] Avatar pool {gender} rỗng. Hãy bỏ ảnh vào mục Resources/Avatars/{gender}.");
                 return null;
             }
 

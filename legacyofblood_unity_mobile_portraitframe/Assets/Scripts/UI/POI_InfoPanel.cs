@@ -26,6 +26,42 @@ namespace LegendOfBlood
 
         private void Awake()
         {
+            // TỰ ĐỘNG CHỮA BỆNH "RƠI KHỎI CANVAS":
+            // Nếu POI_InfoPanel vô tình bị bỏ quên ngoài Root hierarchy (không có Canvas bọc), GUI sẽ ko vẽ.
+            Canvas mainCanvas = FindFirstObjectByType<Canvas>(FindObjectsInactive.Include);
+            if (mainCanvas != null && (transform.parent == null || transform.parent.GetComponentInParent<Canvas>() == null))
+            {
+                transform.SetParent(mainCanvas.transform, false);
+                transform.SetAsLastSibling();
+                Debug.Log($"[POI_InfoPanel] Đã tự động gắp Panel vào trong {mainCanvas.name} để có thể hiển thị!");
+            }
+
+            // AUTO-WIRE: Tự động lùng sục Hierarchy tìm cái Tower Container bạn quên kéo vào
+            if (towerInfoContainer == null)
+            {
+                Transform[] allChildren = GetComponentsInChildren<Transform>(true);
+                foreach (var child in allChildren)
+                {
+                    if (child.name.ToLower().Contains("tower"))
+                    {
+                        // Tìm thấy cái cục Tower rồi
+                        towerInfoContainer = child.gameObject;
+                        break;
+                    }
+                }
+                
+                // Nếu User xóa luôn cục Tower trong thiết kế, đẻ ra một cái rỗng để đỡ đạn NullReference!
+                if (towerInfoContainer == null)
+                {
+                    towerInfoContainer = new GameObject("TOWER_HOLDER_AUTO");
+                    towerInfoContainer.transform.SetParent(this.transform, false);
+                    towerInfoContainer.SetActive(false);
+                }
+            }
+        }
+
+        private void Start()
+        {
             exploreButton.onClick.AddListener(OnExploreClicked);
             closeButton.onClick.AddListener(ClosePanel);
         }
@@ -41,7 +77,9 @@ namespace LegendOfBlood
             // Handle Tower of Trials specific UI and logic
             if (poiData.type == POIType.TowerOfTrials)
             {
-                towerInfoContainer.SetActive(true);
+                if (towerInfoContainer != null) 
+                    towerInfoContainer.SetActive(true);
+                    
                 // Start a coroutine to update the countdown timer
                 if (_countdownCoroutine != null) StopCoroutine(_countdownCoroutine);
                 _countdownCoroutine = StartCoroutine(CountdownTimer());
@@ -56,34 +94,42 @@ namespace LegendOfBlood
         {
             if (_currentPoiData == null) return;
 
-            poiNameText.text = _currentPoiData.poiName;
+            if (poiNameText != null) poiNameText.text = _currentPoiData.poiName;
 
             // Hide regular info for the tower and show tower-specific info
             if (_currentPoiData.type == POIType.TowerOfTrials)
             {
-                difficultyText.gameObject.SetActive(false);
-                recommendedCpText.gameObject.SetActive(false);
+                if (difficultyText != null) difficultyText.gameObject.SetActive(false);
+                if (recommendedCpText != null) recommendedCpText.gameObject.SetActive(false);
 
-                currentFloorText.text = string.Format(LocalizationSystem.GetText("tower_current_floor_format"), _currentPoiData.currentFloor);
+                if (currentFloorText != null)
+                {
+                    currentFloorText.text = string.Format(LocalizationSystem.GetText("tower_current_floor_format"), _currentPoiData.currentFloor);
+                }
+                else
+                {
+                    Debug.LogWarning("[POI_InfoPanel] Biến currentFloorText chưa được gán vào Inspector nên không thể hiển thị số tầng.");
+                }
             }
             else
             {
-                difficultyText.gameObject.SetActive(true);
-                recommendedCpText.gameObject.SetActive(true);
+                if (difficultyText != null) difficultyText.gameObject.SetActive(true);
+                if (recommendedCpText != null) recommendedCpText.gameObject.SetActive(true);
 
                 int recommendedCp = 0;
                 if (_currentPoiData.monsterIDs != null)
                 {
                     foreach (var monsterId in _currentPoiData.monsterIDs) recommendedCp += 500; // Placeholder
                 }
-                difficultyText.text = string.Format(LocalizationSystem.GetText("poi_difficulty_format"), _currentPoiData.difficultyLevel);
-                recommendedCpText.text = string.Format(LocalizationSystem.GetText("poi_recommended_cp_format"), recommendedCp);
+                
+                if (difficultyText != null) difficultyText.text = string.Format(LocalizationSystem.GetText("poi_difficulty_format"), _currentPoiData.difficultyLevel);
+                if (recommendedCpText != null) recommendedCpText.text = string.Format(LocalizationSystem.GetText("poi_recommended_cp_format"), recommendedCp);
             }
         }
 
         private IEnumerator CountdownTimer()
         {
-            while (towerInfoContainer.activeSelf && _currentPoiData != null && _currentPoiData.type == POIType.TowerOfTrials)
+            while (towerInfoContainer != null && towerInfoContainer.activeSelf && _currentPoiData != null && _currentPoiData.type == POIType.TowerOfTrials)
             {
                 long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 long remainingTime = _currentPoiData.recoveryEndTime - currentTime;
@@ -91,13 +137,13 @@ namespace LegendOfBlood
                 if (remainingTime > 0)
                 {
                     TimeSpan timeSpan = TimeSpan.FromMilliseconds(remainingTime);
-                    recoveryTimeText.text = string.Format("Cooldown: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
-                    exploreButton.interactable = false; // Can't explore while on cooldown
+                    if (recoveryTimeText != null) recoveryTimeText.text = string.Format("Cooldown: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+                    if (exploreButton != null) exploreButton.interactable = false; // Can't explore while on cooldown
                 }
                 else
                 {
-                    recoveryTimeText.text = "<color=green>Ready</color>";
-                    exploreButton.interactable = true;
+                    if (recoveryTimeText != null) recoveryTimeText.text = "<color=green>Ready</color>";
+                    if (exploreButton != null) exploreButton.interactable = true;
                     // Stop the coroutine once it's ready
                     yield break; 
                 }

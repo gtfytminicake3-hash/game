@@ -1,7 +1,7 @@
 using LegendOfBlood;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement; // Remove this if unused completely, but keeping it is fine.
 using UnityEngine.UI;
 using TMPro;
 
@@ -18,9 +18,8 @@ public class Bootloader : MonoBehaviour
     
     private void Start()
     {
-        // Thiết lập trạng thái ban đầu
-        tapToStartGroup.SetActive(true);
-        loadingScreenGroup.SetActive(false);
+        // Tự động gọi hàm chạy Loading, do Game đã đổi sang 1 Scene
+        StartLoading();
     }
 
     /// <summary>
@@ -29,8 +28,8 @@ public class Bootloader : MonoBehaviour
     public void StartLoading()
     {
         // Ẩn "Tap to Start", hiện màn hình loading
-        tapToStartGroup.SetActive(false);
-        loadingScreenGroup.SetActive(true);
+        if (tapToStartGroup != null) tapToStartGroup.SetActive(false);
+        if (loadingScreenGroup != null) loadingScreenGroup.SetActive(true);
 
         // Bắt đầu quá trình tải bất đồng bộ
         StartCoroutine(LoadMainSceneAsync());
@@ -41,36 +40,94 @@ public class Bootloader : MonoBehaviour
     /// </summary>
     private IEnumerator LoadMainSceneAsync()
     {
-        // 1. Tạo ra hệ thống lõi. GameManager sẽ tự xử lý việc chỉ có một instance duy nhất.
-        // Nếu một GameManager đã tồn tại từ lần chạy trước (trong Editor), instance mới này sẽ tự hủy
-        // và instance cũ sẽ tiếp tục hoạt động.
-        if (coreSystemsPrefab != null)
+        // 1. Khởi tạo ảo cho thanh loading để cho người chơi thấy bắt đầu chạy
+        loadingSlider.value = 0.1f;
+        loadingText.text = "Initializing Core Systems...";
+
+        // 2. Tạo ra hệ thống lõi nếu chưa có
+        if (GameManager.Instance == null && coreSystemsPrefab != null)
         {
             Instantiate(coreSystemsPrefab);
         }
 
-        // Đợi 1 frame để đảm bảo Core Systems được khởi tạo
+        // Đợi 1 frame
+        yield return null;
 
-        // 2. Đợi cho đến khi hệ thống dịch thuật sẵn sàng
-        // Điều này tránh lỗi không tìm thấy key khi màn hình loading vừa xuất hiện
+        loadingSlider.value = 0.4f;
+        loadingText.text = "Loading Localization & Database...";
+
+        // 3. Đợi cho đến khi hệ thống dịch thuật sẵn sàng
         yield return new WaitUntil(() => global::LocalizationSystem.IsReady);
 
-        // 2. Bắt đầu tải MainScene trong nền
-        AsyncOperation operation = SceneManager.LoadSceneAsync("MainScene");
+        if (global::LocalizationSystem.IsReady) {
+            loadingSlider.value = 0.7f;
+            loadingText.text = string.Format(global::LocalizationSystem.GetText("loading_format"), "70");
+        }
 
-        // 3. Vòng lặp cập nhật thanh loading trong khi scene đang tải
-        while (!operation.isDone)
+        // 4. [THỰC TẾ] Chờ cho GameManager và DataManager tải xong tệp Save của người chơi.
+        // Cài đặt Timeout an toàn (5s tối đa)
+        float maxWaitTime = 5.0f;
+        float currentWaitTime = 0f;
+
+        while (currentWaitTime < maxWaitTime)
         {
-            // operation.progress chỉ đi từ 0 đến 0.9.
-            // Chúng ta chia cho 0.9 để chuẩn hóa nó về khoảng 0 đến 1.
-            float progress = Mathf.Clamp01(operation.progress / 0.9f);
+            if (GameManager.Instance != null &&
+                GameManager.Instance.DataManager != null &&
+                GameManager.Instance.DataManager.Player != null)
+            {
+                break; // Thoát lặp khi nạp xong The Player
+            }
 
-            // Cập nhật UI
-            loadingSlider.value = progress;
-            loadingText.text = string.Format(global::LocalizationSystem.GetText("loading_format"), (progress * 100f).ToString("F0"));
-
-            // Đợi frame tiếp theo
+            // Nếu DataManager load lỗi khiến biến Player == null thì chờ
+            currentWaitTime += Time.deltaTime;
             yield return null;
         }
+
+        if (currentWaitTime >= maxWaitTime)
+        {
+            Debug.LogError("[Bootloader] QUÁ THỜI GIAN LOAD DATA (5s)! Hệ thống DataManager đang bị Crash ngầm. Bỏ qua và cưỡng ép mở UI.");
+            // Cứu cánh: Force init rỗng nếu thất bại
+            if (GameManager.Instance?.DataManager != null && GameManager.Instance.DataManager.Player == null)
+            {
+               GameManager.Instance.DataManager.InitializeDataManager();
+            }
+        }
+
+        // Đã Load thành công (Hoặc Force load)
+        loadingSlider.value = 1.0f;
+        if (global::LocalizationSystem.IsReady) {
+            loadingText.text = string.Format(global::LocalizationSystem.GetText("loading_format"), "100");
+        }
+
+        // Đợi một khoảng ngắn mượt UI
+        yield return new WaitForSeconds(0.4f);
+
+        // Kích hoạt Game State sang Playing nếu bị găm ở Initializing
+        if (GameManager.Instance != null && GameManager.Instance.CurrentState != GameManager.GameState.Playing)
+        {
+             GameManager.Instance.UpdateGameState(GameManager.GameState.Playing);
+        }
+
+        // 5. Mở Panel Làng Chính (Phải kiểm tra Null kỹ, tránh crash dây chuyền)
+        if (GameManager.Instance != null && GameManager.Instance.UIManager != null)
+        {
+            GameManager.Instance.UIManager.ShowPanel(UIPanelType.MainScreen);
+        }
+        else 
+        {
+            Debug.LogError("[Bootloader] THIẾU UIManager! Game không thể mở màn hình UI.");
+        }
+
+        // 6. Đóng Bootloader
+        if (loadingScreenGroup != null) loadingScreenGroup.SetActive(false);
+        if (tapToStartGroup != null) tapToStartGroup.SetActive(false);
+        
+        // Cực kỳ cẩn thận: CHỈ tắt component hoặc Image background của Bootloader,
+        // TUYỆT ĐỐI KHÔNG tắt gameObject nếu nó là ROOT CANVAS của game.
+        // Tắt Canvas gốc = Tắt mọi thứ.
+        Image bg = GetComponent<Image>();
+        if (bg != null) bg.enabled = false;
+        
+        // gameObject.SetActive(false); // BỎ LỆNH NÀY TẠM THỜI VÌ CÓ NGUY CƠ TẮT NHẦM ROOT CANVAS
     }
 }

@@ -19,20 +19,24 @@ namespace LegendOfBlood
 
         private void Start()
         {
-            closeButton.onClick.AddListener(Hide);
-            claimAllButton.onClick.AddListener(ClaimAllReports);
-            gameObject.SetActive(false); // Start hidden
+            if (closeButton != null) closeButton.onClick.AddListener(Hide);
+            if (claimAllButton != null) claimAllButton.onClick.AddListener(ClaimAllReports);
         }
 
+        private void OnEnable()
+        {
+            RefreshUI();
+        }
+
+        // Keep Show() just in case it's called elsewhere, though UIManager will just SetActive(true)
         public void Show()
         {
             gameObject.SetActive(true);
-            RefreshUI();
         }
 
         public void Hide()
         {
-            gameObject.SetActive(false);
+            GameManager.Instance.UIManager.GoBack();
         }
 
         private void RefreshUI()
@@ -43,6 +47,8 @@ namespace LegendOfBlood
                 Destroy(item);
             }
             _instantiatedReportItems.Clear();
+
+            if (DataManager.Instance == null || DataManager.Instance.Player == null) return;
 
             var unclaimedReports = DataManager.Instance.Player.UnclaimedReports;
 
@@ -68,6 +74,24 @@ namespace LegendOfBlood
                         ProcessSingleReport(report);
                         // Refresh the UI after claiming one
                         RefreshUI();
+                    }, () => {
+                        // Mở bảng CombatVisualizerPanel và truyền dữ liệu replay vào đây.
+                        GameManager.Instance.UIManager.ShowPanel(UIPanelType.Battle, false);
+                        var visualizer = UnityEngine.Object.FindAnyObjectByType<LegendOfBlood.Combat.CombatVisualizerPanel>();
+                        
+                        // Lấy danh sách tướng bên mình từ report
+                        var allies = new System.Collections.Generic.List<HeroData>();
+                        if (report.combatResult.PlayerSurvivors != null) allies.AddRange(report.combatResult.PlayerSurvivors);
+                        if (report.combatResult.PlayerCasualties != null) allies.AddRange(report.combatResult.PlayerCasualties);
+                        
+                        // Lấy danh sách quái từ POI
+                        var poiData = DataManager.Instance.GetPOIByID(report.poiId);
+                        var monsterIds = poiData != null ? poiData.monsterIDs : new System.Collections.Generic.List<string>();
+
+                        if (visualizer != null)
+                        {
+                            visualizer.PlayCombat(report.combatResult, allies, null, monsterIds);
+                        }
                     });
                     _instantiatedReportItems.Add(itemGO);
                 }

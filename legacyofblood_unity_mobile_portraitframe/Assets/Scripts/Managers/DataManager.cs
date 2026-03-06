@@ -36,6 +36,8 @@ namespace LegendOfBlood
             // Khởi tạo toàn bộ dữ liệu khi game bắt đầu
             InitializeDataManager();
         }
+        private bool _isInitialized = false;
+
         #endregion
 
         #region Fields and Properties
@@ -44,6 +46,9 @@ namespace LegendOfBlood
         [SerializeField]
         [Tooltip("Kéo ScriptableObject chứa toàn bộ data config của game vào đây.")]
         private GameConfigs.GameConfig _gameConfig;
+        
+        // Expose public property cho các System khác truy cập
+        public GameConfigs.GameConfig GameConfig => _gameConfig;
 
         // Dữ liệu cấu hình game (được tối ưu hóa để truy cập nhanh bằng Dictionary)
         public Dictionary<string, Trait> AllTraits { get; private set; }
@@ -77,11 +82,15 @@ namespace LegendOfBlood
         /// <summary>
         /// Khởi tạo DataManager, xử lý config và tải dữ liệu người chơi.
         /// </summary>
-        private void InitializeDataManager()
+        public void InitializeDataManager()
         {
+            if (_isInitialized) return;
+
             _saveFilePath = Path.Combine(Application.persistentDataPath, SAVE_FILE_NAME);
             ProcessGameConfiguration();
             LoadPlayerData();
+            
+            _isInitialized = true;
         }
 
         /// <summary>
@@ -344,12 +353,18 @@ namespace LegendOfBlood
         
         private HeroData CreateStartingHero(Gender gender, string name)
         {
+            Profession prof = gender == Gender.Male ? Profession.Warrior : Profession.Healer;
+            List<string> startingSkills = GetStartingSkills(prof);
+
             var hero = new HeroData(Guid.NewGuid().ToString(), name, gender)
             {
                 level = 1,
-                potential = 50,
-                baseStats = new HeroStats { hp = 100, atk = 10, def = 8, spd = 12 },
-                isMature = true
+                potential = 18,
+                baseStats = new HeroStats { hp = 200, atk = 25, def = 15, spd = 20 },
+                isMature = true,
+                profession = prof,
+                traitIDs = new List<string> { "TR_ATK_D", "TR_ALL_S" }, // Tặng Tân thủ 2 gen xịn từ GameConfig 
+                skillIDs = new List<string>(startingSkills) 
             };
             hero.currentHp = hero.GetFinalStats().hp; 
             return hero;
