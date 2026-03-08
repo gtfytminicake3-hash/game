@@ -24,7 +24,6 @@ namespace LegendOfBlood
         ProfessionSelection,
         Recruitment,
         Settings,
-        Menu,
         BuildingUpgrade,
         Tutorial,
         Bootloader,
@@ -34,7 +33,8 @@ namespace LegendOfBlood
         PopulationManager,
         Quest,
         BossBattle,
-        Tower
+        Tower,
+        Menu   // DO NOT INSERT IN THE MIDDLE OF ENUMS!
     }
 
     /// <summary>
@@ -93,7 +93,18 @@ namespace LegendOfBlood
 
             foreach (UIPanel panel in allPanels)
             {
-                if (panel.PanelType == UIPanelType.None) continue; // Bỏ qua Panel Type bằng None
+                // Tự động gắn PanelType cho các Panel mới sinh ra từ code nếu bị Unity đánh mất tham chiếu trong Editor
+                if (panel.PanelType == UIPanelType.None)
+                {
+                    string className = panel.GetType().Name;
+                    if (className == "QuestPanel") panel.PanelType = UIPanelType.Quest;
+                    else if (className == "InventoryPanel") panel.PanelType = UIPanelType.Inventory;
+                    else if (className == "RecruitmentPanel") panel.PanelType = UIPanelType.Recruitment;
+                    else if (className == "MenuPanel") panel.PanelType = UIPanelType.Menu;
+                    else if (className == "ProfessionSelectionPanel") panel.PanelType = UIPanelType.ProfessionSelection;
+                    
+                    if (panel.PanelType == UIPanelType.None) continue; // Vẫn None thì bỏ qua
+                }
 
                 if (!_panelDictionary.ContainsKey(panel.PanelType))
                 {
@@ -165,7 +176,18 @@ namespace LegendOfBlood
                 }
 
                 panelToShow.SetActive(true);
-                panelToShow.transform.SetAsLastSibling(); // Vô cùng quan trọng: Đẩy thẻ bài lên Layer trên cùng để người chơi dễ dàng click!
+                
+                // Logic Layer: Đẩy Panel lên trên cùng (Che lấp các cái khác) để dễ tương tác,
+                // Nhưng riêng MainScreen (Làng/Doanh trại gốc) thì phải nằm dưới cùng (Chỉ trên Bootloader).
+                if (panelType == UIPanelType.MainScreen)
+                {
+                    panelToShow.transform.SetSiblingIndex(1);
+                }
+                else
+                {
+                    panelToShow.transform.SetAsLastSibling();
+                }
+
                 _currentPanel = panelType;
             }
             else

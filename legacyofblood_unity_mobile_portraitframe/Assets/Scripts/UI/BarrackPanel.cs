@@ -8,6 +8,7 @@ namespace LegendOfBlood
     {
         [Header("UI References")]
         [SerializeField] private Button closeButton;
+        [SerializeField] private Button populationManagerButton;
         [SerializeField] private Transform heroListContainer;
 
         [Header("Prefabs")]
@@ -20,6 +21,10 @@ namespace LegendOfBlood
             if (closeButton != null)
             {
                 closeButton.onClick.AddListener(Hide);
+            }
+            if (populationManagerButton != null)
+            {
+                populationManagerButton.onClick.AddListener(() => GameManager.Instance.UIManager.ShowPanel(UIPanelType.PopulationManager, true));
             }
         }
 

@@ -27,13 +27,6 @@ namespace LegendOfBlood
             }
         }
 
-        public void OpenPopulationManagerPanel()
-        {
-            if (GameManager.Instance != null && GameManager.Instance.UIManager != null)
-            {
-                GameManager.Instance.UIManager.ShowPanel(UIPanelType.PopulationManager, true);
-            }
-        }
 
         public void OpenMenuPanel()
         {

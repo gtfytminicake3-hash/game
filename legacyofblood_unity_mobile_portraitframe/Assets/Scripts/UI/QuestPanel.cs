@@ -19,7 +19,7 @@ namespace LegendOfBlood.UI
 
         private LegendOfBlood.GameConfigs.QuestCategory _currentCategory = LegendOfBlood.GameConfigs.QuestCategory.Main;
 
-        private void Start()
+        private void Awake()
         {
             PanelType = UIPanelType.Quest;
             _questManager = GameManager.Instance.QuestManager;
@@ -28,7 +28,7 @@ namespace LegendOfBlood.UI
             if (dailyTabButton) dailyTabButton.onClick.AddListener(() => SetCategory(LegendOfBlood.GameConfigs.QuestCategory.Daily));
             if (weeklyTabButton) weeklyTabButton.onClick.AddListener(() => SetCategory(LegendOfBlood.GameConfigs.QuestCategory.Weekly));
             
-            Debug.Log("QuestPanel Initialized");
+            Debug.Log("QuestPanel Initialized in Awake");
         }
 
         private void SetCategory(LegendOfBlood.GameConfigs.QuestCategory category)
