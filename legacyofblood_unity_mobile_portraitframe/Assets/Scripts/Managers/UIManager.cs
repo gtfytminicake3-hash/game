@@ -126,6 +126,7 @@ namespace LegendOfBlood
                     if (panel.PanelType != UIPanelType.Bootloader)
                     {
                         panel.gameObject.SetActive(false); 
+                        Debug.Log($"[UIManager] 🛑 Đã giấu đi Panel: {panel.name}");
                     }
                     else
                     {
@@ -137,7 +138,7 @@ namespace LegendOfBlood
                 }
                 else
                 {
-                    Debug.LogWarning($"Panel với type {panel.PanelType} đã được đăng ký. Bỏ qua đăng ký trùng lặp và tắt Panel thừa này đi.");
+                    Debug.LogWarning($"[UIManager] ⏭️ Panel với type {panel.PanelType} đã tồn tại. Bỏ qua và TẮT LUÔN Panel thừa: {panel.name}");
                     panel.gameObject.SetActive(false); // Ẩn luôn panel thừa để tránh nằm lỳ trên màn hình
                 }
             }
