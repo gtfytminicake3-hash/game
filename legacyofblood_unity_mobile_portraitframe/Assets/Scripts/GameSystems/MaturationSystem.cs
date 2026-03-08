@@ -14,6 +14,27 @@ namespace LegendOfBlood
         public static event Action<HeroData> OnHeroMatured;
 
         /// <summary>
+        /// Rút ngắn thời gian trưởng thành bằng vật phẩm.
+        /// </summary>
+        public bool SpeedUpMaturation(HeroData hero, string itemId)
+        {
+            if (hero == null || hero.isMature) return false;
+
+            var item = DataManager.Instance.AllItems.TryGetValue(itemId, out var itemData) ? itemData : null;
+            if (item == null || item.type != ItemType.SpeedUp) return false;
+
+            bool success = GameManager.Instance.InventoryManager.UseItem(itemId, 1);
+            if (success)
+            {
+                long speedUpMs = item.speedUpValueInSeconds * 1000;
+                hero.maturationEndTime -= speedUpMs;
+                Debug.Log($"{hero.heroName} đã sử dụng {item.itemName} để giảm {item.speedUpValueInSeconds}s thời gian trưởng thành.");
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Hàm tick được gọi bởi GameManager mỗi frame để cập nhật logic.
         /// </summary>
         public void Tick(float deltaTime)

@@ -50,17 +50,7 @@ namespace LegendOfBlood
 
         private void CalculateBaseStats(HeroData newHero)
         {
-            newHero.baseStats = new HeroStats();
-            newHero.baseStats.hp = newHero.potential * Random.Range(8, 11);
-            newHero.baseStats.atk = newHero.potential * Random.Range(8, 11);
-            newHero.baseStats.def = newHero.potential * Random.Range(8, 11);
-            newHero.baseStats.spd = newHero.potential * Random.Range(8, 11);
-
-            newHero.addedStats = new HeroStats();
-            newHero.freeStatPoints = 0;
-            newHero.evasionRate = 0f;
-            newHero.damageReduction = 0f;
-            newHero.damageIncrease = 0f;
+            newHero.CalculateBaseStats();
         }
 
         private List<string> AssignRandomTraits()
@@ -75,13 +65,12 @@ namespace LegendOfBlood
                 return new List<string>();
             }
 
-            while (childTraits.Count < 3)
+            var availableTraits = allTraits.ToList(); // Copy to manipulate
+            while (childTraits.Count < 3 && availableTraits.Count > 0)
             {
-                var randomTrait = allTraits[Random.Range(0, allTraits.Count)];
-                if (!childTraits.Contains(randomTrait.id))
-                {
-                    childTraits.Add(randomTrait.id);
-                }
+                var randomTrait = availableTraits[Random.Range(0, availableTraits.Count)];
+                childTraits.Add(randomTrait.id);
+                availableTraits.Remove(randomTrait);
             }
             return childTraits.ToList();
         }
@@ -136,18 +125,10 @@ namespace LegendOfBlood
             };
         }
 
+        // The NameGenerator class now handles name generation.
         private string GetRandomName(Gender gender)
         {
-            string nameKey;
-            if (gender == Gender.Male)
-            {
-                nameKey = $"male_name_{Random.Range(1, 28)}";
-            }
-            else
-            {
-                nameKey = $"female_name_{Random.Range(1, 28)}";
-            }
-            return LocalizationSystem.GetText(nameKey);
+            return NameGenerator.GetRandomName(gender);
         }
     }
 }

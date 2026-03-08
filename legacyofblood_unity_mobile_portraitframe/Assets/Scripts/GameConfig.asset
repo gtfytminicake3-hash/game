@@ -15,56 +15,312 @@ MonoBehaviour:
   AllTraits:
   - {fileID: 11400000, guid: db023c430c528bd48bea4cc5829db8a0, type: 2}
   - {fileID: 11400000, guid: 3533a52ae33326d4aad634047e914289, type: 2}
+  - {fileID: 11400000, guid: 1c492e60b4aeae449add6906c2985bab, type: 2}
+  - {fileID: 11400000, guid: 6cb91fbadde00844e8c3cafc267333ad, type: 2}
+  - {fileID: 11400000, guid: 2537533c48554584d9d3f199e0eec56a, type: 2}
+  - {fileID: 11400000, guid: 5233531624711194694f36fedae0fcb7, type: 2}
+  - {fileID: 11400000, guid: 03645990d2ed2fc48aaef327174cbd1d, type: 2}
   - {fileID: 11400000, guid: 97b3e0b498bf1464689c8c2e9130aec0, type: 2}
+  - {fileID: 11400000, guid: 7fa3d1ef780774448b7be973d096a1d8, type: 2}
+  - {fileID: 11400000, guid: 166456f80c7aa3347aa8d5ea42a666a8, type: 2}
+  - {fileID: 11400000, guid: 4e580d7b1edbe8e49a5b6431740eac5c, type: 2}
+  - {fileID: 11400000, guid: 02a2e05f9ed6987498227931af7cfe66, type: 2}
+  - {fileID: 11400000, guid: 041f21b6af2fe60418bfdb423c3aba5d, type: 2}
+  - {fileID: 11400000, guid: 041137cbe4ec3e148bcb248fb1fb680e, type: 2}
+  - {fileID: 11400000, guid: 47c432d27a8f48f41b208a91b28b4943, type: 2}
+  - {fileID: 11400000, guid: 4ad64fd33db9fb24683a9d91e7e05210, type: 2}
+  - {fileID: 11400000, guid: e5287a2d7a939d34aa85c70f07ef949c, type: 2}
+  - {fileID: 11400000, guid: 23be95afd7924134fb06d20a53e60eb3, type: 2}
+  - {fileID: 11400000, guid: 7a3be2cd20a1b71458115ee6812360b4, type: 2}
   - {fileID: 11400000, guid: bf356eb270b3feb43bbf588a58b885d4, type: 2}
+  - {fileID: 11400000, guid: bddffb12a108db84a9bedbdc02b86aa5, type: 2}
+  - {fileID: 11400000, guid: c05440483f709db4cb99fc46dae4bbf1, type: 2}
+  - {fileID: 11400000, guid: 897c54d81af18f84c8bde2cf8aa2d691, type: 2}
   - {fileID: 11400000, guid: 45a1fb4dfa00190429ef1d1bb6959b28, type: 2}
+  - {fileID: 11400000, guid: 406af22864506fe46930803b4b10799b, type: 2}
+  - {fileID: 11400000, guid: 29906271f7fa98243ac21966f567f2b7, type: 2}
+  - {fileID: 11400000, guid: 24d1e35dcf7b69244aae3d0a7cdab167, type: 2}
+  - {fileID: 11400000, guid: 8aca3e64b38265d4a827131c2fa5a5bd, type: 2}
   AllSkills:
-  - {fileID: 11400000, guid: 60ed7ecd71141b1468b9c56d0464c025, type: 2}
-  - {fileID: 11400000, guid: 3998205a6675e8f48ba0a53c937dda7e, type: 2}
-  - {fileID: 11400000, guid: 45bec6c934ae7c249813deaa913c1d5a, type: 2}
-  - {fileID: 11400000, guid: 0edec98f4bc9919449249bf8d2a230f3, type: 2}
-  ExperienceTable: []
+  - {fileID: 11400000, guid: 4403d49ae4a25944d9ba773f40f460cd, type: 2}
+  - {fileID: 11400000, guid: cef925fda76796746b6f3e911f983357, type: 2}
+  - {fileID: 11400000, guid: 1f9f4cbdadd22584fb3bec858335e498, type: 2}
+  - {fileID: 11400000, guid: 26a19b4290bfc99438be6c8d1c5edd56, type: 2}
+  - {fileID: 11400000, guid: c98430adbb5c3354780cc246fd06c62d, type: 2}
+  - {fileID: 11400000, guid: 11bf752501093934ca894f32ea556205, type: 2}
+  - {fileID: 11400000, guid: 23aa8db44ae5d1142b9bd23a91bfb00f, type: 2}
+  - {fileID: 11400000, guid: 3760b8731a0c21345859f62df6d1eea9, type: 2}
+  - {fileID: 11400000, guid: 0df9d4caff510c846bc962387c991aef, type: 2}
+  - {fileID: 11400000, guid: 531e07916b09b944681d9d6035b3b7c7, type: 2}
+  - {fileID: 11400000, guid: 366b7366bcddbb04389f83d7b819686b, type: 2}
+  - {fileID: 11400000, guid: 9733085426e168547b51422be2b1b7fc, type: 2}
+  - {fileID: 11400000, guid: b53c8649dff17af46a9adaf6079aea08, type: 2}
+  ExperienceTable:
+  - level: 1
+    experienceRequired: 100
+  - level: 2
+    experienceRequired: 110
+  - level: 3
+    experienceRequired: 121
+  - level: 4
+    experienceRequired: 133
+  - level: 5
+    experienceRequired: 146
+  - level: 6
+    experienceRequired: 160
+  - level: 7
+    experienceRequired: 176
+  - level: 8
+    experienceRequired: 193
+  - level: 9
+    experienceRequired: 212
+  - level: 10
+    experienceRequired: 233
+  - level: 11
+    experienceRequired: 256
+  - level: 12
+    experienceRequired: 281
+  - level: 13
+    experienceRequired: 309
+  - level: 14
+    experienceRequired: 339
+  - level: 15
+    experienceRequired: 372
+  - level: 16
+    experienceRequired: 409
+  - level: 17
+    experienceRequired: 449
+  - level: 18
+    experienceRequired: 493
+  - level: 19
+    experienceRequired: 542
+  - level: 20
+    experienceRequired: 596
+  - level: 21
+    experienceRequired: 655
+  - level: 22
+    experienceRequired: 720
+  - level: 23
+    experienceRequired: 792
+  - level: 24
+    experienceRequired: 871
+  - level: 25
+    experienceRequired: 958
+  - level: 26
+    experienceRequired: 1053
+  - level: 27
+    experienceRequired: 1158
+  - level: 28
+    experienceRequired: 1273
+  - level: 29
+    experienceRequired: 1400
+  - level: 30
+    experienceRequired: 1540
+  - level: 31
+    experienceRequired: 1694
+  - level: 32
+    experienceRequired: 1863
+  - level: 33
+    experienceRequired: 2049
+  - level: 34
+    experienceRequired: 2253
+  - level: 35
+    experienceRequired: 2478
+  - level: 36
+    experienceRequired: 2725
+  - level: 37
+    experienceRequired: 2997
+  - level: 38
+    experienceRequired: 3296
+  - level: 39
+    experienceRequired: 3625
+  - level: 40
+    experienceRequired: 3987
+  - level: 41
+    experienceRequired: 4385
+  - level: 42
+    experienceRequired: 4823
+  - level: 43
+    experienceRequired: 5305
+  - level: 44
+    experienceRequired: 5835
+  - level: 45
+    experienceRequired: 6418
+  - level: 46
+    experienceRequired: 7059
+  - level: 47
+    experienceRequired: 7764
+  - level: 48
+    experienceRequired: 8540
+  - level: 49
+    experienceRequired: 9394
+  - level: 50
+    experienceRequired: 10333
+  - level: 51
+    experienceRequired: 11366
+  - level: 52
+    experienceRequired: 12502
+  - level: 53
+    experienceRequired: 13752
+  - level: 54
+    experienceRequired: 15127
+  - level: 55
+    experienceRequired: 16639
+  - level: 56
+    experienceRequired: 18302
+  - level: 57
+    experienceRequired: 20132
+  - level: 58
+    experienceRequired: 22145
+  - level: 59
+    experienceRequired: 24359
+  - level: 60
+    experienceRequired: 26794
+  - level: 61
+    experienceRequired: 29473
+  - level: 62
+    experienceRequired: 32420
+  - level: 63
+    experienceRequired: 35662
+  - level: 64
+    experienceRequired: 39228
+  - level: 65
+    experienceRequired: 43150
+  - level: 66
+    experienceRequired: 47465
+  - level: 67
+    experienceRequired: 52211
+  - level: 68
+    experienceRequired: 57432
+  - level: 69
+    experienceRequired: 63175
+  - level: 70
+    experienceRequired: 69492
+  - level: 71
+    experienceRequired: 76441
+  - level: 72
+    experienceRequired: 84085
+  - level: 73
+    experienceRequired: 92493
+  - level: 74
+    experienceRequired: 101742
+  - level: 75
+    experienceRequired: 111916
+  - level: 76
+    experienceRequired: 123107
+  - level: 77
+    experienceRequired: 135417
+  - level: 78
+    experienceRequired: 148958
+  - level: 79
+    experienceRequired: 163853
+  - level: 80
+    experienceRequired: 180238
+  - level: 81
+    experienceRequired: 198261
+  - level: 82
+    experienceRequired: 218087
+  - level: 83
+    experienceRequired: 239895
+  - level: 84
+    experienceRequired: 263884
+  - level: 85
+    experienceRequired: 290272
+  - level: 86
+    experienceRequired: 319299
+  - level: 87
+    experienceRequired: 351228
+  - level: 88
+    experienceRequired: 386350
+  - level: 89
+    experienceRequired: 424985
+  - level: 90
+    experienceRequired: 467483
+  - level: 91
+    experienceRequired: 514231
+  - level: 92
+    experienceRequired: 565654
+  - level: 93
+    experienceRequired: 622219
+  - level: 94
+    experienceRequired: 684440
+  - level: 95
+    experienceRequired: 752884
+  - level: 96
+    experienceRequired: 828172
+  - level: 97
+    experienceRequired: 910989
+  - level: 98
+    experienceRequired: 1002087
+  - level: 99
+    experienceRequired: 1102295
+  - level: 100
+    experienceRequired: 1212524
   EvolutionTable:
-    rewards: []
+    rewards:
+    - level: 30
+      description: "M\u1EDF kh\xF3a Nh\xE1nh Ngh\u1EC1 (Ch\u1ECDn 1 Trait h\u1EC7)"
+    - level: 50
+      description: "Nh\u1EADn k\u1EF9 n\u0103ng Active Level 2"
+    - level: 70
+      description: "\u0110\u1ED9t ph\xE1 B\u1EADc Hi\u1EBFm Trait ng\u1EABu nhi\xEAn"
+    - level: 100
+      description: "H\xF3a Th\u1EA7n! Ch\u1ECDn 1 Trait b\u1EADc S tr\u1EDF l\xEAn"
   StartingSkills:
   - profession: 1
     startingSkillIDs:
-    - SK_WARRIOR_01
+    - SK_WAR_DMG_1
   - profession: 2
     startingSkillIDs:
-    - SK_ARCHER_01
+    - SK_ARC_FIRE_1
   - profession: 3
     startingSkillIDs:
-    - SK_MAGE_01
+    - SK_MAG_ICE_1
   - profession: 4
     startingSkillIDs:
-    - SK_HEALER_01
-  POIMonsterConfig: {fileID: 0}
-  AllBosses: []
+    - SK_HEA_SINGLE_1
+  POIMonsterConfig: {fileID: 11400000, guid: 939591bbb1d0fcb458720278f4df350e, type: 2}
+  AllBosses:
+  - {fileID: 11400000, guid: 60cc9215dd093324a80f5aaa83f0a5e4, type: 2}
+  - {fileID: 11400000, guid: a0910f4156b914a4db998a20a242f6eb, type: 2}
+  - {fileID: 11400000, guid: 0fa50497b986bba4bad6e3868dd70372, type: 2}
   AllItems:
+  - {fileID: 11400000, guid: 97d70a5f47d242245b844226a323d90b, type: 2}
+  - {fileID: 11400000, guid: 5d81bfde3d44dc848be17998116cf265, type: 2}
+  - {fileID: 11400000, guid: 632b5812fab119b478b151b689c1b790, type: 2}
   - {fileID: 11400000, guid: 731c172e8758a5042af456caa5172219, type: 2}
-  - {fileID: 11400000, guid: bff203e763f0cb542b1a764b408d3562, type: 2}
+  - {fileID: 11400000, guid: d0d648024f7943c46b051f3a31cb4f12, type: 2}
+  - {fileID: 11400000, guid: 3d882212a8c577749b8bf62aca62b37e, type: 2}
+  - {fileID: 11400000, guid: a582022580b0dde42aa8ccd981031b86, type: 2}
   RaritySettings:
-  - rank: 4
-    dropChance: 0.5
-    minPotential: 17
-    maxPotential: 21
-  - rank: 3
-    dropChance: 3
-    minPotential: 13
-    maxPotential: 17
-  - rank: 2
-    dropChance: 6.5
-    minPotential: 9
-    maxPotential: 13
+  - rank: 0
+    dropChance: 40
+    minPotential: 1
+    maxPotential: 5
   - rank: 1
     dropChance: 30
     minPotential: 5
     maxPotential: 9
-  - rank: 0
-    dropChance: 60
-    minPotential: 1
-    maxPotential: 5
+  - rank: 2
+    dropChance: 15
+    minPotential: 8
+    maxPotential: 12
+  - rank: 3
+    dropChance: 10
+    minPotential: 12
+    maxPotential: 16
+  - rank: 4
+    dropChance: 3.5
+    minPotential: 15
+    maxPotential: 18
+  - rank: 5
+    dropChance: 1
+    minPotential: 18
+    maxPotential: 20
+  - rank: 6
+    dropChance: 0.5
+    minPotential: 19
+    maxPotential: 20
   CombatSettings:
     archerBonusCritChance: 0.4
     poisonDamageRatio: 0.2
@@ -78,126 +334,128 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 90485e37bc702c3479d48418d2cf7e84, type: 2}
   - {fileID: 11400000, guid: 32d4a19429c1f104a8a85cfdaf5f58b9, type: 2}
   AllQuestData:
-  - {fileID: 11400000, guid: 95bbbdc274aa3154bb2e6d03c4929aa3, type: 2}
-  - {fileID: 11400000, guid: c777fc180db984e41ba08f2528d2cd46, type: 2}
+  - {fileID: 11400000, guid: 3f3138e1be68817468553017edc88bf6, type: 2}
+  - {fileID: 11400000, guid: 62a0f82c46bdb724aadb2e91eaa7c371, type: 2}
+  - {fileID: 11400000, guid: 412c6e430678e2e44b88e3e816125033, type: 2}
+  - {fileID: 11400000, guid: 93d5dbb6d6310bb4a99e6caf996ab0d4, type: 2}
   TowerConfigs:
   - floorIndex: 1
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Goblin
+    - Slime
     customMonsterCount: 0
   - floorIndex: 2
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Goblin
+    - Slime
     customMonsterCount: 0
   - floorIndex: 3
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Goblin
+    - Slime
     customMonsterCount: 0
   - floorIndex: 4
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Goblin
+    - Slime
     customMonsterCount: 0
   - floorIndex: 5
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
-    customMonsterCount: 0
+    - Goblin
+    - Slime
+    customMonsterCount: 1
   - floorIndex: 6
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Orc Warrior
+    - Orc Shaman
+    - Troll
     customMonsterCount: 0
   - floorIndex: 7
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Orc Warrior
+    - Orc Shaman
+    - Troll
     customMonsterCount: 0
   - floorIndex: 8
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Orc Warrior
+    - Orc Shaman
+    - Troll
     customMonsterCount: 0
   - floorIndex: 9
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Orc Warrior
+    - Orc Shaman
+    - Troll
     customMonsterCount: 0
   - floorIndex: 10
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
-    customMonsterCount: 0
+    - Orc Warrior
+    - Orc Shaman
+    - Troll
+    customMonsterCount: 1
   - floorIndex: 11
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Orc Warrior
+    - Orc Shaman
+    - Troll
     customMonsterCount: 0
   - floorIndex: 12
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Orc Warrior
+    - Orc Shaman
+    - Troll
     customMonsterCount: 0
   - floorIndex: 13
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Orc Warrior
+    - Orc Shaman
+    - Troll
     customMonsterCount: 0
   - floorIndex: 14
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Orc Warrior
+    - Orc Shaman
+    - Troll
     customMonsterCount: 0
   - floorIndex: 15
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
-    customMonsterCount: 0
+    - Orc Warrior
+    - Orc Shaman
+    - Troll
+    customMonsterCount: 1
   - floorIndex: 16
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Elder Dragon
+    - Dragon Whelp
+    - Fire Elemental
+    - Golem
     customMonsterCount: 0
   - floorIndex: 17
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Elder Dragon
+    - Dragon Whelp
+    - Fire Elemental
+    - Golem
     customMonsterCount: 0
   - floorIndex: 18
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Elder Dragon
+    - Dragon Whelp
+    - Fire Elemental
+    - Golem
     customMonsterCount: 0
   - floorIndex: 19
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
+    - Elder Dragon
+    - Dragon Whelp
+    - Fire Elemental
+    - Golem
     customMonsterCount: 0
   - floorIndex: 20
     monsterPool:
-    - MONSTER_ID_01
-    - MONSTER_ID_02
-    - MONSTER_ID_03
-    customMonsterCount: 0
+    - Elder Dragon
+    - Dragon Whelp
+    - Fire Elemental
+    - Golem
+    customMonsterCount: 1

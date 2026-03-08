@@ -41,12 +41,16 @@ namespace LegendOfBlood
         /// Tham số 2: Số lượng mới.
         /// </summary>
         public static event Action<string, int> OnItemChanged;
+        public static event Action OnEquipmentChanged;
 
         private void Awake()
         {
             // Thiết lập tham chiếu tĩnh để dễ truy cập
             if (Instance != null && Instance != this)
             {
+#if UNITY_EDITOR
+                if (!Application.isPlaying) { DestroyImmediate(this.gameObject); return; }
+#endif
                 Destroy(this.gameObject);
                 return;
             }
@@ -263,6 +267,54 @@ namespace LegendOfBlood
             OnItemChanged?.Invoke(itemID, newCount);
             Debug.Log($"Used {amount} of item '{itemID}'. Remaining: {newCount}");
             return true;
+        }
+
+        #endregion
+
+        #region Equipment Management
+
+        /// <summary>
+        /// Lấy toàn bộ trang bị hiện có trong túi đồ (chưa mặc)
+        /// </summary>
+        public List<EquipmentData> GetEquipments()
+        {
+            if (_playerData == null) return new List<EquipmentData>();
+            return _playerData.equipments;
+        }
+
+        /// <summary>
+        /// Thêm một trang bị mới vào túi đồ.
+        /// </summary>
+        public void AddEquipment(EquipmentData equipment)
+        {
+            if (_playerData == null || equipment == null) return;
+            
+            // Assign a unique ID if one is lacking (just as a safety backup)
+            if (string.IsNullOrEmpty(equipment.id))
+            {
+                equipment.id = System.Guid.NewGuid().ToString();
+            }
+
+            _playerData.equipments.Add(equipment);
+            GameManager.Instance.DataManager.SavePlayerData();
+            OnEquipmentChanged?.Invoke();
+            Debug.Log($"Added equipment: {equipment.equipmentName}");
+        }
+
+        /// <summary>
+        /// Xóa một trang bị khỏi túi đồ (khi bán hoặc ghép đồ).
+        /// </summary>
+        public bool RemoveEquipment(EquipmentData equipment)
+        {
+            if (_playerData == null || equipment == null) return false;
+            
+            bool removed = _playerData.equipments.Remove(equipment);
+            if (removed)
+            {
+                GameManager.Instance.DataManager.SavePlayerData();
+                OnEquipmentChanged?.Invoke();
+            }
+            return removed;
         }
 
         #endregion

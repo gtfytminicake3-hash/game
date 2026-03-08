@@ -177,12 +177,18 @@ namespace LegendOfBlood.Managers
                 if (newState == QuestState.Completed)
                 {
                     Debug.Log($"Quest Completed: {GetQuestData(playerQuest.questId)?.questName}");
-                    GameManager.Instance.UINotificationManager.ShowNotification($"Quest Completed: {GetQuestData(playerQuest.questId)?.questName}");
+                    if (GameManager.Instance != null && GameManager.Instance.UINotificationManager != null)
+                    {
+                        GameManager.Instance.UINotificationManager.ShowNotification($"Quest Completed: {GetQuestData(playerQuest.questId)?.questName}");
+                    }
                 }
                 else if (newState == QuestState.Active)
                 {
                      Debug.Log($"Quest Activated: {GetQuestData(playerQuest.questId)?.questName}");
-                     GameManager.Instance.UINotificationManager.ShowNotification($"New Quest: {GetQuestData(playerQuest.questId)?.questName}");
+                     if (GameManager.Instance != null && GameManager.Instance.UINotificationManager != null)
+                     {
+                         GameManager.Instance.UINotificationManager.ShowNotification($"New Quest: {GetQuestData(playerQuest.questId)?.questName}");
+                     }
                 }
                 DataManager.Instance.SavePlayerData();
             }

@@ -19,7 +19,8 @@ namespace LegendOfBlood.GameConfigs
         BREED_HERO,
         RECRUIT_HERO,
         COMPLETE_EXPEDITION,
-        REACH_HERO_LEVEL
+        REACH_HERO_LEVEL,
+        CLEAR_POI
     }
 
     [System.Serializable]

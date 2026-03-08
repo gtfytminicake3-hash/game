@@ -27,13 +27,17 @@ public class PlanUpdateVerificationTests
 
     [SetUp]
     public void SetUp()
-    {
+        {
+            var avatarManagerObj = new UnityEngine.GameObject("TestAvatarManager");
+            avatarManagerObj.AddComponent<LegendOfBlood.AvatarManager>();
         // 1. Setup DataManager
         _dataManagerObject = new GameObject("DataManagerTestContainer");
         _dataManagerInstance = _dataManagerObject.AddComponent<DataManager>();
 
         // 2. Create Mock GameConfig
         var mockConfig = ScriptableObject.CreateInstance<GameConfig>();
+            mockConfig.EvolutionTable = new LegendOfBlood.GameConfigs.EvolutionTableData();
+            mockConfig.EvolutionTable.rewards = new System.Collections.Generic.List<LegendOfBlood.GameConfigs.EvolutionRewardData>();
 
         // 2a. Mock Experience Table
         mockConfig.ExperienceTable = new List<ExperienceData>
@@ -42,6 +46,9 @@ public class PlanUpdateVerificationTests
             new ExperienceData { level = 19, experienceRequired = 100 }, // For level 20 test
             new ExperienceData { level = 20, experienceRequired = 200 },
         };
+        mockConfig.StartingSkills = new List<LegendOfBlood.GameConfigs.ProfessionStartingSkills>();
+        mockConfig.AllSkills = new List<Skill>();
+        mockConfig.BuildingUpgradeDataList = new List<LegendOfBlood.GameConfigs.BuildingUpgradeData>(); 
 
         // 2b. Mock Trait Database
         mockConfig.AllTraits = new List<Trait>
@@ -67,7 +74,13 @@ public class PlanUpdateVerificationTests
         configField.SetValue(_dataManagerInstance, mockConfig);
 
         // 4. Manually initialize DataManager to process the mock config
+        typeof(DataManager).GetProperty("Instance", BindingFlags.Public | BindingFlags.Static).SetValue(null, _dataManagerInstance);
+        
+        FieldInfo initField = typeof(DataManager).GetField("_isInitialized", BindingFlags.NonPublic | BindingFlags.Instance);
+        if (initField != null) initField.SetValue(_dataManagerInstance, false);
+        
         MethodInfo initMethod = typeof(DataManager).GetMethod("InitializeDataManager", BindingFlags.NonPublic | BindingFlags.Instance);
+        if (initMethod == null) initMethod = typeof(DataManager).GetMethod("InitializeDataManager", BindingFlags.Public | BindingFlags.Instance);
         initMethod.Invoke(_dataManagerInstance, null);
         
         // 5. Initialize EvolutionSystem for tests that need it
@@ -79,7 +92,7 @@ public class PlanUpdateVerificationTests
     {
         if (_dataManagerObject != null)
         {
-            GameObject.Destroy(_dataManagerObject);
+            GameObject.DestroyImmediate(_dataManagerObject);
         }
         // Unsubscribe to avoid memory leaks in test environment
         _evolutionSystem = null; 
@@ -105,14 +118,14 @@ public class PlanUpdateVerificationTests
         Assert.Pass($"{testId} THÀNH CÔNG! Chỉ số gốc (ví dụ HP: {offspring.baseStats.hp}) nằm trong khoảng [POT*8, POT*10].");
     }
 
-    [UnityTest]
-    public IEnumerator P1_2_LevelUp_GrantsFreePointsEqualToPotential()
+    [Test]
+    public void P1_2_LevelUp_GrantsFreePointsEqualToPotential()
     {
         string testId = "[Checklist 1.2]";
         Debug.Log($"{testId} Bắt đầu: Kiểm tra logic cộng điểm tiềm năng khi lên cấp.");
         var hero = new HeroData { heroName = "Test Hero", level = 1, experience = 0, potential = 15, freeStatPoints = 0 };
         hero.AddExperience(100);
-        yield return null;
+        
         Assert.AreEqual(2, hero.level);
         Assert.AreEqual(15, hero.freeStatPoints);
         Assert.Pass($"{testId} THÀNH CÔNG! Lên cấp và nhận được 15 điểm tự do.");
@@ -147,8 +160,8 @@ public class PlanUpdateVerificationTests
         Assert.Pass($"{testId} THÀNH CÔNG! Gia đình 'ATK_UP' có 3 thành viên D, C, B đúng như dữ liệu giả lập.");
     }
 
-    [UnityTest]
-    public IEnumerator P2_2_LevelUpTo20_GrantsNewFamilyTrait()
+    [Test]
+    public void P2_2_LevelUpTo20_GrantsNewFamilyTrait()
     {
         string testId = "[Checklist 2.2]";
         Debug.Log($"{testId} Bắt đầu: Kiểm tra nhận trait mới ở cấp 20.");
@@ -158,8 +171,7 @@ public class PlanUpdateVerificationTests
         int initialTraitCount = hero.traitIDs.Count;
 
         hero.AddExperience(100); // Level up to 20
-        yield return null; 
-
+        
         Assert.AreEqual(20, hero.level, "Hero should have leveled up to 20.");
         Assert.AreEqual(initialTraitCount + 1, hero.traitIDs.Count, "Hero should have gained one new trait.");
         
@@ -230,7 +242,7 @@ public class PlanUpdateVerificationTests
         playerData.Heroes.Clear();
         for(int i = 0; i < 20; i++)
         {
-            
+            playerData.Heroes.Add(new HeroData { id = "Hero_" + i });
         }
         
         int initialHeroCount = playerData.Heroes.Count;

@@ -80,6 +80,7 @@ namespace LegendOfBlood.Combat
         public float MaxHp { get; private set; }
         public float CurrentHp { get; set; }
         public List<ActiveStatusEffect> ActiveEffects { get; private set; }
+        public float AtkMultiplier { get; set; } = 1.0f;
 
         public Combatant(HeroData heroData, bool isPlayer, int instanceIndex)
         {
@@ -96,7 +97,7 @@ namespace LegendOfBlood.Combat
             ActiveEffects = new List<ActiveStatusEffect>();
         }
 
-        public float GetCurrentAtk() => HeroRef.GetFinalStats().atk;
+        public float GetCurrentAtk() => HeroRef.GetFinalStats().atk * AtkMultiplier;
         public float GetCurrentDef() => HeroRef.GetFinalStats().def + ActiveEffects.Where(e => e.Type == StatusEffectType.DefDown).Sum(e => e.Value);
         public float GetCurrentSpd() => HeroRef.GetFinalStats().spd + ActiveEffects.Where(e => e.Type == StatusEffectType.Slow).Sum(e => e.Value);
         public float GetCurrentCritChance() => HeroRef.GetFinalStats().critChance + ActiveEffects.Where(e => e.Type == StatusEffectType.CritUp).Sum(e => e.Value);
@@ -160,6 +161,12 @@ namespace LegendOfBlood.Combat
 
             ArrangeFormation(_playerTeam);
             ArrangeFormation(_enemyTeam);
+
+            // Xử lý Trait: Hào quang (Aura)
+            bool playerHasAura = _playerTeam.Any(c => c.HeroRef.traitIDs.Any(t => t != null && t.Contains("AURA")));
+            if (playerHasAura) { _playerTeam.ForEach(c => c.AtkMultiplier += 0.1f); _combatLog.Add("<color=cyan>Đội hình người chơi nhận Hào quang (+10% ATK).</color>"); }
+            bool enemyHasAura = _enemyTeam.Any(c => c.HeroRef.traitIDs.Any(t => t != null && t.Contains("AURA")));
+            if (enemyHasAura) { _enemyTeam.ForEach(c => c.AtkMultiplier += 0.1f); _combatLog.Add("<color=cyan>Đội hình địch nhận Hào quang (+10% ATK).</color>"); }
 
             LogFormation(_playerTeam, "Đội hình người chơi");
             LogFormation(_enemyTeam, "Đội hình địch");
@@ -261,6 +268,14 @@ namespace LegendOfBlood.Combat
         private void PerformAttack(Combatant attacker, Combatant target, float powerRatio, Skill skill)
         {
             float baseDamage = attacker.GetCurrentAtk() * powerRatio;
+
+            // Xử lý Trait: Kẻ săn mồi (Predator)
+            if (attacker.HeroRef.traitIDs.Any(t => t != null && t.Contains("PREDATOR")) && target.CurrentHp < target.MaxHp * 0.3f)
+            {
+                baseDamage *= 1.5f; // Sát thương thêm 50%
+                _combatLog.Add($"<color=red>Kích hoạt Kẻ Săn Mồi!</color>");
+            }
+
             float finalDamage = Mathf.Max(1, baseDamage - target.GetCurrentDef());
             
             float archerBonus = DataManager.Instance?.GameConfig?.CombatSettings?.archerBonusCritChance ?? 0.4f;
@@ -386,6 +401,15 @@ namespace LegendOfBlood.Combat
                 effect.Duration--;
             }
             combatant.ActiveEffects.RemoveAll(e => e.Duration <= 0);
+
+            // Xử lý Trait: Tái sinh (Regeneration)
+            if (combatant.HeroRef.traitIDs.Any(t => t != null && t.Contains("REGEN")))
+            {
+                int regenAmount = Mathf.FloorToInt(combatant.MaxHp * 0.05f);
+                combatant.CurrentHp = Mathf.Min(combatant.MaxHp, combatant.CurrentHp + regenAmount);
+                _combatLog.Add($"{combatant.HeroRef.heroName} tự hồi <color=green>{regenAmount}</color> HP nhờ trait Tái Sinh.");
+                _eventLog.Add(new CombatEvent { EventType = CombatEventType.Heal, TargetID = combatant.InstanceID, Value = regenAmount });
+            }
         }
 
         private void TickCooldowns(Combatant combatant)

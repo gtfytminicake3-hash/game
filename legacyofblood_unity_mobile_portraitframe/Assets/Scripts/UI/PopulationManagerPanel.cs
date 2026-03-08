@@ -1,46 +1,75 @@
-namespace LegendOfBlood.UI
+namespace LegendOfBlood
 {
-    using LegendOfBlood;
     using UnityEngine;
-    using System.Collections.Generic;
+    using UnityEngine.UI;
+    using TMPro;
 
-    /// <summary>
-    /// This panel is shown when the player acquires a new hero but the population is full.
-    /// It forces the player to dismiss one hero to make room for the new one.
-    /// </summary>
-    public class PopulationManagerPanel : MonoBehaviour
+    public class PopulationManagerPanel : UIPanel
     {
-        [Tooltip("The hero that needs a slot to be freed.")]
-        private HeroData _newHero;
-
-        // TODO: UI elements for displaying the list of current heroes
-        // TODO: A confirmation button to dismiss the selected hero
+        [SerializeField] private Button closeButton;
+        [SerializeField] private Transform listContainer;
+        [SerializeField] private GameObject heroCardPrefab;
+        [SerializeField] private TextMeshProUGUI populationCountText;
 
         private void Start()
         {
-            // TODO: Add button listeners
-            Debug.Log("PopulationManagerPanel Initialized");
+            PanelType = UIPanelType.PopulationManager;
+            if (closeButton != null)
+            {
+                closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.HidePanel(UIPanelType.PopulationManager));
+            }
         }
 
-        public void ShowPanel(HeroData newHero)
+        private void OnEnable()
         {
-            _newHero = newHero;
-            gameObject.SetActive(true);
-            
-            // TODO: Populate the UI list with the player's current heroes
-            Debug.Log($"Population is full. You must dismiss a hero to make room for {_newHero.heroName}.");
+            RefreshList();
+            DataManager.OnHeroListChanged += RefreshList;
         }
 
-        private void OnDismissHeroConfirmed(string heroIdToDismiss)
+        private void OnDisable()
         {
-            // 1. Dismiss the selected hero
-            DataManager.Instance.RemoveHero(heroIdToDismiss);
-            
-            // 2. Add the new hero
-            DataManager.Instance.AddHero(_newHero);
+            DataManager.OnHeroListChanged -= RefreshList;
+        }
 
-            // 3. Close the panel
-            gameObject.SetActive(false);
+        private void RefreshList()
+        {
+            if (listContainer == null || heroCardPrefab == null) return;
+
+            // Clear current items
+            foreach (Transform child in listContainer)
+            {
+                Destroy(child.gameObject);
+            }
+
+            var heroes = DataManager.Instance.AllHeroes;
+            int capacity = DataManager.Instance.GetPopulationCapacity();
+
+            if (populationCountText != null)
+            {
+                populationCountText.text = string.Format(LocalizationSystem.GetText("population_count_format"), heroes.Count, capacity);
+            }
+
+            foreach (var hero in heroes)
+            {
+                GameObject cardObj = Instantiate(heroCardPrefab, listContainer);
+                PopulationHeroCard cardScript = cardObj.GetComponent<PopulationHeroCard>();
+                if (cardScript != null)
+                {
+                    cardScript.Setup(hero, HandleDismissHero);
+                }
+            }
+        }
+
+        private void HandleDismissHero(HeroData heroToDismiss)
+        {
+            if (heroToDismiss == null) return;
+
+            // Optional: You could show a confirmation popup here before actually removing
+            // For now, removing directly
+            DataManager.Instance.RemoveHero(heroToDismiss.id);
+            GameManager.Instance.UINotificationManager.ShowNotification(
+                string.Format(LocalizationSystem.GetText("hero_dismissed_success"), heroToDismiss.heroName)
+            );
         }
     }
 }

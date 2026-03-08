@@ -126,6 +126,13 @@ namespace LegendOfBlood
                     {
                         GameManager.Instance.InventoryManager.AddItem(item.Key, item.Value);
                     }
+                    if (report.loot.equipments != null)
+                    {
+                        foreach (var eq in report.loot.equipments)
+                        {
+                            GameManager.Instance.InventoryManager.AddEquipment(eq);
+                        }
+                    }
                 }
             }
 

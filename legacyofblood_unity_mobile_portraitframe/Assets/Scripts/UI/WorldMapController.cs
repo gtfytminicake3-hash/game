@@ -225,11 +225,15 @@ namespace LegendOfBlood
                 Debug.Log("No POI data found, generating new POIs...");
                 for (int i = 0; i < numberOfDungeons; i++) GenerateAndRegisterNewPOI(POIType.Dungeon, null);
                 for (int i = 0; i < numberOfRescues; i++) GenerateAndRegisterNewPOI(POIType.RescueMission, null);
-                 // Initialize the list if it was null
+                
+                // Initialize the list if it was null
                 if (DataManager.Instance.Player.WorldPois == null)
                 {
                     DataManager.Instance.Player.WorldPois = new List<POIData>();
                 }
+                
+                // Spawn one Boss POI on new map generation
+                GenerateBossPOI();
             }
             else
             {
@@ -294,6 +298,33 @@ namespace LegendOfBlood
             }
         }
 
+        private void GenerateBossPOI()
+        {
+            var bosses = DataManager.Instance?.GameConfig?.AllBosses;
+            if (bosses == null || bosses.Count == 0) return;
+
+            // Pick a random boss
+            var boss = bosses[UnityEngine.Random.Range(0, bosses.Count)];
+
+            Vector2 newPosition = FindValidPosition();
+            if (newPosition == Vector2.zero) return;
+
+            string newId = Guid.NewGuid().ToString();
+            
+            POIData poiData = new POIData
+            {
+                poiId = newId,
+                poiName = boss.bossName,
+                type = POIType.Boss,
+                position = newPosition,
+                difficultyLevel = boss.level,
+                monsterIDs = new List<string> { boss.id }
+            };
+
+            DataManager.Instance.Player.WorldPois.Add(poiData);
+            InstantiatePOI(poiData);
+        }
+
         private Vector2 FindValidPosition()
         {
             int attempts = 0;
@@ -334,6 +365,9 @@ namespace LegendOfBlood
                 case POIType.TowerOfTrials:
                     poiPrefab = towerPoiPrefab != null ? towerPoiPrefab : dungeonPoiPrefab;
                     break;
+                case POIType.Boss:
+                    poiPrefab = towerPoiPrefab != null ? towerPoiPrefab : dungeonPoiPrefab; // Fallback to tower/dungeon icon for now
+                    break;
                 default:
                     poiPrefab = null;
                     break;
@@ -362,6 +396,25 @@ namespace LegendOfBlood
         {
             Debug.Log($"[WorldMap] Đã click vào POI: {poiData.poiName} (Type: {poiData.type})");
             
+            if (poiData.type == POIType.TowerOfTrials)
+            {
+                GameManager.Instance.UIManager.ShowPanel(UIPanelType.Tower, true);
+                var towerPanel = GameManager.Instance.UIManager.GetPanel<TowerPanel>(UIPanelType.Tower);
+                if (towerPanel != null) {
+                    towerPanel.Show(poiData);
+                }
+                return;
+            }
+            if (poiData.type == POIType.Boss)
+            {
+                GameManager.Instance.UIManager.ShowPanel(UIPanelType.BossBattle, true);
+                var bossPanel = GameManager.Instance.UIManager.GetPanel<BossBattlePanel>(UIPanelType.BossBattle);
+                if (bossPanel != null) {
+                    bossPanel.Show(poiData);
+                }
+                return;
+            }
+
             if (poiInfoPanel == null) 
             {
                 Debug.LogError($"[WorldMap HƯỚNG DẪN KHẮC PHỤC]: Bản đồ tìm không thấy POI_InfoPanel nên không thể hiển thị thông tin.\n" +

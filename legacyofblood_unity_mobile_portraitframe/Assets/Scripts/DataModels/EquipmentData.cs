@@ -18,7 +18,10 @@ namespace LegendOfBlood
         public EquipmentSlot slot;
         public int level;
         
-        // Bonus stats
+        public int currentExp;
+        public int rarity; // 1-5 sao/màu sắc (VD: để scale sức mạnh cơ bản)
+
+        // Base & Bonus Stats
         public float hpBonus;
         public float atkBonus;
         public float defBonus;
@@ -32,15 +35,21 @@ namespace LegendOfBlood
         
         public float critChanceBonus;
         public float critDamageBonus;
+        
+        // Lưu trữ thông tin bonus để hiển thị UI
+        public string bonusStat1Description;
+        public string bonusStat2Description;
 
         public EquipmentData() { }
 
-        public EquipmentData(string id, string name, EquipmentSlot slot)
+        public EquipmentData(string id, string name, EquipmentSlot slot, int initLevel = 1)
         {
             this.id = id;
             this.equipmentName = name;
             this.slot = slot;
-            this.level = 1;
+            this.level = initLevel;
+            this.currentExp = 0;
+            this.rarity = 1;
         }
 
         public EquipmentData Clone()

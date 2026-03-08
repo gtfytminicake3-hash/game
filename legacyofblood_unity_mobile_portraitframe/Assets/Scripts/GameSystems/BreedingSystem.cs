@@ -27,6 +27,15 @@ namespace LegendOfBlood
                 return new List<HeroData>();
             }
 
+            if (father.breedingCount >= father.maxBreedingCount || mother.breedingCount >= mother.maxBreedingCount)
+            {
+                Debug.LogWarning("Một trong hai Hero đã hết lượt sinh sản!");
+                return new List<HeroData>(); // Hoặc trả về null tùy logic UI
+            }
+
+            father.breedingCount++;
+            mother.breedingCount++;
+
             options ??= new BreedingOptions();
 
             int numberOfOffspring = 1;
@@ -84,17 +93,14 @@ namespace LegendOfBlood
 
         private void CalculateBaseStats(HeroData newHero)
         {
-            newHero.baseStats = new HeroStats();
-            newHero.baseStats.hp = newHero.potential * Random.Range(8, 11);
-            newHero.baseStats.atk = newHero.potential * Random.Range(8, 11);
-            newHero.baseStats.def = newHero.potential * Random.Range(8, 11);
-            newHero.baseStats.spd = newHero.potential * Random.Range(8, 11);
+            if (newHero.baseStats == null) newHero.baseStats = new HeroStats();
+            newHero.baseStats.hp = (int)(newHero.potential * Random.Range(8f, 11f));
+            newHero.baseStats.atk = (int)(newHero.potential * Random.Range(8f, 11f));
+            newHero.baseStats.def = (int)(newHero.potential * Random.Range(8f, 11f));
+            newHero.baseStats.spd = (int)(newHero.potential * Random.Range(8f, 11f));
 
-            newHero.addedStats = new HeroStats();
+            if (newHero.addedStats == null) newHero.addedStats = new HeroStats();
             newHero.freeStatPoints = 0;
-            newHero.evasionRate = 0f;
-            newHero.damageReduction = 0f;
-            newHero.damageIncrease = 0f;
         }
 
         private List<string> InheritTraits(List<string> fatherTraits, List<string> motherTraits, BreedingOptions options)
@@ -122,15 +128,29 @@ namespace LegendOfBlood
             }
 
             // 4. Get random traits until we have 3, respecting uniqueness
-            // SỬA LỖI: Lấy Trait từ DataManager, không dùng TraitDatabase
-            var allTraits = DataManager.Instance.AllTraits.Values.ToList(); 
-            while (inheritedTraits.Count < 3 && allTraits.Any())
+            // SỬA LỖI: Lấy Trait từ DataManager và lọc những trait chưa có để tránh vòng lặp vô hạn
+            var availableTraits = DataManager.Instance.AllTraits.Values
+                                    .Where(t => t != null && !inheritedTraits.Contains(t.id))
+                                    .ToList(); 
+                                    
+            // 3.5 Use Mutation Potion Logic
+            if (options.UseMutationPotion)
             {
-                var randomTrait = allTraits[Random.Range(0, allTraits.Count)];
-                if (randomTrait != null && !inheritedTraits.Contains(randomTrait.id))
+                var highRankTraits = availableTraits.Where(t => t.rank == Trait.RarityRank.A || t.rank == Trait.RarityRank.S || t.rank == Trait.RarityRank.SS || t.rank == Trait.RarityRank.SSS).ToList();
+                if (highRankTraits.Count > 0)
                 {
-                    inheritedTraits.Add(randomTrait.id);
+                    var randomHighTrait = highRankTraits[Random.Range(0, highRankTraits.Count)];
+                    inheritedTraits.Add(randomHighTrait.id);
+                    availableTraits.Remove(randomHighTrait);
+                    Debug.Log("Mutation Potion triggered! Guaranteed a high-rank trait.");
                 }
+            }
+
+            while (inheritedTraits.Count < 3 && availableTraits.Count > 0)
+            {
+                var randomTrait = availableTraits[Random.Range(0, availableTraits.Count)];
+                inheritedTraits.Add(randomTrait.id);
+                availableTraits.Remove(randomTrait);
             }
 
             return inheritedTraits.ToList();
@@ -152,16 +172,10 @@ namespace LegendOfBlood
             return validTraits[Random.Range(0, validTraits.Count)];
         }
 
+        // The NameGenerator class now handles name generation.
         private string GetRandomName(Gender gender)
         {
-            if (gender == Gender.Male)
-            {
-                return $"MaleName_{Random.Range(1, MALE_NAME_COUNT + 1)}";
-            }
-            else
-            {
-                return $"FemaleName_{Random.Range(1, FEMALE_NAME_COUNT + 1)}";
-            }
+            return NameGenerator.GetRandomName(gender);
         }
     }
 }

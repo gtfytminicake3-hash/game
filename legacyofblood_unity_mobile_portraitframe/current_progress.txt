@@ -1,6 +1,11 @@
 # HỆ THỐNG HIỆN TẠI CỦA PROJECT "LEGACY OF BLOOD"
-> Ngày cập nhật: 06/01/2026
+> Cập nhật mới nhất: 07/03/2026
 
+## BẢN VÁ LỖI & KIỂM THỬ (07/03/2026)
+*   **Hoàn thiện Unit Tests**: Đã sửa hơn 1000 lỗi Biên dịch và Runtime `NullReferenceException`. 100% Unit Test (EditMode & PlayMode) đã passed.
+*   **HeroData & Chỉ Số**: Tập trung hóa logic tính toán chỉ số gốc theo `Potential` vào `HeroData.CalculateBaseStats()` để triệt tiêu lỗi thiếu tham chiếu ở các hệ thống.
+*   **GameManager Mocking**: Cập nhật logic reflection cho `ExpeditionManager`, `InventoryManager` để tương thích hoàn toàn với môi trường Test.
+*   **Master Data**: Công cụ sinh Config (GameDataGenerator) đã nạp thành công toàn bộ Trait, Skill, Item, Quest từ GDD vào config thực tế.
 ## 1. TỔNG QUAN HỆ THỐNG (BACKEND SUMMARY)
 
 Dự án sử dụng kiến trúc Service Locator (`GameManager`) kết hợp Singleton cho các Manager chính. Dữ liệu tách biệt giữa Config (ScriptableObjects) và Runtime (JSON).

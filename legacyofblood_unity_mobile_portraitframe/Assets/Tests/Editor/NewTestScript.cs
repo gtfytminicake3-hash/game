@@ -60,7 +60,9 @@ public class GameMechanicsValidationTests
 
     [SetUp]
     public void Setup()
-    {
+        {
+            var avatarManagerObj = new UnityEngine.GameObject("TestAvatarManager");
+            avatarManagerObj.AddComponent<LegendOfBlood.AvatarManager>();
         _mockTraits = new Dictionary<string, Trait_Test>
         {
             {"TR_ATK_D", new Trait_Test { id = "TR_ATK_D", familyId = "ATK_UP", rank = RarityRank_Test.D, nextUpgradeTraitID = "TR_ATK_C" }},

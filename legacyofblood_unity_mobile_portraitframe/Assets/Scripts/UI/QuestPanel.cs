@@ -5,7 +5,7 @@ namespace LegendOfBlood.UI
     using LegendOfBlood.Managers;
     using LegendOfBlood;
 
-    public class QuestPanel : MonoBehaviour
+    public class QuestPanel : UIPanel
     {
         [SerializeField] private GameObject questItemPrefab;
         [SerializeField] private Transform questListContainer;
@@ -21,6 +21,7 @@ namespace LegendOfBlood.UI
 
         private void Start()
         {
+            PanelType = UIPanelType.Quest;
             _questManager = GameManager.Instance.QuestManager;
             
             if (mainTabButton) mainTabButton.onClick.AddListener(() => SetCategory(LegendOfBlood.GameConfigs.QuestCategory.Main));

@@ -14,7 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Trait
   id: TR_ALL_S
   traitName: "Ho\xE0ng Gia Chi Huy\u1EBFt"
-  description: "T\u0103ng to\xE0n b\u1ED9 ch\u1EC9 s\u1ED1."
+  description: "L\xE0 con ch\xE1u v\u01B0\u01A1ng t\xF4n. T\u0103ng \u0111\u1ED3ng
+    \u0111\u1EC1u 10% c\xE1c ch\u1EC9 s\u1ED1."
   rank: 4
   familyId: ALL_STAT
   nextUpgradeTraitID: 

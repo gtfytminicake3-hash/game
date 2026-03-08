@@ -12,7 +12,9 @@ namespace LegendOfBlood
         Dungeon,
         RescueMission,
         // --- NEW: Added Tower of Trials --- 
-        TowerOfTrials 
+        TowerOfTrials,
+        // --- NEW: Added Boss ---
+        Boss
     }
 
     /// <summary>

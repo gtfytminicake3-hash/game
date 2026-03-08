@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Trait
   id: TR_SPD_B
   traitName: "Nhanh Nh\u01B0 Gi\xF3"
-  description: "T\u0103ng t\u1ED1c \u0111\u1ED9 h\xE0nh \u0111\u1ED9ng."
+  description: +12 SPD.
   rank: 2
   familyId: SPD_UP
-  nextUpgradeTraitID: 
+  nextUpgradeTraitID: TR_SPD_A
   effects:
   - type: 0
     hp: 0
     atk: 0
     def: 0
-    spd: 20
+    spd: 12
     effectDescription: 

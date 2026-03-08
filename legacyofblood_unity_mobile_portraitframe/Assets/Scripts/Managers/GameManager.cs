@@ -29,6 +29,9 @@ namespace LegendOfBlood
                 // Nếu có, và đó không phải là cái này, thì phá hủy GameObject này.
                 // Điều này đảm bảo chỉ có một GameManager duy nhất.
                 Debug.LogWarning("Một GameManager khác đã tồn tại. Hủy bỏ bản sao này.");
+#if UNITY_EDITOR
+                if (!Application.isPlaying) { DestroyImmediate(this.gameObject); return; }
+#endif
                 Destroy(this.gameObject);
             }
             else

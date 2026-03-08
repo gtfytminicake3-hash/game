@@ -29,6 +29,9 @@ namespace LegendOfBlood
         [SerializeField] private GameObject selectionArea; // Tham chiếu đến nhóm chọn Cha/Mẹ
         [SerializeField] private GameObject resultArea;    // Tham chiếu đến nhóm kết quả
 
+        [Header("Item Usage")]
+        [SerializeField] private Toggle useMutationPotionToggle; // UI Toggle cho Thuốc Đột Biến
+
         [Header("Result Area References")]
         [SerializeField] private HeroCard newHeroCard_Result; // Thẻ bài trong khu vực kết quả
         [SerializeField] private TextMeshProUGUI hpText_Result;
@@ -237,9 +240,27 @@ namespace LegendOfBlood
             }
             // --- KẾT THÚC KIỂM TRA ---
 
+            BreedingOptions options = new BreedingOptions();
+            
+            // Xử lý sử dụng Thuốc Đột Biến
+            if (useMutationPotionToggle != null && useMutationPotionToggle.isOn)
+            {
+                // Kiểm tra và trừ vật phẩm
+                if (GameManager.Instance.InventoryManager.UseItem("IT_MUTATION_POTION", 1))
+                {
+                    options.UseMutationPotion = true;
+                    Debug.Log("Đã sử dụng 1 Thuốc Đột Biến cho quá trình lai tạo.");
+                }
+                else
+                {
+                    GameManager.Instance.UINotificationManager.ShowNotification(global::LocalizationSystem.GetText("notification_not_enough_mutation_potion"));
+                    return; // Ngừng lai tạo nếu chọn dùng nhưng không có đồ
+                }
+            }
+
             // Gọi hệ thống logic để thực hiện lai tạo
             BreedingSystem breedingSystem = GameManager.Instance.BreedingSystem;
-            List<HeroData> offspringList = breedingSystem.Breed(_selectedFather, _selectedMother);
+            List<HeroData> offspringList = breedingSystem.Breed(_selectedFather, _selectedMother, options);
 
             if (offspringList.Count > 0)
             {                

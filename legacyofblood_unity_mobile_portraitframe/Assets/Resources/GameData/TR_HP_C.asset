@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Trait
   id: TR_HP_C
   traitName: "Th\u1EC3 L\u1EF1c D\u1ED3i D\xE0o"
-  description: "T\u0103ng m\xE1u t\u1ED1i \u0111a (%HP)."
+  description: "+80 HP t\u1ED1i \u0111a."
   rank: 1
   familyId: HP_UP
-  nextUpgradeTraitID: 
+  nextUpgradeTraitID: TR_HP_B
   effects:
-  - type: 1
-    hp: 15
+  - type: 0
+    hp: 80
     atk: 0
     def: 0
     spd: 0

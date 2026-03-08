@@ -24,12 +24,17 @@ namespace LegendOfBlood
         ProfessionSelection,
         Recruitment,
         Settings,
+        Menu,
         BuildingUpgrade,
         Tutorial,
         Bootloader,
         Mailbox,
         Barrack,
-        Battle
+        Battle,
+        PopulationManager,
+        Quest,
+        BossBattle,
+        Tower
     }
 
     /// <summary>
@@ -183,6 +188,18 @@ namespace LegendOfBlood
                     _currentPanel = UIPanelType.None;
                 }
             }
+        }
+
+        /// <summary>
+        /// Retrieves a panel of type T if it's registered.
+        /// </summary>
+        public T GetPanel<T>(UIPanelType panelType) where T : Component
+        {
+            if (_panelDictionary.TryGetValue(panelType, out GameObject panelObj))
+            {
+                return panelObj.GetComponent<T>();
+            }
+            return null;
         }
         
         /// <summary>

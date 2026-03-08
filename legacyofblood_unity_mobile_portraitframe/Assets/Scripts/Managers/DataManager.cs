@@ -27,6 +27,9 @@ namespace LegendOfBlood
         {
             if (Instance != null && Instance != this)
             {
+#if UNITY_EDITOR
+                if (!Application.isPlaying) { DestroyImmediate(this.gameObject); return; }
+#endif
                 Destroy(this.gameObject);
                 return;
             }
@@ -53,6 +56,7 @@ namespace LegendOfBlood
         // Dữ liệu cấu hình game (được tối ưu hóa để truy cập nhanh bằng Dictionary)
         public Dictionary<string, Trait> AllTraits { get; private set; }
         public Dictionary<string, Skill> AllSkills { get; private set; }
+        public Dictionary<string, ItemData> AllItems { get; private set; }
         public Dictionary<string, BossData> AllBosses { get; private set; }
         public Dictionary<int, int> ExpTable { get; private set; }
         // SỬA LỖI: Chỉ định rõ namespace cho EvolutionRewardData để giải quyết lỗi CS0029
@@ -104,9 +108,17 @@ namespace LegendOfBlood
                 return;
             }
 
-            AllTraits = _gameConfig.AllTraits.ToDictionary(t => t.id, t => t);
-            AllSkills = _gameConfig.AllSkills.ToDictionary(s => s.id, s => s);
-            ExpTable = _gameConfig.ExperienceTable.ToDictionary(e => e.level, e => e.experienceRequired);
+            var traitsList = _gameConfig.AllTraits ?? new List<Trait>();
+            AllTraits = traitsList.ToDictionary(t => t.id, t => t);
+
+            var skillsList = _gameConfig.AllSkills ?? new List<Skill>();
+            AllSkills = skillsList.ToDictionary(s => s.id, s => s);
+            
+            var itemsList = _gameConfig.AllItems ?? new List<ItemData>();
+            AllItems = itemsList.ToDictionary(i => i.id, i => i);
+            
+            var expList = _gameConfig.ExperienceTable ?? new List<GameConfigs.ExperienceData>();
+            ExpTable = expList.ToDictionary(e => e.level, e => e.experienceRequired);
 
             if (_gameConfig.EvolutionTable != null)
             {
@@ -119,7 +131,8 @@ namespace LegendOfBlood
             }
 
             StartingSkillsByProfession = new Dictionary<Profession, List<string>>();
-            foreach (var profSkills in _gameConfig.StartingSkills)
+            var startingSkillsList = _gameConfig.StartingSkills ?? new List<GameConfigs.ProfessionStartingSkills>();
+            foreach (var profSkills in startingSkillsList)
             {
                 if (!StartingSkillsByProfession.ContainsKey(profSkills.profession))
                 {
@@ -243,7 +256,10 @@ namespace LegendOfBlood
             if (IsPopulationFull())
             {
                 Debug.LogWarning("Population is full! Cannot add new hero.");
-                GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("notification_population_full"));
+                if (GameManager.Instance != null && GameManager.Instance.UINotificationManager != null)
+                {
+                    GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("notification_population_full"));
+                }
                 return;
             }
 

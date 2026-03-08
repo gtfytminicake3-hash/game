@@ -173,7 +173,7 @@ namespace LegendOfBlood
                 poiId = towerPoi.poiId,
                 poiName = $"{towerPoi.poiName} (Floors {towerPoi.currentFloor - floorsCleared}-{towerPoi.currentFloor})",
                 combatResult = finalResult,
-                loot = towerConquered ? CalculateTowerLoot() : new LootData(),
+                loot = towerConquered ? CalculateTowerLoot(towerPoi.currentFloor) : new LootData(),
                 experienceGained = CalculateTowerExperience(floorsCleared)
             };
 
@@ -239,13 +239,13 @@ namespace LegendOfBlood
                 }
             }
 
-            // Fallback: gets harder each floor
-            var monsterPool = new List<string> { "MONSTER_ID_01", "MONSTER_ID_02", "MONSTER_ID_03" };
+            // Fallback just in case GameConfig is really missing, but using real names
+            var fallbackPool = new List<string> { "Goblin", "Orc", "Slime" };
             var monsters = new List<string>();
             int monsterCount = 1 + (floor / 5);
             for(int i = 0; i < monsterCount; i++)
             {
-                monsters.Add(monsterPool[UnityEngine.Random.Range(0, monsterPool.Count)]);
+                monsters.Add(fallbackPool[UnityEngine.Random.Range(0, fallbackPool.Count)]);
             }
             return monsters;
         }
@@ -261,10 +261,24 @@ namespace LegendOfBlood
             return playerWon ? 50 + (5 * poi.difficultyLevel) : 0;
         }
 
-        private LootData CalculateTowerLoot()
+        private LootData CalculateTowerLoot(int maxFloorCleared)
         {
             // Special high-tier loot for conquering the tower
-            return new LootData { gold = 10000, items = new Dictionary<string, int> { { "RARE_ITEM_ID", 1 } } };
+            var loot = new LootData();
+            loot.gold = 1000 + (maxFloorCleared * 500);
+            loot.items = new Dictionary<string, int> { { "IT_EXP_BOOK_S", 5 + maxFloorCleared }, { "IT_WISH_CHARM", 1 } };
+            
+            // Random equipment based on floor (Generates drops up to lv 40)
+            EquipmentData eq = EquipmentSystem.GenerateRandomEquipment(maxFloorCleared);
+            loot.equipments.Add(eq);
+            
+            // Nếu là những tầng chẵn hoặc cao, rớt thêm đồ cho vui
+            if (maxFloorCleared >= 10 && UnityEngine.Random.value > 0.5f)
+            {
+                loot.equipments.Add(EquipmentSystem.GenerateRandomEquipment(maxFloorCleared));
+            }
+            
+            return loot;
         }
 
         private int CalculateTowerExperience(int floorsCleared)

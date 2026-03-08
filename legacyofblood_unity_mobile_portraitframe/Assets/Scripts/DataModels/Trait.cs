@@ -49,7 +49,7 @@ namespace LegendOfBlood
     [CreateAssetMenu(fileName = "NewTrait", menuName = "LegendOfBlood/Trait", order = 1)]
     public class Trait : ScriptableObject
     {
-        public enum RarityRank { D, C, B, A, S }
+        public enum RarityRank { D, C, B, A, S, SS, SSS }
 
         [Header("Basic Information")]
         [Tooltip("ID duy nhất của Trait, ví dụ: 'S_04', 'SS_07'. Rất quan trọng, không được trùng.")]

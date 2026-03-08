@@ -9,7 +9,7 @@ namespace LegendOfBlood
     public enum SkillType { Active, Passive }
     public enum TargetingType
     {
-        SingleFrontEnemy, LowestHpAlly, AllEnemies, Self,
+        SingleFrontEnemy, SingleBackEnemy, LowestHpAlly, AllEnemies, Self,
         AdjacentEnemies, RandomEnemy, AllAlliesInRow, AllAllies
     }
     public enum StatusEffectType { None, Poison, Slow, CritUp, DefDown, HealOverTime, Shield }

@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Trait
   id: TR_ATK_D
   traitName: "S\u1EE9c M\u1EA1nh T\xE2n Binh"
-  description: "T\u0103ng nh\u1EB9 s\u1EE9c t\u1EA5n c\xF4ng."
+  description: "Tham gia qu\xE2n ng\u0169. L\u1EF1c Tay y\u1EBFu +5 ATK."
   rank: 0
   familyId: ATK_UP
   nextUpgradeTraitID: TR_ATK_C
   effects:
   - type: 0
     hp: 0
-    atk: 10
+    atk: 5
     def: 0
     spd: 0
     effectDescription: 

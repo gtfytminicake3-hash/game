@@ -69,6 +69,26 @@ namespace LegendOfBlood
             return true;
         }
 
+        public bool SpeedUpConstruction(string buildingId, string itemId)
+        {
+            var building = DataManager.Instance.AllBuildings.FirstOrDefault(b => b.id == buildingId);
+            if (building == null || !building.isUnderConstruction) return false;
+
+            var item = DataManager.Instance.AllItems.TryGetValue(itemId, out var itemData) ? itemData : null;
+            if (item == null || item.type != ItemType.SpeedUp) return false;
+
+            // In GameManager context, typically we use GameManager.Instance.InventoryManager
+            bool success = GameManager.Instance.InventoryManager.UseItem(itemId, 1);
+            if (success)
+            {
+                long speedUpMs = item.speedUpValueInSeconds * 1000;
+                building.constructionEndTime -= speedUpMs;
+                Debug.Log($"Building {building.id} construction sped up by {item.speedUpValueInSeconds}s using {item.itemName}.");
+                return true;
+            }
+            return false;
+        }
+
         public void Tick(float deltaTime)
         {
             var buildings = DataManager.Instance.AllBuildings;
@@ -98,6 +118,8 @@ namespace LegendOfBlood
         // REFACTOR: Updated CanAfford to use the new UpgradeCost list
         private bool CanAfford(System.Collections.Generic.List<UpgradeCost> costs)
         {
+            if (costs == null) return true; // If no costs are defined, we can afford it
+
             foreach (var cost in costs)
             {
                 // SỬA LỖI: Chuyển đổi string ID thành enum ResourceType một cách an toàn

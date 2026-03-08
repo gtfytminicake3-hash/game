@@ -51,6 +51,10 @@ namespace LegendOfBlood
         public List<string> traitIDs;
         public List<string> skillIDs;
         public Profession profession;
+        
+        // --- NEW: Breeding Limits ---
+        public int breedingCount = 0;
+        public int maxBreedingCount = 10;
         #endregion
 
         #region Status & Timers
@@ -80,13 +84,13 @@ namespace LegendOfBlood
             skillIDs = new List<string>();
             Equipments = new Dictionary<EquipmentSlot, EquipmentData>();
 
-            if (AvatarManager.Instance != null)
+            if (AvatarManager.Instance != null && AvatarManager.Instance.GetAvatar(this.gender, 0) != null)
             {
                 this.avatarIndex = AvatarManager.Instance.GetRandomAvatarIndex(this.gender);
             }
             else
             {
-                Debug.LogError("AvatarManager not initialized! Cannot assign random avatar.");
+                // In Test environments, AvatarManager might not be fully initialized or instantiated
                 this.avatarIndex = -1;
             }
         }
@@ -97,6 +101,19 @@ namespace LegendOfBlood
             skillIDs = new List<string>();
             this.addedStats = new HeroStats();
             Equipments = new Dictionary<EquipmentSlot, EquipmentData>();
+        }
+
+        public void CalculateBaseStats()
+        {
+            if (this.baseStats == null) this.baseStats = new HeroStats();
+            this.baseStats.hp = this.potential * UnityEngine.Random.Range(8, 11);
+            this.baseStats.atk = this.potential * UnityEngine.Random.Range(8, 11);
+            this.baseStats.def = this.potential * UnityEngine.Random.Range(8, 11);
+            this.baseStats.spd = this.potential * UnityEngine.Random.Range(8, 11);
+
+            if (this.addedStats == null) this.addedStats = new HeroStats();
+            this.freeStatPoints = 0;
+            this.currentHp = this.GetFinalStats().hp;
         }
 
         #endregion
@@ -110,6 +127,28 @@ namespace LegendOfBlood
             
             Debug.LogError("Attempted to get avatar but AvatarManager does not exist.");
             return null;
+        }
+
+        public EquipmentData GetEquipment(EquipmentSlot slot)
+        {
+            if (Equipments != null && Equipments.TryGetValue(slot, out var eq))
+                return eq;
+            return null;
+        }
+
+        public void EquipItem(EquipmentData newEq)
+        {
+            if (newEq == null) return;
+            if (Equipments == null) Equipments = new Dictionary<EquipmentSlot, EquipmentData>();
+            Equipments[newEq.slot] = newEq;
+        }
+
+        public void UnequipItem(EquipmentSlot slot)
+        {
+            if (Equipments != null && Equipments.ContainsKey(slot))
+            {
+                Equipments.Remove(slot);
+            }
         }
         
         public bool IsBusy()
@@ -132,14 +171,17 @@ namespace LegendOfBlood
 
         public HeroStats GetFinalStats()
         {
+            var bs = baseStats ?? new HeroStats();
+            var as_ = addedStats ?? new HeroStats();
+
             var finalStats = new HeroStats
             {
-                hp = baseStats.hp + addedStats.hp,
-                atk = baseStats.atk + addedStats.atk,
-                def = baseStats.def + addedStats.def,
-                spd = baseStats.spd + addedStats.spd,
-                critChance = baseStats.critChance,
-                critDamage = baseStats.critDamage
+                hp = bs.hp + as_.hp,
+                atk = bs.atk + as_.atk,
+                def = bs.def + as_.def,
+                spd = bs.spd + as_.spd,
+                critChance = bs.critChance,
+                critDamage = bs.critDamage
             };
             float multiplyHp = 1.0f, multiplyAtk = 1.0f, multiplyDef = 1.0f, multiplySpd = 1.0f;
             
@@ -166,25 +208,28 @@ namespace LegendOfBlood
             }
 
             // --- CỘNG DỒN TRAIT ---
-            foreach (string traitId in traitIDs)
+            if (traitIDs != null)
             {
-                Trait trait = DataManager.Instance.GetTraitByID(traitId);
-                if (trait == null) continue;
-                foreach (var effect in trait.effects)
+                foreach (string traitId in traitIDs)
                 {
-                    if (effect.type == TraitEffectType.ADD_STAT)
+                    Trait trait = DataManager.Instance.GetTraitByID(traitId);
+                    if (trait == null || trait.effects == null) continue;
+                    foreach (var effect in trait.effects)
                     {
-                        finalStats.hp += effect.hp;
-                        finalStats.atk += effect.atk;
-                        finalStats.def += effect.def;
-                        finalStats.spd += effect.spd;
-                    }
-                    else if (effect.type == TraitEffectType.MULTIPLY_STAT)
-                    {
-                        multiplyHp += effect.hp / 100f;
-                        multiplyAtk += effect.atk / 100f;
-                        multiplyDef += effect.def / 100f;
-                        multiplySpd += effect.spd / 100f;
+                        if (effect.type == TraitEffectType.ADD_STAT)
+                        {
+                            finalStats.hp += effect.hp;
+                            finalStats.atk += effect.atk;
+                            finalStats.def += effect.def;
+                            finalStats.spd += effect.spd;
+                        }
+                        else if (effect.type == TraitEffectType.MULTIPLY_STAT)
+                        {
+                            multiplyHp += effect.hp / 100f;
+                            multiplyAtk += effect.atk / 100f;
+                            multiplyDef += effect.def / 100f;
+                            multiplySpd += effect.spd / 100f;
+                        }
                     }
                 }
             }

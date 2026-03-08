@@ -13,12 +13,14 @@ namespace LegendOfBlood
     public class LootData
     {
         public Dictionary<string, int> items;
+        public List<EquipmentData> equipments;
         // Can be extended with gold, wood, etc. if needed
         public int gold;
 
         public LootData()
         {
             items = new Dictionary<string, int>();
+            equipments = new List<EquipmentData>();
             gold = 0;
         }
     }
@@ -65,6 +67,7 @@ namespace LegendOfBlood
         public string playerName;
         public PlayerResources resources;
         public Dictionary<string, int> items;
+        public List<EquipmentData> equipments;
         public int arenaPoints;
         public int arenaTickets;
         public long lastTicketRefreshTimestamp;
@@ -99,6 +102,7 @@ namespace LegendOfBlood
             playerName = "Nhà Lai Tạo";
             resources = new PlayerResources { gold = 500, wood = 100, stone = 100 };
             items = new Dictionary<string, int>();
+            equipments = new List<EquipmentData>();
             WorldPois = new List<POIData>();
             ActiveExpeditions = new List<ActiveExpedition>();
             UnclaimedReports = new List<ExpeditionReport>(); // Initialize the new list
@@ -137,6 +141,7 @@ namespace LegendOfBlood
         public void OnAfterDeserialize()
         {
             items = new Dictionary<string, int>();
+            equipments ??= new List<EquipmentData>();
             BuildingLevels = new Dictionary<BuildingType, int>();
             
             WorldPois ??= new List<POIData>();

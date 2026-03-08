@@ -23,16 +23,36 @@ namespace LegendOfBlood
             // Grant new traits at specific evolution milestones
             switch (hero.level)
             {
-                case 20:
+                case 30:
                     EventManager.TriggerEvent(GameEvents.OnProfessionSelectionRequested, hero);
                     GrantNewTrait_TwoRolls(hero);
                     break;
-                case 40:
-                case 80:
+                case 50:
+                    GrantNewSkill(hero);
+                    break;
+                case 70:
                     GrantNewTrait_TwoRolls(hero);
                     break;
-                // Note: Levels 60 and 100 are for upgrades, which are handled by the TraitUpgradePanel UI
-                // and do not need automatic logic here.
+                case 100:
+                    GrantNewTrait_TwoRolls(hero);
+                    GrantNewSkill(hero);
+                    break;
+            }
+        }
+
+        private void GrantNewSkill(HeroData hero)
+        {
+            if (DataManager.Instance == null) return;
+
+            var availableSkills = DataManager.Instance.AllSkills.Values
+                .Where(s => (int)s.requiredProfession == (int)hero.profession && !hero.skillIDs.Contains(s.id))
+                .ToList();
+
+            if (availableSkills.Count > 0)
+            {
+                var newSkill = availableSkills[UnityEngine.Random.Range(0, availableSkills.Count)];
+                hero.skillIDs.Add(newSkill.id);
+                Debug.Log($"<color=cyan>Evolution!</color> {hero.heroName} learned a new skill: [{newSkill.skillName}] at level {hero.level}.");
             }
         }
 
@@ -67,7 +87,7 @@ namespace LegendOfBlood
             }
 
             // Roll 1: Choose a content family the hero doesn't have
-            string chosenFamily = unownedFamilyPool[Random.Range(0, unownedFamilyPool.Count)];
+            string chosenFamily = unownedFamilyPool[UnityEngine.Random.Range(0, unownedFamilyPool.Count)];
             
             // Roll 2: Choose a quality rank
             Trait.RarityRank chosenRank = RollForRarity();
@@ -108,7 +128,7 @@ namespace LegendOfBlood
             var raritySettings = DataManager.Instance?.GameConfig?.RaritySettings;
             if (raritySettings != null && raritySettings.Count > 0)
             {
-                float roll = Random.Range(0f, 100f);
+                float roll = UnityEngine.Random.Range(0f, 100f);
                 float cumulative = 0f;
                 foreach (var setting in raritySettings.OrderBy(r => r.dropChance))
                 {
@@ -119,7 +139,7 @@ namespace LegendOfBlood
             }
 
             // Fallback
-            float simpleRoll = Random.Range(0f, 100f);
+            float simpleRoll = UnityEngine.Random.Range(0f, 100f);
             if (simpleRoll < 0.5f) return Trait.RarityRank.S;    // 0.5%
             if (simpleRoll < 3.5f) return Trait.RarityRank.A;    // 3%
             if (simpleRoll < 10f) return Trait.RarityRank.B;     // 6.5%
