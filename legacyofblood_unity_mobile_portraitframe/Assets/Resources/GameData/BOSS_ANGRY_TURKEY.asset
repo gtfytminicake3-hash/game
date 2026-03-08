@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c64b4192ecc289d4c87836263c9b44b4, type: 3}
+  m_Name: BOSS_ANGRY_TURKEY
+  m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.BossData
+  id: BOSS_ANGRY_TURKEY
+  bossName: "G\xE0 T\xE2y Ph\u1EABn N\u1ED9"
+  modelPrefab: {fileID: 0}
+  level: 25
+  baseHp: 0
+  baseAtk: 0
+  baseDef: 0
+  baseSpd: 0
+  stats:
+    hp: 25000
+    atk: 800
+    def: 300
+    spd: 250
+    critChance: 0.05
+    critDamage: 1.5
+  skills:
+    normalAttackName: "M\u1ED5 \u0110i\xEAn Cu\u1ED3ng"
+    normalAttackMultiplier: 1.5
+    aoeAttackName: "Ti\u1EBFng G\xE1y \u0110inh Tai"
+    aoeAttackMultiplier: 0.8
+  mechanic:
+    name: "\u0110i\xEAn Cu\u1ED3ng"
+    description: "T\u0103ng m\u1EA1nh t\u1ED1c \u0111\xE1nh khi m\xE1u d\u01B0\u1EDBi
+      30%"
+    value: 30

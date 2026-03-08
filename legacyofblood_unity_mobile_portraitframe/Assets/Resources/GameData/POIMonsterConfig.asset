@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 469dfd0377e9d7f47bcd66d6db94c42a, type: 3}
+  m_Name: POIMonsterConfig
+  m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.POIMonsterConfig
+  monsterGroups:
+  - groupName: "B\xE3i Qu\xE1i B\xF9n"
+    minDifficulty: 1
+    maxDifficulty: 3
+    monsterIDs:
+    - Goblin
+    - Slime
+  - groupName: "Doanh Tr\u1EA1i Orc"
+    minDifficulty: 4
+    maxDifficulty: 7
+    monsterIDs:
+    - Orc Warrior
+    - Orc Shaman
+    - Troll
+  - groupName: "L\u0103ng M\u1ED9 R\u1ED3ng \u0110en"
+    minDifficulty: 8
+    maxDifficulty: 10
+    monsterIDs:
+    - Elder Dragon
+    - Dragon Whelp
+    - Fire Elemental
+    - Golem

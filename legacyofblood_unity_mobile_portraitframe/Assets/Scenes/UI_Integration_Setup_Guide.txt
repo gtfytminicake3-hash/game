@@ -1,0 +1,161 @@
+HƯỚNG DẪN DỰNG 9 PANEL UI TRÊN GAMEOBJECT (CHI TIẾT ĐẾN TỪNG SCRIPT)
+(Đọc kỹ Hướng dẫn này để tự tay dựng Layout và Kéo thả (Assign) các Component vảo Inspector)
+
+Vì 9 Panel này đã có sẵn Script (code xử lý) nhưng chưa có GameObject giao diện (Layout) trong Scene `GameClient.unity`, bạn PHẢI TỰ TẠO RA thông qua Unity Editor (Click chuột phải -> UI -> Panel, Text, Button...).
+
+Dưới đây là danh sách 9 Panel và những GIÁ TRỊ (Component) bắt buộc phải có để bạn kéo thả vào Inspector của Script đó.
+
+---
+
+### 1. Panel_Inventory (Gắn script `InventoryPanel.cs`)
+- **Panel Type**: Chọn `Inventory`.
+- Cấu trúc cần dựng bên trong Panel này:
+  - 1 Nút bấm thoát (Button): Đặt tên `Btn_Close`. Kéo vào ô `Close Button`.
+  - 2 Nút bấm Tab (Button): `Btn_ItemTab` và `Btn_EquipmentTab`. Kéo vào ô `Item Tab Button` và `Equipment Tab Button`.
+  - 2 GameObject rỗng (đóng vai trò là trang chuyển đổi, dùng RectTransform stretch): Đặt tên `Page_Items` và `Page_Equipments`. Kéo vào ô `Item Container Obj` và `Equipment Container Obj`.
+  - Bên trong `Page_Items`: Tạo 1 `Scroll View`. Xóa thanh cuộn ngang. Kéo cái Content của ScrollView này vào ô `Item Content`. Tạo 1 prefab thẻ bài tên `InventoryItemCard_Prefab` (có gắn script `InventoryItemCard.cs`), kéo nó vào ô `Item Card Prefab`.
+  - Bên trong `Page_Equipments`: Tạo 1 `Scroll View`. Kéo Content của nó vào ô `Equipment Content`. Tạo 1 prefab thẻ bài tên `InventoryEquipmentCard_Prefab` (gắn script `InventoryEquipmentCard.cs`), kéo vào ô `Equipment Card Prefab`.
+
+### 2. Panel_Quest (Gắn script `QuestPanel.cs`)
+- **Panel Type**: Chọn `Quest`.
+- Cấu trúc cần dựng bên trong Panel này:
+  - 3 Nút bấm Tab (Button): Đặt tên `Btn_Main`, `Btn_Daily`, `Btn_Weekly`. Kéo lần lượt vào `Main Tab Button`, `Daily Tab Button`, `Weekly Tab Button`.
+  - 1 `Scroll View`: Xóa thanh cuộn ngang, kéo cái Content của nó vào ô `Quest List Container`.
+  - 1 Prefab đại diện cho 1 Quest: Bạn tự làm UI ngang dài (có nút Nhận thưởng), gắn script `QuestItemUI.cs`. Lưu thành Prefab, sau đó kéo nó vào ô `Quest Item Prefab`.
+
+### 3. Panel_Recruitment (Gắn script `RecruitmentPanel.cs`)
+- **Panel Type**: Chọn `Recruitment`.
+- Cấu trúc cần dựng bên trong Panel này:
+  - Giao diện gacha, rút thẻ tướng.
+  - 1 Nút (Button) Chiêu mộ x1: Đặt tên `Btn_Recruit1`. Kéo vào ô `Recruit One Button`.
+  - 1 Nút (Button) Chiêu mộ x10: Đặt tên `Btn_Recruit10`. Kéo vào ô `Recruit Ten Button`.
+
+### 4. Panel_ProfessionSelection (Gắn script `ProfessionSelectionPanel.cs`)
+- **Panel Type**: Chọn `ProfessionSelection`. (Đây là Popup chuyển nghề khi Hero đạt level 30).
+- Cấu trúc cần dựng bên trong Panel này:
+  - 1 thẻ `Text - TextMeshPro` để làm Tiêu đề (VD: Chọn nghề cho <John>). Kéo vào ô `Title Text`.
+  - 3 Nút (Button) chọn class: Đặt tên `Btn_Warrior`, `Btn_Archer`, `Btn_Mage`. Kéo lần lượt vào `Warrior Button`, `Archer Button`, `Mage Button`.
+  - 1 Nút thoát (Button): Kéo vào `Close Button`.
+
+### 5. Panel_ArenaShop (Gắn script `ArenaShopPanel.cs`)
+- **Panel Type**: Chọn `ArenaShop`.
+- Cấu trúc cần dựng bên trong Panel này:
+  - 1 Nút thoát (Button): Kéo vào `Close Button`.
+  - 1 `Scroll View`: Chứa danh sách mặt hàng. Kéo Content vào `Item Container`.
+  - 1 Prefab món hàng: Tạo 1 block UI nhỏ, có ảnh, giá tiền, gắn script `ArenaShopItem.cs`. Lưu thành Prefab, kéo nó vào `Shop Item Prefab`.
+
+### 6. Panel_EquipmentDetail (Gắn script `EquipmentDetailPanel.cs`)
+- **Panel Type**: Chọn `None` (Script này tự set lại thành Popup None, dùng đè lên trên Inventory).
+- Cấu trúc cần dựng bên trong Panel này:
+  - Khung liệt kê thông tin vũ khí, giáp.
+  - 4 thẻ `Text - TextMeshPro`: Tên trang bị (`Equip Name Text`), Level trang bị (`Equip Level Text`), Điểm kinh nghiệm (`Exp Progress Text`), Chỉ số trang bị (`Stats Text`).
+  - 3 Nút (Button): Đóng (`Close Button`), Mặc vào người (`Equip Button`), Nâng cấp nhanh (`Quick Upgrade Button` - Nuốt các đồ rác 1 sao để lên level).
+
+### 7. Panel_BossBattle (Gắn script `BossBattlePanel.cs`)
+- **Panel Type**: Chọn `BossBattle`.
+- Cấu trúc cần dựng bên trong Panel này:
+  - Cột TRÁI (Thông tin Boss): Gồm 1 Hình ảnh `Image` (`Boss Image`), các thẻ TextMeshPro như Tên (`Boss Name Text`), Level (`Boss Level Text`), và 4 dòng text chỉ số (`Hp Text`, `Atk Text`, `Def Text`, `Spd Text`).
+  - Cột PHẢI (Cơ chế & Kỹ năng): Gồm các TextMeshPro cho Đánh thường (`Normal Skill Outline Text`), Đánh AOE (`Aoe Skill Outline Text`), Tên cơ chế đặc thù (`Mechanic Name Text`), Mô tả cơ chế (`Mechanic Desc Text`).
+  - Dưới cùng: Nút Khiêu Chiến (`Challenge Button`) và Nút Khắp (`Close Button`).
+
+### 8. Panel_Tower (Gắn script `TowerPanel.cs`)
+- **Panel Type**: Chọn `Tower`. (Leo tháp).
+- Cấu trúc cần dựng bên trong Panel này:
+  - 1 `Scroll View`: Để dọc, kéo Content vào ô `Content Parent`.
+  - 1 Prefab đại diện Tầng Tháp: Gồm Hình ảnh và Text Tên tầng. Kéo vào `Floor Item Prefab`.
+  - Phần Footer ở dưới: Gồm 3 TextMeshPro là Tầng hiện tại (`Current Floor Detail Text`), Thời gian hồi phục hồi / Độ khó (`Difficulty Text`), Số lượng quái (`Monster Count Text`).
+  - 2 Nút (Button): Đi vào tháp (`Enter Button`) và Đóng cửa sổ (`Close Button`).
+
+### 9. Panel_PopulationManager (Gắn script `PopulationManagerPanel.cs`)
+- **Panel Type**: Chọn `PopulationManager`. (Quản lý và Sa thải bớt dân / tướng cùi bắp).
+- Cấu trúc cần dựng bên trong Panel này:
+  - 1 Nút thoát (Button): Kéo vào `Close Button`.
+  - 1 thẻ `Text - TextMeshPro`: Hiển thị số lượng Dân số hiện tại (VD: 34/50). Kéo vào ô `Population Count Text`.
+  - 1 `Scroll View`: Chứa danh sách dân. Kéo Content vào `List Container`.
+  - 1 Prefab Thẻ Dân số: Gồm Hình ảnh, tên, level và 1 Nút Sa Thải (Đuổi việc). Phải gắn script `PopulationHeroCard.cs`. Lưu thành prefab rồi kéo vào ô `Hero Card Prefab` (Lên mạng tìm ảnh vector cho đẹp nhé).
+
+---
+LƯU Ý CHUNG MANG TÍNH SỐNG CÒN:
+1. Đối với `Scroll View`, để dùng tốt nhất, ở phần Content của nó bạn hãy Add thêm Component `Vertical Layout Group` và `Content Size Fitter` (Tick vào "Vertical Fit - Preferred Size"). Để các item tự động dãn cách đều nhau thành danh sách dọc.
+2. Bất cứ khi nào tạo ra thư mục "Prefab", hãy kéo từ Hierarchy xuống thư mục Assets/Prefabs để sau này tái sử dụng.
+3. Khi bạn làm xong 1 Panel (đã thỏa mãn 100% các ô mảng của Script), hãy TẮT (Disable - bỏ dấu tick trên cùng bên trái của Inspector) Panel đó đi. Cứ để nó âm thầm nằm trong Cavas của GameClient. GameManager sẽ tự "Gọi hồn" nó lên!
+
+(Cập nhật sát với tình trạng file hiện tại)
+
+Sau khi phân tích kỹ file `GameClient.unity` và toàn bộ thư mục `Assets/Prefabs` cũng như `Assets/Scenes`, đây là báo cáo tình trạng thực tế và hướng dẫn chi tiết dành riêng cho project của bạn:
+
+=========================================================
+PHẦN 1: TÌNH TRẠNG THỰC TẾ (BẠN CẦN BIẾT)
+=========================================================
+1. VỀ PREFAB: 
+Hiện tại KHÔNG CÓ BẤT KỲ FILE .PREFAB NÀO LÀ MÀN HÌNH UI (Panel) CẢ. 
+Khoảng 13 file prefab hiện có (như `HeroCard_Prefab`, `SquadSlot_Prefab`, `UIResourceBar_Prefab`...) chỉ là các "Mảnh ghép nhỏ" (Thẻ tướng, Thanh máu...) để spawn ra bên trong các Panel. Bạn KHÔNG ĐƯỢC nhét các prefab này vào UIManager.
+
+2. VỀ CÁC PANEL ĐÃ CÓ TRONG GAMECLIENT.UNITY:
+Tuyệt vời là bạn (hoặc ai đó) đã dựng sẵn một đống các GameObjects giao diện trực tiếp bên trong scene `GameClient.unity`. Bao gồm:
+- Các màn hình chính: `Panel_MainScreen`, `Panel_Bootloader`, `Panel_Barrack`, `Panel_Battle`, `Panel_Mailbox`.
+- Các màn hình đã "EXTRACTED": `EXTRACTED_HeroInfo_Panel`, `EXTRACTED_Breeding_Panel`, `EXTRACTED_Hospital_Panel`, `EXTRACTED_Arena_Panel`, `EXTRACTED_WorldMap_Panel`, `EXTRACTED_SettingsPanel`, `EXTRACTED_SquadSelection_Panel`, `EXTRACTED_HeroPicker_Panel`, `EXTRACTED_BuildingUpgradePanel`.
+- Các popup khác: `TutorialPanel`, `StatAllocationPanel`, `TraitUpgradePanel`.
+
+=> TẤT CẢ NHỮNG PANEL NÀY: Bạn KHÔNG CẦN CHỈNH SỬA GÌ logic tìm kiếm của UIManager. UIManager.cs đã được code hàm `RegisterAllPanelsInScene()` dùng lệnh `FindObjectsByType`. Nên chỉ cần ném chúng vào lộn xộn trong Canvas là UIManager sẽ tự gom chúng lại, tự động quản lý! 
+
+3. VỀ CÁC PANEL "CÒN THIẾU" (CHỈ MỚI CÓ SCRIPT, CHƯA ĐƯỢC DỰNG UI BẰNG TAY):
+Bạn đã code các script này, nhưng trong `GameClient.unity` HOÀN TOÀN CHƯA CÓ GameObject nào mang tên chúng. ĐÂY LÀ NHỮNG THỨ BẠN PHẢI TỰ TẠO RA:
+- `InventoryPanel` (Túi đồ)
+- `QuestPanel` (Nhiệm vụ)
+- `RecruitmentPanel` (Tuyển mộ)
+- `ProfessionSelectionPanel` (Chọn nghề)
+- `ArenaShopPanel` (Cửa hàng Arena)
+- `EquipmentDetailPanel` (Chi tiết trang bị)
+- `BossBattlePanel` (Đánh Boss)
+- `TowerPanel` (Tháp)
+- `PopulationManagerPanel` (Quản lý dân số)
+
+=========================================================
+PHẦN 2: HƯỚNG DẪN KÉO THẢ TÍCH HỢP (THỰC HÀNH)
+=========================================================
+
+BƯỚC 1: KHỞI TẠO UIMANAGER VÀ KẾT NỐI GAMEMANAGER
+---------------------------------------------------------
+1. Mở scene `GameClient.unity`.
+2. Tạo một GameObject rỗng ngang hàng với các Panel, đặt tên là `[MANAGER] UIManager`.
+3. Kéo script `UIManager.cs` thả vào GameObject vừa tạo.
+4. Tìm GameObject chạy `GameManager` (thường nằm ở `CORE_SYSTEMS` hoặc `GameManager` root). 
+5. Nhìn sang Inspector của `GameManager`, tìm khe trống có tên `_uiManager` (hoặc `UI Manager`), hãy kéo cái GameObject `[MANAGER] UIManager` vừa tạo ở bước 2 thả vào khe đó. 
+-> Xong bước kết nối bộ não.
+
+BƯỚC 2: XỬ LÝ NHỮNG CÁI "ĐÃ CÓ SẴN" (EXTRACTED_... VÀ Panel_...)
+---------------------------------------------------------
+1. Đi qua TỪNG GameObject (như `EXTRACTED_HeroInfo_Panel`):
+2. Đảm bảo nó đã được gắn script `UIPanel.cs` (Hoặc nếu nó đã gắn một script kế thừa từ UIPanel như `HeroInfoPanel.cs` thì không cần gắn thêm `UIPanel.cs` nữa).
+3. Đảm bảo ở mục `Panel Type` trên Inspector, nó đang xổ xuống chọn ĐÚNG tên của mình (Ví dụ `EXTRACTED_HeroInfo_Panel` thì Panel Type phải chọn là `HeroInfo`).
+4. Bôi đen toàn bộ các Panel đó và TẮT (Disable / Bỏ dấu tích góc trái trên cùng) ngoại trừ `Panel_Bootloader` (Phải luôn BẬT). UIManager sẽ TỰ ĐỘNG BẬT chúng lên khi gọi lệnh ShowPanel.
+
+BƯỚC 3: DỰNG 9 PANEL "CÒN THIẾU" (Ví dụ với TÚI ĐỒ - Inventory)
+---------------------------------------------------------
+Vì bạn design thiếu 9 Panel ở phần 1.3, nên phải làm bằng tay như sau:
+1. Click chuột phải vào `Canvas` -> `UI` -> `Panel`.
+2. Đổi tên nó thành `Panel_Inventory` cho chuẩn form.
+3. Kéo Script `InventoryPanel.cs` bỏ vào nó.
+4. Nhìn sang Inspector, ô `Panel Type` sẽ tự động xổ ra hoặc bạn phải chọn thành `Inventory`.
+5. Design UI (Kéo ảnh, Text, ScrollView) cho cái túi đồ này.
+6. Design xong -> Tắt (Disable) nó đi để UIManager quản lý.
+7. Lặp lại tương tự cho `QuestPanel.cs`, `RecruitmentPanel.cs`, v.v...
+
+BƯỚC 4: LIÊN KẾT THANH ĐIỀU HƯỚNG (BOTTOM NAV)
+---------------------------------------------------------
+Trong scene hiện tại đã có `BottomNav_Panel`. 
+1. Đảm bảo nó đã được gắn script `BottomNavigationController.cs`.
+2. Dưới nó sẽ có dải các Button (Nút Làng, Nút Tướng, Nút Trại...).
+3. Click vào từng Button, nhìn sang Inspector phần `On Click ()`.
+4. Bấm `+`.
+5. Kéo GameObject `BottomNav_Panel` thẳng vào cái lỗ Object (khe bên dưới menu Runtime Only).
+6. Bấm vào menu No Function -> Chọn `BottomNavigationController` -> Chọn hàm:
+   - Nút Làng (Home): Chọn `OpenMainScreenPanel()`
+   - Nút Trại lính (Hero): Chọn `OpenBarrackPanel()`
+   - Nút Nâng cấp (Breeding): Chọn `OpenBreedingPanel()`
+   - Nút Bệnh viện (Hospital): Chọn `OpenHospitalPanel()`
+   - Nút Đấu trường (Arena): Chọn `OpenArenaPanel()`
+
+====== KẾT THÚC ======
+Bạn đã làm quá tốt khi thiết kế sẵn các `EXTRACTED_Panel` và code UIManager theo chuẩn Service Locator. Giờ chỉ việc tạo đủ các Panel còn thiếu, set đúng `PanelType`, rồi TẮT đi là GameManager sẽ thao túng toàn bộ UI trơn tru!

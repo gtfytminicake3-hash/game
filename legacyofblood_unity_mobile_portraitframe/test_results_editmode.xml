@@ -1,0 +1,988 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="50" result="Failed(Child)" total="50" passed="21" failed="29" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:50Z" duration="0.7991882">
+  <test-suite type="TestSuite" id="1000" name="legacyofblood_unity_mobile_portraitframe" fullname="legacyofblood_unity_mobile_portraitframe" runstate="Runnable" testcasecount="50" result="Failed" site="Child" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:50Z" duration="0.799188" total="50" passed="21" failed="29" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1010" name="LegendOfBlood.Tests.PlayMode.dll" fullname="E:/game/legendofblood/legacyofblood_unity_mobile_portraitframe/Library/ScriptAssemblies/LegendOfBlood.Tests.PlayMode.dll" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.248172" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="55912" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1001" name="PlanUpdateVerificationTests" fullname="PlanUpdateVerificationTests" classname="PlanUpdateVerificationTests" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.245244" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1002" name="P1_1_BaseStatCalculation_IsBasedOnPotential" fullname="PlanUpdateVerificationTests.P1_1_BaseStatCalculation_IsBasedOnPotential" methodname="P1_1_BaseStatCalculation_IsBasedOnPotential" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="915924141" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.036053" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <reason>
+            <message><![CDATA[[Checklist 1.1] THÀNH CÔNG! Chỉ số gốc (ví dụ HP: 150) nằm trong khoảng [POT*8, POT*10].]]></message>
+          </reason>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 1.1] Bắt đầu: Kiểm tra logic tính chỉ số gốc (Base Stats) từ POT.
+]]></output>
+        </test-case>
+        <test-case id="1003" name="P1_2_LevelUp_GrantsFreePointsEqualToPotential" fullname="PlanUpdateVerificationTests.P1_2_LevelUp_GrantsFreePointsEqualToPotential" methodname="P1_2_LevelUp_GrantsFreePointsEqualToPotential" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="847637165" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.012234" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <reason>
+            <message><![CDATA[[Checklist 1.2] THÀNH CÔNG! Lên cấp và nhận được 15 điểm tự do.]]></message>
+          </reason>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 1.2] Bắt đầu: Kiểm tra logic cộng điểm tiềm năng khi lên cấp.
+Test Hero leveled up to 2!
+]]></output>
+        </test-case>
+        <test-case id="1004" name="P1_3_StatAllocation_ManuallyAddsStats" fullname="PlanUpdateVerificationTests.P1_3_StatAllocation_ManuallyAddsStats" methodname="P1_3_StatAllocation_ManuallyAddsStats" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="1364385539" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.015538" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <reason>
+            <message><![CDATA[[Checklist 1.3] THÀNH CÔNG! Phân phối 5 điểm vào HP thành công.]]></message>
+          </reason>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 1.3] Bắt đầu: Kiểm tra logic phân phối điểm tự do thủ công.
+]]></output>
+        </test-case>
+        <test-case id="1007" name="P2_1_TraitInheritance_FollowsTheRules" fullname="PlanUpdateVerificationTests.P2_1_TraitInheritance_FollowsTheRules" methodname="P2_1_TraitInheritance_FollowsTheRules" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="275401913" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.101850" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <reason>
+            <message><![CDATA[[Checklist 2.1] THÀNH CÔNG! Di truyền 3 trait (1 cha, 1 mẹ, 1 ngẫu nhiên) hoạt động đúng.]]></message>
+          </reason>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 2.1] Bắt đầu: Kiểm tra logic di truyền 3 trait.
+]]></output>
+        </test-case>
+        <test-case id="1006" name="P2_2_LevelUpTo20_GrantsNewFamilyTrait" fullname="PlanUpdateVerificationTests.P2_2_LevelUpTo20_GrantsNewFamilyTrait" methodname="P2_2_LevelUpTo20_GrantsNewFamilyTrait" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="820889653" result="Failed" label="Error" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.009045" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+            <stack-trace><![CDATA[  at LegendOfBlood.HeroData.GetFinalStats () [0x001da] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\HeroData.cs:182 
+  at LegendOfBlood.HeroData.AddExperience (System.Int32 amount) [0x0005f] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\HeroData.cs:250 
+  at PlanUpdateVerificationTests.P2_2_LevelUpTo20_GrantsNewFamilyTrait () [0x00059] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\PlayMode\PlanUpdateVerificationTests.cs:171 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+          </failure>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 2.2] Bắt đầu: Kiểm tra nhận trait mới ở cấp 20.
+]]></output>
+        </test-case>
+        <test-case id="1005" name="P2_5_TraitFamily_DataIsCorrect" fullname="PlanUpdateVerificationTests.P2_5_TraitFamily_DataIsCorrect" methodname="P2_5_TraitFamily_DataIsCorrect" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="1033801542" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.008824" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <reason>
+            <message><![CDATA[[Checklist 2.5] THÀNH CÔNG! Gia đình 'ATK_UP' có 3 thành viên D, C, B đúng như dữ liệu giả lập.]]></message>
+          </reason>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 2.5] Bắt đầu: Kiểm tra dữ liệu gia đình trait.
+]]></output>
+        </test-case>
+        <test-case id="1008" name="P3_1_HeroBelowLevel20_HasNoProfession" fullname="PlanUpdateVerificationTests.P3_1_HeroBelowLevel20_HasNoProfession" methodname="P3_1_HeroBelowLevel20_HasNoProfession" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="1444066347" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.009244" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <reason>
+            <message><![CDATA[[Checklist 3.1] THÀNH CÔNG! Hero ở cấp 19 có trạng thái nghề là Profession.None.]]></message>
+          </reason>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 3.1] Bắt đầu: Kiểm tra hero dưới cấp 20 chưa có nghề.
+]]></output>
+        </test-case>
+        <test-case id="1009" name="P4_3_AddHero_FailsWhenPopulationIsFull" fullname="PlanUpdateVerificationTests.P4_3_AddHero_FailsWhenPopulationIsFull" methodname="P4_3_AddHero_FailsWhenPopulationIsFull" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="2108460386" result="Failed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.012909" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Setup failed: Hero list should be full.
+  Expected: 20
+  But was:  0
+]]></message>
+            <stack-trace><![CDATA[at PlanUpdateVerificationTests.P4_3_AddHero_FailsWhenPopulationIsFull () [0x00071] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\PlayMode\PlanUpdateVerificationTests.cs:247
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 4.3] Bắt đầu: Kiểm tra không thể thêm hero khi dân số đầy.
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1067" name="Tests.dll" fullname="E:/game/legendofblood/legacyofblood_unity_mobile_portraitframe/Library/ScriptAssemblies/Tests.dll" runstate="Runnable" testcasecount="42" result="Failed" site="Child" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:50Z" duration="0.534460" total="42" passed="15" failed="27" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="55912" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1011" name="GameMechanicsValidationTests" fullname="GameMechanicsValidationTests" classname="GameMechanicsValidationTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.015676" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1012" name="T1_1_BaseStats_AreCalculatedFromPOT" fullname="GameMechanicsValidationTests.T1_1_BaseStats_AreCalculatedFromPOT" methodname="T1_1_BaseStats_AreCalculatedFromPOT" classname="GameMechanicsValidationTests" runstate="Runnable" seed="64931722" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.006968" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1013" name="T1_2_LevelUp_GrantsFreePointsInsteadOfStats" fullname="GameMechanicsValidationTests.T1_2_LevelUp_GrantsFreePointsInsteadOfStats" methodname="T1_2_LevelUp_GrantsFreePointsInsteadOfStats" classname="GameMechanicsValidationTests" runstate="Runnable" seed="228519179" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.000422" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1015" name="T2_2_NewTraitAtLevelUp_IsUniqueFamilyUsingTwoRolls" fullname="GameMechanicsValidationTests.T2_2_NewTraitAtLevelUp_IsUniqueFamilyUsingTwoRolls" methodname="T2_2_NewTraitAtLevelUp_IsUniqueFamilyUsingTwoRolls" classname="GameMechanicsValidationTests" runstate="Runnable" seed="1198027335" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.003289" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1016" name="T2_3_TraitUpgradeAtLevel60_ReplacesOldTrait" fullname="GameMechanicsValidationTests.T2_3_TraitUpgradeAtLevel60_ReplacesOldTrait" methodname="T2_3_TraitUpgradeAtLevel60_ReplacesOldTrait" classname="GameMechanicsValidationTests" runstate="Runnable" seed="54352292" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.000566" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1017" name="T2_4_CannotUpgrade_MaxRankTrait" fullname="GameMechanicsValidationTests.T2_4_CannotUpgrade_MaxRankTrait" methodname="T2_4_CannotUpgrade_MaxRankTrait" classname="GameMechanicsValidationTests" runstate="Runnable" seed="2046757538" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.000458" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1014" name="T3_1_Profession_IsNoneBeforeLevel20" fullname="GameMechanicsValidationTests.T3_1_Profession_IsNoneBeforeLevel20" methodname="T3_1_Profession_IsNoneBeforeLevel20" classname="GameMechanicsValidationTests" runstate="Runnable" seed="1773782537" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.000271" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1018" name="T3_4_Breeding_AppliesCooldown" fullname="GameMechanicsValidationTests.T3_4_Breeding_AppliesCooldown" methodname="T3_4_Breeding_AppliesCooldown" classname="GameMechanicsValidationTests" runstate="Runnable" seed="284757663" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.000210" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1019" name="T3_5_Breeding_IncrementsCounterAndReachesLimit" fullname="GameMechanicsValidationTests.T3_5_Breeding_IncrementsCounterAndReachesLimit" methodname="T3_5_Breeding_IncrementsCounterAndReachesLimit" classname="GameMechanicsValidationTests" runstate="Runnable" seed="831534570" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.000399" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestSuite" id="1068" name="LegendOfBlood" fullname="LegendOfBlood" runstate="Runnable" testcasecount="34" result="Failed" site="Child" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:50Z" duration="0.493941" total="34" passed="7" failed="27" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1069" name="Tests" fullname="LegendOfBlood.Tests" runstate="Runnable" testcasecount="34" result="Failed" site="Child" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:50Z" duration="0.492877" total="34" passed="7" failed="27" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1020" name="ArenaSystemTests" fullname="LegendOfBlood.Tests.ArenaSystemTests" classname="LegendOfBlood.Tests.ArenaSystemTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.022106" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1023" name="ArenaSystem_FindOpponentSquad_ReturnsValidSquad" fullname="LegendOfBlood.Tests.ArenaSystemTests.ArenaSystem_FindOpponentSquad_ReturnsValidSquad" methodname="ArenaSystem_FindOpponentSquad_ReturnsValidSquad" classname="LegendOfBlood.Tests.ArenaSystemTests" runstate="Runnable" seed="199415163" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.009702" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Generating opponent for player with 1500 points.
+]]></output>
+            </test-case>
+            <test-case id="1022" name="ArenaSystem_ProcessMatchResult_Loss_DecreasesPoints" fullname="LegendOfBlood.Tests.ArenaSystemTests.ArenaSystem_ProcessMatchResult_Loss_DecreasesPoints" methodname="ArenaSystem_ProcessMatchResult_Loss_DecreasesPoints" classname="LegendOfBlood.Tests.ArenaSystemTests" runstate="Runnable" seed="990185007" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.005327" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Match result processed. Player now has 980 points.
+]]></output>
+            </test-case>
+            <test-case id="1021" name="ArenaSystem_ProcessMatchResult_Win_IncreasesPointsAndCoins" fullname="LegendOfBlood.Tests.ArenaSystemTests.ArenaSystem_ProcessMatchResult_Win_IncreasesPointsAndCoins" methodname="ArenaSystem_ProcessMatchResult_Win_IncreasesPointsAndCoins" classname="LegendOfBlood.Tests.ArenaSystemTests" runstate="Runnable" seed="1081710697" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.005090" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Match result processed. Player now has 1025 points.
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1024" name="BreedingSystemTests" fullname="LegendOfBlood.Tests.BreedingSystemTests" classname="LegendOfBlood.Tests.BreedingSystemTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.040433" total="5" passed="0" failed="5" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1028" name="BreedingSystem_EliteBloodline_IncreasesStats" fullname="LegendOfBlood.Tests.BreedingSystemTests.BreedingSystem_EliteBloodline_IncreasesStats" methodname="BreedingSystem_EliteBloodline_IncreasesStats" classname="LegendOfBlood.Tests.BreedingSystemTests" runstate="Runnable" seed="1865072425" result="Failed" label="Error" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.009866" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                <stack-trace><![CDATA[  at LegendOfBlood.HeroData.GetFinalStats () [0x001da] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\HeroData.cs:182 
+  at LegendOfBlood.BreedingSystem.CreateSingleOffspring (LegendOfBlood.HeroData father, LegendOfBlood.HeroData mother, LegendOfBlood.BreedingOptions options) [0x000fd] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\BreedingSystem.cs:85 
+  at LegendOfBlood.BreedingSystem.Breed (LegendOfBlood.HeroData father, LegendOfBlood.HeroData mother, LegendOfBlood.BreedingOptions options) [0x000b3] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\BreedingSystem.cs:53 
+  at LegendOfBlood.Tests.BreedingSystemTests.BreedingSystem_EliteBloodline_IncreasesStats () [0x0004e] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\BreedingSystemTests.cs:118 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 4 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+AvatarManager not initialized! Cannot assign random avatar.
+AvatarManager not initialized! Cannot assign random avatar.
+]]></output>
+            </test-case>
+            <test-case id="1026" name="BreedingSystem_NormalBreeding_ReturnsOneChild" fullname="LegendOfBlood.Tests.BreedingSystemTests.BreedingSystem_NormalBreeding_ReturnsOneChild" methodname="BreedingSystem_NormalBreeding_ReturnsOneChild" classname="LegendOfBlood.Tests.BreedingSystemTests" runstate="Runnable" seed="620905830" result="Failed" label="Error" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.005741" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                <stack-trace><![CDATA[  at LegendOfBlood.HeroData.GetFinalStats () [0x001da] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\HeroData.cs:182 
+  at LegendOfBlood.BreedingSystem.CreateSingleOffspring (LegendOfBlood.HeroData father, LegendOfBlood.HeroData mother, LegendOfBlood.BreedingOptions options) [0x000fd] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\BreedingSystem.cs:85 
+  at LegendOfBlood.BreedingSystem.Breed (LegendOfBlood.HeroData father, LegendOfBlood.HeroData mother, LegendOfBlood.BreedingOptions options) [0x000b3] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\BreedingSystem.cs:53 
+  at LegendOfBlood.Tests.BreedingSystemTests.BreedingSystem_NormalBreeding_ReturnsOneChild () [0x00032] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\BreedingSystemTests.cs:82 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 4 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+AvatarManager not initialized! Cannot assign random avatar.
+AvatarManager not initialized! Cannot assign random avatar.
+]]></output>
+            </test-case>
+            <test-case id="1029" name="BreedingSystem_Options_GuaranteesTrait" fullname="LegendOfBlood.Tests.BreedingSystemTests.BreedingSystem_Options_GuaranteesTrait" methodname="BreedingSystem_Options_GuaranteesTrait" classname="LegendOfBlood.Tests.BreedingSystemTests" runstate="Runnable" seed="865229381" result="Failed" label="Error" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.006126" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                <stack-trace><![CDATA[  at LegendOfBlood.HeroData.GetFinalStats () [0x001da] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\HeroData.cs:182 
+  at LegendOfBlood.BreedingSystem.CreateSingleOffspring (LegendOfBlood.HeroData father, LegendOfBlood.HeroData mother, LegendOfBlood.BreedingOptions options) [0x000fd] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\BreedingSystem.cs:85 
+  at LegendOfBlood.BreedingSystem.Breed (LegendOfBlood.HeroData father, LegendOfBlood.HeroData mother, LegendOfBlood.BreedingOptions options) [0x000b3] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\BreedingSystem.cs:53 
+  at LegendOfBlood.Tests.BreedingSystemTests.BreedingSystem_Options_GuaranteesTrait () [0x00033] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\BreedingSystemTests.cs:138 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 4 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+AvatarManager not initialized! Cannot assign random avatar.
+AvatarManager not initialized! Cannot assign random avatar.
+]]></output>
+            </test-case>
+            <test-case id="1025" name="BreedingSystem_SameGender_ReturnsEmptyList" fullname="LegendOfBlood.Tests.BreedingSystemTests.BreedingSystem_SameGender_ReturnsEmptyList" methodname="BreedingSystem_SameGender_ReturnsEmptyList" classname="LegendOfBlood.Tests.BreedingSystemTests" runstate="Runnable" seed="1105899219" result="Failed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.007273" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[Unhandled log message: '[Error] AvatarManager not initialized! Cannot assign random avatar.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                <stack-trace><![CDATA[LegendOfBlood.HeroData:.ctor (string,string,LegendOfBlood.Gender) (at Assets/Scripts/DataModels/HeroData.cs:93)
+LegendOfBlood.Tests.BreedingSystemTests:BreedingSystem_SameGender_ReturnsEmptyList () (at Assets/Tests/Editor/BreedingSystemTests.cs:68)
+System.Reflection.MethodBase:Invoke (object,object[])
+NUnit.Framework.Internal.Reflect:InvokeMethod (System.Reflection.MethodInfo,object,object[])
+NUnit.Framework.Internal.MethodWrapper:Invoke (object,object[])
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunNonAsyncTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:Execute (NUnit.Framework.Internal.ITestExecutionContext)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 4 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+AvatarManager not initialized! Cannot assign random avatar.
+breeding_error_same_gender
+]]></output>
+            </test-case>
+            <test-case id="1027" name="BreedingSystem_TwinsTrait_MayReturnTwoChildren" fullname="LegendOfBlood.Tests.BreedingSystemTests.BreedingSystem_TwinsTrait_MayReturnTwoChildren" methodname="BreedingSystem_TwinsTrait_MayReturnTwoChildren" classname="LegendOfBlood.Tests.BreedingSystemTests" runstate="Runnable" seed="478664541" result="Failed" label="Error" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.008024" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                <stack-trace><![CDATA[  at LegendOfBlood.HeroData.GetFinalStats () [0x001da] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\HeroData.cs:182 
+  at LegendOfBlood.BreedingSystem.CreateSingleOffspring (LegendOfBlood.HeroData father, LegendOfBlood.HeroData mother, LegendOfBlood.BreedingOptions options) [0x000fd] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\BreedingSystem.cs:85 
+  at LegendOfBlood.BreedingSystem.Breed (LegendOfBlood.HeroData father, LegendOfBlood.HeroData mother, LegendOfBlood.BreedingOptions options) [0x000b3] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\BreedingSystem.cs:53 
+  at LegendOfBlood.Tests.BreedingSystemTests.BreedingSystem_TwinsTrait_MayReturnTwoChildren () [0x0003e] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\BreedingSystemTests.cs:101 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 4 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+AvatarManager not initialized! Cannot assign random avatar.
+AvatarManager not initialized! Cannot assign random avatar.
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1030" name="BuildingSystemTests" fullname="LegendOfBlood.Tests.BuildingSystemTests" classname="LegendOfBlood.Tests.BuildingSystemTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.005691" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1031" name="BuildingSystem_StartUpgrade_DeductsResourcesAndSetsTimer" fullname="LegendOfBlood.Tests.BuildingSystemTests.BuildingSystem_StartUpgrade_DeductsResourcesAndSetsTimer" methodname="BuildingSystem_StartUpgrade_DeductsResourcesAndSetsTimer" classname="LegendOfBlood.Tests.BuildingSystemTests" runstate="Runnable" seed="1675912184" result="Failed" label="Error" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.003237" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[SetUp : System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                <stack-trace><![CDATA[--SetUp
+  at LegendOfBlood.DataManager.ProcessGameConfiguration () [0x0015f] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\DataManager.cs:125 
+  at LegendOfBlood.DataManager.InitializeDataManager () [0x0001e] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\DataManager.cs:93 
+  at LegendOfBlood.Tests.BuildingSystemTests.Setup () [0x0019d] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\BuildingSystemTests.cs:64 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+            </test-case>
+            <test-case id="1032" name="BuildingSystem_Tick_CompletesConstructionOverTime" fullname="LegendOfBlood.Tests.BuildingSystemTests.BuildingSystem_Tick_CompletesConstructionOverTime" methodname="BuildingSystem_Tick_CompletesConstructionOverTime" classname="LegendOfBlood.Tests.BuildingSystemTests" runstate="Runnable" seed="623762831" result="Failed" label="Error" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.000699" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[SetUp : System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                <stack-trace><![CDATA[--SetUp
+  at LegendOfBlood.DataManager.ProcessGameConfiguration () [0x0015f] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\DataManager.cs:125 
+  at LegendOfBlood.DataManager.InitializeDataManager () [0x0001e] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\DataManager.cs:93 
+  at LegendOfBlood.Tests.BuildingSystemTests.Setup () [0x0019d] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\BuildingSystemTests.cs:64 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1033" name="CombatSystemTests" fullname="LegendOfBlood.Tests.CombatSystemTests" classname="LegendOfBlood.Tests.CombatSystemTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.025084" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1034" name="CombatSystem_Simulate_ReturnsValidResult" fullname="LegendOfBlood.Tests.CombatSystemTests.CombatSystem_Simulate_ReturnsValidResult" methodname="CombatSystem_Simulate_ReturnsValidResult" classname="LegendOfBlood.Tests.CombatSystemTests" runstate="Runnable" seed="597184322" result="Failed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.018247" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Player should win inherently because of massive stat difference.
+  Expected: True
+  But was:  False
+]]></message>
+                <stack-trace><![CDATA[at LegendOfBlood.Tests.CombatSystemTests.CombatSystem_Simulate_ReturnsValidResult () [0x000d4] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\CombatSystemTests.cs:84
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 2 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+AvatarManager not initialized! Cannot assign random avatar.
+]]></output>
+            </test-case>
+            <test-case id="1035" name="CombatSystem_Simulate_UpdatesHeroHP" fullname="LegendOfBlood.Tests.CombatSystemTests.CombatSystem_Simulate_UpdatesHeroHP" methodname="CombatSystem_Simulate_UpdatesHeroHP" classname="LegendOfBlood.Tests.CombatSystemTests" runstate="Runnable" seed="1048406362" result="Failed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.005120" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[Unhandled log message: '[Error] AvatarManager not initialized! Cannot assign random avatar.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                <stack-trace><![CDATA[LegendOfBlood.HeroData:.ctor (string,string,LegendOfBlood.Gender) (at Assets/Scripts/DataModels/HeroData.cs:93)
+LegendOfBlood.Tests.CombatSystemTests:CombatSystem_Simulate_UpdatesHeroHP () (at Assets/Tests/Editor/CombatSystemTests.cs:95)
+System.Reflection.MethodBase:Invoke (object,object[])
+NUnit.Framework.Internal.Reflect:InvokeMethod (System.Reflection.MethodInfo,object,object[])
+NUnit.Framework.Internal.MethodWrapper:Invoke (object,object[])
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunNonAsyncTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:Execute (NUnit.Framework.Internal.ITestExecutionContext)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 2 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+AvatarManager not initialized! Cannot assign random avatar.
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1036" name="CoreUnitDataTests" fullname="LegendOfBlood.Tests.CoreUnitDataTests" classname="LegendOfBlood.Tests.CoreUnitDataTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.014718" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1037" name="HeroData_CalculateStats_ScalesWithLevelAndPotential" fullname="LegendOfBlood.Tests.CoreUnitDataTests.HeroData_CalculateStats_ScalesWithLevelAndPotential" methodname="HeroData_CalculateStats_ScalesWithLevelAndPotential" classname="LegendOfBlood.Tests.CoreUnitDataTests" runstate="Runnable" seed="1153995400" result="Failed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.006923" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Higher potential should yield higher HP at same level.
+  Expected: True
+  But was:  False
+]]></message>
+                <stack-trace><![CDATA[at LegendOfBlood.Tests.CoreUnitDataTests.HeroData_CalculateStats_ScalesWithLevelAndPotential () [0x00040] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\CoreUnitDataTests.cs:50
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+AvatarManager not initialized! Cannot assign random avatar.
+]]></output>
+            </test-case>
+            <test-case id="1038" name="HeroData_GetFinalStats_CombinesBaseAndAddedStats" fullname="LegendOfBlood.Tests.CoreUnitDataTests.HeroData_GetFinalStats_CombinesBaseAndAddedStats" methodname="HeroData_GetFinalStats_CombinesBaseAndAddedStats" classname="LegendOfBlood.Tests.CoreUnitDataTests" runstate="Runnable" seed="157705597" result="Failed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.005906" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[Unhandled log message: '[Error] AvatarManager not initialized! Cannot assign random avatar.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                <stack-trace><![CDATA[LegendOfBlood.HeroData:.ctor (string,string,LegendOfBlood.Gender) (at Assets/Scripts/DataModels/HeroData.cs:93)
+LegendOfBlood.Tests.CoreUnitDataTests:HeroData_GetFinalStats_CombinesBaseAndAddedStats () (at Assets/Tests/Editor/CoreUnitDataTests.cs:57)
+System.Reflection.MethodBase:Invoke (object,object[])
+NUnit.Framework.Internal.Reflect:InvokeMethod (System.Reflection.MethodInfo,object,object[])
+NUnit.Framework.Internal.MethodWrapper:Invoke (object,object[])
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunNonAsyncTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:Execute (NUnit.Framework.Internal.ITestExecutionContext)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1039" name="DataManagerTests" fullname="LegendOfBlood.Tests.DataManagerTests" classname="LegendOfBlood.Tests.DataManagerTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.015202" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1041" name="DataManager_ModifyPlayerData_ThenSaveAndLoad_DataIsPreserved" fullname="LegendOfBlood.Tests.DataManagerTests.DataManager_ModifyPlayerData_ThenSaveAndLoad_DataIsPreserved" methodname="DataManager_ModifyPlayerData_ThenSaveAndLoad_DataIsPreserved" classname="LegendOfBlood.Tests.DataManagerTests" runstate="Runnable" seed="176733983" result="Failed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.008218" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[Unhandled log message: '[Error] AvatarManager not initialized! Cannot assign random avatar.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                <stack-trace><![CDATA[LegendOfBlood.HeroData:.ctor (string,string,LegendOfBlood.Gender) (at Assets/Scripts/DataModels/HeroData.cs:93)
+LegendOfBlood.Tests.DataManagerTests:DataManager_ModifyPlayerData_ThenSaveAndLoad_DataIsPreserved () (at Assets/Tests/Editor/DataManagerTests.cs:79)
+System.Reflection.MethodBase:Invoke (object,object[])
+NUnit.Framework.Internal.Reflect:InvokeMethod (System.Reflection.MethodInfo,object,object[])
+NUnit.Framework.Internal.MethodWrapper:Invoke (object,object[])
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunNonAsyncTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:Execute (NUnit.Framework.Internal.ITestExecutionContext)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+]]></output>
+            </test-case>
+            <test-case id="1040" name="DataManager_NewPlayer_HasDefaultValues" fullname="LegendOfBlood.Tests.DataManagerTests.DataManager_NewPlayer_HasDefaultValues" methodname="DataManager_NewPlayer_HasDefaultValues" classname="LegendOfBlood.Tests.DataManagerTests" runstate="Runnable" seed="899403257" result="Passed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.004974" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1042" name="EvolutionSystemTests" fullname="LegendOfBlood.Tests.EvolutionSystemTests" classname="LegendOfBlood.Tests.EvolutionSystemTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.036801" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1043" name="EvolutionSystem_Level20_GrantsNewTrait" fullname="LegendOfBlood.Tests.EvolutionSystemTests.EvolutionSystem_Level20_GrantsNewTrait" methodname="EvolutionSystem_Level20_GrantsNewTrait" classname="LegendOfBlood.Tests.EvolutionSystemTests" runstate="Runnable" seed="1652739063" result="Failed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.019835" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[Unhandled log message: '[Error] AvatarManager not initialized! Cannot assign random avatar.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                <stack-trace><![CDATA[LegendOfBlood.HeroData:.ctor (string,string,LegendOfBlood.Gender) (at Assets/Scripts/DataModels/HeroData.cs:93)
+LegendOfBlood.Tests.EvolutionSystemTests:EvolutionSystem_Level20_GrantsNewTrait () (at Assets/Tests/Editor/EvolutionSystemTests.cs:79)
+System.Reflection.MethodBase:Invoke (object,object[])
+NUnit.Framework.Internal.Reflect:InvokeMethod (System.Reflection.MethodInfo,object,object[])
+NUnit.Framework.Internal.MethodWrapper:Invoke (object,object[])
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunNonAsyncTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:Execute (NUnit.Framework.Internal.ITestExecutionContext)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[EvolutionSystem Initialized and Subscribed to Level Up event.
+Đã xử lý xong Game Config: 2 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+<color=cyan>Evolution!</color> EvoTest learned a new trait: [trait_a1] (Rank: A) at level 20.
+<color=cyan>Evolution!</color> EvoTest learned a new trait: [trait_s1] (Rank: S) at level 20.
+EvoTest has no new trait families to learn. All families acquired.
+EvoTest has no new trait families to learn. All families acquired.
+EvoTest has no new trait families to learn. All families acquired.
+EvoTest has no new trait families to learn. All families acquired.
+EvoTest has no new trait families to learn. All families acquired.
+EvoTest has no new trait families to learn. All families acquired.
+EvoTest has no new trait families to learn. All families acquired.
+EvoTest leveled up to 20!
+]]></output>
+            </test-case>
+            <test-case id="1044" name="EvolutionSystem_Level80_GrantsNewTrait" fullname="LegendOfBlood.Tests.EvolutionSystemTests.EvolutionSystem_Level80_GrantsNewTrait" methodname="EvolutionSystem_Level80_GrantsNewTrait" classname="LegendOfBlood.Tests.EvolutionSystemTests" runstate="Runnable" seed="989957949" result="Failed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:49Z" duration="0.013901" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[Unhandled log message: '[Error] AvatarManager not initialized! Cannot assign random avatar.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                <stack-trace><![CDATA[LegendOfBlood.HeroData:.ctor (string,string,LegendOfBlood.Gender) (at Assets/Scripts/DataModels/HeroData.cs:93)
+LegendOfBlood.Tests.EvolutionSystemTests:EvolutionSystem_Level80_GrantsNewTrait () (at Assets/Tests/Editor/EvolutionSystemTests.cs:92)
+System.Reflection.MethodBase:Invoke (object,object[])
+NUnit.Framework.Internal.Reflect:InvokeMethod (System.Reflection.MethodInfo,object,object[])
+NUnit.Framework.Internal.MethodWrapper:Invoke (object,object[])
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunNonAsyncTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:Execute (NUnit.Framework.Internal.ITestExecutionContext)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[EvolutionSystem Initialized and Subscribed to Level Up event.
+Đã xử lý xong Game Config: 2 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+<color=cyan>Evolution!</color> EvoTest80 learned a new trait: [trait_a1] (Rank: A) at level 80.
+Could not find a trait for family 'F_01' with rank 'A'. Trying to find any other rank in the same family as a fallback.
+<color=yellow>Fallback Success!</color> EvoTest80 learned a fallback trait: [trait_s1] (Rank: S) at level 80.
+EvoTest80 has no new trait families to learn. All families acquired.
+EvoTest80 has no new trait families to learn. All families acquired.
+EvoTest80 has no new trait families to learn. All families acquired.
+EvoTest80 has no new trait families to learn. All families acquired.
+EvoTest80 has no new trait families to learn. All families acquired.
+EvoTest80 has no new trait families to learn. All families acquired.
+EvoTest80 has no new trait families to learn. All families acquired.
+EvoTest80 has no new trait families to learn. All families acquired.
+EvoTest80 leveled up to 80!
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1045" name="ExpeditionManagerTests" fullname="LegendOfBlood.Tests.ExpeditionManagerTests" classname="LegendOfBlood.Tests.ExpeditionManagerTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:50Z" duration="0.018406" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1046" name="ExpeditionManager_StartExpedition_AddsActiveExpedition" fullname="LegendOfBlood.Tests.ExpeditionManagerTests.ExpeditionManager_StartExpedition_AddsActiveExpedition" methodname="ExpeditionManager_StartExpedition_AddsActiveExpedition" classname="LegendOfBlood.Tests.ExpeditionManagerTests" runstate="Runnable" seed="1505339815" result="Failed" start-time="2026-03-07 11:57:49Z" end-time="2026-03-07 11:57:50Z" duration="0.010732" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  An active expedition should be added to PlayerData.
+  Expected: 1
+  But was:  0
+]]></message>
+                <stack-trace><![CDATA[at LegendOfBlood.Tests.ExpeditionManagerTests.ExpeditionManager_StartExpedition_AddsActiveExpedition () [0x00090] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\ExpeditionManagerTests.cs:95
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Explorer. Total heroes: 1/10
+]]></output>
+            </test-case>
+            <test-case id="1047" name="ExpeditionManager_Tick_CompletesExpeditionAndDeliversReport" fullname="LegendOfBlood.Tests.ExpeditionManagerTests.ExpeditionManager_Tick_CompletesExpeditionAndDeliversReport" methodname="ExpeditionManager_Tick_CompletesExpeditionAndDeliversReport" classname="LegendOfBlood.Tests.ExpeditionManagerTests" runstate="Runnable" seed="1195927936" result="Failed" label="Error" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.005807" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.ArgumentOutOfRangeException : Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index]]></message>
+                <stack-trace><![CDATA[  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <41d29b352f6a475ab1bf7c6628b82790>:0 
+  at LegendOfBlood.Tests.ExpeditionManagerTests.ExpeditionManager_Tick_CompletesExpeditionAndDeliversReport () [0x0005d] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\ExpeditionManagerTests.cs:110 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Explorer2. Total heroes: 1/10
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1048" name="HospitalSystemTests" fullname="LegendOfBlood.Tests.HospitalSystemTests" classname="LegendOfBlood.Tests.HospitalSystemTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.018318" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1049" name="HospitalSystem_AdmitHero_SetsSevereInjury" fullname="LegendOfBlood.Tests.HospitalSystemTests.HospitalSystem_AdmitHero_SetsSevereInjury" methodname="HospitalSystem_AdmitHero_SetsSevereInjury" classname="LegendOfBlood.Tests.HospitalSystemTests" runstate="Runnable" seed="2073214398" result="Failed" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.005990" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[Unhandled log message: '[Error] AvatarManager not initialized! Cannot assign random avatar.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                <stack-trace><![CDATA[LegendOfBlood.HeroData:.ctor (string,string,LegendOfBlood.Gender) (at Assets/Scripts/DataModels/HeroData.cs:93)
+LegendOfBlood.Tests.HospitalSystemTests:HospitalSystem_AdmitHero_SetsSevereInjury () (at Assets/Tests/Editor/HospitalSystemTests.cs:74)
+System.Reflection.MethodBase:Invoke (object,object[])
+NUnit.Framework.Internal.Reflect:InvokeMethod (System.Reflection.MethodInfo,object,object[])
+NUnit.Framework.Internal.MethodWrapper:Invoke (object,object[])
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunNonAsyncTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:Execute (NUnit.Framework.Internal.ITestExecutionContext)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Test. Total heroes: 1/10
+Test bị thương nặng! Sẽ biến mất vĩnh viễn sau 8 giờ nếu không được cứu chữa.
+]]></output>
+            </test-case>
+            <test-case id="1050" name="HospitalSystem_HealLightInjuryInstantly_SpendsGold" fullname="LegendOfBlood.Tests.HospitalSystemTests.HospitalSystem_HealLightInjuryInstantly_SpendsGold" methodname="HospitalSystem_HealLightInjuryInstantly_SpendsGold" classname="LegendOfBlood.Tests.HospitalSystemTests" runstate="Runnable" seed="149177844" result="Failed" label="Error" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.004316" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                <stack-trace><![CDATA[  at LegendOfBlood.HospitalSystem.HealLightInjuryInstantly (LegendOfBlood.HeroData hero) [0x00008] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\HospitalSystem.cs:66 
+  at LegendOfBlood.Tests.HospitalSystemTests.HospitalSystem_HealLightInjuryInstantly_SpendsGold () [0x0003a] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\HospitalSystemTests.cs:91 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+Test bị thương nhẹ. Cần 300s để hồi phục.
+]]></output>
+            </test-case>
+            <test-case id="1051" name="HospitalSystem_SevereInjuryTimeout_HeroPerishes" fullname="LegendOfBlood.Tests.HospitalSystemTests.HospitalSystem_SevereInjuryTimeout_HeroPerishes" methodname="HospitalSystem_SevereInjuryTimeout_HeroPerishes" classname="LegendOfBlood.Tests.HospitalSystemTests" runstate="Runnable" seed="1490268522" result="Failed" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.006077" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[Unhandled log message: '[Error] AvatarManager not initialized! Cannot assign random avatar.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                <stack-trace><![CDATA[LegendOfBlood.HeroData:.ctor (string,string,LegendOfBlood.Gender) (at Assets/Scripts/DataModels/HeroData.cs:93)
+LegendOfBlood.Tests.HospitalSystemTests:HospitalSystem_SevereInjuryTimeout_HeroPerishes () (at Assets/Tests/Editor/HospitalSystemTests.cs:101)
+System.Reflection.MethodBase:Invoke (object,object[])
+NUnit.Framework.Internal.Reflect:InvokeMethod (System.Reflection.MethodInfo,object,object[])
+NUnit.Framework.Internal.MethodWrapper:Invoke (object,object[])
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunNonAsyncTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:Execute (NUnit.Framework.Internal.ITestExecutionContext)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Doomed. Total heroes: 1/10
+Doomed bị thương nặng! Sẽ biến mất vĩnh viễn sau 8 giờ nếu không được cứu chữa.
+Doomed đã không được cứu chữa kịp thời và biến mất vĩnh viễn!
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1052" name="InventoryManagerTests" fullname="LegendOfBlood.Tests.InventoryManagerTests" classname="LegendOfBlood.Tests.InventoryManagerTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.016573" total="4" passed="2" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1053" name="InventoryManager_AddResource_IncreasesAmount" fullname="LegendOfBlood.Tests.InventoryManagerTests.InventoryManager_AddResource_IncreasesAmount" methodname="InventoryManager_AddResource_IncreasesAmount" classname="LegendOfBlood.Tests.InventoryManagerTests" runstate="Runnable" seed="2072900404" result="Failed" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.004635" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Gold should increase by 100.
+  Expected: 100
+  But was:  0
+]]></message>
+                <stack-trace><![CDATA[at LegendOfBlood.Tests.InventoryManagerTests.InventoryManager_AddResource_IncreasesAmount () [0x0001a] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\InventoryManagerTests.cs:76
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+            <test-case id="1054" name="InventoryManager_ConsumeResource_DecreasesAmountIfSufficient" fullname="LegendOfBlood.Tests.InventoryManagerTests.InventoryManager_ConsumeResource_DecreasesAmountIfSufficient" methodname="InventoryManager_ConsumeResource_DecreasesAmountIfSufficient" classname="LegendOfBlood.Tests.InventoryManagerTests" runstate="Runnable" seed="1812891937" result="Failed" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.004435" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Consuming resource should succeed when sufficient.
+  Expected: True
+  But was:  False
+]]></message>
+                <stack-trace><![CDATA[at LegendOfBlood.Tests.InventoryManagerTests.InventoryManager_ConsumeResource_DecreasesAmountIfSufficient () [0x00028] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\InventoryManagerTests.cs:90
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+            <test-case id="1055" name="InventoryManager_ConsumeResource_FailsIfInsufficient" fullname="LegendOfBlood.Tests.InventoryManagerTests.InventoryManager_ConsumeResource_FailsIfInsufficient" methodname="InventoryManager_ConsumeResource_FailsIfInsufficient" classname="LegendOfBlood.Tests.InventoryManagerTests" runstate="Runnable" seed="2124329983" result="Passed" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.002756" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+            <test-case id="1056" name="InventoryManager_NegativeAddition_HandledGracefully" fullname="LegendOfBlood.Tests.InventoryManagerTests.InventoryManager_NegativeAddition_HandledGracefully" methodname="InventoryManager_NegativeAddition_HandledGracefully" classname="LegendOfBlood.Tests.InventoryManagerTests" runstate="Runnable" seed="993570346" result="Passed" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.002711" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1057" name="MaturationSystemTests" fullname="LegendOfBlood.Tests.MaturationSystemTests" classname="LegendOfBlood.Tests.MaturationSystemTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.015372" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1059" name="MaturationSystem_Tick_IgnoresFutureMaturations" fullname="LegendOfBlood.Tests.MaturationSystemTests.MaturationSystem_Tick_IgnoresFutureMaturations" methodname="MaturationSystem_Tick_IgnoresFutureMaturations" classname="LegendOfBlood.Tests.MaturationSystemTests" runstate="Runnable" seed="2108656994" result="Failed" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.006986" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[Unhandled log message: '[Error] AvatarManager not initialized! Cannot assign random avatar.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                <stack-trace><![CDATA[LegendOfBlood.HeroData:.ctor (string,string,LegendOfBlood.Gender) (at Assets/Scripts/DataModels/HeroData.cs:93)
+LegendOfBlood.Tests.MaturationSystemTests:MaturationSystem_Tick_IgnoresFutureMaturations () (at Assets/Tests/Editor/MaturationSystemTests.cs:80)
+System.Reflection.MethodBase:Invoke (object,object[])
+NUnit.Framework.Internal.Reflect:InvokeMethod (System.Reflection.MethodInfo,object,object[])
+NUnit.Framework.Internal.MethodWrapper:Invoke (object,object[])
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunNonAsyncTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:Execute (NUnit.Framework.Internal.ITestExecutionContext)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Future. Total heroes: 1/10
+]]></output>
+            </test-case>
+            <test-case id="1058" name="MaturationSystem_Tick_MaturesInfantsOverTime" fullname="LegendOfBlood.Tests.MaturationSystemTests.MaturationSystem_Tick_MaturesInfantsOverTime" methodname="MaturationSystem_Tick_MaturesInfantsOverTime" classname="LegendOfBlood.Tests.MaturationSystemTests" runstate="Runnable" seed="218630870" result="Failed" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.006572" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[Unhandled log message: '[Error] AvatarManager not initialized! Cannot assign random avatar.'. Use UnityEngine.TestTools.LogAssert.Expect]]></message>
+                <stack-trace><![CDATA[LegendOfBlood.HeroData:.ctor (string,string,LegendOfBlood.Gender) (at Assets/Scripts/DataModels/HeroData.cs:93)
+LegendOfBlood.Tests.MaturationSystemTests:MaturationSystem_Tick_MaturesInfantsOverTime () (at Assets/Tests/Editor/MaturationSystemTests.cs:60)
+System.Reflection.MethodBase:Invoke (object,object[])
+NUnit.Framework.Internal.Reflect:InvokeMethod (System.Reflection.MethodInfo,object,object[])
+NUnit.Framework.Internal.MethodWrapper:Invoke (object,object[])
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunNonAsyncTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:RunTestMethod (NUnit.Framework.Internal.ITestExecutionContext)
+NUnit.Framework.Internal.Commands.TestMethodCommand:Execute (NUnit.Framework.Internal.ITestExecutionContext)
+UnityEditor.EditorApplication:Internal_CallUpdateFunctions ()
+
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Tiny. Total heroes: 1/10
+Hero đã học được kỹ năng khởi đầu: Fireball
+Hero Tiny (ID: BABY_1) đã trưởng thành! Thức tỉnh thành nghề: Mage.
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1060" name="QuestManagerTests" fullname="LegendOfBlood.Tests.QuestManagerTests" classname="LegendOfBlood.Tests.QuestManagerTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.019978" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1061" name="QuestManager_ActivateQuest_SetsStateActive" fullname="LegendOfBlood.Tests.QuestManagerTests.QuestManager_ActivateQuest_SetsStateActive" methodname="QuestManager_ActivateQuest_SetsStateActive" classname="LegendOfBlood.Tests.QuestManagerTests" runstate="Runnable" seed="1617683842" result="Passed" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.010758" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[LegendOfBlood.GameConfigs.QuestData must be instantiated using the ScriptableObject.CreateInstance method instead of new QuestData.
+Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 1 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Daily Quests Reset!
+QuestManager initialized. 1 active player quests.
+]]></output>
+            </test-case>
+            <test-case id="1062" name="QuestManager_EventTriggers_CompletesQuestUponReachingTarget" fullname="LegendOfBlood.Tests.QuestManagerTests.QuestManager_EventTriggers_CompletesQuestUponReachingTarget" methodname="QuestManager_EventTriggers_CompletesQuestUponReachingTarget" classname="LegendOfBlood.Tests.QuestManagerTests" runstate="Runnable" seed="413132867" result="Failed" label="Error" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.007558" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.Reflection.TargetInvocationException : Exception has been thrown by the target of an invocation.
+  ----> System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                <stack-trace><![CDATA[  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <41d29b352f6a475ab1bf7c6628b82790>:0 
+  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <41d29b352f6a475ab1bf7c6628b82790>:0 
+  at LegendOfBlood.Tests.QuestManagerTests.QuestManager_EventTriggers_CompletesQuestUponReachingTarget () [0x0002e] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\QuestManagerTests.cs:93 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 
+--NullReferenceException
+  at LegendOfBlood.Managers.QuestManager.SetQuestState (System.String questId, LegendOfBlood.Managers.QuestState newState) [0x00069] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\QuestManager.cs:180 
+  at LegendOfBlood.Managers.QuestManager.HandleBuildingUpgraded (LegendOfBlood.Building building) [0x00063] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\QuestManager.cs:166 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[LegendOfBlood.GameConfigs.QuestData must be instantiated using the ScriptableObject.CreateInstance method instead of new QuestData.
+Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 1 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Daily Quests Reset!
+QuestManager initialized. 1 active player quests.
+Quest Completed: 
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1063" name="RecruitmentSystemTests" fullname="LegendOfBlood.Tests.RecruitmentSystemTests" classname="LegendOfBlood.Tests.RecruitmentSystemTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.240801" total="3" passed="0" failed="3" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1066" name="RecruitmentSystem_AssignsCorrectStats" fullname="LegendOfBlood.Tests.RecruitmentSystemTests.RecruitmentSystem_AssignsCorrectStats" methodname="RecruitmentSystem_AssignsCorrectStats" classname="LegendOfBlood.Tests.RecruitmentSystemTests" runstate="Runnable" seed="1836513786" result="Failed" label="Error" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.219931" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                <stack-trace><![CDATA[  at LegendOfBlood.HeroData.GetFinalStats () [0x001da] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\HeroData.cs:182 
+  at LegendOfBlood.RecruitmentSystem.PerformRecruitment (System.Int32 amount) [0x000ae] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\RecruitmentSystem.cs:41 
+  at LegendOfBlood.Tests.RecruitmentSystemTests.RecruitmentSystem_AssignsCorrectStats () [0x00000] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\RecruitmentSystemTests.cs:123 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 2 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+]]></output>
+            </test-case>
+            <test-case id="1064" name="RecruitmentSystem_PerformRecruitment_ReturnsNewHeroes" fullname="LegendOfBlood.Tests.RecruitmentSystemTests.RecruitmentSystem_PerformRecruitment_ReturnsNewHeroes" methodname="RecruitmentSystem_PerformRecruitment_ReturnsNewHeroes" classname="LegendOfBlood.Tests.RecruitmentSystemTests" runstate="Runnable" seed="1645770093" result="Failed" label="Error" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.004389" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                <stack-trace><![CDATA[  at LegendOfBlood.HeroData.GetFinalStats () [0x001da] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\DataModels\HeroData.cs:182 
+  at LegendOfBlood.RecruitmentSystem.PerformRecruitment (System.Int32 amount) [0x000ae] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\RecruitmentSystem.cs:41 
+  at LegendOfBlood.Tests.RecruitmentSystemTests.RecruitmentSystem_PerformRecruitment_ReturnsNewHeroes () [0x00000] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\RecruitmentSystemTests.cs:94 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 2 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+]]></output>
+            </test-case>
+            <test-case id="1065" name="RecruitmentSystem_PopulationFull_StopsRecruitment" fullname="LegendOfBlood.Tests.RecruitmentSystemTests.RecruitmentSystem_PopulationFull_StopsRecruitment" methodname="RecruitmentSystem_PopulationFull_StopsRecruitment" classname="LegendOfBlood.Tests.RecruitmentSystemTests" runstate="Runnable" seed="1385668337" result="Failed" label="Error" start-time="2026-03-07 11:57:50Z" end-time="2026-03-07 11:57:50Z" duration="0.014665" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                <stack-trace><![CDATA[  at LegendOfBlood.RecruitmentSystem.PerformRecruitment (System.Int32 amount) [0x00023] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\RecruitmentSystem.cs:17 
+  at LegendOfBlood.Tests.RecruitmentSystemTests.RecruitmentSystem_PopulationFull_StopsRecruitment () [0x00043] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\RecruitmentSystemTests.cs:115 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 2 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Filler. Total heroes: 1/10
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Filler. Total heroes: 2/10
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Filler. Total heroes: 3/10
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Filler. Total heroes: 4/10
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Filler. Total heroes: 5/10
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Filler. Total heroes: 6/10
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Filler. Total heroes: 7/10
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Filler. Total heroes: 8/10
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Filler. Total heroes: 9/10
+AvatarManager not initialized! Cannot assign random avatar.
+Added hero Filler. Total heroes: 10/10
+Population is full! Stopping recruitment.
+Saving results to: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

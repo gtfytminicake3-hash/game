@@ -1,0 +1,620 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.3/staging' branch; Version is '6000.3.10f1 (e35f0c77bd8e) revision 14901004'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-NGOCMINHPC" at "2026-03-06T19:14:05.5360787Z"
+OS: 'Windows 11  (10.0.26200) Professional' Language: 'en' Physical Memory: 32580 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-03-06T19:14:05Z
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.3.10f1\Editor\Unity.exe
+-batchmode
+-projectPath
+e:\game\legendofblood\legacyofblood_unity_mobile_portraitframe
+-executeMethod
+LegendOfBlood.Editor.GameDataGenerator.GenerateMasterData
+-quit
+-logFile
+build_data_log.txt
+Successfully changed project path to: e:\game\legendofblood\legacyofblood_unity_mobile_portraitframe
+E:/game/legendofblood/legacyofblood_unity_mobile_portraitframe
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+Player connection [38640]  Target information:
+
+Player connection [38640]  * "[IP] 192.168.68.130 [Port] 55504 [Flags] 2 [Guid] 114601783 [EditorId] 114601783 [Version] 1048832 [Id] WindowsEditor(7,NGOCMINH-PC) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [38640] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [38640] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+[Package Manager] Connected to IPC stream "Upm-9424" after 0.5 seconds.
+[Licensing::Module] Licensing is not yet initialized.
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.17.4+4293ba1
+  Session Id:              f82dca8a0f0d4db19f43cdcf8eba750f
+  Correlation Id:          dad3490c099e8475d63cb8657884b2de
+  External correlation Id: 4742626220884042841
+  Machine Id:              v5X4MSyn6b7Zyh3cazLE2rU55mQ=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-NGOCMINHPC" (connect: 0.00s, validation: 0.00s, handshake: 2.95s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-NGOCMINHPC-notifications" at "2026-03-06T19:14:08.489622Z"
+[Licensing::Module] Error: Access token is unavailable; failed to update
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 18968337081699-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+[Licensing::Client] Successfully updated license, isAsync: True, time: 0.00
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] Licensing Background thread has ended after 2.96s
+[Licensing::Module] Licensing is initialized (took 2.20s).
+[Licensing::Client] Successfully resolved entitlement details
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Artifact Garbage Collection - Removed 2 unused hashed content files
+[Licensing::Client] Successfully resolved entitlement details
+Refreshing native plugins compatible for Editor in 1.28 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 6000.3.10f1 (e35f0c77bd8e)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path E:/game/legendofblood/legacyofblood_unity_mobile_portraitframe/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 1050 Ti (ID=0x1c82)
+    Vendor:   NVIDIA
+    VRAM:     4004 MB
+    Driver:   32.0.15.7602
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56424
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+Using cacheserver namespaces - metadata:defaultmetadata, artifacts:defaultartifacts
+ImportWorker Server TCP listen port: 0
+AcceleratorClientConnectionCallback - disconnected - :0
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.3.10f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.002567 seconds.
+- Loaded All Assemblies, in  0.531 seconds
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 392 ms
+Native extension for WindowsStandalone target not found
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.941 seconds
+Domain Reload Profiling: 1469ms
+	BeginReloadAssembly (172ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (8ms)
+	RebuildCommonClasses (49ms)
+	RebuildNativeTypeToScriptingClass (18ms)
+	initialDomainReloadingComplete (56ms)
+	LoadAllAssembliesAndSetupDomain (234ms)
+		LoadAssemblies (161ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (230ms)
+			TypeCache.Refresh (227ms)
+				TypeCache.ScanAssembly (209ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (1ms)
+	FinalizeReload (941ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (892ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (501ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (114ms)
+			ProcessInitializeOnLoadAttributes (183ms)
+			ProcessInitializeOnLoadMethodAttributes (88ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Client] Successfully resolved entitlement details
+Application.AssetDatabase Initial Refresh Start
+Package Manager log level set to [2]
+[Package Manager] Restoring resolved packages state from cache
+[Licensing::Client] Successfully resolved entitlement details
+[Package Manager] Registered 70 packages:
+  Packages from [https://packages.unity.com]:
+    com.unity.2d.animation@13.0.4 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.2d.animation@7396d8477ca9)
+    com.unity.2d.psdimporter@12.0.1 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.2d.psdimporter@9abe0f7cac7e)
+    com.unity.2d.spriteshape@13.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.2d.spriteshape@0738bab11647)
+    com.unity.2d.tilemap.extras@6.0.1 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.2d.tilemap.extras@3dde84bf3867)
+    com.unity.collab-proxy@2.11.3 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.collab-proxy@e566cd3e7623)
+    com.unity.ide.rider@3.0.39 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.ide.rider@4504839d03f7)
+    com.unity.ide.visualstudio@2.0.26 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.ide.visualstudio@a99d56dec63f)
+    com.unity.inputsystem@1.18.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.inputsystem@57d0e36f6123)
+    com.unity.purchasing@5.0.1 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.purchasing@821fd0bcef6f)
+    com.unity.timeline@1.8.10 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.timeline@7f8b2fb101b6)
+    com.unity.visualscripting@1.9.9 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.visualscripting@191c0d7e3b69)
+    com.unity.services.core@1.16.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.services.core@8ba50f624741)
+    com.unity.2d.pixel-perfect@5.1.1 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.2d.pixel-perfect@09d99455b901)
+    com.unity.2d.aseprite@3.0.1 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.2d.aseprite@809e3a168ff7)
+    com.unity.2d.tooling@1.0.2 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.2d.tooling@249995156768)
+    com.unity.2d.common@12.0.2 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.2d.common@800085e896ad)
+    com.unity.mathematics@1.3.3 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.mathematics@19a9377c4ffa)
+    com.unity.collections@2.6.2 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.collections@aea9d3bd5e19)
+    com.unity.searcher@4.9.4 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.searcher@d45a78918735)
+    com.unity.burst@1.8.28 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.burst@07790c2d06d9)
+    com.unity.nuget.newtonsoft-json@3.2.2 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.nuget.newtonsoft-json@4dfd81071c64)
+    com.unity.nuget.mono-cecil@1.11.6 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.nuget.mono-cecil@ecb9724e46ff)
+    com.unity.test-framework.performance@3.2.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.test-framework.performance@0840f58e4562)
+  Built-in packages:
+    com.unity.2d.sprite@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.2d.sprite@d14b9d497a24)
+    com.unity.2d.tilemap@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.2d.tilemap@f011712243ad)
+    com.unity.feature.2d@2.0.2 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.feature.2d@0309d34ea7f2)
+    com.unity.multiplayer.center@1.0.1 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.multiplayer.center@f01f4ba8d00a)
+    com.unity.render-pipelines.universal@17.3.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.render-pipelines.universal@37e0d4fc2503)
+    com.unity.test-framework@1.6.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.test-framework@0b7a23ab2e1d)
+    com.unity.ugui@2.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.ugui@bb329a87fcdc)
+    com.unity.modules.accessibility@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.accessibility)
+    com.unity.modules.adaptiveperformance@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.adaptiveperformance)
+    com.unity.modules.ai@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.ai)
+    com.unity.modules.androidjni@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.androidjni)
+    com.unity.modules.animation@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.animation)
+    com.unity.modules.assetbundle@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.assetbundle)
+    com.unity.modules.audio@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.audio)
+    com.unity.modules.cloth@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.cloth)
+    com.unity.modules.director@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.director)
+    com.unity.modules.imageconversion@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.imageconversion)
+    com.unity.modules.imgui@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.imgui)
+    com.unity.modules.jsonserialize@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.jsonserialize)
+    com.unity.modules.particlesystem@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.particlesystem)
+    com.unity.modules.physics@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.physics)
+    com.unity.modules.physics2d@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.physics2d)
+    com.unity.modules.screencapture@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.screencapture)
+    com.unity.modules.terrain@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.terrain)
+    com.unity.modules.terrainphysics@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.terrainphysics)
+    com.unity.modules.tilemap@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.tilemap)
+    com.unity.modules.ui@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.ui)
+    com.unity.modules.uielements@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.uielements)
+    com.unity.modules.umbra@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.umbra)
+    com.unity.modules.unityanalytics@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.unityanalytics)
+    com.unity.modules.unitywebrequest@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.unitywebrequest)
+    com.unity.modules.unitywebrequestassetbundle@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.unitywebrequestassetbundle)
+    com.unity.modules.unitywebrequestaudio@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.unitywebrequestaudio)
+    com.unity.modules.unitywebrequesttexture@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.unitywebrequesttexture)
+    com.unity.modules.unitywebrequestwww@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.unitywebrequestwww)
+    com.unity.modules.vectorgraphics@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.vectorgraphics)
+    com.unity.modules.vehicles@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.vehicles)
+    com.unity.modules.video@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.video)
+    com.unity.modules.vr@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.vr)
+    com.unity.modules.wind@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.wind)
+    com.unity.modules.xr@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.xr)
+    com.unity.modules.subsystems@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.subsystems)
+    com.unity.modules.hierarchycore@1.0.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.modules.hierarchycore)
+    com.unity.ext.nunit@2.0.5 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.ext.nunit@d8c07649098d)
+    com.unity.render-pipelines.core@17.3.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.render-pipelines.core@04ab0eefa0c3)
+    com.unity.shadergraph@17.3.0 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.shadergraph@c8830f61858d)
+    com.unity.render-pipelines.universal-config@17.0.3 (location: E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\PackageCache\com.unity.render-pipelines.universal-config@8dc1aab4af1d)
+[Subsystems] No new subsystems found in resolved package list.
+[Package Manager] Done registering packages in 0.02 seconds
+[ScriptCompilation] Requested script compilation because: Assetdatabase observed changes in script compilation related files
+Starting: C:\Program Files\Unity\Hub\Editor\6000.3.10f1\Editor\Data\Tools\BuildPipeline\bee_backend.exe --ipc --defer-dag-verification --dagfile="Library/Bee/1300b0aE.dag" --continue-on-failure --profile="Library/Bee/backend1.traceevents" ScriptAssemblies
+WorkingDir: E:/game/legendofblood/legacyofblood_unity_mobile_portraitframe
+DisplayProgressbar: Compiling Scripts
+ExitCode: 0 Duration: 0s837ms
+[1025/1348  0s] ILPP-Configuration Library/ilpp-configuration.nevergeneratedoutput
+[1344/1348  0s] Csc Library/Bee/artifacts/1300b0aE.dag/Tests.dll (+2 others)
+[1345/1348  0s] ILPostProcess Library/Bee/artifacts/1300b0aE.dag/post-processed/Tests.dll (+pdb)
+Processing assembly Library/Bee/artifacts/1300b0aE.dag/Tests.dll, with 146 defines and 273 references
+
+processors: Unity.Jobs.CodeGen.JobsILPostProcessor, zzzUnity.Burst.CodeGen.BurstILPostProcessor
+
+running Unity.Jobs.CodeGen.JobsILPostProcessor
+
+running zzzUnity.Burst.CodeGen.BurstILPostProcessor
+[1346/1348  0s] CopyFiles Library/ScriptAssemblies/Tests.pdb
+[1347/1348  0s] CopyFiles Library/ScriptAssemblies/Tests.dll
+*** Tundra build success (0.81 seconds), 5 items updated, 1348 evaluated
+AssetDatabase: script compilation time: 1.383622s
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  1.719 seconds
+Refreshing native plugins compatible for Editor in 7.53 ms, found 4 plugins.
+Native extension for Android target not found
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 7.67 ms, found 4 plugins.
+ScheduleIndexationOnStartup MainProcess:True IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  4.765 seconds
+Domain Reload Profiling: 6479ms
+	BeginReloadAssembly (359ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (14ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (153ms)
+	RebuildCommonClasses (52ms)
+	RebuildNativeTypeToScriptingClass (18ms)
+	initialDomainReloadingComplete (40ms)
+	LoadAllAssembliesAndSetupDomain (1244ms)
+		LoadAssemblies (902ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (475ms)
+			TypeCache.Refresh (302ms)
+				TypeCache.ScanAssembly (279ms)
+			BuildScriptInfoCaches (149ms)
+			ResolveRequiredComponents (17ms)
+	FinalizeReload (4766ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (4513ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (48ms)
+			SetLoadedEditorAssemblies (5ms)
+			BeforeProcessingInitializeOnLoad (296ms)
+			ProcessInitializeOnLoadAttributes (3936ms)
+			ProcessInitializeOnLoadMethodAttributes (220ms)
+			AfterProcessingInitializeOnLoad (7ms)
+			EditorAssembliesLoaded (1ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (12ms)
+Start importing Packages/com.unity.render-pipelines.core/Tests/Editor/UnifiedRayTracing/TraceRays.urtshader using Guid(1142bbad8b9e8c44c83a9775ff120d37) (ScriptedImporter)Launched and connected shader compiler UnityShaderCompiler.exe after 0.12 seconds
+ -> (artifact id: '928cafef662de486cd2aeadb46f1d591') in 0.2481274 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/RendererFeatures/SurfaceCacheGI/SurfaceCacheCore/RisEstimation.urtshader using Guid(713f6141bd66a134383b787f2eaa7c11) (ScriptedImporter) -> (artifact id: 'f623c1bfc0803049f947959ee22b1101') in 0.0118308 seconds
+Start importing Packages/com.unity.render-pipelines.core/Editor/Lighting/ProbeVolume/RenderingLayerMask/TraceRenderingLayerMask.urtshader using Guid(94a070d33e408384bafc1dea4a565df9) (ScriptedImporter) -> (artifact id: 'f94bb639553cc129a885310977c482b2') in 0.015098 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/RendererFeatures/SurfaceCacheGI/SurfaceCacheCore/UniformEstimation.urtshader using Guid(94a39d12848d8d64ca962a72b74e7c50) (ScriptedImporter) -> (artifact id: '20823c9d006f5957572c8e98f8ce21bb') in 0.0075771 seconds
+Start importing Packages/com.unity.render-pipelines.core/Tests/Editor/UnifiedRayTracing/TraceTransparentRays.urtshader using Guid(6513c3b892e933c4f8d00c19d5c47532) (ScriptedImporter) -> (artifact id: 'da2f68fee043eff05a06c5f1d4149b38') in 0.0052865 seconds
+Start importing Packages/com.unity.render-pipelines.core/Editor/Lighting/ProbeVolume/DynamicGI/DynamicGISkyOcclusion.urtshader using Guid(5a2a534753fbdb44e96c3c78b5a6999d) (ScriptedImporter) -> (artifact id: 'f85f636943ac20e918d12a9e361f112f') in 0.006335 seconds
+Start importing Packages/com.unity.render-pipelines.core/Tests/Editor/UnifiedRayTracing/TraceRaysAndFetchAttributes.urtshader using Guid(fbc59f55df2416344b008dc23753cae2) (ScriptedImporter) -> (artifact id: 'e8f9709b6eb67231dec856a07a1e1507') in 0.0056041 seconds
+Start importing Packages/com.unity.render-pipelines.universal/Runtime/RendererFeatures/SurfaceCacheGI/SurfaceCacheCore/RestirCandidateTemporal.urtshader using Guid(ad3a9f9982f8c4f4a839a78955e78458) (ScriptedImporter) -> (artifact id: '7b49a9b9da8f7eee8e8503c89c5db0c2') in 0.0070672 seconds
+Start importing Packages/com.unity.render-pipelines.core/Editor/Lighting/ProbeVolume/VirtualOffset/TraceVirtualOffset.urtshader using Guid(ff2cbab5da58bf04d82c5f34037ed123) (ScriptedImporter) -> (artifact id: 'f4faaa93783fdbe1324215f7411d70cd') in 0.0091202 seconds
+Refreshing native plugins compatible for Editor in 10.46 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=bb7fa85e694219349b754c71c3517178): Total: 10.075 seconds - Initiated by InitialRefreshV2(ForceSynchronousImport)
+	Summary:
+		Imports: total=0 (actual=0, local cache=0, cache server=0)
+		Asset DB Process Time: managed=20 ms, native=6323 ms
+		Asset DB Callback time: managed=423 ms, native=118 ms
+		Scripting: domain reloads=1, domain reload time=1719 ms, compile time=1386 ms, other=82 ms
+		Project Asset Count: scripts=1852, non-scripts=3310
+		Asset File Changes: new=0, changed=1, moved=0, deleted=0
+		Scan Filter Count: 0
+	InvokeCustomDependenciesCallbacks: 0.001ms
+	InvokePackagesCallback: 28.040ms
+	ApplyChangesToAssetFolders: 0.913ms
+	Scan: 205.568ms
+	OnSourceAssetsModified: 0.991ms
+	CategorizeAssetsWithTransientArtifact: 81.562ms
+	ProcessAssetsWithTransientArtifactChanges: 120.685ms
+	CategorizeAssets: 97.058ms
+	ImportOutOfDateAssets: 5636.585ms (3402.138ms without children)
+		ImportManagerImport: 842.767ms (3.952ms without children)
+			ImportInProcess: 838.816ms
+		CompileScripts: 1386.124ms
+		ReloadNativeAssets: 0.068ms
+		UnloadImportedAssets: 1.659ms
+		ReloadImportedAssets: 1.205ms
+		EnsureUptoDateAssetsAreRegisteredWithGuidPM: 1.932ms
+		InitializingProgressBar: 0.011ms
+		PostProcessAllAssetNotificationsAddChangedAssets: 0.001ms
+		OnDemandSchedulerStart: 0.680ms
+	PostProcessAllAssets: 501.432ms
+	Hotreload: 13.687ms
+	GatherAllCurrentPrimaryArtifactRevisions: 0.010ms
+	UnloadStreamsBegin: 4.592ms
+	PersistCurrentRevisions: 0.287ms
+	UnloadStreamsEnd: 0.001ms
+	GenerateScriptTypeHashes: 6.916ms
+	Untracked: 3383.743ms
+
+Application.AssetDatabase Initial Refresh End
+Scanning for USB devices : 4.634ms
+Initializing Unity extensions:
+[MODES] ModeService[none].Initialize
+[MODES] ModeService[none].LoadModes
+[MODES] Loading mode Default (0) for mode-current-id-legacyofblood_unity_mobile_portraitframe
+Unloading 25 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 8075 unused Assets / (5.6 MB). Loaded Objects now: 8879.
+Memory consumption went from 217.2 MB to 211.6 MB.
+Total: 21.087600 ms (FindLiveObjects: 1.246300 ms CreateObjectMapping: 2.365500 ms MarkObjects: 13.003800 ms  DeleteObjects: 4.470700 ms)
+
+Start importing Assets/Resources/GameData/TR_ATK_B.asset using Guid(1c492e60b4aeae449add6906c2985bab) (NativeFormatImporter) -> (artifact id: 'b2167b84355246582b8fc6790897c101') in 0.0024857 seconds
+Refreshing native plugins compatible for Editor in 6.87 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=fba9208ae69d2894ea908976ac32e358): Total: 0.143 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_ATK_A.asset using Guid(6cb91fbadde00844e8c3cafc267333ad) (NativeFormatImporter) -> (artifact id: '8921355c955fe95c86ce11fa7ca84c57') in 0.0022301 seconds
+Refreshing native plugins compatible for Editor in 10.22 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=8f550b37abf30554984f20fd92583f78): Total: 0.077 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_ATK_S.asset using Guid(2537533c48554584d9d3f199e0eec56a) (NativeFormatImporter) -> (artifact id: '71c98943f1f65f82ccf1f78635733e92') in 0.00193 seconds
+Refreshing native plugins compatible for Editor in 8.00 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=0e0b959565967354c846244e2ebae526): Total: 0.065 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_ATK_SS.asset using Guid(5233531624711194694f36fedae0fcb7) (NativeFormatImporter) -> (artifact id: '0fa430f00c6b4295c2d27c7ce777c648') in 0.0016791 seconds
+Refreshing native plugins compatible for Editor in 6.78 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=a0e03bdfaaf7e4a4ebe2134bf38312e3): Total: 0.057 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_HP_D.asset using Guid(03645990d2ed2fc48aaef327174cbd1d) (NativeFormatImporter) -> (artifact id: '5dbf08e3552cc85819d11fcb8dea28ca') in 0.001977 seconds
+Refreshing native plugins compatible for Editor in 7.08 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=63d2cdb3f9b9024488d0c35f5e204e91): Total: 0.058 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_HP_B.asset using Guid(7fa3d1ef780774448b7be973d096a1d8) (NativeFormatImporter) -> (artifact id: 'f29427ce2e997c9244d719ad0c88be7d') in 0.0019745 seconds
+Refreshing native plugins compatible for Editor in 8.05 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=f6b34d99052649e4a8298bb8bd0ccd7d): Total: 0.064 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_HP_A.asset using Guid(166456f80c7aa3347aa8d5ea42a666a8) (NativeFormatImporter) -> (artifact id: 'daa8cd0738cef4e4de087f4afb0b1e69') in 0.0018515 seconds
+Refreshing native plugins compatible for Editor in 7.02 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=de1e57d4458432e4da229aedd8c4f6cb): Total: 0.061 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_HP_S.asset using Guid(4e580d7b1edbe8e49a5b6431740eac5c) (NativeFormatImporter) -> (artifact id: '4424b7a9f779ee3526ba57ddb4404206') in 0.0018339 seconds
+Refreshing native plugins compatible for Editor in 7.80 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=d9efb5ac58066864496306291f10e6d2): Total: 0.070 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_HP_SS.asset using Guid(02a2e05f9ed6987498227931af7cfe66) (NativeFormatImporter) -> (artifact id: '374aac23e470b0496157ff0060440f41') in 0.0040965 seconds
+Refreshing native plugins compatible for Editor in 9.31 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=f4b679a981dc26b4b90db63f6d1ddf22): Total: 0.068 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_DEF_D.asset using Guid(041f21b6af2fe60418bfdb423c3aba5d) (NativeFormatImporter) -> (artifact id: '03d8e9a8ba5378ed50ab6097762faf1c') in 0.0017592 seconds
+Refreshing native plugins compatible for Editor in 6.93 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=ffa766594dbd7a74287f24446a225fa1): Total: 0.059 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_DEF_C.asset using Guid(041137cbe4ec3e148bcb248fb1fb680e) (NativeFormatImporter) -> (artifact id: '5154c314bb1e05d0662ea6831d104095') in 0.0031367 seconds
+Refreshing native plugins compatible for Editor in 9.56 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=43e9d217ef34f8046b97824ed667d42b): Total: 0.064 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_DEF_B.asset using Guid(47c432d27a8f48f41b208a91b28b4943) (NativeFormatImporter) -> (artifact id: 'a652bab883f443095039fc4c363277a2') in 0.0018199 seconds
+Refreshing native plugins compatible for Editor in 8.00 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=e0235e48f8e05e840bd3b2f25d8fe95f): Total: 0.065 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_DEF_A.asset using Guid(4ad64fd33db9fb24683a9d91e7e05210) (NativeFormatImporter) -> (artifact id: 'a4a0bdca1bacd255d965b87696e84135') in 0.0017174 seconds
+Refreshing native plugins compatible for Editor in 6.20 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=cdf6eb5f14b85954cba9bdcff2c9ab31): Total: 0.148 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_DEF_S.asset using Guid(e5287a2d7a939d34aa85c70f07ef949c) (NativeFormatImporter) -> (artifact id: '0ff2b318a6ed8a383a8a668a76673b7d') in 0.0017747 seconds
+Refreshing native plugins compatible for Editor in 6.53 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=b4ea1c70b60efbf408d4e9c3614ba4b4): Total: 0.054 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_SPD_D.asset using Guid(23be95afd7924134fb06d20a53e60eb3) (NativeFormatImporter) -> (artifact id: 'fa7367e840a58943a7c304bae9481215') in 0.0017271 seconds
+Refreshing native plugins compatible for Editor in 6.22 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=d303f47eac45b804cbc4eda95161ad14): Total: 0.053 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_SPD_C.asset using Guid(7a3be2cd20a1b71458115ee6812360b4) (NativeFormatImporter) -> (artifact id: '66d294539400ac4ce9116d599d1ff649') in 0.0019279 seconds
+Refreshing native plugins compatible for Editor in 7.34 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=330c8605e2455a54e876681b49c45f8b): Total: 0.058 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_SPD_A.asset using Guid(bddffb12a108db84a9bedbdc02b86aa5) (NativeFormatImporter) -> (artifact id: 'aaaff395e82508db6c26860bf79b2c43') in 0.0019877 seconds
+Refreshing native plugins compatible for Editor in 6.23 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=07be6a9e0b1f14f438c3a5c251f97b97): Total: 0.057 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_SPD_S.asset using Guid(c05440483f709db4cb99fc46dae4bbf1) (NativeFormatImporter) -> (artifact id: '80695e5aeae4db0eef0763435665fcc1') in 0.0018173 seconds
+Refreshing native plugins compatible for Editor in 6.43 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=5dd993e3e597b68429b11c539d6feaef): Total: 0.053 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_ALL_SS.asset using Guid(406af22864506fe46930803b4b10799b) (NativeFormatImporter) -> (artifact id: '98e0bac7400243a3db038ebb0ef350a6') in 0.0019138 seconds
+Refreshing native plugins compatible for Editor in 6.23 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=eeb957b5a449e7246a534e41dc70c783): Total: 0.052 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/S_04.asset using Guid(29906271f7fa98243ac21966f567f2b7) (NativeFormatImporter)Curl error 7: Failed to connect to config.uca.cloud.unity3d.com port 443 after 2059 ms: Could not connect to server
+ -> (artifact id: 'b152d04950fdd123f3b894f20070486c') in 0.0154598 seconds
+Refreshing native plugins compatible for Editor in 6.40 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=fe4bd15a403873347bf92336777931d6): Total: 0.077 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/SS_07.asset using Guid(24d1e35dcf7b69244aae3d0a7cdab167) (NativeFormatImporter) -> (artifact id: 'dd8c5adbd2ff3b2b470922b7c1b5208d') in 0.001756 seconds
+Refreshing native plugins compatible for Editor in 6.67 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=f3cee9b288f3ff84386e665e590d06a4): Total: 0.052 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/SSS_04.asset using Guid(8aca3e64b38265d4a827131c2fa5a5bd) (NativeFormatImporter) -> (artifact id: '1986ecba326661eddf360b97faafac12') in 0.0019824 seconds
+Refreshing native plugins compatible for Editor in 6.74 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=73699d6b889f345418a069b11f4c6504): Total: 0.056 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/SK_WAR_DMG_1.asset using Guid(4403d49ae4a25944d9ba773f40f460cd) (NativeFormatImporter) -> (artifact id: 'b26bdf6c5c2c95ce0db447e4fd21c6a8') in 0.0020173 seconds
+Refreshing native plugins compatible for Editor in 7.73 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=ec4a617a0c44ad04ab006f4430d40c69): Total: 0.060 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/SK_WAR_DMG_2.asset using Guid(cef925fda76796746b6f3e911f983357) (NativeFormatImporter) -> (artifact id: '3a119d75295ec1c1af8404445a357801') in 0.0023693 seconds
+Refreshing native plugins compatible for Editor in 6.30 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=91ecf51d0e93c484a8b563536689bd28): Total: 0.052 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/SK_WAR_TANK_1.asset using Guid(1f9f4cbdadd22584fb3bec858335e498) (NativeFormatImporter) -> (artifact id: '1416a44152b03b47e28b434d1a9e23ee') in 0.0017242 seconds
+Refreshing native plugins compatible for Editor in 6.79 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=dce15b29a3c74e54e8c82616b6942eb1): Total: 0.052 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/SK_ARC_FIRE_1.asset using Guid(c98430adbb5c3354780cc246fd06c62d) (NativeFormatImporter) -> (artifact id: 'df75d519d5d6d4717ccd1c2028eaeb1a') in 0.0017216 seconds
+Refreshing native plugins compatible for Editor in 6.26 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=e2f4853c0ecf09945ad6433db9b1dd70): Total: 0.053 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/SK_ARC_FIRE_2.asset using Guid(11bf752501093934ca894f32ea556205) (NativeFormatImporter) -> (artifact id: '1ed96ef49f8877f7ad392b4dd985ef4e') in 0.001884 seconds
+Refreshing native plugins compatible for Editor in 7.41 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=0e7881b7e65990e40b259ae5ad8a2bf4): Total: 0.054 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/SK_ARC_ICE_1.asset using Guid(23aa8db44ae5d1142b9bd23a91bfb00f) (NativeFormatImporter) -> (artifact id: '28b2b9a6389513f47482c547f1d8e98b') in 0.0017047 seconds
+Refreshing native plugins compatible for Editor in 8.54 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=2905f782c17f0d7418d7b70e23fd44a9): Total: 0.056 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/SK_MAG_ICE_1.asset using Guid(0df9d4caff510c846bc962387c991aef) (NativeFormatImporter) -> (artifact id: '09484e1f73b9316390e895d109d62aa1') in 0.0018016 seconds
+Refreshing native plugins compatible for Editor in 6.24 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=548c42e87da84c54498d3990d4f2c79a): Total: 0.065 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/SK_MAG_FIRE_1.asset using Guid(531e07916b09b944681d9d6035b3b7c7) (NativeFormatImporter) -> (artifact id: '2b440c899d567c4cfd80ecbfd5c614ec') in 0.0017622 seconds
+Refreshing native plugins compatible for Editor in 6.63 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=77604a39ed82426489f1911f05057215): Total: 0.056 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/SK_HEA_SINGLE_1.asset using Guid(366b7366bcddbb04389f83d7b819686b) (NativeFormatImporter) -> (artifact id: '4af4b513eabcfb4385b1c9c800e2e701') in 0.0018161 seconds
+Refreshing native plugins compatible for Editor in 6.42 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=59cd81e87f768704d9f86d6538aa81d0): Total: 0.055 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/SK_HEA_AOE_1.asset using Guid(9733085426e168547b51422be2b1b7fc) (NativeFormatImporter) -> (artifact id: 'c56eda39380e629625a0981dd3f40ebf') in 0.0027052 seconds
+Refreshing native plugins compatible for Editor in 6.69 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=26d3a1716b097fa49b23e33bb696a88f): Total: 0.056 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/SK_HEA_BUFF_1.asset using Guid(b53c8649dff17af46a9adaf6079aea08) (NativeFormatImporter) -> (artifact id: '8a05441a6803d63fb92a7350f5e02200') in 0.0017505 seconds
+Refreshing native plugins compatible for Editor in 6.98 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=f5afbf514053fc143ba01ddb578f2ff5): Total: 0.053 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/IT_FERTILITY_POTION.asset using Guid(97d70a5f47d242245b844226a323d90b) (NativeFormatImporter) -> (artifact id: '379e76aeab66cce1b3c644ebfb034003') in 0.0020614 seconds
+Refreshing native plugins compatible for Editor in 6.70 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=a8eced144041650469d711a4b22f67c4): Total: 0.055 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/IT_SPEEDUP_1H.asset using Guid(5d81bfde3d44dc848be17998116cf265) (NativeFormatImporter) -> (artifact id: 'a9102221e100d0ab8119e6016ea6559c') in 0.0022033 seconds
+Refreshing native plugins compatible for Editor in 6.99 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=9ffa6cd1de0cfda45814fab08b91bd7e): Total: 0.058 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/IT_SPEEDUP_8H.asset using Guid(632b5812fab119b478b151b689c1b790) (NativeFormatImporter) -> (artifact id: '4e0c8cd8a78d8ad1454a2cf7205729ac') in 0.0017396 seconds
+Refreshing native plugins compatible for Editor in 6.65 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=9766eea50b69b3b408bd4d6b268c646f): Total: 0.063 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/IT_MATURATION_POTION.asset using Guid(d0d648024f7943c46b051f3a31cb4f12) (NativeFormatImporter) -> (artifact id: 'b933da94b66187fba330d9f2c832d592') in 0.0020371 seconds
+Refreshing native plugins compatible for Editor in 6.27 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=f3cbb28a925d5b54eabd710ecaeaab08): Total: 0.054 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/IT_EXP_BOOK_S.asset using Guid(3d882212a8c577749b8bf62aca62b37e) (NativeFormatImporter) -> (artifact id: 'e8f55b041b04e81c7c91f68b461d472e') in 0.0023763 seconds
+Refreshing native plugins compatible for Editor in 6.60 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=916573a025e50ee48bf9acf28e9a2a3f): Total: 0.054 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/Q_T_01.asset using Guid(3f3138e1be68817468553017edc88bf6) (NativeFormatImporter) -> (artifact id: '635e563a6f035f30db9d44e299cabe51') in 0.0020472 seconds
+Refreshing native plugins compatible for Editor in 6.47 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=e02b4a027a3f413479411efd9b88f513): Total: 0.055 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/Q_T_02.asset using Guid(62a0f82c46bdb724aadb2e91eaa7c371) (NativeFormatImporter) -> (artifact id: 'a93917adbb5acf993ac2a929d4dc9467') in 0.0019234 seconds
+Refreshing native plugins compatible for Editor in 6.63 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=a5691b38dedc5384b8830c2d0291c62b): Total: 0.053 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/Q_T_03.asset using Guid(412c6e430678e2e44b88e3e816125033) (NativeFormatImporter) -> (artifact id: '27f3af81aa70dc5546c102ed4b33570f') in 0.0018047 seconds
+Refreshing native plugins compatible for Editor in 7.33 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=da1446afb00cf9b49b308deb7134fca4): Total: 0.053 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/Q_T_04.asset using Guid(93d5dbb6d6310bb4a99e6caf996ab0d4) (NativeFormatImporter) -> (artifact id: '687d60f131701f36ea69ab36addf1b40') in 0.0018944 seconds
+Refreshing native plugins compatible for Editor in 6.43 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=a12c0359250ba7542a496b820025d310): Total: 0.054 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/POIMonsterConfig.asset using Guid(939591bbb1d0fcb458720278f4df350e) (NativeFormatImporter) -> (artifact id: 'fda939e8dd1a6051303095a70f837fe2') in 0.0018289 seconds
+Refreshing native plugins compatible for Editor in 6.54 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=4e7ffa5f55e7c0b47b78b88269e81d27): Total: 0.054 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Resources/GameData/TR_ALL_SS.asset using Guid(406af22864506fe46930803b4b10799b) (NativeFormatImporter) -> (artifact id: 'f3ecf4b77903ef72945922b69cbd350e') in 0.001879 seconds
+Start importing Assets/Resources/GameData/BLD_Hospital.asset using Guid(90485e37bc702c3479d48418d2cf7e84) (NativeFormatImporter) -> (artifact id: '7fd8341f11938f4b3bd0f47658402858') in 0.0080076 seconds
+Start importing Assets/Resources/GameData/TR_SPD_S.asset using Guid(c05440483f709db4cb99fc46dae4bbf1) (NativeFormatImporter) -> (artifact id: 'dca03b9a05eb38f75976841ca9e3a661') in 0.0017708 seconds
+Start importing Assets/Resources/GameData/IT_MATURATION_POTION.asset using Guid(d0d648024f7943c46b051f3a31cb4f12) (NativeFormatImporter) -> (artifact id: '2048b5aefb2af1e3ee2afca47ef6bce2') in 0.0016325 seconds
+Start importing Assets/Resources/GameData/SK_ARC_FIRE_2.asset using Guid(11bf752501093934ca894f32ea556205) (NativeFormatImporter) -> (artifact id: '1306d6d0139d2d77ccfe6da55205c692') in 0.0013822 seconds
+Start importing Assets/Resources/GameData/Q_T_03.asset using Guid(412c6e430678e2e44b88e3e816125033) (NativeFormatImporter) -> (artifact id: '97f38ecb32629041a1a29a149b201f5e') in 0.0013008 seconds
+Start importing Assets/Resources/GameData/TR_HP_SS.asset using Guid(02a2e05f9ed6987498227931af7cfe66) (NativeFormatImporter) -> (artifact id: 'af776f32ac93c00a0698ff410b6048f8') in 0.0012817 seconds
+Start importing Assets/Resources/GameData/BLD_BreedingPen.asset using Guid(32d4a19429c1f104a8a85cfdaf5f58b9) (NativeFormatImporter) -> (artifact id: 'd32fa7d46c2b6dd1914d8b13eb6cdc44') in 0.0084799 seconds
+Start importing Assets/Resources/GameData/TR_ATK_SS.asset using Guid(5233531624711194694f36fedae0fcb7) (NativeFormatImporter) -> (artifact id: '8a91588b3f980a1507dae41da0320ea8') in 0.0014379 seconds
+Start importing Assets/Resources/GameData/Q_T_02.asset using Guid(62a0f82c46bdb724aadb2e91eaa7c371) (NativeFormatImporter) -> (artifact id: '317c98ef325c97cef932e10ab4f2e4f8') in 0.0014885 seconds
+Start importing Assets/Resources/GameData/BLD_Barracks.asset using Guid(c2c4ac0e455661d459367ca8e89c6f42) (NativeFormatImporter) -> (artifact id: 'f0880e0952e0671dd4b5f976eb5c8618') in 0.0083387 seconds
+Start importing Assets/Resources/GameData/TR_HP_D.asset using Guid(03645990d2ed2fc48aaef327174cbd1d) (NativeFormatImporter) -> (artifact id: '860075639daaaba9382d03a9c6e60702') in 0.0015875 seconds
+Start importing Assets/Resources/GameData/SK_ARC_ICE_1.asset using Guid(23aa8db44ae5d1142b9bd23a91bfb00f) (NativeFormatImporter) -> (artifact id: '2f49a840d68b7278b9a8c4a16fef7edf') in 0.0015849 seconds
+Start importing Assets/Resources/GameData/TR_SPD_D.asset using Guid(23be95afd7924134fb06d20a53e60eb3) (NativeFormatImporter) -> (artifact id: '84118753bd0067060a66bee87a4b5b28') in 0.0016199 seconds
+Start importing Assets/Resources/GameData/SK_MAG_FIRE_1.asset using Guid(531e07916b09b944681d9d6035b3b7c7) (NativeFormatImporter) -> (artifact id: '9dd0dddaa9d537e4b02e77ea40968c88') in 0.0019006 seconds
+Start importing Assets/Resources/GameData/IT_SPEEDUP_8H.asset using Guid(632b5812fab119b478b151b689c1b790) (NativeFormatImporter) -> (artifact id: 'bb6396c41076be66294cfec8c1087ea6') in 0.0014448 seconds
+Start importing Assets/Resources/GameData/ITEM_MUTATION_POTION.asset using Guid(731c172e8758a5042af456caa5172219) (NativeFormatImporter) -> (artifact id: 'b97d0162e98f07b8c6090eb4de309e5d') in 0.0089854 seconds
+Start importing Assets/Resources/GameData/POIMonsterConfig.asset using Guid(939591bbb1d0fcb458720278f4df350e) (NativeFormatImporter) -> (artifact id: 'fda939e8dd1a6051303095a70f837fe2') in 0.0018142 seconds
+Start importing Assets/Resources/GameData/Q_T_04.asset using Guid(93d5dbb6d6310bb4a99e6caf996ab0d4) (NativeFormatImporter) -> (artifact id: '3025e4c81fd0b2a6f78d05cda4821f3c') in 0.0016491 seconds
+Start importing Assets/Resources/GameData/TR_DEF_C.asset using Guid(041137cbe4ec3e148bcb248fb1fb680e) (NativeFormatImporter) -> (artifact id: 'b58b384fbf1c607c6494a60745448b41') in 0.0016669 seconds
+Start importing Assets/Resources/GameData/TR_DEF_D.asset using Guid(041f21b6af2fe60418bfdb423c3aba5d) (NativeFormatImporter) -> (artifact id: '97d4053ad97150b3bb08df2fe8c6d278') in 0.0013325 seconds
+Start importing Assets/Resources/GameData/SS_07.asset using Guid(24d1e35dcf7b69244aae3d0a7cdab167) (NativeFormatImporter) -> (artifact id: '000398c9724b9cc9d718c94862c53ba7') in 0.0015995 seconds
+Start importing Assets/Resources/GameData/SK_WAR_DMG_1.asset using Guid(4403d49ae4a25944d9ba773f40f460cd) (NativeFormatImporter) -> (artifact id: 'eeadbccdc4556903ed35c1df1f4d183d') in 0.0014619 seconds
+Start importing Assets/Resources/GameData/TR_ATK_S.asset using Guid(2537533c48554584d9d3f199e0eec56a) (NativeFormatImporter) -> (artifact id: 'dda0899c62f525c16b75712e9f411022') in 0.0013769 seconds
+Start importing Assets/Resources/GameData/TR_ATK_C.asset using Guid(3533a52ae33326d4aad634047e914289) (NativeFormatImporter) -> (artifact id: 'cb1e0ca763d4580dfcf0a6f599b809b6') in 0.0086738 seconds
+Start importing Assets/Resources/GameData/TR_ALL_S.asset using Guid(45a1fb4dfa00190429ef1d1bb6959b28) (NativeFormatImporter) -> (artifact id: '754227040916f92e7710501bae296400') in 0.0093993 seconds
+Start importing Assets/Resources/GameData/SK_HEA_BUFF_1.asset using Guid(b53c8649dff17af46a9adaf6079aea08) (NativeFormatImporter) -> (artifact id: '4f16194730e51c90d80bad87a6c6fcd5') in 0.0019004 seconds
+Start importing Assets/Resources/GameData/TR_DEF_S.asset using Guid(e5287a2d7a939d34aa85c70f07ef949c) (NativeFormatImporter) -> (artifact id: '9d1a8fd602653800e056acbc4f331b18') in 0.0020268 seconds
+Start importing Assets/Resources/GameData/TR_HP_A.asset using Guid(166456f80c7aa3347aa8d5ea42a666a8) (NativeFormatImporter) -> (artifact id: 'c58ed810d434966b267b27ff7343a961') in 0.0016932 seconds
+Start importing Assets/Resources/GameData/SK_HEA_SINGLE_1.asset using Guid(366b7366bcddbb04389f83d7b819686b) (NativeFormatImporter) -> (artifact id: 'faabaf2a6c131a4a1b4ac755f4f9550f') in 0.0015105 seconds
+Start importing Assets/Resources/GameData/TR_DEF_B.asset using Guid(47c432d27a8f48f41b208a91b28b4943) (NativeFormatImporter) -> (artifact id: '58e498f8c1b0d5bd6dcaa49fd3999f14') in 0.0013904 seconds
+Start importing Assets/Resources/GameData/SK_HEA_AOE_1.asset using Guid(9733085426e168547b51422be2b1b7fc) (NativeFormatImporter) -> (artifact id: 'b80ddae89903f3282a98427d5b29225e') in 0.0017105 seconds
+Start importing Assets/Resources/GameData/TR_HP_C.asset using Guid(97b3e0b498bf1464689c8c2e9130aec0) (NativeFormatImporter) -> (artifact id: 'e5c85deab5b06747ea35fc2416aa65e0') in 0.0089937 seconds
+Start importing Assets/Resources/GameData/IT_FERTILITY_POTION.asset using Guid(97d70a5f47d242245b844226a323d90b) (NativeFormatImporter) -> (artifact id: '5da74899127954e01892cbecd22ed9aa') in 0.0020071 seconds
+Start importing Assets/Resources/GameData/S_04.asset using Guid(29906271f7fa98243ac21966f567f2b7) (NativeFormatImporter) -> (artifact id: '8b64b803440b71b409028d82602ced3b') in 0.0015389 seconds
+Start importing Assets/Resources/GameData/SK_ARC_FIRE_1.asset using Guid(c98430adbb5c3354780cc246fd06c62d) (NativeFormatImporter) -> (artifact id: '9912d30315323c462e7268575d33c50c') in 0.0014418 seconds
+Start importing Assets/Resources/GameData/TR_DEF_A.asset using Guid(4ad64fd33db9fb24683a9d91e7e05210) (NativeFormatImporter) -> (artifact id: 'bff55ad996aef694126277bb77758734') in 0.0013592 seconds
+Start importing Assets/Resources/GameData/TR_SPD_C.asset using Guid(7a3be2cd20a1b71458115ee6812360b4) (NativeFormatImporter) -> (artifact id: 'f7c4c993eeb680e83e729a7595d3e5ad') in 0.0018913 seconds
+Start importing Assets/Resources/GameData/SSS_04.asset using Guid(8aca3e64b38265d4a827131c2fa5a5bd) (NativeFormatImporter) -> (artifact id: '540c6c7458a4e50bc059b205c3dbf8f0') in 0.0014529 seconds
+Start importing Assets/Resources/GameData/TR_ATK_D.asset using Guid(db023c430c528bd48bea4cc5829db8a0) (NativeFormatImporter) -> (artifact id: '55d6a8207a7e7edcf2141c560661b4de') in 0.0082091 seconds
+Start importing Assets/Resources/GameData/TR_ATK_B.asset using Guid(1c492e60b4aeae449add6906c2985bab) (NativeFormatImporter) -> (artifact id: '2d368639ebb69da410ab44d026977a0d') in 0.0015193 seconds
+Start importing Assets/Resources/GameData/TR_ATK_A.asset using Guid(6cb91fbadde00844e8c3cafc267333ad) (NativeFormatImporter) -> (artifact id: 'f29113e0230a9fee8589e3eec946e528') in 0.0019651 seconds
+Start importing Assets/Resources/GameData/SK_MAG_ICE_1.asset using Guid(0df9d4caff510c846bc962387c991aef) (NativeFormatImporter) -> (artifact id: '358b2a2ef2fb18908d2faba6a9d8a1b7') in 0.0015249 seconds
+Start importing Assets/Resources/GameData/IT_EXP_BOOK_S.asset using Guid(3d882212a8c577749b8bf62aca62b37e) (NativeFormatImporter) -> (artifact id: '7e6ac6f1e4d1c40163a4d8215238f669') in 0.0013858 seconds
+Start importing Assets/Resources/GameData/IT_SPEEDUP_1H.asset using Guid(5d81bfde3d44dc848be17998116cf265) (NativeFormatImporter) -> (artifact id: '0adbaf2385c6a440517f894ae14814ff') in 0.0013549 seconds
+Start importing Assets/Resources/GameData/TR_SPD_A.asset using Guid(bddffb12a108db84a9bedbdc02b86aa5) (NativeFormatImporter) -> (artifact id: '5dc7bfa174f20891d0abf6ae1bc90afa') in 0.0015136 seconds
+Start importing Assets/Resources/GameData/TR_HP_S.asset using Guid(4e580d7b1edbe8e49a5b6431740eac5c) (NativeFormatImporter) -> (artifact id: '43ce0c7d3edc09229de1c69647f6f13c') in 0.0013749 seconds
+Start importing Assets/Resources/GameData/SK_WAR_DMG_2.asset using Guid(cef925fda76796746b6f3e911f983357) (NativeFormatImporter) -> (artifact id: 'c1950d66d4d7a637671dac7ee4f6812e') in 0.0018653 seconds
+Start importing Assets/Resources/GameData/SK_WAR_TANK_1.asset using Guid(1f9f4cbdadd22584fb3bec858335e498) (NativeFormatImporter) -> (artifact id: '858920e8fa9d716d659abb5a97002ca4') in 0.0016301 seconds
+Start importing Assets/Resources/GameData/Q_T_01.asset using Guid(3f3138e1be68817468553017edc88bf6) (NativeFormatImporter) -> (artifact id: 'bd117ac892ce68833abbcbdac64f1326') in 0.0014343 seconds
+Start importing Assets/Resources/GameData/BLD_TownHall.asset using Guid(4fb67c6fc37eb214fbc94339c2052237) (NativeFormatImporter) -> (artifact id: '3a8184b0b3075af941b553cf97613705') in 0.0085209 seconds
+Start importing Assets/Resources/GameData/TR_HP_B.asset using Guid(7fa3d1ef780774448b7be973d096a1d8) (NativeFormatImporter) -> (artifact id: '81a69ea84d24e73afccdcbc08944b72a') in 0.0017696 seconds
+Start importing Assets/Resources/GameData/TR_SPD_B.asset using Guid(bf356eb270b3feb43bbf588a58b885d4) (NativeFormatImporter) -> (artifact id: 'f05bf1f2a249f5a3c3c834481c039f97') in 0.008104 seconds
+Refreshing native plugins compatible for Editor in 7.48 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=7d6720162cdbff64887de9d240c2f404): Total: 0.252 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+Start importing Assets/Scripts/GameConfig.asset using Guid(423038156f4c07446834427ad7f39e1c) (NativeFormatImporter) -> (artifact id: '34e13b422819eaf7187ed1ef0f8d665b') in 0.0089214 seconds
+Refreshing native plugins compatible for Editor in 6.67 ms, found 4 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Asset Pipeline Refresh (id=0f682390d4188ba4ead15878a5f3c65e): Total: 0.055 seconds - Initiated by StopAssetImportingV2(NoUpdateAssetOptions)
+<color=cyan>[GameDataGenerator]</color> Đã nạp thành công bộ MASTER DATA Khổng Lồ vào GameConfig!
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:Log (object)
+LegendOfBlood.Editor.GameDataGenerator:UpdateGameConfig (System.Collections.Generic.List`1<LegendOfBlood.Trait>,System.Collections.Generic.List`1<LegendOfBlood.Skill>,System.Collections.Generic.List`1<LegendOfBlood.ItemData>,System.Collections.Generic.List`1<LegendOfBlood.GameConfigs.BuildingUpgradeData>,System.Collections.Generic.List`1<LegendOfBlood.GameConfigs.QuestData>,System.Collections.Generic.List`1<LegendOfBlood.GameConfigs.ExperienceData>,LegendOfBlood.GameConfigs.EvolutionTableData,LegendOfBlood.POIMonsterConfig,System.Collections.Generic.List`1<LegendOfBlood.GameConfigs.RarityConfig>) (at Assets/Scripts/Editor/GameDataGenerator.cs:319)
+LegendOfBlood.Editor.GameDataGenerator:GenerateMasterData () (at Assets/Scripts/Editor/GameDataGenerator.cs:33)
+
+(Filename: Assets/Scripts/Editor/GameDataGenerator.cs Line: 319)
+
+Batchmode quit successfully invoked - shutting down!
+Killing ADB server in 0.0526074 seconds.
+[Physics::Module] Cleanup current backend.
+[Physics::Module] Id: 0xf2b8ea05
+Input System module state changed to: ShutdownInProgress.
+Input System polling thread exited.
+Input System module state changed to: Shutdown.
+[Licensing::IpcConnector] LicenseClient-NGOCMINHPC-notifications channel disconnected successfully.
+[Licensing::IpcConnector] LicenseClient-NGOCMINHPC channel disconnected successfully.
+AcceleratorClientConnectionCallback - disconnected - :0
+Cleanup mono
+Exiting batchmode successfully now!
+Exiting without the bug reporter. Application will terminate with return code 0

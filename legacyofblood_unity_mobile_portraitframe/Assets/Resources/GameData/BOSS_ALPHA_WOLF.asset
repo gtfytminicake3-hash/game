@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c64b4192ecc289d4c87836263c9b44b4, type: 3}
+  m_Name: BOSS_ALPHA_WOLF
+  m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.BossData
+  id: BOSS_ALPHA_WOLF
+  bossName: "S\xF3i Ch\xF3p Bu"
+  modelPrefab: {fileID: 0}
+  level: 50
+  baseHp: 0
+  baseAtk: 0
+  baseDef: 0
+  baseSpd: 0
+  stats:
+    hp: 120000
+    atk: 3500
+    def: 1500
+    spd: 600
+    critChance: 0.05
+    critDamage: 1.5
+  skills:
+    normalAttackName: "C\u1EAFn X\xE9"
+    normalAttackMultiplier: 2
+    aoeAttackName: "Lang Qu\u1EA7n G\u1ECDi b\u1EA7y"
+    aoeAttackMultiplier: 1.2
+  mechanic:
+    name: "T\xE1i Sinh L\u1ED7i"
+    description: "H\u1ED3i d\xF2ng m\xE1u l\u1EDBn m\u1ED7i l\u01B0\u1EE3t"
+    value: 5000

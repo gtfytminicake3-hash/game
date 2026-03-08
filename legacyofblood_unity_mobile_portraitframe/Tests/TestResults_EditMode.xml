@@ -1,0 +1,1209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test-run id="2" testcasecount="50" result="Failed(Child)" total="50" passed="41" failed="9" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:13Z" duration="0.8507277">
+  <test-suite type="TestSuite" id="1000" name="legacyofblood_unity_mobile_portraitframe" fullname="legacyofblood_unity_mobile_portraitframe" runstate="Runnable" testcasecount="50" result="Failed" site="Child" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:13Z" duration="0.850728" total="50" passed="41" failed="9" inconclusive="0" skipped="0" asserts="0">
+    <properties>
+      <property name="platform" value="EditMode" />
+    </properties>
+    <failure>
+      <message><![CDATA[One or more child tests had errors]]></message>
+    </failure>
+    <test-suite type="Assembly" id="1010" name="LegendOfBlood.Tests.PlayMode.dll" fullname="E:/game/legendofblood/legacyofblood_unity_mobile_portraitframe/Library/ScriptAssemblies/LegendOfBlood.Tests.PlayMode.dll" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.118194" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="74960" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1001" name="PlanUpdateVerificationTests" fullname="PlanUpdateVerificationTests" classname="PlanUpdateVerificationTests" runstate="Runnable" testcasecount="8" result="Failed" site="Child" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.116401" total="8" passed="6" failed="2" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-case id="1002" name="P1_1_BaseStatCalculation_IsBasedOnPotential" fullname="PlanUpdateVerificationTests.P1_1_BaseStatCalculation_IsBasedOnPotential" methodname="P1_1_BaseStatCalculation_IsBasedOnPotential" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="1223955936" result="Failed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.040685" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  [Checklist 1.1] HP failed
+  Expected: less than or equal to 150.0f
+  But was:  159.0f
+]]></message>
+            <stack-trace><![CDATA[at PlanUpdateVerificationTests.P1_1_BaseStatCalculation_IsBasedOnPotential () [0x00083] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\PlayMode\PlanUpdateVerificationTests.cs:117
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 1.1] Bắt đầu: Kiểm tra logic tính chỉ số gốc (Base Stats) từ POT.
+]]></output>
+        </test-case>
+        <test-case id="1003" name="P1_2_LevelUp_GrantsFreePointsEqualToPotential" fullname="PlanUpdateVerificationTests.P1_2_LevelUp_GrantsFreePointsEqualToPotential" methodname="P1_2_LevelUp_GrantsFreePointsEqualToPotential" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="1187019525" result="Passed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.013071" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <reason>
+            <message><![CDATA[[Checklist 1.2] THÀNH CÔNG! Lên cấp và nhận được 15 điểm tự do.]]></message>
+          </reason>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 1.2] Bắt đầu: Kiểm tra logic cộng điểm tiềm năng khi lên cấp.
+Test Hero leveled up to 2!
+]]></output>
+        </test-case>
+        <test-case id="1004" name="P1_3_StatAllocation_ManuallyAddsStats" fullname="PlanUpdateVerificationTests.P1_3_StatAllocation_ManuallyAddsStats" methodname="P1_3_StatAllocation_ManuallyAddsStats" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="105045360" result="Passed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.004657" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <reason>
+            <message><![CDATA[[Checklist 1.3] THÀNH CÔNG! Phân phối 5 điểm vào HP thành công.]]></message>
+          </reason>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 1.3] Bắt đầu: Kiểm tra logic phân phối điểm tự do thủ công.
+]]></output>
+        </test-case>
+        <test-case id="1007" name="P2_1_TraitInheritance_FollowsTheRules" fullname="PlanUpdateVerificationTests.P2_1_TraitInheritance_FollowsTheRules" methodname="P2_1_TraitInheritance_FollowsTheRules" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="409384937" result="Passed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.007049" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <reason>
+            <message><![CDATA[[Checklist 2.1] THÀNH CÔNG! Di truyền 3 trait (1 cha, 1 mẹ, 1 ngẫu nhiên) hoạt động đúng.]]></message>
+          </reason>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 2.1] Bắt đầu: Kiểm tra logic di truyền 3 trait.
+]]></output>
+        </test-case>
+        <test-case id="1006" name="P2_2_LevelUpTo20_GrantsNewFamilyTrait" fullname="PlanUpdateVerificationTests.P2_2_LevelUpTo20_GrantsNewFamilyTrait" methodname="P2_2_LevelUpTo20_GrantsNewFamilyTrait" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="1426175165" result="Failed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.006252" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <failure>
+            <message><![CDATA[  Hero should have gained one new trait.
+  Expected: 2
+  But was:  1
+]]></message>
+            <stack-trace><![CDATA[at PlanUpdateVerificationTests.P2_2_LevelUpTo20_GrantsNewFamilyTrait () [0x00082] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\PlayMode\PlanUpdateVerificationTests.cs:176
+]]></stack-trace>
+          </failure>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 2.2] Bắt đầu: Kiểm tra nhận trait mới ở cấp 20.
+Evolver leveled up to 20!
+]]></output>
+        </test-case>
+        <test-case id="1005" name="P2_5_TraitFamily_DataIsCorrect" fullname="PlanUpdateVerificationTests.P2_5_TraitFamily_DataIsCorrect" methodname="P2_5_TraitFamily_DataIsCorrect" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="1590769475" result="Passed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.005090" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <reason>
+            <message><![CDATA[[Checklist 2.5] THÀNH CÔNG! Gia đình 'ATK_UP' có 3 thành viên D, C, B đúng như dữ liệu giả lập.]]></message>
+          </reason>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 2.5] Bắt đầu: Kiểm tra dữ liệu gia đình trait.
+]]></output>
+        </test-case>
+        <test-case id="1008" name="P3_1_HeroBelowLevel20_HasNoProfession" fullname="PlanUpdateVerificationTests.P3_1_HeroBelowLevel20_HasNoProfession" methodname="P3_1_HeroBelowLevel20_HasNoProfession" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="2074724470" result="Passed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.007339" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <reason>
+            <message><![CDATA[[Checklist 3.1] THÀNH CÔNG! Hero ở cấp 19 có trạng thái nghề là Profession.None.]]></message>
+          </reason>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 3.1] Bắt đầu: Kiểm tra hero dưới cấp 20 chưa có nghề.
+]]></output>
+        </test-case>
+        <test-case id="1009" name="P4_3_AddHero_FailsWhenPopulationIsFull" fullname="PlanUpdateVerificationTests.P4_3_AddHero_FailsWhenPopulationIsFull" methodname="P4_3_AddHero_FailsWhenPopulationIsFull" classname="PlanUpdateVerificationTests" runstate="Runnable" seed="1868128329" result="Passed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.010466" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+          <reason>
+            <message><![CDATA[[Checklist 4.3] THÀNH CÔNG! Không thể thêm hero mới khi dân số đã đầy.]]></message>
+          </reason>
+          <output><![CDATA[Đã xử lý xong Game Config: 7 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+EvolutionSystem Initialized and Subscribed to Level Up event.
+[Checklist 4.3] Bắt đầu: Kiểm tra không thể thêm hero khi dân số đầy.
+[Checklist 4.3] Hành động: Dân số đang đầy (20/20). Thử thêm một hero mới.
+Population is full! Cannot add new hero.
+]]></output>
+        </test-case>
+      </test-suite>
+    </test-suite>
+    <test-suite type="Assembly" id="1067" name="Tests.dll" fullname="E:/game/legendofblood/legacyofblood_unity_mobile_portraitframe/Library/ScriptAssemblies/Tests.dll" runstate="Runnable" testcasecount="42" result="Failed" site="Child" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:13Z" duration="0.722925" total="42" passed="35" failed="7" inconclusive="0" skipped="0" asserts="0">
+      <properties>
+        <property name="_PID" value="74960" />
+        <property name="_APPDOMAIN" value="Unity Child Domain" />
+        <property name="platform" value="EditMode" />
+        <property name="EditorOnly" value="True" />
+      </properties>
+      <failure>
+        <message><![CDATA[One or more child tests had errors]]></message>
+      </failure>
+      <test-suite type="TestFixture" id="1011" name="GameMechanicsValidationTests" fullname="GameMechanicsValidationTests" classname="GameMechanicsValidationTests" runstate="Runnable" testcasecount="8" result="Passed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:13Z" duration="0.021100" total="8" passed="8" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <test-case id="1012" name="T1_1_BaseStats_AreCalculatedFromPOT" fullname="GameMechanicsValidationTests.T1_1_BaseStats_AreCalculatedFromPOT" methodname="T1_1_BaseStats_AreCalculatedFromPOT" classname="GameMechanicsValidationTests" runstate="Runnable" seed="692436100" result="Passed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.009093" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1013" name="T1_2_LevelUp_GrantsFreePointsInsteadOfStats" fullname="GameMechanicsValidationTests.T1_2_LevelUp_GrantsFreePointsInsteadOfStats" methodname="T1_2_LevelUp_GrantsFreePointsInsteadOfStats" classname="GameMechanicsValidationTests" runstate="Runnable" seed="1231354493" result="Passed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.000871" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1015" name="T2_2_NewTraitAtLevelUp_IsUniqueFamilyUsingTwoRolls" fullname="GameMechanicsValidationTests.T2_2_NewTraitAtLevelUp_IsUniqueFamilyUsingTwoRolls" methodname="T2_2_NewTraitAtLevelUp_IsUniqueFamilyUsingTwoRolls" classname="GameMechanicsValidationTests" runstate="Runnable" seed="570145462" result="Passed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.003826" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1016" name="T2_3_TraitUpgradeAtLevel60_ReplacesOldTrait" fullname="GameMechanicsValidationTests.T2_3_TraitUpgradeAtLevel60_ReplacesOldTrait" methodname="T2_3_TraitUpgradeAtLevel60_ReplacesOldTrait" classname="GameMechanicsValidationTests" runstate="Runnable" seed="1937027412" result="Passed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.000906" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1017" name="T2_4_CannotUpgrade_MaxRankTrait" fullname="GameMechanicsValidationTests.T2_4_CannotUpgrade_MaxRankTrait" methodname="T2_4_CannotUpgrade_MaxRankTrait" classname="GameMechanicsValidationTests" runstate="Runnable" seed="1932105835" result="Passed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.000801" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1014" name="T3_1_Profession_IsNoneBeforeLevel20" fullname="GameMechanicsValidationTests.T3_1_Profession_IsNoneBeforeLevel20" methodname="T3_1_Profession_IsNoneBeforeLevel20" classname="GameMechanicsValidationTests" runstate="Runnable" seed="567047762" result="Passed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.000827" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1018" name="T3_4_Breeding_AppliesCooldown" fullname="GameMechanicsValidationTests.T3_4_Breeding_AppliesCooldown" methodname="T3_4_Breeding_AppliesCooldown" classname="GameMechanicsValidationTests" runstate="Runnable" seed="2076617980" result="Passed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:12Z" duration="0.000656" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+        <test-case id="1019" name="T3_5_Breeding_IncrementsCounterAndReachesLimit" fullname="GameMechanicsValidationTests.T3_5_Breeding_IncrementsCounterAndReachesLimit" methodname="T3_5_Breeding_IncrementsCounterAndReachesLimit" classname="GameMechanicsValidationTests" runstate="Runnable" seed="404727655" result="Passed" start-time="2026-03-07 15:16:12Z" end-time="2026-03-07 15:16:13Z" duration="0.000689" asserts="0">
+          <properties>
+            <property name="retryIteration" value="0" />
+            <property name="repeatIteration" value="0" />
+          </properties>
+        </test-case>
+      </test-suite>
+      <test-suite type="TestSuite" id="1068" name="LegendOfBlood" fullname="LegendOfBlood" runstate="Runnable" testcasecount="34" result="Failed" site="Child" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.699577" total="34" passed="27" failed="7" inconclusive="0" skipped="0" asserts="0">
+        <properties />
+        <failure>
+          <message><![CDATA[One or more child tests had errors]]></message>
+        </failure>
+        <test-suite type="TestSuite" id="1069" name="Tests" fullname="LegendOfBlood.Tests" runstate="Runnable" testcasecount="34" result="Failed" site="Child" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.697742" total="34" passed="27" failed="7" inconclusive="0" skipped="0" asserts="0">
+          <properties />
+          <failure>
+            <message><![CDATA[One or more child tests had errors]]></message>
+          </failure>
+          <test-suite type="TestFixture" id="1020" name="ArenaSystemTests" fullname="LegendOfBlood.Tests.ArenaSystemTests" classname="LegendOfBlood.Tests.ArenaSystemTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.017846" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1023" name="ArenaSystem_FindOpponentSquad_ReturnsValidSquad" fullname="LegendOfBlood.Tests.ArenaSystemTests.ArenaSystem_FindOpponentSquad_ReturnsValidSquad" methodname="ArenaSystem_FindOpponentSquad_ReturnsValidSquad" classname="LegendOfBlood.Tests.ArenaSystemTests" runstate="Runnable" seed="601943292" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.006892" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Generating opponent for player with 1500 points.
+]]></output>
+            </test-case>
+            <test-case id="1022" name="ArenaSystem_ProcessMatchResult_Loss_DecreasesPoints" fullname="LegendOfBlood.Tests.ArenaSystemTests.ArenaSystem_ProcessMatchResult_Loss_DecreasesPoints" methodname="ArenaSystem_ProcessMatchResult_Loss_DecreasesPoints" classname="LegendOfBlood.Tests.ArenaSystemTests" runstate="Runnable" seed="216316758" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.004762" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Match result processed. Player now has 980 points.
+]]></output>
+            </test-case>
+            <test-case id="1021" name="ArenaSystem_ProcessMatchResult_Win_IncreasesPointsAndCoins" fullname="LegendOfBlood.Tests.ArenaSystemTests.ArenaSystem_ProcessMatchResult_Win_IncreasesPointsAndCoins" methodname="ArenaSystem_ProcessMatchResult_Win_IncreasesPointsAndCoins" classname="LegendOfBlood.Tests.ArenaSystemTests" runstate="Runnable" seed="1571035368" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.004660" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Match result processed. Player now has 1025 points.
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1024" name="BreedingSystemTests" fullname="LegendOfBlood.Tests.BreedingSystemTests" classname="LegendOfBlood.Tests.BreedingSystemTests" runstate="Runnable" testcasecount="5" result="Failed" site="Child" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.333795" total="5" passed="4" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1028" name="BreedingSystem_EliteBloodline_IncreasesStats" fullname="LegendOfBlood.Tests.BreedingSystemTests.BreedingSystem_EliteBloodline_IncreasesStats" methodname="BreedingSystem_EliteBloodline_IncreasesStats" classname="LegendOfBlood.Tests.BreedingSystemTests" runstate="Runnable" seed="1420213975" result="Failed" label="Error" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.009523" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.ArgumentOutOfRangeException : Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index]]></message>
+                <stack-trace><![CDATA[  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <41d29b352f6a475ab1bf7c6628b82790>:0 
+  at LegendOfBlood.Tests.BreedingSystemTests.BreedingSystem_EliteBloodline_IncreasesStats () [0x0005c] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\BreedingSystemTests.cs:122 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 4 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Một trong hai Hero đã hết lượt sinh sản!
+]]></output>
+            </test-case>
+            <test-case id="1026" name="BreedingSystem_NormalBreeding_ReturnsOneChild" fullname="LegendOfBlood.Tests.BreedingSystemTests.BreedingSystem_NormalBreeding_ReturnsOneChild" methodname="BreedingSystem_NormalBreeding_ReturnsOneChild" classname="LegendOfBlood.Tests.BreedingSystemTests" runstate="Runnable" seed="417105282" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.004164" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 4 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+            <test-case id="1029" name="BreedingSystem_Options_GuaranteesTrait" fullname="LegendOfBlood.Tests.BreedingSystemTests.BreedingSystem_Options_GuaranteesTrait" methodname="BreedingSystem_Options_GuaranteesTrait" classname="LegendOfBlood.Tests.BreedingSystemTests" runstate="Runnable" seed="781322336" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.004564" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 4 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+            <test-case id="1025" name="BreedingSystem_SameGender_ReturnsEmptyList" fullname="LegendOfBlood.Tests.BreedingSystemTests.BreedingSystem_SameGender_ReturnsEmptyList" methodname="BreedingSystem_SameGender_ReturnsEmptyList" classname="LegendOfBlood.Tests.BreedingSystemTests" runstate="Runnable" seed="593734777" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.005684" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 4 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+breeding_error_same_gender
+]]></output>
+            </test-case>
+            <test-case id="1027" name="BreedingSystem_TwinsTrait_MayReturnTwoChildren" fullname="LegendOfBlood.Tests.BreedingSystemTests.BreedingSystem_TwinsTrait_MayReturnTwoChildren" methodname="BreedingSystem_TwinsTrait_MayReturnTwoChildren" classname="LegendOfBlood.Tests.BreedingSystemTests" runstate="Runnable" seed="990413041" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.307104" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 4 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+Một trong hai Hero đã hết lượt sinh sản!
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1030" name="BuildingSystemTests" fullname="LegendOfBlood.Tests.BuildingSystemTests" classname="LegendOfBlood.Tests.BuildingSystemTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.017032" total="2" passed="1" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1031" name="BuildingSystem_StartUpgrade_DeductsResourcesAndSetsTimer" fullname="LegendOfBlood.Tests.BuildingSystemTests.BuildingSystem_StartUpgrade_DeductsResourcesAndSetsTimer" methodname="BuildingSystem_StartUpgrade_DeductsResourcesAndSetsTimer" classname="LegendOfBlood.Tests.BuildingSystemTests" runstate="Runnable" seed="558705640" result="Failed" label="Error" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.009662" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                <stack-trace><![CDATA[  at LegendOfBlood.BuildingSystem.CanAfford (System.Collections.Generic.List`1[T] costs) [0x00026] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\BuildingSystem.cs:128 
+  at LegendOfBlood.BuildingSystem.StartUpgrade (System.String buildingId) [0x000cd] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\BuildingSystem.cs:47 
+  at LegendOfBlood.Tests.BuildingSystemTests.BuildingSystem_StartUpgrade_DeductsResourcesAndSetsTimer () [0x0000d] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\BuildingSystemTests.cs:88 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 1 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+            <test-case id="1032" name="BuildingSystem_Tick_CompletesConstructionOverTime" fullname="LegendOfBlood.Tests.BuildingSystemTests.BuildingSystem_Tick_CompletesConstructionOverTime" methodname="BuildingSystem_Tick_CompletesConstructionOverTime" classname="LegendOfBlood.Tests.BuildingSystemTests" runstate="Runnable" seed="1132822553" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.005405" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 1 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+<color=green>Upgrade Complete!</color> B_TAVERN has been upgraded to level 2.
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1033" name="CombatSystemTests" fullname="LegendOfBlood.Tests.CombatSystemTests" classname="LegendOfBlood.Tests.CombatSystemTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.103357" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1034" name="CombatSystem_Simulate_ReturnsValidResult" fullname="LegendOfBlood.Tests.CombatSystemTests.CombatSystem_Simulate_ReturnsValidResult" methodname="CombatSystem_Simulate_ReturnsValidResult" classname="LegendOfBlood.Tests.CombatSystemTests" runstate="Runnable" seed="474072818" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.096584" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 2 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+            <test-case id="1035" name="CombatSystem_Simulate_UpdatesHeroHP" fullname="LegendOfBlood.Tests.CombatSystemTests.CombatSystem_Simulate_UpdatesHeroHP" methodname="CombatSystem_Simulate_UpdatesHeroHP" classname="LegendOfBlood.Tests.CombatSystemTests" runstate="Runnable" seed="1909324133" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.004139" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 2 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1036" name="CoreUnitDataTests" fullname="LegendOfBlood.Tests.CoreUnitDataTests" classname="LegendOfBlood.Tests.CoreUnitDataTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.011536" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1037" name="HeroData_CalculateStats_ScalesWithLevelAndPotential" fullname="LegendOfBlood.Tests.CoreUnitDataTests.HeroData_CalculateStats_ScalesWithLevelAndPotential" methodname="HeroData_CalculateStats_ScalesWithLevelAndPotential" classname="LegendOfBlood.Tests.CoreUnitDataTests" runstate="Runnable" seed="1569017032" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.005105" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+            <test-case id="1038" name="HeroData_GetFinalStats_CombinesBaseAndAddedStats" fullname="LegendOfBlood.Tests.CoreUnitDataTests.HeroData_GetFinalStats_CombinesBaseAndAddedStats" methodname="HeroData_GetFinalStats_CombinesBaseAndAddedStats" classname="LegendOfBlood.Tests.CoreUnitDataTests" runstate="Runnable" seed="907954746" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.004083" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1039" name="DataManagerTests" fullname="LegendOfBlood.Tests.DataManagerTests" classname="LegendOfBlood.Tests.DataManagerTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.048810" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1041" name="DataManager_ModifyPlayerData_ThenSaveAndLoad_DataIsPreserved" fullname="LegendOfBlood.Tests.DataManagerTests.DataManager_ModifyPlayerData_ThenSaveAndLoad_DataIsPreserved" methodname="DataManager_ModifyPlayerData_ThenSaveAndLoad_DataIsPreserved" classname="LegendOfBlood.Tests.DataManagerTests" runstate="Runnable" seed="810845961" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.042751" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+            <test-case id="1040" name="DataManager_NewPlayer_HasDefaultValues" fullname="LegendOfBlood.Tests.DataManagerTests.DataManager_NewPlayer_HasDefaultValues" methodname="DataManager_NewPlayer_HasDefaultValues" classname="LegendOfBlood.Tests.DataManagerTests" runstate="Runnable" seed="217759621" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.004148" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1042" name="EvolutionSystemTests" fullname="LegendOfBlood.Tests.EvolutionSystemTests" classname="LegendOfBlood.Tests.EvolutionSystemTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.058949" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1043" name="EvolutionSystem_Level30_GrantsNewTrait" fullname="LegendOfBlood.Tests.EvolutionSystemTests.EvolutionSystem_Level30_GrantsNewTrait" methodname="EvolutionSystem_Level30_GrantsNewTrait" classname="LegendOfBlood.Tests.EvolutionSystemTests" runstate="Runnable" seed="761322862" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.019942" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[EvolutionSystem Initialized and Subscribed to Level Up event.
+Đã xử lý xong Game Config: 2 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Could not find a trait for family 'F_02' with rank 'S'. Trying to find any other rank in the same family as a fallback.
+<color=yellow>Fallback Success!</color> EvoTest learned a fallback trait: [trait_a1] (Rank: A) at level 30.
+<color=cyan>Evolution!</color> EvoTest learned a new trait: [trait_s1] (Rank: S) at level 30.
+EvoTest has no new trait families to learn. All families acquired.
+EvoTest has no new trait families to learn. All families acquired.
+EvoTest has no new trait families to learn. All families acquired.
+EvoTest has no new trait families to learn. All families acquired.
+EvoTest has no new trait families to learn. All families acquired.
+EvoTest has no new trait families to learn. All families acquired.
+EvoTest has no new trait families to learn. All families acquired.
+EvoTest leveled up to 30!
+]]></output>
+            </test-case>
+            <test-case id="1044" name="EvolutionSystem_Level70_GrantsNewTrait" fullname="LegendOfBlood.Tests.EvolutionSystemTests.EvolutionSystem_Level70_GrantsNewTrait" methodname="EvolutionSystem_Level70_GrantsNewTrait" classname="LegendOfBlood.Tests.EvolutionSystemTests" runstate="Runnable" seed="1572982211" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.036437" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[EvolutionSystem Initialized and Subscribed to Level Up event.
+Đã xử lý xong Game Config: 2 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+<color=cyan>Evolution!</color> EvoTest70 learned a new trait: [trait_s1] (Rank: S) at level 70.
+Could not find a trait for family 'F_02' with rank 'S'. Trying to find any other rank in the same family as a fallback.
+<color=yellow>Fallback Success!</color> EvoTest70 learned a fallback trait: [trait_a1] (Rank: A) at level 70.
+EvoTest70 has no new trait families to learn. All families acquired.
+EvoTest70 has no new trait families to learn. All families acquired.
+EvoTest70 has no new trait families to learn. All families acquired.
+EvoTest70 has no new trait families to learn. All families acquired.
+EvoTest70 has no new trait families to learn. All families acquired.
+EvoTest70 has no new trait families to learn. All families acquired.
+EvoTest70 has no new trait families to learn. All families acquired.
+EvoTest70 has no new trait families to learn. All families acquired.
+EvoTest70 leveled up to 70!
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1045" name="ExpeditionManagerTests" fullname="LegendOfBlood.Tests.ExpeditionManagerTests" classname="LegendOfBlood.Tests.ExpeditionManagerTests" runstate="Runnable" testcasecount="2" result="Failed" site="Child" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.014424" total="2" passed="0" failed="2" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1046" name="ExpeditionManager_StartExpedition_AddsActiveExpedition" fullname="LegendOfBlood.Tests.ExpeditionManagerTests.ExpeditionManager_StartExpedition_AddsActiveExpedition" methodname="ExpeditionManager_StartExpedition_AddsActiveExpedition" classname="LegendOfBlood.Tests.ExpeditionManagerTests" runstate="Runnable" seed="238586446" result="Failed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.008509" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  An active expedition should be added to PlayerData.
+  Expected: 1
+  But was:  0
+]]></message>
+                <stack-trace><![CDATA[at LegendOfBlood.Tests.ExpeditionManagerTests.ExpeditionManager_StartExpedition_AddsActiveExpedition () [0x00090] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\ExpeditionManagerTests.cs:97
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Added hero Explorer. Total heroes: 1/10
+]]></output>
+            </test-case>
+            <test-case id="1047" name="ExpeditionManager_Tick_CompletesExpeditionAndDeliversReport" fullname="LegendOfBlood.Tests.ExpeditionManagerTests.ExpeditionManager_Tick_CompletesExpeditionAndDeliversReport" methodname="ExpeditionManager_Tick_CompletesExpeditionAndDeliversReport" classname="LegendOfBlood.Tests.ExpeditionManagerTests" runstate="Runnable" seed="618686293" result="Failed" label="Error" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.004339" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.ArgumentOutOfRangeException : Index was out of range. Must be non-negative and less than the size of the collection.
+Parameter name: index]]></message>
+                <stack-trace><![CDATA[  at System.Collections.Generic.List`1[T].get_Item (System.Int32 index) [0x00009] in <41d29b352f6a475ab1bf7c6628b82790>:0 
+  at LegendOfBlood.Tests.ExpeditionManagerTests.ExpeditionManager_Tick_CompletesExpeditionAndDeliversReport () [0x0005d] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\ExpeditionManagerTests.cs:112 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Added hero Explorer2. Total heroes: 1/10
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1048" name="HospitalSystemTests" fullname="LegendOfBlood.Tests.HospitalSystemTests" classname="LegendOfBlood.Tests.HospitalSystemTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.015417" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1049" name="HospitalSystem_AdmitHero_SetsSevereInjury" fullname="LegendOfBlood.Tests.HospitalSystemTests.HospitalSystem_AdmitHero_SetsSevereInjury" methodname="HospitalSystem_AdmitHero_SetsSevereInjury" classname="LegendOfBlood.Tests.HospitalSystemTests" runstate="Runnable" seed="1301385553" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.004755" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Added hero Test. Total heroes: 1/10
+Test bị thương nặng! Sẽ biến mất vĩnh viễn sau 8 giờ nếu không được cứu chữa.
+]]></output>
+            </test-case>
+            <test-case id="1050" name="HospitalSystem_HealLightInjuryInstantly_SpendsGold" fullname="LegendOfBlood.Tests.HospitalSystemTests.HospitalSystem_HealLightInjuryInstantly_SpendsGold" methodname="HospitalSystem_HealLightInjuryInstantly_SpendsGold" classname="LegendOfBlood.Tests.HospitalSystemTests" runstate="Runnable" seed="1301015518" result="Failed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.004000" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[  Gold should be deducted.
+  Expected: True
+  But was:  False
+]]></message>
+                <stack-trace><![CDATA[at LegendOfBlood.Tests.HospitalSystemTests.HospitalSystem_HealLightInjuryInstantly_SpendsGold () [0x0006a] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\HospitalSystemTests.cs:97
+]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Test bị thương nhẹ. Cần 300s để hồi phục.
+Test đã hồi phục vết thương nhẹ ngay lập tức với giá 10 vàng.
+]]></output>
+            </test-case>
+            <test-case id="1051" name="HospitalSystem_SevereInjuryTimeout_HeroPerishes" fullname="LegendOfBlood.Tests.HospitalSystemTests.HospitalSystem_SevereInjuryTimeout_HeroPerishes" methodname="HospitalSystem_SevereInjuryTimeout_HeroPerishes" classname="LegendOfBlood.Tests.HospitalSystemTests" runstate="Runnable" seed="178077737" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.004823" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Added hero Doomed. Total heroes: 1/10
+Doomed bị thương nặng! Sẽ biến mất vĩnh viễn sau 8 giờ nếu không được cứu chữa.
+Doomed đã không được cứu chữa kịp thời và biến mất vĩnh viễn!
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1052" name="InventoryManagerTests" fullname="LegendOfBlood.Tests.InventoryManagerTests" classname="LegendOfBlood.Tests.InventoryManagerTests" runstate="Runnable" testcasecount="4" result="Failed" site="Child" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.015793" total="4" passed="3" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1053" name="InventoryManager_AddResource_IncreasesAmount" fullname="LegendOfBlood.Tests.InventoryManagerTests.InventoryManager_AddResource_IncreasesAmount" methodname="InventoryManager_AddResource_IncreasesAmount" classname="LegendOfBlood.Tests.InventoryManagerTests" runstate="Runnable" seed="1997087762" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.003978" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Added 100 Gold. New total: 730
+]]></output>
+            </test-case>
+            <test-case id="1054" name="InventoryManager_ConsumeResource_DecreasesAmountIfSufficient" fullname="LegendOfBlood.Tests.InventoryManagerTests.InventoryManager_ConsumeResource_DecreasesAmountIfSufficient" methodname="InventoryManager_ConsumeResource_DecreasesAmountIfSufficient" classname="LegendOfBlood.Tests.InventoryManagerTests" runstate="Runnable" seed="1780633596" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.003614" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Added 50 Stone. New total: 150
+Spent 20 Stone. New total: 130
+]]></output>
+            </test-case>
+            <test-case id="1055" name="InventoryManager_ConsumeResource_FailsIfInsufficient" fullname="LegendOfBlood.Tests.InventoryManagerTests.InventoryManager_ConsumeResource_FailsIfInsufficient" methodname="InventoryManager_ConsumeResource_FailsIfInsufficient" classname="LegendOfBlood.Tests.InventoryManagerTests" runstate="Runnable" seed="317758539" result="Failed" label="Error" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.003580" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                <stack-trace><![CDATA[  at LegendOfBlood.InventoryManager.SpendResource (LegendOfBlood.ResourceType type, System.Int32 amount) [0x00044] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Managers\InventoryManager.cs:177 
+  at LegendOfBlood.Tests.InventoryManagerTests.InventoryManager_ConsumeResource_FailsIfInsufficient () [0x0000d] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\InventoryManagerTests.cs:106 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+inventory_error_not_enough_resource
+]]></output>
+            </test-case>
+            <test-case id="1056" name="InventoryManager_NegativeAddition_HandledGracefully" fullname="LegendOfBlood.Tests.InventoryManagerTests.InventoryManager_NegativeAddition_HandledGracefully" methodname="InventoryManager_NegativeAddition_HandledGracefully" classname="LegendOfBlood.Tests.InventoryManagerTests" runstate="Runnable" seed="579059126" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.002825" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1057" name="MaturationSystemTests" fullname="LegendOfBlood.Tests.MaturationSystemTests" classname="LegendOfBlood.Tests.MaturationSystemTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.013905" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1059" name="MaturationSystem_Tick_IgnoresFutureMaturations" fullname="LegendOfBlood.Tests.MaturationSystemTests.MaturationSystem_Tick_IgnoresFutureMaturations" methodname="MaturationSystem_Tick_IgnoresFutureMaturations" classname="LegendOfBlood.Tests.MaturationSystemTests" runstate="Runnable" seed="2055039800" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.005632" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Added hero Future. Total heroes: 1/10
+]]></output>
+            </test-case>
+            <test-case id="1058" name="MaturationSystem_Tick_MaturesInfantsOverTime" fullname="LegendOfBlood.Tests.MaturationSystemTests.MaturationSystem_Tick_MaturesInfantsOverTime" methodname="MaturationSystem_Tick_MaturesInfantsOverTime" classname="LegendOfBlood.Tests.MaturationSystemTests" runstate="Runnable" seed="1897895742" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.006949" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Added hero Tiny. Total heroes: 1/10
+Hero đã học được kỹ năng khởi đầu: WarriorStrike
+Hero Tiny (ID: BABY_1) đã trưởng thành! Thức tỉnh thành nghề: Warrior.
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1060" name="QuestManagerTests" fullname="LegendOfBlood.Tests.QuestManagerTests" classname="LegendOfBlood.Tests.QuestManagerTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.017613" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <test-case id="1061" name="QuestManager_ActivateQuest_SetsStateActive" fullname="LegendOfBlood.Tests.QuestManagerTests.QuestManager_ActivateQuest_SetsStateActive" methodname="QuestManager_ActivateQuest_SetsStateActive" classname="LegendOfBlood.Tests.QuestManagerTests" runstate="Runnable" seed="66754051" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.008795" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[LegendOfBlood.GameConfigs.QuestData must be instantiated using the ScriptableObject.CreateInstance method instead of new QuestData.
+Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 1 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Daily Quests Reset!
+QuestManager initialized. 1 active player quests.
+]]></output>
+            </test-case>
+            <test-case id="1062" name="QuestManager_EventTriggers_CompletesQuestUponReachingTarget" fullname="LegendOfBlood.Tests.QuestManagerTests.QuestManager_EventTriggers_CompletesQuestUponReachingTarget" methodname="QuestManager_EventTriggers_CompletesQuestUponReachingTarget" classname="LegendOfBlood.Tests.QuestManagerTests" runstate="Runnable" seed="298192558" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.007296" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[LegendOfBlood.GameConfigs.QuestData must be instantiated using the ScriptableObject.CreateInstance method instead of new QuestData.
+Đã xử lý xong Game Config: 0 Traits, 0 Skills, 0 BuildingConfigs. 1 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Daily Quests Reset!
+QuestManager initialized. 1 active player quests.
+Quest Completed: 
+Lưu game thành công tại: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+]]></output>
+            </test-case>
+          </test-suite>
+          <test-suite type="TestFixture" id="1063" name="RecruitmentSystemTests" fullname="LegendOfBlood.Tests.RecruitmentSystemTests" classname="LegendOfBlood.Tests.RecruitmentSystemTests" runstate="Runnable" testcasecount="3" result="Failed" site="Child" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.026515" total="3" passed="2" failed="1" inconclusive="0" skipped="0" asserts="0">
+            <properties />
+            <failure>
+              <message><![CDATA[One or more child tests had errors]]></message>
+            </failure>
+            <test-case id="1066" name="RecruitmentSystem_AssignsCorrectStats" fullname="LegendOfBlood.Tests.RecruitmentSystemTests.RecruitmentSystem_AssignsCorrectStats" methodname="RecruitmentSystem_AssignsCorrectStats" classname="LegendOfBlood.Tests.RecruitmentSystemTests" runstate="Runnable" seed="1793083232" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.011600" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 2 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Added hero female_name_3. Total heroes: 1/10
+<color=green>Recruited!</color> A new A-rank hero named female_name_3 with POT 10 has joined.
+]]></output>
+            </test-case>
+            <test-case id="1064" name="RecruitmentSystem_PerformRecruitment_ReturnsNewHeroes" fullname="LegendOfBlood.Tests.RecruitmentSystemTests.RecruitmentSystem_PerformRecruitment_ReturnsNewHeroes" methodname="RecruitmentSystem_PerformRecruitment_ReturnsNewHeroes" classname="LegendOfBlood.Tests.RecruitmentSystemTests" runstate="Runnable" seed="1183058638" result="Passed" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.004803" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <output><![CDATA[Đã xử lý xong Game Config: 2 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Added hero male_name_6. Total heroes: 1/10
+<color=green>Recruited!</color> A new S-rank hero named male_name_6 with POT 18 has joined.
+Added hero female_name_22. Total heroes: 2/10
+<color=green>Recruited!</color> A new A-rank hero named female_name_22 with POT 12 has joined.
+]]></output>
+            </test-case>
+            <test-case id="1065" name="RecruitmentSystem_PopulationFull_StopsRecruitment" fullname="LegendOfBlood.Tests.RecruitmentSystemTests.RecruitmentSystem_PopulationFull_StopsRecruitment" methodname="RecruitmentSystem_PopulationFull_StopsRecruitment" classname="LegendOfBlood.Tests.RecruitmentSystemTests" runstate="Runnable" seed="1578977295" result="Failed" label="Error" start-time="2026-03-07 15:16:13Z" end-time="2026-03-07 15:16:13Z" duration="0.008601" asserts="0">
+              <properties>
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+              <failure>
+                <message><![CDATA[System.NullReferenceException : Object reference not set to an instance of an object]]></message>
+                <stack-trace><![CDATA[  at LegendOfBlood.RecruitmentSystem.PerformRecruitment (System.Int32 amount) [0x00023] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\GameSystems\RecruitmentSystem.cs:17 
+  at LegendOfBlood.Tests.RecruitmentSystemTests.RecruitmentSystem_PopulationFull_StopsRecruitment () [0x00043] in E:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Tests\Editor\RecruitmentSystemTests.cs:117 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <41d29b352f6a475ab1bf7c6628b82790>:0 ]]></stack-trace>
+              </failure>
+              <output><![CDATA[Đã xử lý xong Game Config: 2 Traits, 0 Skills, 0 BuildingConfigs. 0 Quests.
+Tải game thành công từ: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\legendofblood_save.json
+Added hero Filler. Total heroes: 1/10
+Added hero Filler. Total heroes: 2/10
+Added hero Filler. Total heroes: 3/10
+Added hero Filler. Total heroes: 4/10
+Added hero Filler. Total heroes: 5/10
+Added hero Filler. Total heroes: 6/10
+Added hero Filler. Total heroes: 7/10
+Added hero Filler. Total heroes: 8/10
+Added hero Filler. Total heroes: 9/10
+Added hero Filler. Total heroes: 10/10
+Population is full! Stopping recruitment.
+Saving results to: C:/Users/NGOCMINHPC/AppData/LocalLow/DefaultCompany/legacyofblood_unity_mobile_portraitframe\TestResults.xml
+]]></output>
+            </test-case>
+          </test-suite>
+        </test-suite>
+      </test-suite>
+    </test-suite>
+  </test-suite>
+</test-run>

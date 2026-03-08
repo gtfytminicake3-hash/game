@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c64b4192ecc289d4c87836263c9b44b4, type: 3}
+  m_Name: BOSS_RABBIT_KING
+  m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.BossData
+  id: BOSS_RABBIT_KING
+  bossName: "Vua Th\u1ECF Kh\u1ED5ng L\u1ED3"
+  modelPrefab: {fileID: 0}
+  level: 10
+  baseHp: 0
+  baseAtk: 0
+  baseDef: 0
+  baseSpd: 0
+  stats:
+    hp: 5000
+    atk: 200
+    def: 50
+    spd: 150
+    critChance: 0.05
+    critDamage: 1.5
+  skills:
+    normalAttackName: "C\xFA \u0110\xE1 S\u1EA5m S\xE9t"
+    normalAttackMultiplier: 1.2
+    aoeAttackName: "\u0110\u1ED9ng \u0110\u1EA5t Mini"
+    aoeAttackMultiplier: 0.6
+  mechanic:
+    name: "Da D\xE0y"
+    description: "Gi\u1EA3m s\xE1t th\u01B0\u01A1ng nh\u1EADn v\xE0o n\u1EBFu nh\xE1t
+      ch\xE9m d\u01B0\u1EDBi 50 ATK"
+    value: 50
