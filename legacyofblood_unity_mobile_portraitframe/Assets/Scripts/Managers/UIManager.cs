@@ -93,6 +93,8 @@ namespace LegendOfBlood
 
             foreach (UIPanel panel in allPanels)
             {
+                Debug.Log($"[UIManager] Quét thấy Panel: {panel.name} | Class: {panel.GetType().Name} | PanelType Ban Đầu: {panel.PanelType}");
+
                 // Tự động gắn PanelType cho các Panel mới sinh ra từ code nếu bị Unity đánh mất tham chiếu trong Editor
                 if (panel.PanelType == UIPanelType.None)
                 {
@@ -102,12 +104,22 @@ namespace LegendOfBlood
                     else if (className == "RecruitmentPanel") panel.PanelType = UIPanelType.Recruitment;
                     else if (className == "MenuPanel") panel.PanelType = UIPanelType.Menu;
                     else if (className == "ProfessionSelectionPanel") panel.PanelType = UIPanelType.ProfessionSelection;
+                    else if (className == "BuildingUpgradePanel") panel.PanelType = UIPanelType.BuildingUpgrade;
                     
-                    if (panel.PanelType == UIPanelType.None) continue; // Vẫn None thì bỏ qua
+                    if (panel.PanelType == UIPanelType.None) 
+                    {
+                        Debug.LogWarning($"[UIManager] 🚨 Bỏ qua {panel.name} vì PanelType vẫn là None sau khi check Fallback!");
+                        continue; // Vẫn None thì bỏ qua
+                    }
+                    else
+                    {
+                        Debug.Log($"[UIManager] 🛠️ Đã dùng Fallback tự cứu PanelType {panel.PanelType} cho {panel.name}");
+                    }
                 }
 
                 if (!_panelDictionary.ContainsKey(panel.PanelType))
                 {
+                    Debug.Log($"[UIManager] ✅ Đăng ký thành công {panel.PanelType} -> {panel.name}");
                     _panelDictionary.Add(panel.PanelType, panel.gameObject);
                     
                     // Ngoại lệ sống còn: Không được ẩn Bootloader vì nó phải chạy ngay khi bật game
@@ -125,7 +137,8 @@ namespace LegendOfBlood
                 }
                 else
                 {
-                    Debug.LogWarning($"Panel với type {panel.PanelType} đã được đăng ký. Bỏ qua đăng ký trùng lặp.");
+                    Debug.LogWarning($"Panel với type {panel.PanelType} đã được đăng ký. Bỏ qua đăng ký trùng lặp và tắt Panel thừa này đi.");
+                    panel.gameObject.SetActive(false); // Ẩn luôn panel thừa để tránh nằm lỳ trên màn hình
                 }
             }
 
