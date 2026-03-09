@@ -94,6 +94,11 @@ namespace LegendOfBlood
             levelText.text = string.Format(global::LocalizationSystem.GetText("level_format"), _currentHero.level);
             professionText.text = string.Format(global::LocalizationSystem.GetText("profession_format"), _currentHero.profession);
             genderText.text = string.Format(global::LocalizationSystem.GetText("gender_format"), _currentHero.gender);
+            
+            if (heroAvatarImage != null)
+            {
+                heroAvatarImage.sprite = _currentHero.GetAvatarSprite();
+            }
 
             HeroStats baseStats = _currentHero.baseStats;
             HeroStats finalStats = _currentHero.GetFinalStats();

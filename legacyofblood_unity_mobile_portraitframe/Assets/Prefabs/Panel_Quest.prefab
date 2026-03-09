@@ -912,12 +912,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce8132fa531e34b43b8a3fc0f160f216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.UI.QuestPanel
-  PanelType: 0
+  PanelType: 21
   questItemPrefab: {fileID: 7676503441293641102, guid: 89b905d2ab7cfb8499d4853d30d8c755, type: 3}
   questListContainer: {fileID: 5479280069649919424}
   mainTabButton: {fileID: 8654664514400852774}
   dailyTabButton: {fileID: 6188234145728956887}
   weeklyTabButton: {fileID: 9180194265781042050}
+  closeButton: {fileID: 7672137080555941084}
 --- !u!114 &6418591480907168025
 MonoBehaviour:
   m_ObjectHideFlags: 0

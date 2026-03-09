@@ -729,7 +729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c81d07a1b731284fad8029130bfff76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.UI.MenuPanel
-  PanelType: 0
+  PanelType: 24
   closeButton: {fileID: 4978789514535996919}
   inventoryButton: {fileID: 4883471040211225986}
   questButton: {fileID: 4716794352150134905}

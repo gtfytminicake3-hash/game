@@ -1225,7 +1225,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 697f56359bafee0488c22fabf39e03dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.InventoryPanel
-  PanelType: 0
+  PanelType: 9
   closeButton: {fileID: 2663037610923944053}
   itemTabButton: {fileID: 3632060280097855279}
   equipmentTabButton: {fileID: 2350351010260881526}
