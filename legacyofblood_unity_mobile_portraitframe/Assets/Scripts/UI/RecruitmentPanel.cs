@@ -29,24 +29,64 @@ namespace LegendOfBlood.UI
         private void OnRecruitOne()
         {
             Debug.Log("Attempting to recruit 1 hero.");
-            // TODO: Add currency check
+            if (DataManager.Instance.IsPopulationFull())
+            {
+                GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("notification_population_full"));
+                return;
+            }
+
+            // Gacha Logic Payment
+            if (GameManager.Instance.InventoryManager.GetItemCount("IT_GACHA_TICKET") >= 1)
+            {
+                GameManager.Instance.InventoryManager.UseItem("IT_GACHA_TICKET", 1);
+            }
+            else if (GameManager.Instance.InventoryManager.HasEnoughResources(ResourceType.Diamond, 100))
+            {
+                GameManager.Instance.InventoryManager.SpendResource(ResourceType.Diamond, 100);
+            }
+            else
+            {
+                GameManager.Instance.UINotificationManager.ShowNotification("Không Cầm Đủ Vé Chiêu Mộ Hoặc Kim Cương!");
+                return;
+            }
+
             var newHeroes = _recruitmentSystem.PerformRecruitment(1);
             // TODO: Show hero results UI
             if (newHeroes.Count > 0)
             {
-                GameManager.Instance.UINotificationManager.ShowNotification($"Recruited {newHeroes[0].heroName}!");
+                GameManager.Instance.UINotificationManager.ShowNotification($"Chiêu mộ thành công {newHeroes[0].heroName}!");
             }
         }
 
         private void OnRecruitTen()
         {
             Debug.Log("Attempting to recruit 10 heroes.");
-            // TODO: Add currency check
+            if (DataManager.Instance.IsPopulationFull())
+            {
+                GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("notification_population_full"));
+                return;
+            }
+
+            // Gacha Logic Payment
+            if (GameManager.Instance.InventoryManager.GetItemCount("IT_GACHA_TICKET") >= 10)
+            {
+                GameManager.Instance.InventoryManager.UseItem("IT_GACHA_TICKET", 10);
+            }
+            else if (GameManager.Instance.InventoryManager.HasEnoughResources(ResourceType.Diamond, 900))
+            {
+                GameManager.Instance.InventoryManager.SpendResource(ResourceType.Diamond, 900);
+            }
+            else
+            {
+                GameManager.Instance.UINotificationManager.ShowNotification("Không Cầm Đủ Vé Chiêu Mộ Hoặc Kim Cương!");
+                return;
+            }
+
             var newHeroes = _recruitmentSystem.PerformRecruitment(10);
             // TODO: Show hero results UI
             if (newHeroes.Count > 0)
             {
-                GameManager.Instance.UINotificationManager.ShowNotification($"Recruited {newHeroes.Count} new heroes!");
+                GameManager.Instance.UINotificationManager.ShowNotification($"Chiêu mộ thành công {newHeroes.Count} anh hùng mới!");
             }
         }
 

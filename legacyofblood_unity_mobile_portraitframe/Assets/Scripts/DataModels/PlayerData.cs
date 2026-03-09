@@ -59,6 +59,7 @@ namespace LegendOfBlood
         public int gold;
         public int wood;
         public int stone;
+        public int diamond;
     }
 
     [Serializable]
@@ -100,7 +101,7 @@ namespace LegendOfBlood
         public PlayerData()
         {
             playerName = "Nhà Lai Tạo";
-            resources = new PlayerResources { gold = 500, wood = 100, stone = 100 };
+            resources = new PlayerResources { gold = 500, wood = 100, stone = 100, diamond = 0 };
             items = new Dictionary<string, int>();
             equipments = new List<EquipmentData>();
             WorldPois = new List<POIData>();
@@ -113,6 +114,19 @@ namespace LegendOfBlood
             arenaTickets = 5;
             lastTicketRefreshTimestamp = 0;
             arenaCoins = 0;
+
+            // --- QUÀ TÂN THỦ: 10 VÉ CHIÊU MỘ ---
+            var welcomeLoot = new LootData();
+            welcomeLoot.items.Add("IT_GACHA_TICKET", 10);
+            var welcomeMail = new ExpeditionReport
+            {
+                poiId = "WELCOME_GIFT",
+                poiName = "Thư Chào Mừng Tân Thủ",
+                combatResult = Combat.CombatResult.Victory, // Đánh lừa UI hiển thị thư xanh
+                loot = welcomeLoot,
+                experienceGained = 0
+            };
+            UnclaimedReports.Add(welcomeMail);
         }
 
         public void OnBeforeSerialize()

@@ -9,7 +9,8 @@ namespace LegendOfBlood
     {
         Gold,
         Wood,
-        Stone
+        Stone,
+        Diamond
     }
 
     /// <summary>
@@ -110,6 +111,11 @@ namespace LegendOfBlood
             AddResource(ResourceType.Gold, amount);
         }
 
+        public void AddDiamond(int amount)
+        {
+            AddResource(ResourceType.Diamond, amount);
+        }
+
         /// <summary>
         /// Lấy số lượng hiện tại của một loại tài nguyên.
         /// </summary>
@@ -122,6 +128,7 @@ namespace LegendOfBlood
                 case ResourceType.Gold: return _playerData.resources.gold;
                 case ResourceType.Wood: return _playerData.resources.wood;
                 case ResourceType.Stone: return _playerData.resources.stone;
+                case ResourceType.Diamond: return _playerData.resources.diamond;
                 default: return 0;
             }
         }
@@ -147,6 +154,10 @@ namespace LegendOfBlood
                 case ResourceType.Stone:
                     _playerData.resources.stone += amount;
                     newAmount = _playerData.resources.stone;
+                    break;
+                case ResourceType.Diamond:
+                    _playerData.resources.diamond += amount;
+                    newAmount = _playerData.resources.diamond;
                     break;
             }
             // Phát sự kiện để UI cập nhật
@@ -192,6 +203,10 @@ namespace LegendOfBlood
                 case ResourceType.Stone:
                     _playerData.resources.stone -= amount;
                     newAmount = _playerData.resources.stone;
+                    break;
+                case ResourceType.Diamond:
+                    _playerData.resources.diamond -= amount;
+                    newAmount = _playerData.resources.diamond;
                     break;
             }
             

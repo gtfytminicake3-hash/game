@@ -13,6 +13,7 @@ namespace LegendOfBlood
         [SerializeField] private TextMeshProUGUI goldText;
         [SerializeField] private TextMeshProUGUI woodText;
         [SerializeField] private TextMeshProUGUI stoneText;
+        [SerializeField] private TextMeshProUGUI diamondText;
 
         #region Unity Lifecycle & Event Subscription
 
@@ -56,6 +57,9 @@ namespace LegendOfBlood
                 case ResourceType.Stone:
                     UpdateStoneText(newAmount);
                     break;
+                case ResourceType.Diamond:
+                    UpdateDiamondText(newAmount);
+                    break;
             }
         }
 
@@ -69,6 +73,7 @@ namespace LegendOfBlood
             UpdateGoldText(InventoryManager.Instance.GetResourceAmount(ResourceType.Gold));
             UpdateWoodText(InventoryManager.Instance.GetResourceAmount(ResourceType.Wood));
             UpdateStoneText(InventoryManager.Instance.GetResourceAmount(ResourceType.Stone));
+            UpdateDiamondText(InventoryManager.Instance.GetResourceAmount(ResourceType.Diamond));
         }
 
         // Các hàm cập nhật text riêng biệt để code sạch sẽ hơn.
@@ -85,6 +90,11 @@ namespace LegendOfBlood
         private void UpdateStoneText(int amount)
         {
             if (stoneText != null) stoneText.text = amount.ToString();
+        }
+
+        private void UpdateDiamondText(int amount)
+        {
+            if (diamondText != null) diamondText.text = amount.ToString();
         }
 
         #endregion

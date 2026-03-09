@@ -156,7 +156,10 @@ namespace LegendOfBlood.Editor
             // 6. Bùa Ước Nguyện
             var it7 = CreateItem("IT_WISH_CHARM", "Bùa Ước Nguyện", "Tăng tỉ lệ sinh ra một nghề nghiệp mong muốn khi lai tạo.", ItemType.BreedingMaterial, 3000);
 
-            list.Add(it1); list.Add(it2); list.Add(it3); list.Add(it4); list.Add(it5); list.Add(it6); list.Add(it7);
+            // 7. Vé Chiêu Mộ
+            var it8 = CreateItem("IT_GACHA_TICKET", "Vé Chiêu Mộ", "Vé dùng để chiêu mộ Anh Hùng mới.", ItemType.Consumable, 100);
+
+            list.Add(it1); list.Add(it2); list.Add(it3); list.Add(it4); list.Add(it5); list.Add(it6); list.Add(it7); list.Add(it8);
             foreach (var it in list) EditorUtility.SetDirty(it);
             return list;
         }
@@ -214,6 +217,13 @@ namespace LegendOfBlood.Editor
             list.Add(CreateQuest("Q_T_02", "Dòng Dõi Hoàng Gia", "Thực hiện Lai Tạo và có em bé đầu tay.", QuestCategory.Main, QuestType.BREED_HERO, 1, new QuestReward { resourceId = "Wood", amount = 1000 }));
             list.Add(CreateQuest("Q_T_03", "Cố Thủ Làng", "Nâng cấp Nhà Chính TownHall lên Cấp 2.", QuestCategory.Main, QuestType.UPGRADE_BUILDING, 2, new QuestReward { resourceId = "Gold", amount = 500 }, "TownHall"));
             list.Add(CreateQuest("Q_T_04", "Bệnh Viện Y Tế", "Nâng cấp Bệnh Viện lên Cấp 2.", QuestCategory.Main, QuestType.UPGRADE_BUILDING, 2, new QuestReward { resourceId = "Stone", amount = 500 }, "Hospital"));
+
+            // Daily Quests
+            list.Add(CreateQuest("Q_D_01", "Dọn Dẹp Quái Vật", "Khám phá và chiến đấu tại bất kỳ vùng đất nào 3 lần.", QuestCategory.Daily, QuestType.CLEAR_POI, 3, new QuestReward { resourceId = "Diamond", amount = 20 }));
+            list.Add(CreateQuest("Q_D_02", "Duy Trì Sinh Sôi", "Thực hiện Lai Tạo 1 lần.", QuestCategory.Daily, QuestType.BREED_HERO, 1, new QuestReward { resourceId = "Diamond", amount = 20 }));
+            
+            // Weekly Quests
+            list.Add(CreateQuest("Q_W_01", "Tuyển Mộ Diện Rộng", "Chiêu mộ tổng cộng 10 Anh Hùng mới.", QuestCategory.Weekly, QuestType.RECRUIT_HERO, 10, new QuestReward { resourceId = "Diamond", amount = 100 }));
 
             foreach (var q in list) EditorUtility.SetDirty(q);
             return list;
