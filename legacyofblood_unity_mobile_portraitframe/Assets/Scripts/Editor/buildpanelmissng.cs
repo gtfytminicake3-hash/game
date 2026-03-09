@@ -356,7 +356,8 @@ public class AutoPanelBuilder : EditorWindow
 
         // Viewport
         GameObject viewport = CreateEmptyStretch("Viewport", sv.transform);
-        viewport.AddComponent<Image>();
+        var vpImg = viewport.AddComponent<Image>();
+        vpImg.raycastTarget = false; // QUAN TRỌNG: Ngăn chặn Viewport nuốt mất thao tác bấm nút của các child bị đè
         viewport.AddComponent<Mask>().showMaskGraphic = false;
 
         // Content
