@@ -122,7 +122,7 @@ namespace LegendOfBlood
             {
                 poiId = "WELCOME_GIFT",
                 poiName = "Thư Chào Mừng Tân Thủ",
-                combatResult = Combat.CombatResult.Victory, // Đánh lừa UI hiển thị thư xanh
+                combatResult = new Combat.CombatResult { DidPlayerWin = true }, // Đánh lừa UI hiển thị thư xanh
                 loot = welcomeLoot,
                 experienceGained = 0
             };
