@@ -83,16 +83,7 @@ namespace LegendOfBlood
             traitIDs = new List<string>();
             skillIDs = new List<string>();
             Equipments = new Dictionary<EquipmentSlot, EquipmentData>();
-
-            if (AvatarManager.Instance != null && AvatarManager.Instance.GetAvatar(this.gender, 0) != null)
-            {
-                this.avatarIndex = AvatarManager.Instance.GetRandomAvatarIndex(this.gender);
-            }
-            else
-            {
-                // In Test environments, AvatarManager might not be fully initialized or instantiated
-                this.avatarIndex = -1;
-            }
+            this.avatarIndex = 0; // Legacy support, no longer used for fetching.
         }
 
         public HeroData()
@@ -123,7 +114,7 @@ namespace LegendOfBlood
         public Sprite GetAvatarSprite()
         {
             if (AvatarManager.Instance != null)
-                return AvatarManager.Instance.GetAvatar(this.gender, this.avatarIndex);
+                return AvatarManager.Instance.GetAvatar(this.gender, this.profession.ToString());
             
             Debug.LogError("Attempted to get avatar but AvatarManager does not exist.");
             return null;

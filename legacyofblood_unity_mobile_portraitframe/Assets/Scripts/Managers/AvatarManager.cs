@@ -21,66 +21,31 @@ namespace LegendOfBlood
             }
             Instance = this;
             DontDestroyOnLoad(gameObject);
-
-            // Dự phòng: Tự động tải từ Resources nếu Inspector bị trống
-            if (maleAvatars == null || maleAvatars.Count == 0)
-            {
-                maleAvatars = new List<Sprite>(Resources.LoadAll<Sprite>("Avatars/Male"));
-            }
-
-            if (femaleAvatars == null || femaleAvatars.Count == 0)
-            {
-                femaleAvatars = new List<Sprite>(Resources.LoadAll<Sprite>("Avatars/Female"));
-            }
-        }
-        // -------------------------
-
-        [Header("Avatar Pools")]
-        [Tooltip("Kéo tất cả các Sprite avatar của Nam vào đây.")]
-        [SerializeField] private List<Sprite> maleAvatars;
-
-        [Tooltip("Kéo tất cả các Sprite avatar của Nữ vào đây.")]
-        [SerializeField] private List<Sprite> femaleAvatars;
-
-        /// <summary>
-        /// Lấy một Sprite avatar cụ thể dựa trên giới tính và chỉ số (index).
-        /// </summary>
-        /// <param name="gender">Giới tính của hero.</param>
-        /// <param name="index">Chỉ số của avatar đã được lưu trong HeroData.</param>
-        /// <returns>Sprite tương ứng, hoặc null nếu index không hợp lệ.</returns>
-        public Sprite GetAvatar(Gender gender, int index)
-        {
-            var targetPool = (gender == Gender.Male) ? maleAvatars : femaleAvatars;
-
-            if (targetPool == null || targetPool.Count == 0)
-            {
-                // Thay vì văng lỗi liên tục vào Console, chỉ trả về null để Image tự tàng hình.
-                // Thêm một cảnh báo nhẹ một lần là đủ.
-                Debug.LogWarning($"[AvatarManager] Avatar pool {gender} rỗng. Hãy bỏ ảnh vào mục Resources/Avatars/{gender}.");
-                return null;
-            }
-
-            if (index >= 0 && index < targetPool.Count)
-            {
-                return targetPool[index];
-            }
-
-            Debug.LogWarning($"Index avatar không hợp lệ ({index}) cho giới tính {gender}. Trả về avatar đầu tiên.");
-            return targetPool[0]; // Trả về avatar mặc định để tránh lỗi
         }
 
         /// <summary>
-        /// Lấy một chỉ số (index) ngẫu nhiên từ pool avatar của một giới tính.
-        /// Được dùng khi tạo một hero mới.
+        /// Lấy một Sprite avatar theo Giới tính và Nghề nghiệp (Class).
+        /// Cấu trúc thư mục Resources yêu cầu: Resources/Avatars/Male/Warrior, etc.
         /// </summary>
-        /// <param name="gender">Giới tính của hero sẽ được tạo.</param>
-        /// <returns>Một chỉ số ngẫu nhiên.</returns>
-        public int GetRandomAvatarIndex(Gender gender)
+        public Sprite GetAvatar(Gender gender, string professionName)
         {
-            var targetPool = (gender == Gender.Male) ? maleAvatars : femaleAvatars;
-            if (targetPool == null || targetPool.Count == 0) return -1; // -1 biểu thị lỗi
+            // Fallback cho None hoặc trẻ sơ sinh
+            if (string.IsNullOrEmpty(professionName) || professionName == "None")
+            {
+                professionName = "None"; // Cần 1 ảnh mặc định tên None trong folder
+            }
 
-            return Random.Range(0, targetPool.Count);
+            string path = $"Avatars/{gender}/{professionName}";
+            Sprite avatar = Resources.Load<Sprite>(path);
+
+            if (avatar != null) 
+            {
+                return avatar;
+            }
+
+            // Nếu không tìm thấy file có tên nghề, load ảnh mặc định (để tránh null)
+            Debug.LogWarning($"[AvatarManager] Không tìm thấy ảnh avatar tại đường dẫn: Resources/{path}. Trả về ảnh mặc định.");
+            return Resources.Load<Sprite>($"Avatars/{gender}/Default");
         }
     }
 }
