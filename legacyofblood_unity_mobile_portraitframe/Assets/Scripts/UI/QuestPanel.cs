@@ -16,6 +16,7 @@ namespace LegendOfBlood.UI
         [SerializeField] private UnityEngine.UI.Button mainTabButton;
         [SerializeField] private UnityEngine.UI.Button dailyTabButton;
         [SerializeField] private UnityEngine.UI.Button weeklyTabButton;
+        [SerializeField] private UnityEngine.UI.Button closeButton;
 
         private LegendOfBlood.GameConfigs.QuestCategory _currentCategory = LegendOfBlood.GameConfigs.QuestCategory.Main;
 
@@ -23,6 +24,8 @@ namespace LegendOfBlood.UI
         {
             PanelType = UIPanelType.Quest;
             _questManager = GameManager.Instance.QuestManager;
+            
+            if (closeButton) closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.GoBack());
             
             if (mainTabButton) mainTabButton.onClick.AddListener(() => SetCategory(LegendOfBlood.GameConfigs.QuestCategory.Main));
             if (dailyTabButton) dailyTabButton.onClick.AddListener(() => SetCategory(LegendOfBlood.GameConfigs.QuestCategory.Daily));

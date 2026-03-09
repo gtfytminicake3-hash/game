@@ -228,6 +228,8 @@ public class AutoPanelBuilder : EditorWindow
         GameObject panelGO = CreateUIObject("Panel_Quest", null);
         var script = panelGO.AddComponent<QuestPanel>();
 
+        AssignPrivateField(script, "closeButton", CreateCloseButton(panelGO.transform));
+
         // Tab ngang
         GameObject tabGroupObj = CreateUIObject("TabGroup", panelGO.transform);
         RectTransform tabRect = tabGroupObj.GetComponent<RectTransform>();
