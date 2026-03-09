@@ -24,28 +24,47 @@ namespace LegendOfBlood
         }
 
         /// <summary>
-        /// Lấy một Sprite avatar theo Giới tính và Nghề nghiệp (Class).
-        /// Cấu trúc thư mục Resources yêu cầu: Resources/Avatars/Male/Warrior, etc.
+        /// Lấy một Sprite avatar cụ thể dựa trên giới tính và chỉ số (index).
         /// </summary>
-        public Sprite GetAvatar(Gender gender, string professionName)
+        public Sprite GetAvatar(Gender gender, int index)
         {
-            // Fallback cho None hoặc trẻ sơ sinh
-            if (string.IsNullOrEmpty(professionName) || professionName == "None")
+            var targetPool = (gender == Gender.Male) ? maleAvatars : femaleAvatars;
+
+            if (targetPool == null || targetPool.Count == 0 || index < 0 || index >= targetPool.Count)
             {
-                professionName = "None"; // Cần 1 ảnh mặc định tên None trong folder
+                // Fallback an toàn nếu lỗi index
+                return Resources.Load<Sprite>($"Avatars/{gender}/Default");
+            }
+            return targetPool[index];
+        }
+
+        /// <summary>
+        /// Tìm tất cả avatar phù hợp với Class và pick random 1 cái, trả về index của nó trong Pool chính.
+        /// </summary>
+        public int GetRandomAvatarIndexByClass(Gender gender, string professionName)
+        {
+            var targetPool = (gender == Gender.Male) ? maleAvatars : femaleAvatars;
+            if (targetPool == null || targetPool.Count == 0) return 0;
+
+            if (string.IsNullOrEmpty(professionName)) professionName = "None";
+
+            List<int> validIndices = new List<int>();
+            for (int i = 0; i < targetPool.Count; i++)
+            {
+                if (targetPool[i].name.Contains(professionName))
+                {
+                    validIndices.Add(i);
+                }
             }
 
-            string path = $"Avatars/{gender}/{professionName}";
-            Sprite avatar = Resources.Load<Sprite>(path);
-
-            if (avatar != null) 
+            if (validIndices.Count > 0)
             {
-                return avatar;
+                int randomPick = Random.Range(0, validIndices.Count);
+                return validIndices[randomPick];
             }
 
-            // Nếu không tìm thấy file có tên nghề, load ảnh mặc định (để tránh null)
-            Debug.LogWarning($"[AvatarManager] Không tìm thấy ảnh avatar tại đường dẫn: Resources/{path}. Trả về ảnh mặc định.");
-            return Resources.Load<Sprite>($"Avatars/{gender}/Default");
+            // Fallback: Nếu không có hệ class này, trả về random toàn bộ
+            return Random.Range(0, targetPool.Count);
         }
     }
 }
