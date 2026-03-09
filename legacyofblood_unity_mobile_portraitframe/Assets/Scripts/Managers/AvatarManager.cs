@@ -21,7 +21,26 @@ namespace LegendOfBlood
             }
             Instance = this;
             DontDestroyOnLoad(gameObject);
+
+            // Dự phòng: Tự động tải từ Resources nếu Inspector bị trống
+            if (maleAvatars == null || maleAvatars.Count == 0)
+            {
+                maleAvatars = new List<Sprite>(Resources.LoadAll<Sprite>("Avatars/Male"));
+            }
+
+            if (femaleAvatars == null || femaleAvatars.Count == 0)
+            {
+                femaleAvatars = new List<Sprite>(Resources.LoadAll<Sprite>("Avatars/Female"));
+            }
         }
+        // -------------------------
+
+        [Header("Avatar Pools")]
+        [Tooltip("Kéo tất cả các Sprite avatar của Nam vào đây.")]
+        [SerializeField] private List<Sprite> maleAvatars;
+
+        [Tooltip("Kéo tất cả các Sprite avatar của Nữ vào đây.")]
+        [SerializeField] private List<Sprite> femaleAvatars;
 
         /// <summary>
         /// Lấy một Sprite avatar cụ thể dựa trên giới tính và chỉ số (index).
