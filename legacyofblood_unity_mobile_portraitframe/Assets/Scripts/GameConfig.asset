@@ -292,6 +292,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d0d648024f7943c46b051f3a31cb4f12, type: 2}
   - {fileID: 11400000, guid: 3d882212a8c577749b8bf62aca62b37e, type: 2}
   - {fileID: 11400000, guid: a582022580b0dde42aa8ccd981031b86, type: 2}
+  - {fileID: 11400000, guid: 66ff59fbe18ca594092685224e6cd7d1, type: 2}
   RaritySettings:
   - rank: 0
     dropChance: 40
@@ -338,6 +339,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 62a0f82c46bdb724aadb2e91eaa7c371, type: 2}
   - {fileID: 11400000, guid: 412c6e430678e2e44b88e3e816125033, type: 2}
   - {fileID: 11400000, guid: 93d5dbb6d6310bb4a99e6caf996ab0d4, type: 2}
+  - {fileID: 11400000, guid: b4a41f723171f89479ff6ba43b140dec, type: 2}
+  - {fileID: 11400000, guid: 16eb89c013ad0b840a6c10b3925f2563, type: 2}
+  - {fileID: 11400000, guid: dd0c3c42cd220184bb9ed2fd809ecb50, type: 2}
   TowerConfigs:
   - floorIndex: 1
     monsterPool:

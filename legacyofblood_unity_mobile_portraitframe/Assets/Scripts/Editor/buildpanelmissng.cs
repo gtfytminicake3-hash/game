@@ -264,6 +264,8 @@ public class AutoPanelBuilder : EditorWindow
         GameObject panelGO = CreateUIObject("Panel_Recruitment", null);
         var script = panelGO.AddComponent<RecruitmentPanel>();
 
+        AssignPrivateField(script, "closeButton", CreateCloseButton(panelGO.transform));
+
         // Nhóm nút ngang ở giữa màn hình
         GameObject btnGroupObj = CreateUIObject("ButtonGroup", panelGO.transform);
         RectTransform btnRect = btnGroupObj.GetComponent<RectTransform>();

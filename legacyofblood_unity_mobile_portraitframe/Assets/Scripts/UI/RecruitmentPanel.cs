@@ -8,6 +8,7 @@ namespace LegendOfBlood.UI
     {
         [SerializeField] private Button recruitOneButton;
         [SerializeField] private Button recruitTenButton;
+        [SerializeField] private Button closeButton;
 
         private RecruitmentSystem _recruitmentSystem;
 
@@ -22,6 +23,7 @@ namespace LegendOfBlood.UI
 
             recruitOneButton.onClick.AddListener(OnRecruitOne);
             recruitTenButton.onClick.AddListener(OnRecruitTen);
+            if (closeButton != null) closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.GoBack());
 
             Debug.Log("RecruitmentPanel Initialized");
         }
