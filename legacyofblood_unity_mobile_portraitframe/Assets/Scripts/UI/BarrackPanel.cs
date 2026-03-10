@@ -7,9 +7,14 @@ namespace LegendOfBlood
     public class BarrackPanel : MonoBehaviour
     {
         [Header("UI References")]
+        [SerializeField] private TMPro.TextMeshProUGUI panelTitleText;
         [SerializeField] private Button closeButton;
         [SerializeField] private Button populationManagerButton;
         [SerializeField] private Transform heroListContainer;
+
+        [Header("Upgrade Feature")]
+        [SerializeField] private Button upgradeBuildingButton;
+        [SerializeField] private string associatedBuildingId = "TownHall";
 
         [Header("Prefabs")]
         [SerializeField] private GameObject heroCardPrefab;
@@ -18,6 +23,8 @@ namespace LegendOfBlood
 
         private void Start()
         {
+            if (panelTitleText != null) panelTitleText.text = LocalizationSystem.GetText("panel_title_barrack");
+            
             if (closeButton != null)
             {
                 closeButton.onClick.AddListener(Hide);
@@ -25,6 +32,28 @@ namespace LegendOfBlood
             if (populationManagerButton != null)
             {
                 populationManagerButton.onClick.AddListener(() => GameManager.Instance.UIManager.ShowPanel(UIPanelType.PopulationManager, true));
+                var popTxt = populationManagerButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                if (popTxt != null) popTxt.text = global::LocalizationSystem.GetText("btn_manage_population");
+            }
+            if (upgradeBuildingButton != null) 
+            {
+                upgradeBuildingButton.onClick.AddListener(OnUpgradeBuildingClicked);
+                var upgTxt = upgradeBuildingButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                if (upgTxt != null) upgTxt.text = global::LocalizationSystem.GetText("btn_upgrade");
+            }
+        }
+
+        private void OnUpgradeBuildingClicked()
+        {
+            GameManager.Instance.UIManager.ShowPanel(UIPanelType.BuildingUpgrade, true);
+            var upgradePanel = GameManager.Instance.UIManager.GetPanel<BuildingUpgradePanel>(UIPanelType.BuildingUpgrade);
+            if (upgradePanel != null && !string.IsNullOrEmpty(associatedBuildingId))
+            {
+                upgradePanel.Setup(associatedBuildingId);
+            }
+            else
+            {
+                Debug.LogWarning($"[BarrackPanel] Cannot open BuildingUpgradePanel! upgradePanel null? {upgradePanel == null}, associatedBuildingId empty? {string.IsNullOrEmpty(associatedBuildingId)}");
             }
         }
 

@@ -15,13 +15,22 @@ namespace LegendOfBlood.Combat
     [System.Serializable]
     public class CombatResult
     {
-        public bool DidPlayerWin { get; set; }
-        public List<string> CombatLog { get; set; }
-        public List<CombatEvent> EventLog { get; set; }
-        public List<HeroData> PlayerSurvivors { get; set; }
-        public List<HeroData> PlayerCasualties { get; set; }
-        public List<HeroData> EnemySurvivors { get; set; }
-        public List<HeroData> EnemyCasualties { get; set; }
+        public bool DidPlayerWin;
+        public List<string> CombatLog;
+        public List<CombatEvent> EventLog;
+        public List<HeroData> PlayerSurvivors;
+        public List<HeroData> PlayerCasualties;
+        public List<HeroData> EnemySurvivors;
+        public List<HeroData> EnemyCasualties;
+        public List<CombatantPosition> InitialPositions;
+    }
+
+    [System.Serializable]
+    public struct CombatantPosition
+    {
+        public string InstanceID;
+        public int SlotIndex;
+        public bool IsAlly;
     }
 
     public enum CombatEventType { TurnStart, SkillCast, Attack, Heal, TakeDamage, StatusEffect, Death, BattleEnd }
@@ -29,12 +38,12 @@ namespace LegendOfBlood.Combat
     [System.Serializable]
     public class CombatEvent
     {
-        public CombatEventType EventType { get; set; }
-        public string SourceID { get; set; }
-        public string TargetID { get; set; }
-        public int Value { get; set; }
-        public bool IsCrit { get; set; }
-        public string Message { get; set; }
+        public CombatEventType EventType;
+        public string SourceID;
+        public string TargetID;
+        public int Value;
+        public bool IsCrit;
+        public string Message;
     }
     #endregion
 
@@ -141,10 +150,10 @@ namespace LegendOfBlood.Combat
             return RunSimulation();
         }
 
-        public CombatResult Simulate(List<HeroData> playerHeroes, List<string> enemyMonsterIDs)
+        public CombatResult Simulate(List<HeroData> playerHeroes, List<string> enemyMonsterIDs, int difficultyLevel = 1)
         {
             _playerTeam = playerHeroes.Select((h, i) => new Combatant(h, true, i)).ToList();
-            var enemyHeroes = enemyMonsterIDs.Select(id => DataManager.Instance.GetMonsterByID(id))
+            var enemyHeroes = enemyMonsterIDs.Select(id => DataManager.Instance.GetMonsterByID(id, difficultyLevel))
                                              .Where(h => h != null)
                                              .ToList();
             _enemyTeam = enemyHeroes.Select((h, i) => new Combatant(h, false, i)).ToList();
@@ -153,7 +162,7 @@ namespace LegendOfBlood.Combat
 
         private CombatResult RunSimulation()
         {
-            _combatLog = new List<string> { "<b>Trận đấu bắt đầu!</b>" };
+            _combatLog = new List<string> { LocalizationSystem.GetText("combat_log_start") };
             _eventLog = new List<CombatEvent>();
 
             _playerTeam.ForEach(c => c.AssignSkills(_allAvailableSkills, _rng));
@@ -162,19 +171,23 @@ namespace LegendOfBlood.Combat
             ArrangeFormation(_playerTeam);
             ArrangeFormation(_enemyTeam);
 
+            List<CombatantPosition> initialPos = new List<CombatantPosition>();
+            AssignGridSlots(_playerTeam, true, initialPos);
+            AssignGridSlots(_enemyTeam, false, initialPos);
+
             // Xử lý Trait: Hào quang (Aura)
             bool playerHasAura = _playerTeam.Any(c => c.HeroRef.traitIDs.Any(t => t != null && t.Contains("AURA")));
-            if (playerHasAura) { _playerTeam.ForEach(c => c.AtkMultiplier += 0.1f); _combatLog.Add("<color=cyan>Đội hình người chơi nhận Hào quang (+10% ATK).</color>"); }
+            if (playerHasAura) { _playerTeam.ForEach(c => c.AtkMultiplier += 0.1f); _combatLog.Add(LocalizationSystem.GetText("combat_log_aura_player")); }
             bool enemyHasAura = _enemyTeam.Any(c => c.HeroRef.traitIDs.Any(t => t != null && t.Contains("AURA")));
-            if (enemyHasAura) { _enemyTeam.ForEach(c => c.AtkMultiplier += 0.1f); _combatLog.Add("<color=cyan>Đội hình địch nhận Hào quang (+10% ATK).</color>"); }
+            if (enemyHasAura) { _enemyTeam.ForEach(c => c.AtkMultiplier += 0.1f); _combatLog.Add(LocalizationSystem.GetText("combat_log_aura_enemy")); }
 
-            LogFormation(_playerTeam, "Đội hình người chơi");
-            LogFormation(_enemyTeam, "Đội hình địch");
+            LogFormation(_playerTeam, LocalizationSystem.GetText("combat_log_player_team"));
+            LogFormation(_enemyTeam, LocalizationSystem.GetText("combat_log_enemy_team"));
 
             int turn = 1;
             while (IsTeamAlive(_playerTeam) && IsTeamAlive(_enemyTeam))
             {
-                _combatLog.Add($"\n<color=yellow>--- Vòng {turn} ---</color>");
+                _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_turn_header"), turn));
                 _eventLog.Add(new CombatEvent { EventType = CombatEventType.TurnStart, Value = turn });
                 var turnOrder = _playerTeam.Concat(_enemyTeam).Where(c => c.IsAlive()).OrderByDescending(c => c.GetCurrentSpd()).ToList();
 
@@ -190,7 +203,7 @@ namespace LegendOfBlood.Combat
                 }
 
                 turn++;
-                if (turn > 50) { _combatLog.Add("Trận đấu quá dài, kết quả hòa!"); break; }
+                if (turn > 50) { _combatLog.Add(LocalizationSystem.GetText("combat_log_draw_timeout")); break; }
             }
 
             // Cập nhật lại currentHp của HeroData gốc trước khi trả về
@@ -200,7 +213,7 @@ namespace LegendOfBlood.Combat
             }
 
             bool playerWon = IsTeamAlive(_playerTeam) && !IsTeamAlive(_enemyTeam);
-            _combatLog.Add(playerWon ? "\n<color=green><b>CHIẾN THẮNG!</b></color>" : "\n<color=red><b>THẤT BẠI!</b></color>");
+            _combatLog.Add(playerWon ? LocalizationSystem.GetText("combat_log_victory") : LocalizationSystem.GetText("combat_log_defeat"));
 
             return new CombatResult
             {
@@ -210,8 +223,43 @@ namespace LegendOfBlood.Combat
                 PlayerSurvivors = _playerTeam.Where(c => c.IsAlive()).Select(c => c.HeroRef).ToList(),
                 PlayerCasualties = _playerTeam.Where(c => !c.IsAlive()).Select(c => c.HeroRef).ToList(),
                 EnemySurvivors = _enemyTeam.Where(c => c.IsAlive()).Select(c => c.HeroRef).ToList(),
-                EnemyCasualties = _enemyTeam.Where(c => !c.IsAlive()).Select(c => c.HeroRef).ToList()
+                EnemyCasualties = _enemyTeam.Where(c => !c.IsAlive()).Select(c => c.HeroRef).ToList(),
+                InitialPositions = initialPos
             };
+        }
+
+        private void AssignGridSlots(List<Combatant> team, bool isAlly, List<CombatantPosition> positionList)
+        {
+            // Grid 3x3 layout (0..8)
+            // Left to right, top to bottom
+            // Ally: Back=0,3,6 | Middle=1,4,7 | Front=2,5,8
+            // Enemy: Front=0,3,6 | Middle=1,4,7 | Back=2,5,8
+
+            int[] frontSlots = isAlly ? new int[] { 2, 5, 8 } : new int[] { 0, 3, 6 };
+            int[] midSlots = new int[] { 1, 4, 7 };
+            int[] backSlots = isAlly ? new int[] { 0, 3, 6 } : new int[] { 2, 5, 8 };
+
+            int fIdx = 0, mIdx = 0, bIdx = 0;
+
+            foreach (var c in team)
+            {
+                int slot = -1;
+                if (c.Position == RowPosition.Front && fIdx < 3) slot = frontSlots[fIdx++];
+                else if (c.Position == RowPosition.Back && bIdx < 3) slot = backSlots[bIdx++];
+                else if (mIdx < 3) slot = midSlots[mIdx++];
+                else if (fIdx < 3) slot = frontSlots[fIdx++]; // Fallback nếu mid đầy
+                else if (bIdx < 3) slot = backSlots[bIdx++]; // Fallback
+
+                // Fallback cuối cùng nếu có nhiều hơn 9 tướng (ít xảy ra)
+                if (slot == -1) slot = 4; // Nhét tạm vào giữa
+
+                positionList.Add(new CombatantPosition
+                {
+                    InstanceID = c.InstanceID,
+                    SlotIndex = slot,
+                    IsAlly = isAlly
+                });
+            }
         }
 
         #region Logic Cốt Lõi của Trận Đấu
@@ -247,7 +295,7 @@ namespace LegendOfBlood.Combat
                 var skill = action.Skill;
                 var targets = GetTargets(actor, skill.targeting, allies, enemies);
                 if (!targets.Any()) return;
-                _combatLog.Add($"<color=lightblue>{actor.HeroRef.heroName} dùng kỹ năng [{skill.skillName}]!</color>");
+                _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_skill_cast"), actor.HeroRef.heroName, skill.skillName));
                 _eventLog.Add(new CombatEvent { EventType = CombatEventType.SkillCast, SourceID = actor.InstanceID, Message = skill.skillName });
                 for (int i = 0; i < skill.hitCount; i++)
                 {
@@ -273,7 +321,7 @@ namespace LegendOfBlood.Combat
             if (attacker.HeroRef.traitIDs.Any(t => t != null && t.Contains("PREDATOR")) && target.CurrentHp < target.MaxHp * 0.3f)
             {
                 baseDamage *= 1.5f; // Sát thương thêm 50%
-                _combatLog.Add($"<color=red>Kích hoạt Kẻ Săn Mồi!</color>");
+                _combatLog.Add(LocalizationSystem.GetText("combat_log_predator_trigger"));
             }
 
             float finalDamage = Mathf.Max(1, baseDamage - target.GetCurrentDef());
@@ -285,8 +333,8 @@ namespace LegendOfBlood.Combat
             if (isCrit) finalDamage *= attacker.GetCurrentCritDamage();
             int damageInt = Mathf.FloorToInt(finalDamage);
             target.CurrentHp -= damageInt;
-            string log = $"{attacker.HeroRef.heroName} tấn công {target.HeroRef.heroName}, gây <color=red>{damageInt}</color> sát thương.";
-            if (isCrit) log += " <color=orange>(Chí mạng!)</color>";
+            string log = string.Format(LocalizationSystem.GetText("combat_log_attack_normal"), attacker.HeroRef.heroName, target.HeroRef.heroName, damageInt);
+            if (isCrit) log += LocalizationSystem.GetText("combat_log_attack_crit");
             _combatLog.Add(log);
             _eventLog.Add(new CombatEvent { EventType = CombatEventType.Attack, SourceID = attacker.InstanceID, TargetID = target.InstanceID, Value = damageInt, IsCrit = isCrit });
 
@@ -296,7 +344,7 @@ namespace LegendOfBlood.Combat
             }
             if (!target.IsAlive()) 
             {
-                _combatLog.Add($"<color=grey>{target.HeroRef.heroName} đã bị hạ gục!</color>");
+                _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_death"), target.HeroRef.heroName));
                 _eventLog.Add(new CombatEvent { EventType = CombatEventType.Death, TargetID = target.InstanceID });
             }
         }
@@ -309,13 +357,13 @@ namespace LegendOfBlood.Combat
                 if (debuffs.Any())
                 {
                     target.ActiveEffects.Remove(debuffs.First());
-                    _combatLog.Add($"{healer.HeroRef.heroName} thanh tẩy hiệu ứng xấu cho {target.HeroRef.heroName}.");
+                    _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_cleanse"), healer.HeroRef.heroName, target.HeroRef.heroName));
                 }
             }
             float healAmount = healer.GetCurrentAtk() * skill.powerRatio;
             int healInt = Mathf.FloorToInt(healAmount);
             target.CurrentHp = Mathf.Min(target.MaxHp, target.CurrentHp + healInt);
-            _combatLog.Add($"{healer.HeroRef.heroName} hồi <color=green>{healInt}</color> HP cho {target.HeroRef.heroName}.");
+            _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_heal"), healer.HeroRef.heroName, healInt, target.HeroRef.heroName));
             _eventLog.Add(new CombatEvent { EventType = CombatEventType.Heal, SourceID = healer.InstanceID, TargetID = target.InstanceID, Value = healInt });
             if (skill.appliedEffect != StatusEffectType.None) ApplyStatusEffect(healer, target, skill);
         }
@@ -375,7 +423,7 @@ namespace LegendOfBlood.Combat
             target.ActiveEffects.RemoveAll(e => e.Type == skill.appliedEffect);
             var newEffect = new ActiveStatusEffect(skill.appliedEffect, skill.effectDuration, value, caster);
             target.ActiveEffects.Add(newEffect);
-            _combatLog.Add($"{target.HeroRef.heroName} bị ảnh hưởng bởi <color=magenta>{skill.appliedEffect}</color> trong {skill.effectDuration} lượt.");
+            _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_status_applied"), target.HeroRef.heroName, skill.appliedEffect, skill.effectDuration));
         }
 
         private void ProcessStartOfTurnEffects(Combatant combatant)
@@ -388,13 +436,13 @@ namespace LegendOfBlood.Combat
                     case StatusEffectType.Poison:
                         int poisonDmg = Mathf.FloorToInt(effect.Value);
                         combatant.CurrentHp -= poisonDmg;
-                        _combatLog.Add($"{combatant.HeroRef.heroName} nhận <color=purple>{poisonDmg}</color> sát thương từ Độc.");
+                        _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_poison_tick"), combatant.HeroRef.heroName, poisonDmg));
                         _eventLog.Add(new CombatEvent { EventType = CombatEventType.TakeDamage, TargetID = combatant.InstanceID, Value = poisonDmg });
                         break;
                     case StatusEffectType.HealOverTime:
                         int hotHeal = Mathf.FloorToInt(effect.Value);
                         combatant.CurrentHp = Mathf.Min(combatant.MaxHp, combatant.CurrentHp + hotHeal);
-                        _combatLog.Add($"{combatant.HeroRef.heroName} được hồi <color=green>{hotHeal}</color> HP từ Hồi Phục.");
+                        _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_regen_tick"), combatant.HeroRef.heroName, hotHeal));
                         _eventLog.Add(new CombatEvent { EventType = CombatEventType.Heal, TargetID = combatant.InstanceID, Value = hotHeal });
                         break;
                 }
@@ -407,7 +455,7 @@ namespace LegendOfBlood.Combat
             {
                 int regenAmount = Mathf.FloorToInt(combatant.MaxHp * 0.05f);
                 combatant.CurrentHp = Mathf.Min(combatant.MaxHp, combatant.CurrentHp + regenAmount);
-                _combatLog.Add($"{combatant.HeroRef.heroName} tự hồi <color=green>{regenAmount}</color> HP nhờ trait Tái Sinh.");
+                _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_trait_regen"), combatant.HeroRef.heroName, regenAmount));
                 _eventLog.Add(new CombatEvent { EventType = CombatEventType.Heal, TargetID = combatant.InstanceID, Value = regenAmount });
             }
         }
@@ -428,9 +476,10 @@ namespace LegendOfBlood.Combat
             var front = string.Join(", ", team.Where(c => c.Position == RowPosition.Front).Select(c => c.HeroRef.heroName));
             var middle = string.Join(", ", team.Where(c => c.Position == RowPosition.Middle).Select(c => c.HeroRef.heroName));
             var back = string.Join(", ", team.Where(c => c.Position == RowPosition.Back).Select(c => c.HeroRef.heroName));
-            _combatLog.Add($"<b>Hàng trước:</b> {(string.IsNullOrEmpty(front) ? "Trống" : front)}");
-            _combatLog.Add($"<b>Hàng giữa:</b> {(string.IsNullOrEmpty(middle) ? "Trống" : middle)}");
-            _combatLog.Add($"<b>Hàng sau:</b> {(string.IsNullOrEmpty(back) ? "Trống" : back)}");
+            var empty = LocalizationSystem.GetText("combat_log_row_empty");
+            _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_row_front"), string.IsNullOrEmpty(front) ? empty : front));
+            _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_row_mid"), string.IsNullOrEmpty(middle) ? empty : middle));
+            _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_row_back"), string.IsNullOrEmpty(back) ? empty : back));
         }
         #endregion
     }

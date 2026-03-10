@@ -1,0 +1,29 @@
+﻿﻿Trait ID,Tên Trait,Mô Tả,Độ Hiếm (Rarity),Phân Loại Nhóm,Chỉ Số Tác Động,ATK,HP,DEF,SPD
+TR_ATK_D,"Sức Mạnh Tân Binh","Tham gia quân ngũ. Lực Tay yếu +5 ATK.",D,ATK_UP,ADD_STAT,5,0,0,0
+TR_ATK_C,"Sức Mạnh Chiến Binh","Rèn luyện qua năm tháng. +15 ATK.",C,ATK_UP,ADD_STAT,15,0,0,0
+TR_ATK_B,"Tay To Hơn Não","Bắp tay to bự. +35 ATK.",B,ATK_UP,ADD_STAT,35,0,0,0
+TR_ATK_A,"Uy Lực Cự Thạch","Đập vỡ đá chẻ núi. +100 ATK.",A,ATK_UP,ADD_STAT,100,0,0,0
+TR_ATK_S,"Sức Mạnh Cự Thần","Gen đột biến Cự Thần. Tăng 20% ATK.",S,ATK_UP,MULTIPLY_STAT,20,0,0,0
+TR_ATK_SS,"Quyền Vô Cực","Tuyệt thế Vô Cực. Tăng 50% ATK.",SS,ATK_UP,MULTIPLY_STAT,50,0,0,0
+TR_HP_D,"Thể Chất Bình Thường","+20 HP tối đa.",D,HP_UP,ADD_STAT,0,20,0,0
+TR_HP_C,"Thể Lực Dồi Dào","+80 HP tối đa.",C,HP_UP,ADD_STAT,0,80,0,0
+TR_HP_B,"Thân Thể Cường Tráng","+200 HP tối đa.",B,HP_UP,ADD_STAT,0,200,0,0
+TR_HP_A,"Máu Trâu Bò","+500 HP tối đa.",A,HP_UP,ADD_STAT,0,500,0,0
+TR_HP_S,"Sinh Mệnh Cây Thần","Tăng 20% HP.",S,HP_UP,MULTIPLY_STAT,0,20,0,0
+TR_HP_SS,"Bất Tử Ma Cốt","Tăng khủng khiếp 50% HP.",SS,HP_UP,MULTIPLY_STAT,0,50,0,0
+TR_DEF_D,"Da Dày Mỏng","+2 DEF.",D,DEF_UP,ADD_STAT,0,0,2,0
+TR_DEF_C,"Da Cỏ Đồng","+10 DEF.",C,DEF_UP,ADD_STAT,0,0,10,0
+TR_DEF_B,"Da Thạch Trùng","+25 DEF.",B,DEF_UP,ADD_STAT,0,0,25,0
+TR_DEF_A,"Da Thiết Giáp","+60 DEF.",A,DEF_UP,ADD_STAT,0,0,60,0
+TR_DEF_S,"Kim Cang Bất Hoại","Tăng 20% DEF.",S,DEF_UP,MULTIPLY_STAT,0,0,20,0
+TR_SPD_D,"Bước Chân Vội Vã","+2 SPD.",D,SPD_UP,ADD_STAT,0,0,0,2
+TR_SPD_C,"Bước Chân Lì Lợm","+5 SPD.",C,SPD_UP,ADD_STAT,0,0,0,5
+TR_SPD_B,"Nhanh Như Gió","+12 SPD.",B,SPD_UP,ADD_STAT,0,0,0,12
+TR_SPD_A,"Thân Pháp Quỷ Ảnh","+30 SPD.",A,SPD_UP,ADD_STAT,0,0,0,30
+TR_SPD_S,"Tốc Biến","Tăng 20% SPD.",S,SPD_UP,MULTIPLY_STAT,0,0,0,20
+D_08,"Lớn Nhanh","Giảm 20% thời gian trưởng thành.",D,MATURE_SPEED,SPECIAL,0,0,0,0
+TR_ALL_S,"Hoàng Gia Chi Huyết","Là con cháu vương tôn. Tăng đồng đều 10% các chỉ số.",S,ALL_STAT,MULTIPLY_STAT,10,10,10,10
+TR_ALL_SS,"Long Tộc Hậu Duệ","Huyết mạch loài Rồng sục sôi. Tăng đồng đều 25% các chỉ số.",SS,ALL_STAT,MULTIPLY_STAT,25,25,25,25
+S_04,"Song Sinh Tiên Tri","Tỉ lệ nhỏ (2%) sinh ra anh em sinh đôi khi lai tạo.",S,TWINS,SPECIAL,0,0,0,0
+SS_07,"Dòng Dõi Tinh Anh","Gen xuất chúng. Con cháu lai tạo có 10% cơ hội tăng 5% toàn bộ chỉ số cơ bản.",SS,ELITE,SPECIAL,0,0,0,0
+SSS_04,"Kẻ Chọn Lọc Gene","Thống trị chọn lọc. Có thể chủ động giữ lại 1 Trait chỉ định khi lai tạo.",SSS,GENE_SELECTOR,SPECIAL,0,0,0,0

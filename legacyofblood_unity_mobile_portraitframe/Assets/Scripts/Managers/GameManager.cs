@@ -116,14 +116,39 @@ namespace LegendOfBlood
         [SerializeField] private QuestManager _questManager;
 
         // Các lớp logic không nhất thiết phải là MonoBehaviour
-        // Chúng ta sẽ tạo các thể hiện của chúng
-        public BreedingSystem BreedingSystem { get; private set; }
-        public CombatSystem CombatSystem { get; private set; }
-        public EvolutionSystem EvolutionSystem { get; private set; }
-        public HospitalSystem HospitalSystem { get; private set; }
-        public MaturationSystem MaturationSystem { get; private set; }
-        public BuildingSystem BuildingSystem { get; private set; }
-        public RecruitmentSystem RecruitmentSystem { get; private set; }
+        // Sử dụng Lazy Initialization để chống lại lỗi mất dữ liệu khi Unity Assembly Reload (Hot Reload)
+
+        private BreedingSystem _breedingSystem;
+        public BreedingSystem BreedingSystem => _breedingSystem ??= new BreedingSystem();
+
+        private EvolutionSystem _evolutionSystem;
+        public EvolutionSystem EvolutionSystem => _evolutionSystem ??= new EvolutionSystem();
+
+        private HospitalSystem _hospitalSystem;
+        public HospitalSystem HospitalSystem => _hospitalSystem ??= new HospitalSystem();
+
+        private MaturationSystem _maturationSystem;
+        public MaturationSystem MaturationSystem => _maturationSystem ??= new MaturationSystem();
+
+        private BuildingSystem _buildingSystem;
+        public BuildingSystem BuildingSystem => _buildingSystem ??= new BuildingSystem();
+
+        private RecruitmentSystem _recruitmentSystemManager;
+        public RecruitmentSystem RecruitmentSystem => _recruitmentSystemManager ??= new RecruitmentSystem();
+
+        private CombatSystem _combatSystem;
+        public CombatSystem CombatSystem 
+        {
+            get 
+            {
+                if (_combatSystem == null)
+                {
+                    var skills = (_dataManager != null && _dataManager.AllSkills != null) ? _dataManager.AllSkills.Values.ToList() : new List<LegendOfBlood.Skill>();
+                    _combatSystem = new CombatSystem(Environment.TickCount, skills);
+                }
+                return _combatSystem;
+            }
+        }
         
         // Public accessors để các script khác có thể truy cập an toàn
         public DataManager DataManager => _dataManager;
@@ -162,28 +187,28 @@ namespace LegendOfBlood
             if (_arenaSystem == null) { _arenaSystem = transform.root.GetComponentInChildren<ArenaSystem>(true); if (_arenaSystem == null) _arenaSystem = gameObject.AddComponent<ArenaSystem>(); }
             if (_questManager == null) { _questManager = transform.root.GetComponentInChildren<QuestManager>(true); if (_questManager == null) _questManager = gameObject.AddComponent<QuestManager>(); }
 
-            // Khởi tạo hệ thống dịch thuật
-            global::LocalizationSystem.LoadLocalizedText((global::Language)LanguageManager.CurrentLanguage);
+            // Khởi tạo các hệ thống logic CƠ BẢN TRƯỚC (POCO) để hệ thống không bao giờ Null (Đã chuyển sang Lazy Init trên Property)
 
-            // GỌI KHỞI TẠO DATA TRƯỚC: Ép DataManager phải xong xuôi trước khi gọi CombatSystem
-            if (_dataManager != null)
+            try
             {
-                _dataManager.InitializeDataManager();
-            }
+                // Khởi tạo hệ thống dịch thuật
+                global::LocalizationSystem.LoadLocalizedText((global::Language)LanguageManager.CurrentLanguage);
 
-            // Khởi tạo các hệ thống logic (POCO - Plain Old C# Object) - SẼ KHÔNG BAO GIỜ BỊ CHẶN NỮA
-            BreedingSystem = new BreedingSystem();
-            // Cần cung cấp seed và danh sách skill cho CombatSystem
-            // Sửa lỗi: Lấy danh sách skill từ DataManager đã được khởi tạo
-            var allSkills = _dataManager.AllSkills != null ? _dataManager.AllSkills.Values.ToList() : new List<LegendOfBlood.Skill>();
-            CombatSystem = new CombatSystem(Environment.TickCount, allSkills);
-            EvolutionSystem = new EvolutionSystem();
-            HospitalSystem = new HospitalSystem();
-            MaturationSystem = new MaturationSystem();
-            BuildingSystem = new BuildingSystem();
-            RecruitmentSystem = new RecruitmentSystem();
-            
-            Debug.Log("Tất cả các hệ thống đã được khởi tạo thành công.");
+                // GỌI KHỞI TẠO DATA
+                if (_dataManager != null)
+                {
+                    _dataManager.InitializeDataManager();
+                }
+
+                // Gọi một Get để ép khởi tạo sớm
+                var _ = CombatSystem;
+                
+                Debug.Log("Tất cả các hệ thống đã được khởi tạo thành công.");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[GameManager] CÓ LỖI XẢY RA TRONG LÚC KHỞI TẠO! {ex.Message}\n{ex.StackTrace}");
+            }
         }
         
         /// <summary>
@@ -192,6 +217,25 @@ namespace LegendOfBlood
         /// </summary>
         private void Update()
         {
+            // Xử lý nút Back trên Android (Escape)
+            // LƯU Ý: Đã bị comment lại do xung đột với Input System Package mới!
+            // Cần được viết lại bằng UnityEngine.InputSystem nếu cần.
+            /*
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                if (_uiManager != null)
+                {
+                    bool handled = _uiManager.GoBack();
+                    if (!handled)
+                    {
+                        // Nếu không còn panel nào để back, tự động save và thoát game
+                        SaveGame();
+                        Application.Quit();
+                    }
+                }
+            }
+            */
+
             // Không chạy update nếu game đang không ở trạng thái Playing
             if (CurrentState != GameState.Playing) return;
 
@@ -202,6 +246,7 @@ namespace LegendOfBlood
             MaturationSystem.Tick(deltaTime);
             HospitalSystem.Tick(deltaTime);
             BuildingSystem.Tick(deltaTime);
+            DataManager.Instance.Tick(deltaTime);
             ExpeditionManager.Tick();
         }
 
@@ -231,6 +276,15 @@ namespace LegendOfBlood
         private void OnApplicationQuit()
         {
             SaveGame();
+        }
+
+        // Đảm bảo dữ liệu được lưu khi app bị ẩn/đẩy xuống background trên mobile
+        private void OnApplicationPause(bool isPaused)
+        {
+            if (isPaused)
+            {
+                SaveGame();
+            }
         }
 
         #endregion

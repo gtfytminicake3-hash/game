@@ -9,6 +9,7 @@ namespace LegendOfBlood
     using DG.Tweening;
     using DG.Tweening.Core;
     using UnityEngine.SceneManagement;
+    using TMPro;
 
     public class WorldMapController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IScrollHandler
     {
@@ -36,6 +37,7 @@ namespace LegendOfBlood
 
         [Header("Navigation")]
         [SerializeField] private Button backToVillageButton;
+        [SerializeField] private TextMeshProUGUI backToVillageButtonText;
 
         private Vector2 _lastPanPosition;
         private bool _isZooming;
@@ -88,6 +90,10 @@ namespace LegendOfBlood
             {
                 backToVillageButton.onClick.RemoveAllListeners();
                 backToVillageButton.onClick.AddListener(GoBackToVillage);
+            }
+            if (backToVillageButtonText != null)
+            {
+                backToVillageButtonText.text = global::LocalizationSystem.GetText("btn_back_to_village");
             }
             _isInitialized = true;
             InitializeWorldMap();
@@ -238,7 +244,15 @@ namespace LegendOfBlood
             else
             {
                 Debug.Log($"Loading {worldPois.Count} POIs from DataManager.");
-                foreach (var poiData in worldPois) InstantiatePOI(poiData);
+                foreach (var poiData in worldPois)
+                {
+                    // FIX: Nếu POIData cũ bị lỗi list rỗng (trừ Tower), sinh lại quái!
+                    if (poiData.type != POIType.TowerOfTrials && (poiData.monsterIDs == null || poiData.monsterIDs.Count == 0))
+                    {
+                        poiData.monsterIDs = GenerateMonstersForPOI(poiData);
+                    }
+                    InstantiatePOI(poiData);
+                }
             }
 
             // Luôn đảm bảo có đủ 3 tháp nghề nghiệp
@@ -252,6 +266,14 @@ namespace LegendOfBlood
 
             string newId = Guid.NewGuid().ToString();
             
+            // Calculate distance from center (Village)
+            float distanceToCenter = Vector2.Distance(newPosition, Vector2.zero);
+            float maxDistance = Mathf.Max(mapSize.x, mapSize.y) / 2f;
+            float distanceRatio = Mathf.Clamp01(distanceToCenter / maxDistance);
+            
+            // Map the ratio to difficulty level (1 to 10)
+            int calculatedDifficulty = Mathf.Clamp(Mathf.RoundToInt(distanceRatio * 10f), 1, 10);
+            
             // FIX: Create the object first, then assign monsterIDs
             POIData poiData = new POIData
             {
@@ -259,7 +281,7 @@ namespace LegendOfBlood
                 poiName = specificName ?? string.Format(global::LocalizationSystem.GetText("poi_name_format"), global::LocalizationSystem.GetText($"poi_type_{type}"), UnityEngine.Random.Range(10, 999)),
                 type = type,
                 position = newPosition,
-                difficultyLevel = UnityEngine.Random.Range(1, 10)
+                difficultyLevel = calculatedDifficulty
             };
             poiData.monsterIDs = GenerateMonstersForPOI(poiData);
 
@@ -347,7 +369,55 @@ namespace LegendOfBlood
         {
             if (poiData.type == POIType.TowerOfTrials) return new List<string>();
             var monsterList = new List<string>();
-            // ... (rest of the monster generation logic is unchanged)
+            
+            var config = DataManager.Instance?.GameConfig?.POIMonsterConfig;
+            if (config != null && config.monsterGroups != null)
+            {
+                var validGroups = config.monsterGroups.Where(g => 
+                    poiData.difficultyLevel >= g.minDifficulty && 
+                    poiData.difficultyLevel <= g.maxDifficulty).ToList();
+                
+                if (validGroups.Any())
+                {
+                    var group = validGroups[UnityEngine.Random.Range(0, validGroups.Count)];
+                    if (group.monsterIDs != null && group.monsterIDs.Count > 0)
+                    {
+                        // Sinh 2 đến 5 quái ngẫu nhiên
+                        int monsterCount = UnityEngine.Random.Range(2, 6);
+                        for (int i = 0; i < monsterCount; i++)
+                        {
+                            string randomMonster = group.monsterIDs[UnityEngine.Random.Range(0, group.monsterIDs.Count)];
+                            monsterList.Add(randomMonster);
+                        }
+                    }
+                }
+            }
+
+            // Nếu không tìm thấy config hoặc group phù hợp, lấy đại quái trong config để không bao giờ bị CP 0
+            if (monsterList.Count == 0 && config != null && config.monsterGroups != null)
+            {
+                var allMonsterIDs = config.monsterGroups
+                    .Where(g => g.monsterIDs != null)
+                    .SelectMany(g => g.monsterIDs)
+                    .Where(id => !string.IsNullOrEmpty(id))
+                    .Distinct()
+                    .ToList();
+                    
+                if (allMonsterIDs.Count > 0)
+                {
+                    int backupCount = UnityEngine.Random.Range(2, 5);
+                    for (int i = 0; i < backupCount; i++)
+                    {
+                        monsterList.Add(allMonsterIDs[UnityEngine.Random.Range(0, allMonsterIDs.Count)]);
+                    }
+                }
+                else if (DataManager.Instance?.GameConfig?.AllBosses != null && DataManager.Instance.GameConfig.AllBosses.Count > 0)
+                {
+                    var bosses = DataManager.Instance.GameConfig.AllBosses;
+                    monsterList.Add(bosses[UnityEngine.Random.Range(0, bosses.Count)].id);
+                }
+            }
+
             return monsterList;
         }
 
@@ -434,7 +504,7 @@ namespace LegendOfBlood
             if (squadSelectionPanel == null) return;
             var availableHeroes = DataManager.Instance.AllHeroes.Where(h => h.isMature && !h.IsBusy()).ToList();
             squadSelectionPanel.Show(
-                string.Format(global::LocalizationSystem.GetText("worldmap_select_squad_title_format"), poiData.poiName),
+                string.Format(global::LocalizationSystem.GetText("worldmap_select_squad_title_format"), global::LocalizationSystem.GetText(poiData.poiName)),
                 availableHeroes, 5,
                 (selectedHeroIDs) => {
                     squadSelectionPanel.gameObject.SetActive(false);

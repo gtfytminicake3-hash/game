@@ -8,8 +8,10 @@ namespace LegendOfBlood
     public class StatAllocationPanel : MonoBehaviour
     {
         [Header("UI References")]
+        public TextMeshProUGUI panelTitleText;
         public TextMeshProUGUI freePointsText;
         public Button confirmButton;
+        public TextMeshProUGUI confirmButtonText;
         public Button closeButton;
 
         [Header("HP Row")]
@@ -122,7 +124,10 @@ namespace LegendOfBlood
 
         private void UpdateUI()
         {
-            if (freePointsText) freePointsText.text = $"Free Points: {_tempFreePoints}";
+            if (panelTitleText) panelTitleText.text = global::LocalizationSystem.GetText("panel_title_stat_alloc");
+            if (freePointsText) freePointsText.text = string.Format(global::LocalizationSystem.GetText("label_free_points"), _tempFreePoints);
+            if (confirmButtonText) confirmButtonText.text = global::LocalizationSystem.GetText("btn_confirm");
+
             if (hpValueText) hpValueText.text = $"{_currentHero.baseStats.hp + _tempHp:F0} (+{_tempHp:F0})";
             if (atkValueText) atkValueText.text = $"{_currentHero.baseStats.atk + _tempAtk:F0} (+{_tempAtk:F0})";
             if (defValueText) defValueText.text = $"{_currentHero.baseStats.def + _tempDef:F0} (+{_tempDef:F0})";

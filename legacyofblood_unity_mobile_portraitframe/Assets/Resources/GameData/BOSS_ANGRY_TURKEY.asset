@@ -16,10 +16,10 @@ MonoBehaviour:
   bossName: "G\xE0 T\xE2y Ph\u1EABn N\u1ED9"
   modelPrefab: {fileID: 0}
   level: 25
-  baseHp: 0
-  baseAtk: 0
-  baseDef: 0
-  baseSpd: 0
+  baseHp: 25000
+  baseAtk: 800
+  baseDef: 300
+  baseSpd: 250
   stats:
     hp: 25000
     atk: 800

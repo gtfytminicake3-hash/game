@@ -280,6 +280,16 @@ MonoBehaviour:
     startingSkillIDs:
     - SK_HEA_SINGLE_1
   POIMonsterConfig: {fileID: 11400000, guid: 939591bbb1d0fcb458720278f4df350e, type: 2}
+  AllMonsters:
+  - {fileID: 11400000, guid: e52f379c459e5224881e5a155868e853, type: 2}
+  - {fileID: 11400000, guid: 1c9982bec9b2edf418a2a7ab680f0500, type: 2}
+  - {fileID: 11400000, guid: 5d63048ec1139534fa5d9a9aef767efa, type: 2}
+  - {fileID: 11400000, guid: 3c89f8131eca16242a3a31bfc9d38fc6, type: 2}
+  - {fileID: 11400000, guid: 7c4075c013dd5484b874af2af9b8aa67, type: 2}
+  - {fileID: 11400000, guid: 5849a34e614d0ad4f9f6967694add69c, type: 2}
+  - {fileID: 11400000, guid: f6d10727488b5b74b81c40ee908d8fff, type: 2}
+  - {fileID: 11400000, guid: 7e067209819d549478d2c1afc5cf5f7d, type: 2}
+  - {fileID: 11400000, guid: 24f2a1dda3809a44a8dd665829289db9, type: 2}
   AllBosses:
   - {fileID: 11400000, guid: 60cc9215dd093324a80f5aaa83f0a5e4, type: 2}
   - {fileID: 11400000, guid: a0910f4156b914a4db998a20a242f6eb, type: 2}

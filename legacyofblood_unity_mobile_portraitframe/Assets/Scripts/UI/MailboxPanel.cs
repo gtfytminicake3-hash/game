@@ -8,7 +8,9 @@ namespace LegendOfBlood
     public class MailboxPanel : MonoBehaviour
     {
         [Header("UI References")]
+        [SerializeField] private TMPro.TextMeshProUGUI panelTitleText;
         [SerializeField] private Button closeButton;
+        [SerializeField] private TMPro.TextMeshProUGUI claimAllButtonText;
         [SerializeField] private Button claimAllButton;
         [SerializeField] private Transform reportItemsContainer;
 
@@ -19,6 +21,9 @@ namespace LegendOfBlood
 
         private void Start()
         {
+            if (panelTitleText != null) panelTitleText.text = global::LocalizationSystem.GetText("panel_title_mailbox");
+            if (claimAllButtonText != null) claimAllButtonText.text = global::LocalizationSystem.GetText("btn_claim_all");
+
             if (closeButton != null) closeButton.onClick.AddListener(Hide);
             if (claimAllButton != null) claimAllButton.onClick.AddListener(ClaimAllReports);
         }
@@ -161,7 +166,27 @@ namespace LegendOfBlood
                 }
             }
 
-            // 4. Remove the report from the list
+            // 4. Show Notification to Player
+            if (GameManager.Instance != null && GameManager.Instance.UINotificationManager != null)
+            {
+                string lootMsg = global::LocalizationSystem.GetText("mailbox_loot_claimed") + "\n";
+                if (report.loot != null)
+                {
+                    if (report.loot.gold > 0) lootMsg += $"+{report.loot.gold} Gold\n";
+                    if (report.experienceGained > 0) lootMsg += $"+{report.experienceGained} EXP\n";
+                    foreach (var item in report.loot.items)
+                    {
+                        lootMsg += $"+{item.Value} {item.Key}\n";
+                    }
+                    if (report.loot.equipments != null)
+                    {
+                        lootMsg += $"+{report.loot.equipments.Count} Equipments\n";
+                    }
+                }
+                GameManager.Instance.UINotificationManager.ShowNotification(lootMsg);
+            }
+
+            // 5. Remove the report from the list
             DataManager.Instance.Player.UnclaimedReports.Remove(report);
         }
     }

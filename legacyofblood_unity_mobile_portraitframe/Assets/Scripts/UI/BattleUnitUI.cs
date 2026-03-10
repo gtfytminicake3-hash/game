@@ -85,32 +85,42 @@ namespace LegendOfBlood
             ShowFloatingText("+" + amount.ToString(), Color.green, false);
         }
 
-        public IEnumerator PlayAttackAnim(Vector3 targetPosition)
+        public IEnumerator PlayAttackAnim(Vector3 targetWorldPosition)
         {
-            // Trượt lên tấn công (Simple Lerp)
-            Vector3 startPos = transform.localPosition;
-            Vector3 attackPos = startPos + (targetPosition - startPos).normalized * 50f; // Nhích lên 50 pixel
+            Vector3 startPos = transform.position;
+            // Tiến tới cách mục tiêu một đoạn ngắn
+            Vector3 dir = (targetWorldPosition - startPos).normalized;
+            Vector3 attackPos = targetWorldPosition - dir * 0.5f;
+
+            // Kéo Unit lên trên cùng để diễn hoạt không bị che bởi ô Grid khác
+            Canvas canvas = gameObject.GetComponent<Canvas>();
+            if (canvas == null) canvas = gameObject.AddComponent<Canvas>();
+            canvas.overrideSorting = true;
+            canvas.sortingOrder = 999;
 
             float t = 0;
-            float duration = 0.1f;
+            float duration = 0.2f; // Tốc độ lướt tới
             while(t < duration)
             {
                 t += Time.deltaTime;
-                transform.localPosition = Vector3.Lerp(startPos, attackPos, t / duration);
+                transform.position = Vector3.Lerp(startPos, attackPos, t / duration);
                 yield return null;
             }
             
-            transform.localPosition = attackPos;
+            transform.position = attackPos;
 
-            // Giật về
+            // Giật lùi về
             t = 0;
+            duration = 0.15f;
             while(t < duration)
             {
                 t += Time.deltaTime;
-                transform.localPosition = Vector3.Lerp(attackPos, startPos, t / duration);
+                transform.position = Vector3.Lerp(attackPos, startPos, t / duration);
                 yield return null;
             }
-            transform.localPosition = startPos;
+            transform.position = startPos;
+
+            if (canvas != null) canvas.overrideSorting = false;
         }
 
         private IEnumerator FlashRedRoutine()

@@ -15,9 +15,11 @@ public class Bootloader : MonoBehaviour
     [SerializeField] private GameObject loadingScreenGroup;
     [SerializeField] private Slider loadingSlider;
     [SerializeField] private TextMeshProUGUI loadingText;
+    [SerializeField] private TextMeshProUGUI tapToStartText;
     
     private void Start()
     {
+        if (tapToStartText != null && global::LocalizationSystem.IsReady) tapToStartText.text = global::LocalizationSystem.GetText("bootloader_tap_to_start");
         // Tự động gọi hàm chạy Loading, do Game đã đổi sang 1 Scene
         StartLoading();
     }
@@ -42,7 +44,10 @@ public class Bootloader : MonoBehaviour
     {
         // 1. Khởi tạo ảo cho thanh loading để cho người chơi thấy bắt đầu chạy
         loadingSlider.value = 0.1f;
-        loadingText.text = "Initializing Core Systems...";
+        if (global::LocalizationSystem.IsReady)
+            loadingText.text = global::LocalizationSystem.GetText("bootloader_init");
+        else
+            loadingText.text = "Initializing Core Systems...";
 
         // 2. Tạo ra hệ thống lõi nếu chưa có
         if (GameManager.Instance == null && coreSystemsPrefab != null)
@@ -54,7 +59,10 @@ public class Bootloader : MonoBehaviour
         yield return null;
 
         loadingSlider.value = 0.4f;
-        loadingText.text = "Loading Localization & Database...";
+        if (global::LocalizationSystem.IsReady)
+            loadingText.text = global::LocalizationSystem.GetText("bootloader_load_data");
+        else
+            loadingText.text = "Loading Localization & Database...";
 
         // 3. Đợi cho đến khi hệ thống dịch thuật sẵn sàng
         yield return new WaitUntil(() => global::LocalizationSystem.IsReady);

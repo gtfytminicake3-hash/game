@@ -71,8 +71,37 @@ namespace LegendOfBlood
             }
         }
 
+        public int GetMaxConcurrentExpeditions()
+        {
+            if (DataManager.Instance == null || DataManager.Instance.AllBuildings == null) return 1;
+            
+            var barracks = DataManager.Instance.AllBuildings.FirstOrDefault(b => b.id == "Barracks");
+            int barrackLevel = barracks != null ? barracks.level : 1;
+            
+            // Default 1 squad. Gain +1 squad every 5 levels.
+            return 1 + (barrackLevel / 5);
+        }
+
+        public bool CanStartNewExpedition()
+        {
+            return _activeExpeditions.Count < GetMaxConcurrentExpeditions();
+        }
+
         public void StartExpedition(List<string> squadHeroIDs, POIData destination)
         {
+            if (!CanStartNewExpedition())
+            {
+                Debug.LogWarning("Max concurrent expeditions reached. Cannot start another one.");
+                if (GameManager.Instance != null && GameManager.Instance.UINotificationManager != null)
+                {
+                    // If LocalizationSystem is ready, we could fetch here, but we will hardcode the fallback for now.
+                    string msg = global::LocalizationSystem.GetText("msg_max_expedition_reached");
+                    if (string.IsNullOrEmpty(msg)) msg = $"Đã đạt giới hạn số đội viễn chinh tối đa ({GetMaxConcurrentExpeditions()}). Hãy nâng cấp Doanh Trại để gửi thêm.";
+                    
+                    GameManager.Instance.UINotificationManager.ShowNotification(msg);
+                }
+                return;
+            }
             if (destination.type == POIType.TowerOfTrials)
             {
                 StartTowerChallenge(squadHeroIDs, destination);
@@ -92,7 +121,7 @@ namespace LegendOfBlood
             var heroSquad = squadHeroIDs.Select(id => DataManager.Instance.GetHeroByID(id)?.Clone()).Where(h => h != null).ToList();
             if (GameManager.Instance == null || GameManager.Instance.CombatSystem == null) return;
 
-            CombatResult combatResult = GameManager.Instance.CombatSystem.Simulate(heroSquad, destination.monsterIDs);
+            CombatResult combatResult = GameManager.Instance.CombatSystem.Simulate(heroSquad, destination.monsterIDs, destination.difficultyLevel);
 
             var report = new ExpeditionReport
             {
@@ -113,8 +142,12 @@ namespace LegendOfBlood
             // Check for cooldown
             if (currentTime < towerPoi.recoveryEndTime)
             {
-                Debug.LogWarning("Tower is in recovery. Cannot start new challenge yet.");
+                Debug.LogWarning(LocalizationSystem.GetText("msg_tower_in_recovery"));
                 // In a real game, you'd show a user-facing message here
+                if (GameManager.Instance != null && GameManager.Instance.UINotificationManager != null)
+                {
+                    GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("msg_tower_in_recovery"));
+                }
                 return;
             }
             // If cooldown has passed, reset progress
@@ -131,7 +164,7 @@ namespace LegendOfBlood
             for (int floor = towerPoi.currentFloor; floor <= 20; floor++)
             {
                 var monsters = GetMonstersForTowerFloor(floor);
-                var floorResult = GameManager.Instance.CombatSystem.Simulate(participatingHeroes, monsters);
+                var floorResult = GameManager.Instance.CombatSystem.Simulate(participatingHeroes, monsters, floor);
 
                 finalCombatLog.Add($"<color=yellow>--- Tầng {floor} ---</color>");
                 finalCombatLog.AddRange(floorResult.CombatLog);

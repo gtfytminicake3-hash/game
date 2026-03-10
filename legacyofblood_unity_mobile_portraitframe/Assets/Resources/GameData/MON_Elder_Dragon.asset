@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e06e7483cd343f4c8994c68429c9f04, type: 3}
+  m_Name: MON_Elder_Dragon
+  m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.MonsterData
+  id: Elder Dragon
+  monsterName: "R\u1ED3ng C\u1ED5 \u0110\u1EA1i"
+  profession: 3
+  baseHp: 3000
+  baseAtk: 200
+  baseDef: 150
+  baseSpd: 25
+  critChance: 0.05
+  critDamage: 1.5

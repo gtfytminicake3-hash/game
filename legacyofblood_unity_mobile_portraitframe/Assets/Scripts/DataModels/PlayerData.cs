@@ -90,6 +90,9 @@ namespace LegendOfBlood
         public long lastDailyResetTimestamp;
         public long lastWeeklyResetTimestamp;
 
+        // --- NEW: Offline Progression ---
+        public long lastOfflineTimestamp;
+
         // --- EXISTING: For serialization ---
         public Dictionary<BuildingType, int> BuildingLevels;
 
@@ -114,6 +117,7 @@ namespace LegendOfBlood
             arenaTickets = 5;
             lastTicketRefreshTimestamp = 0;
             arenaCoins = 0;
+            lastOfflineTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
             // --- QUÀ TÂN THỦ: 10 VÉ CHIÊU MỘ ---
             var welcomeLoot = new LootData();

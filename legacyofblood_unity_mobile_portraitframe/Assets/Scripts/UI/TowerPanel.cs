@@ -56,7 +56,7 @@ namespace LegendOfBlood
 
                 GameObject itemObj = Instantiate(floorItemPrefab, contentParent);
                 var texts = itemObj.GetComponentsInChildren<TextMeshProUGUI>();
-                if (texts.Length > 0) texts[0].text = $"Tầng {i}";
+                if (texts.Length > 0) texts[0].text = string.Format(LocalizationSystem.GetText("tower_floor"), i);
 
                 var img = itemObj.GetComponent<Image>();
                 if (img != null)
@@ -84,25 +84,25 @@ namespace LegendOfBlood
             long remainingTime = _currentTowerData.recoveryEndTime - currentTime;
 
             if (currentFloorDetailText != null)
-                currentFloorDetailText.text = $"Tầng Hiện Tại: {_currentTowerData.currentFloor}";
+                currentFloorDetailText.text = string.Format(LocalizationSystem.GetText("tower_current_floor"), _currentTowerData.currentFloor);
             
             if (remainingTime > 0)
             {
                 TimeSpan timeSpan = TimeSpan.FromMilliseconds(remainingTime);
                 if (difficultyText != null) 
-                    difficultyText.text = string.Format("Hồi phục sau: {0:D2}:{1:D2}:{2:D2}", timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
+                    difficultyText.text = string.Format(LocalizationSystem.GetText("tower_recovery_time"), timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
                 if (enterButton != null) enterButton.interactable = false;
             }
             else
             {
-                if (difficultyText != null) difficultyText.text = "Sẵn sàng thi đấu!";
+                if (difficultyText != null) difficultyText.text = LocalizationSystem.GetText("tower_ready");
                 if (enterButton != null) enterButton.interactable = true;
             }
             
             if (monsterCountText != null) 
             {
                int monsterCount = 1 + (_currentTowerData.currentFloor / 5);
-               monsterCountText.text = $"Số lượng quái: {monsterCount}";
+               monsterCountText.text = string.Format(LocalizationSystem.GetText("tower_monster_count"), monsterCount);
             }
         }
 
@@ -115,7 +115,7 @@ namespace LegendOfBlood
             {
                 var availableHeroes = DataManager.Instance.AllHeroes.FindAll(h => h.isMature && !h.IsBusy());
                 squadPanel.Show(
-                    $"Thử Thách Tầng {_currentTowerData.currentFloor}",
+                    string.Format(LocalizationSystem.GetText("title_tower_challenge"), _currentTowerData.currentFloor),
                     availableHeroes, 5,
                     (selectedHeroIDs) => {
                         squadPanel.gameObject.SetActive(false);

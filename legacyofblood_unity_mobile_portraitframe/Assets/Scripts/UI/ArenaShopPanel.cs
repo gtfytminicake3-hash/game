@@ -31,9 +31,9 @@ namespace LegendOfBlood
 
             // Populate with new items (mock data for now)
             // In a real implementation, this would come from a config file or ScriptableObject
-            CreateShopItem("Thuốc Sức mạnh", 5000);
-            CreateShopItem("Sách Khai phá", 10000);
-            CreateShopItem("Đồng hồ Cát (1 giờ)", 200);
+            CreateShopItem(global::LocalizationSystem.GetText("item_IT_FERTILITY_POTION_name"), 5000);
+            CreateShopItem(global::LocalizationSystem.GetText("item_IT_EXP_BOOK_S_name"), 10000);
+            CreateShopItem(global::LocalizationSystem.GetText("item_IT_SPEEDUP_1H_name"), 200);
         }
 
         private void CreateShopItem(string itemName, int price)

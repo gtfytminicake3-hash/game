@@ -49,7 +49,7 @@ namespace LegendOfBlood.Managers
         private Dictionary<string, QuestData> _allQuests;
 
         [Header("Starting Quests")]
-        [SerializeField] private List<string> _startingQuestIds = new List<string>();
+        [SerializeField] private List<string> _startingQuestIds = new List<string> { "Q_T_01", "Q_T_02", "Q_T_03", "Q_T_04", "Q_D_01", "Q_D_02", "Q_W_01" };
 
         private void Start()
         {
@@ -68,6 +68,12 @@ namespace LegendOfBlood.Managers
             if (DataManager.Instance.Player.QuestStatuses == null)
             {
                 DataManager.Instance.Player.QuestStatuses = new List<PlayerQuestStatus>();
+            }
+
+            // Fallback in case Inspector overrides the default script values with an empty list
+            if (_startingQuestIds == null || _startingQuestIds.Count == 0)
+            {
+                _startingQuestIds = new List<string> { "Q_T_01", "Q_T_02", "Q_T_03", "Q_T_04", "Q_D_01", "Q_D_02", "Q_W_01" };
             }
 
             foreach (var questId in _startingQuestIds)

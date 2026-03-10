@@ -19,9 +19,9 @@ namespace LegendOfBlood
         {
             _itemData = itemData;
 
-            if (itemNameText != null) itemNameText.text = itemData.itemName;
+            if (itemNameText != null) itemNameText.text = global::LocalizationSystem.GetText(itemData.itemName);
             if (itemCountText != null) itemCountText.text = $"x{count}";
-            if (itemDescriptionText != null) itemDescriptionText.text = itemData.description;
+            if (itemDescriptionText != null) itemDescriptionText.text = global::LocalizationSystem.GetText(itemData.description);
             if (itemIcon != null && itemData.icon != null) itemIcon.sprite = itemData.icon;
 
             if (useButton != null)

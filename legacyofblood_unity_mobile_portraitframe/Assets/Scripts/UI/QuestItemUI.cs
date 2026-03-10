@@ -31,8 +31,8 @@ namespace LegendOfBlood.UI
                 return;
             }
 
-            if (titleText != null) titleText.text = _data.questName;
-            if (targetDescriptionText != null) targetDescriptionText.text = _data.description;
+            if (titleText != null) titleText.text = global::LocalizationSystem.GetText(_data.questName);
+            if (targetDescriptionText != null) targetDescriptionText.text = global::LocalizationSystem.GetText(_data.description);
             
             // Xử lý hiển thị tiến độ (ví dụ Kill 5/10)
             if (progressText != null)
@@ -71,10 +71,23 @@ namespace LegendOfBlood.UI
         {
             if (_status.state == QuestState.Completed)
             {
+                // Gọi hàm nhận thưởng thông qua GameManager
+                bool claimSuccess = true; // Có thể bắt return type nếu muốn an toàn hơn
                 GameManager.Instance.QuestManager.ClaimReward(_status.questId);
-                // Sau khi bấm nhận thưởng, thay đổi UI tại chỗ (Hoặc QuestPanel tự reload)
-                claimButton.gameObject.SetActive(false);
-                if (completedIndicator != null) completedIndicator.SetActive(true);
+                
+                if (claimSuccess)
+                {
+                    // Sau khi bấm nhận thưởng, thay đổi UI tại chỗ
+                    claimButton.gameObject.SetActive(false);
+                    if (completedIndicator != null) completedIndicator.SetActive(true);
+                    
+                    // Force refresh panel to rearrange the list
+                    var questPanel = GetComponentInParent<QuestPanel>();
+                    if (questPanel != null)
+                    {
+                        questPanel.RefreshQuestList(); // Update UI in parent
+                    }
+                }
             }
         }
     }

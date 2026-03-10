@@ -1,0 +1,9 @@
+﻿﻿Mã Item (ID),Tên Vật Phẩm,Mô Tả,Chủng Loại,Giá (Vàng),Giảm Thời Gian (SpeedUp Seconds)
+IT_FERTILITY_POTION,"Thuốc Mắn Đẻ","Uống vào (+2) lượt sinh sản. Tối đa 20 lượt cho 1 Hero.",Consumable,1000,0
+IT_SPEEDUP_1H,"Đồng Hồ 1H","Giảm thời gian chờ đi 1 Tiếng.",SpeedUp,100,3600
+IT_SPEEDUP_8H,"Đồng Hồ 8H","Giảm thời gian chờ đi 8 Tiếng.",SpeedUp,500,28800
+ITEM_MUTATION_POTION,"Thuốc Đột Biến SS","Tăng mạnh tỉ lệ xuất hiện Trait hiếm khi tham gia Lai Tạo.",BreedingMaterial,2000,0
+IT_MATURATION_POTION,"Quả Trưởng Thành","Giảm sốc thời gian chờ lớn lên của trẻ sơ sinh xuống 30 Phút.",SpeedUp,2000,999999
+IT_EXP_BOOK_S,"Sách Giáo Khoa","Cung cấp kinh nghiệm khi sử dụng. Rơi ngẫu nhiên.",Consumable,500,0
+IT_WISH_CHARM,"Bùa Ước Nguyện","Tăng tỉ lệ sinh ra một nghề nghiệp mong muốn khi lai tạo.",BreedingMaterial,3000,0
+IT_GACHA_TICKET,"Vé Chiêu Mộ","Vé dùng để chiêu mộ Anh Hùng mới.",Consumable,100,0

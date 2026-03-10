@@ -213,12 +213,12 @@ namespace LegendOfBlood
         /// <summary>
         /// Ẩn một panel cụ thể.
         /// </summary>
-        public void HidePanel(UIPanelType panelType)
+        public void HidePanel(UIPanelType type)
         {
-            if (_panelDictionary.TryGetValue(panelType, out GameObject panelToHide))
+            if (_panelDictionary.TryGetValue(type, out GameObject panelObj))
             {
-                panelToHide.SetActive(false);
-                if (_currentPanel == panelType)
+                panelObj.SetActive(false);
+                if (_currentPanel == type)
                 {
                     // Nếu panel bị ẩn là panel hiện tại, ta reset trạng thái về "không có panel nào"
                     _currentPanel = UIPanelType.None;
@@ -242,7 +242,7 @@ namespace LegendOfBlood
         /// Đóng panel hiện tại và quay lại panel trước đó trong lịch sử.
         /// Thường được gọi bởi nút "Back" hoặc "Close".
         /// </summary>
-        public void GoBack()
+        public bool GoBack()
         {
             if (_history.Count > 0)
             {
@@ -255,6 +255,20 @@ namespace LegendOfBlood
                 UIPanelType previousPanel = _history.Pop();
                 // Hiển thị lại panel trước đó, không ẩn gì cả vì panel hiện tại đã bị ẩn rồi
                 ShowPanel(previousPanel, false); 
+                return true;
+            }
+            return false;
+        }
+
+        public void RefreshAllActivePanels()
+        {
+            foreach (var kvp in _panelDictionary)
+            {
+                if (kvp.Value != null && kvp.Value.activeInHierarchy)
+                {
+                    kvp.Value.SetActive(false);
+                    kvp.Value.SetActive(true);
+                }
             }
         }
 
@@ -287,7 +301,7 @@ namespace LegendOfBlood
             if (DataManager.Instance == null || DataManager.Instance.AllBuildings == null) return;
 
             // Arena Unlock Condition
-            var mainHall = DataManager.Instance.AllBuildings.FirstOrDefault(b => b.id == "MainHall");
+            var mainHall = DataManager.Instance.AllBuildings.FirstOrDefault(b => b.id == "TownHall");
             if (mainHall != null && mainHall.level >= 5)
             {
                 IsArenaUnlocked = true;

@@ -8,8 +8,10 @@ namespace LegendOfBlood
     public class TraitUpgradePanel : MonoBehaviour
     {
         [Header("UI References")]
+        public TextMeshProUGUI panelTitleText;
         [Tooltip("Kéo thả nút Đóng vào đây")]
         public Button closeButton;
+        public TextMeshProUGUI closeButtonText;
         [Tooltip("Group chứa danh sách các Trait")]
         public Transform itemsContainer;
         [Tooltip("Prefab của 1 dòng hiển thị Trait (Cần 2 TextMeshProUGUI và 1 Button)")]
@@ -20,6 +22,9 @@ namespace LegendOfBlood
 
         private void Awake()
         {
+            if (panelTitleText != null) panelTitleText.text = global::LocalizationSystem.GetText("panel_title_trait_upgrade");
+            if (closeButtonText != null) closeButtonText.text = global::LocalizationSystem.GetText("btn_close");
+            
             AutoWire();
             if (closeButton != null) closeButton.onClick.AddListener(ClosePanel);
         }
@@ -84,12 +89,12 @@ namespace LegendOfBlood
                 TextMeshProUGUI[] texts = itemObj.GetComponentsInChildren<TextMeshProUGUI>();
                 if (texts.Length >= 2)
                 {
-                    texts[0].text = $"[{trait.rank}] {trait.traitName}";
-                    texts[1].text = trait.description;
+                    texts[0].text = $"[{trait.rank}] {LocalizationSystem.GetText(trait.traitName)}";
+                    texts[1].text = LocalizationSystem.GetText(trait.description);
                 }
                 else if (texts.Length == 1)
                 {
-                    texts[0].text = $"[{trait.rank}] {trait.traitName}\n<size=80%>{trait.description}</size>";
+                    texts[0].text = $"[{trait.rank}] {LocalizationSystem.GetText(trait.traitName)}\n<size=80%>{LocalizationSystem.GetText(trait.description)}</size>";
                 }
 
                 Button[] btns = itemObj.GetComponentsInChildren<Button>();

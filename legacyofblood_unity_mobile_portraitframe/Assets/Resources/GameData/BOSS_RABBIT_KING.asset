@@ -16,10 +16,10 @@ MonoBehaviour:
   bossName: "Vua Th\u1ECF Kh\u1ED5ng L\u1ED3"
   modelPrefab: {fileID: 0}
   level: 10
-  baseHp: 0
-  baseAtk: 0
-  baseDef: 0
-  baseSpd: 0
+  baseHp: 5000
+  baseAtk: 200
+  baseDef: 50
+  baseSpd: 150
   stats:
     hp: 5000
     atk: 200

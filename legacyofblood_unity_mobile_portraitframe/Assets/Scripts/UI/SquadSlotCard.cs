@@ -35,7 +35,10 @@ namespace LegendOfBlood
 
         private void Awake()
         {
-            slotButton.onClick.AddListener(OnSlotClicked);
+            if (slotButton != null)
+            {
+                slotButton.onClick.AddListener(OnSlotClicked);
+            }
         }
 
         /// <summary>

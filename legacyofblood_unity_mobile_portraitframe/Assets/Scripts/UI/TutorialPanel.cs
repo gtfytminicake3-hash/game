@@ -6,19 +6,25 @@ namespace LegendOfBlood
     public class TutorialPanel : UIPanel
     {
         [Header("UI References")]
+        [SerializeField] private UnityEngine.UI.Text panelTitleText;
         [SerializeField] private Button closeButton;
         [SerializeField] private Button nextButton;
+        [SerializeField] private UnityEngine.UI.Text nextButtonText;
         [SerializeField] private Button prevButton;
+        [SerializeField] private UnityEngine.UI.Text prevButtonText;
         [SerializeField] private UnityEngine.UI.Text tutorialText;
 
         private int currentStep = 0;
-        private string[] tutorialSteps = new string[]
+        private string[] GetTutorialSteps()
         {
-            "Chào mừng đến với Legend of Blood! Đây là doanh trại của bạn.",
-            "Tại đây bạn có thể xây dựng công trình, thu thập tài nguyên.",
-            "Dùng Trại Lính để tuyển mộ anh hùng và Tháp Huấn Luyện để tăng kĩ năng.",
-            "Hãy gửi các anh hùng đi Thám Hiểm để nhận về Vàng và Trang bị nhé!"
-        };
+            return new string[]
+            {
+                global::LocalizationSystem.GetText("tutorial_step_1"),
+                global::LocalizationSystem.GetText("tutorial_step_2"),
+                global::LocalizationSystem.GetText("tutorial_step_3"),
+                global::LocalizationSystem.GetText("tutorial_step_4")
+            };
+        }
 
         private void Awake()
         {
@@ -36,7 +42,7 @@ namespace LegendOfBlood
 
         private void NextStep()
         {
-            if (currentStep < tutorialSteps.Length - 1)
+            if (currentStep < GetTutorialSteps().Length - 1)
             {
                 currentStep++;
                 UpdateUI();
@@ -58,16 +64,20 @@ namespace LegendOfBlood
 
         private void UpdateUI()
         {
+            var tutorialSteps = GetTutorialSteps();
             if (tutorialText != null) tutorialText.text = tutorialSteps[currentStep];
             if (prevButton != null) prevButton.gameObject.SetActive(currentStep > 0);
             
-            if (nextButton != null)
+            if (panelTitleText != null) panelTitleText.text = global::LocalizationSystem.GetText("panel_title_tutorial");
+
+            if (nextButtonText != null)
             {
-                var btnText = nextButton.GetComponentInChildren<UnityEngine.UI.Text>();
-                if (btnText != null)
-                {
-                    btnText.text = (currentStep == tutorialSteps.Length - 1) ? "ĐÓNG" : "TIẾP THEO";
-                }
+                nextButtonText.text = (currentStep == tutorialSteps.Length - 1) ? global::LocalizationSystem.GetText("btn_close") : global::LocalizationSystem.GetText("btn_next");
+            }
+
+            if (prevButtonText != null)
+            {
+                prevButtonText.text = global::LocalizationSystem.GetText("btn_prev");
             }
         }
     }

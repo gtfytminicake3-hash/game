@@ -11,8 +11,11 @@ namespace LegendOfBlood
         [Header("UI References")]
         [SerializeField] private TextMeshProUGUI poiNameText;
         [SerializeField] private TextMeshProUGUI outcomeText;
+        [SerializeField] private TextMeshProUGUI rewardsText; // Thêm trường text phần thưởng
         [SerializeField] private Button claimButton;
+        [SerializeField] private TextMeshProUGUI claimButtonText;
         [SerializeField] private Button replayButton; // Thêm biến cho nút Xem Lại
+        [SerializeField] private TextMeshProUGUI replayButtonText;
 
         private ExpeditionReport _report;
         private Action _onClaimCallback;
@@ -40,7 +43,7 @@ namespace LegendOfBlood
             // Populate UI elements
             if (poiNameText != null)
             {
-                poiNameText.text = report.poiName;
+                poiNameText.text = global::LocalizationSystem.GetText(report.poiName);
             }
 
             if (outcomeText != null)
@@ -49,18 +52,47 @@ namespace LegendOfBlood
                 {
                     if (report.combatResult.DidPlayerWin)
                     {
-                        outcomeText.text = "<color=green>Victory</color>";
+                        outcomeText.text = global::LocalizationSystem.GetText("report_victory");
                     }
                     else
                     {
-                        outcomeText.text = "<color=red>Defeat</color>";
+                        outcomeText.text = global::LocalizationSystem.GetText("report_defeat");
                     }
                 }
                 else
                 {
-                    outcomeText.text = "<color=grey>Unknown Result</color>";
+                    outcomeText.text = global::LocalizationSystem.GetText("report_unknown");
                 }
             }
+
+            if (rewardsText != null)
+            {
+                if (report.combatResult != null && report.combatResult.DidPlayerWin && report.loot != null)
+                {
+                    string rs = string.Format(global::LocalizationSystem.GetText("report_rewards"), report.experienceGained, report.loot.gold);
+                    if (report.loot.items != null && report.loot.items.Count > 0)
+                    {
+                        foreach(var kvp in report.loot.items)
+                        {
+                            var itemData = DataManager.Instance.GameConfig.AllItems.Find(x => x.id == kvp.Key);
+                            string itemName = itemData != null ? global::LocalizationSystem.GetText(itemData.itemName) : kvp.Key;
+                            rs += $", {kvp.Value} {itemName}";
+                        }
+                    }
+                    if (report.loot.equipments != null && report.loot.equipments.Count > 0)
+                    {
+                        rs += $", {report.loot.equipments.Count} Trang bị";
+                    }
+                    rewardsText.text = rs;
+                }
+                else
+                {
+                    rewardsText.text = "";
+                }
+            }
+
+            if (claimButtonText != null) claimButtonText.text = global::LocalizationSystem.GetText("btn_claim");
+            if (replayButtonText != null) replayButtonText.text = global::LocalizationSystem.GetText("btn_replay");
 
             // Set up the claim button
             if (claimButton != null)

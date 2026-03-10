@@ -139,12 +139,12 @@ namespace LegendOfBlood
                 if (isTrait)
                 {
                     Trait trait = DataManager.Instance.GetTraitByID(id);
-                    if (trait != null) { itemName = trait.traitName; itemDescription = trait.description; }
+                    if (trait != null) { itemName = global::LocalizationSystem.GetText(trait.traitName); itemDescription = global::LocalizationSystem.GetText(trait.description); }
                 }
                 else
                 {
                     Skill skill = DataManager.Instance.GetSkillByID(id);
-                    if (skill != null) { itemName = skill.skillName; itemDescription = skill.description; }
+                    if (skill != null) { itemName = global::LocalizationSystem.GetText(skill.skillName); itemDescription = global::LocalizationSystem.GetText(skill.description); }
                 }
 
                 GameObject itemInstance = Instantiate(infoItemPrefab, container);

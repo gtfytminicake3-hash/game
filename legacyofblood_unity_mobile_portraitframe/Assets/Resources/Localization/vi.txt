@@ -133,3 +133,397 @@ stats_atk_format=ATK: {0}
 stats_def_format=DEF: {0}
 notification_feature_locked=Tính năng này chưa được mở khóa!
 poi_tower_name_format=Tháp {0}
+
+# --- Master Data: Traits ---
+trait_TR_ATK_D_name=Sức Mạnh Tân Binh
+trait_TR_ATK_D_desc=Tham gia quân ngũ. Lực Tay yếu +5 ATK.
+trait_TR_ATK_C_name=Sức Mạnh Chiến Binh
+trait_TR_ATK_C_desc=Rèn luyện qua năm tháng. +15 ATK.
+trait_TR_ATK_B_name=Tay To Hơn Não
+trait_TR_ATK_B_desc=Bắp tay to bự. +35 ATK.
+trait_TR_ATK_A_name=Uy Lực Cự Thạch
+trait_TR_ATK_A_desc=Đập vỡ đá chẻ núi. +100 ATK.
+trait_TR_ATK_S_name=Sức Mạnh Cự Thần
+trait_TR_ATK_S_desc=Gen đột biến Cự Thần. Tăng 20% ATK.
+trait_TR_ATK_SS_name=Quyền Vô Cực
+trait_TR_ATK_SS_desc=Tuyệt thế Vô Cực. Tăng 50% ATK.
+trait_TR_HP_D_name=Thể Chất Bình Thường
+trait_TR_HP_D_desc=+20 HP tối đa.
+trait_TR_HP_C_name=Thể Lực Dồi Dào
+trait_TR_HP_C_desc=+80 HP tối đa.
+trait_TR_HP_B_name=Thân Thể Cường Tráng
+trait_TR_HP_B_desc=+200 HP tối đa.
+trait_TR_HP_A_name=Máu Trâu Bò
+trait_TR_HP_A_desc=+500 HP tối đa.
+trait_TR_HP_S_name=Sinh Mệnh Cây Thần
+trait_TR_HP_S_desc=Tăng 20% HP.
+trait_TR_HP_SS_name=Bất Tử Ma Cốt
+trait_TR_HP_SS_desc=Tăng khủng khiếp 50% HP.
+trait_TR_DEF_D_name=Da Dày Mỏng
+trait_TR_DEF_D_desc=+2 DEF.
+trait_TR_DEF_C_name=Da Cỏ Đồng
+trait_TR_DEF_C_desc=+10 DEF.
+trait_TR_DEF_B_name=Da Thạch Trùng
+trait_TR_DEF_B_desc=+25 DEF.
+trait_TR_DEF_A_name=Da Thiết Giáp
+trait_TR_DEF_A_desc=+60 DEF.
+trait_TR_DEF_S_name=Kim Cang Bất Hoại
+trait_TR_DEF_S_desc=Tăng 20% DEF.
+trait_TR_SPD_D_name=Bước Chân Vội Vã
+trait_TR_SPD_D_desc=+2 SPD.
+trait_TR_SPD_C_name=Bước Chân Lì Lợm
+trait_TR_SPD_C_desc=+5 SPD.
+trait_TR_SPD_B_name=Nhanh Như Gió
+trait_TR_SPD_B_desc=+12 SPD.
+trait_TR_SPD_A_name=Thân Pháp Quỷ Ảnh
+trait_TR_SPD_A_desc=+30 SPD.
+trait_TR_SPD_S_name=Tốc Biến
+trait_TR_SPD_S_desc=Tăng 20% SPD.
+trait_D_08_name=Lớn Nhanh
+trait_D_08_desc=Giảm 20% thời gian trưởng thành.
+trait_TR_ALL_S_name=Hoàng Gia Chi Huyết
+trait_TR_ALL_S_desc=Là con cháu vương tôn. Tăng đồng đều 10% các chỉ số.
+trait_TR_ALL_SS_name=Long Tộc Hậu Duệ
+trait_TR_ALL_SS_desc=Huyết mạch loài Rồng sục sôi. Tăng đồng đều 25% các chỉ số.
+trait_S_04_name=Song Sinh Tiên Tri
+trait_S_04_desc=Tỉ lệ nhỏ (2%) sinh ra anh em sinh đôi khi lai tạo.
+trait_SS_07_name=Dòng Dõi Tinh Anh
+trait_SS_07_desc=Gen xuất chúng. Con cháu lai tạo có 10% cơ hội tăng 5% toàn bộ chỉ số cơ bản.
+trait_SSS_04_name=Kẻ Chọn Lọc Gene
+trait_SSS_04_desc=Thống trị chọn lọc. Có thể chủ động giữ lại 1 Trait chỉ định khi lai tạo.
+# --- Master Data: Skills ---
+skill_SK_WAR_DMG_1_name=Trảm Kích
+skill_SK_WAR_DMG_1_desc=Tấn công hàng trước cường lực.
+skill_SK_WAR_DMG_2_name=Cuồng Nộ Huyết
+skill_SK_WAR_DMG_2_desc=Bổ đôi kẻ thù, sát thương trí mạng.
+skill_SK_WAR_TANK_1_name=Gồng Mình
+skill_SK_WAR_TANK_1_desc=Tấn công diện rộng và tạo giảm thủ kẻ địch.
+skill_SK_WAR_TANK_2_name=Khiên Ảo
+skill_SK_WAR_TANK_2_desc=Tạo lớp khiên bảo vệ cho bản thân.
+skill_SK_ARC_FIRE_1_name=Tiễn Hỏa
+skill_SK_ARC_FIRE_1_desc=Bắn mũi tên rực lửa, gây độc(Burn).
+skill_SK_ARC_FIRE_2_name=Mưa Hỏa Tiễn
+skill_SK_ARC_FIRE_2_desc=Bắn 3 mục tiêu ngẫu nhiên, tỉ lệ thiêu đốt cao.
+skill_SK_ARC_ICE_1_name=Tiễn Băng
+skill_SK_ARC_ICE_1_desc=Mũi tên lạnh giá làm chậm kẻ địch.
+skill_SK_ARC_NATURE_1_name=Mũi Tên Độc
+skill_SK_ARC_NATURE_1_desc=Bắn mũi tên tẩm độc gây sát thương theo thời gian.
+skill_SK_MAG_ICE_1_name=Bão Tuyết
+skill_SK_MAG_ICE_1_desc=Triệu hồi bão tuyết đóng băng toàn bộ kẻ địch.
+skill_SK_MAG_FIRE_1_name=Thiên Thạch
+skill_SK_MAG_FIRE_1_desc=Giáng quả cầu lửa khổng lồ, thiêu đốt địch.
+skill_SK_HEA_SINGLE_1_name=Hồi Phục
+skill_SK_HEA_SINGLE_1_desc=Chữa trị vết thương cho đồng minh yếu nhất.
+skill_SK_HEA_AOE_1_name=Thân Lạc Dược
+skill_SK_HEA_AOE_1_desc=Làn gió mát hồi máu toàn đội Hình.
+skill_SK_HEA_BUFF_1_name=Thánh Quang
+skill_SK_HEA_BUFF_1_desc=Ban phước làm tăng trí mạng cho đồng đội.
+# --- Master Data: Items ---
+item_IT_FERTILITY_POTION_name=Thuốc Mắn Đẻ
+item_IT_FERTILITY_POTION_desc=Uống vào (+2) lượt sinh sản. Tối đa 20 lượt cho 1 Hero.
+item_IT_SPEEDUP_1H_name=Đồng Hồ 1H
+item_IT_SPEEDUP_1H_desc=Giảm thời gian chờ đi 1 Tiếng.
+item_IT_SPEEDUP_8H_name=Đồng Hồ 8H
+item_IT_SPEEDUP_8H_desc=Giảm thời gian chờ đi 8 Tiếng.
+item_ITEM_MUTATION_POTION_name=Thuốc Đột Biến SS
+item_ITEM_MUTATION_POTION_desc=Tăng mạnh tỉ lệ xuất hiện Trait hiếm khi tham gia Lai Tạo.
+item_IT_MATURATION_POTION_name=Quả Trưởng Thành
+item_IT_MATURATION_POTION_desc=Giảm sốc thời gian chờ lớn lên của trẻ sơ sinh xuống 30 Phút.
+item_IT_EXP_BOOK_S_name=Sách Giáo Khoa
+item_IT_EXP_BOOK_S_desc=Cung cấp kinh nghiệm khi sử dụng. Rơi ngẫu nhiên.
+item_IT_WISH_CHARM_name=Bùa Ước Nguyện
+item_IT_WISH_CHARM_desc=Tăng tỉ lệ sinh ra một nghề nghiệp mong muốn khi lai tạo.
+item_IT_GACHA_TICKET_name=Vé Chiêu Mộ
+item_IT_GACHA_TICKET_desc=Vé dùng để chiêu mộ Anh Hùng mới.
+# --- Master Data: Quests ---
+quest_Q_T_01_name=Chạm Trán Quái Vật
+quest_Q_T_01_desc=Tiêu thụ Thể Lực khám phá POI 1 lần.
+quest_Q_T_02_name=Dòng Dõi Hoàng Gia
+quest_Q_T_02_desc=Thực hiện Lai Tạo và có em bé đầu tay.
+quest_Q_T_03_name=Cố Thủ Làng
+quest_Q_T_03_desc=Nâng cấp Nhà Chính TownHall lên Cấp 2.
+quest_Q_T_04_name=Bệnh Viện Y Tế
+quest_Q_T_04_desc=Nâng cấp Bệnh Viện lên Cấp 2.
+quest_Q_D_01_name=Dọn Dẹp Quái Vật
+quest_Q_D_01_desc=Khám phá và chiến đấu tại bất kỳ vùng đất nào 3 lần.
+quest_Q_D_02_name=Duy Trì Sinh Sôi
+quest_Q_D_02_desc=Thực hiện Lai Tạo 1 lần.
+quest_Q_W_01_name=Tuyển Mộ Diện Rộng
+quest_Q_W_01_desc=Chiêu mộ tổng cộng 10 Anh Hùng mới.
+# --- Master Data: Bosses ---
+boss_BOSS_RABBIT_KING_name=Vua Thỏ Khổng Lồ
+boss_BOSS_RABBIT_KING_atk1=Cú Đá Sấm Sét
+boss_BOSS_RABBIT_KING_atk2=Động Đất Mini
+boss_BOSS_RABBIT_KING_mech_name=Da Dày
+boss_BOSS_RABBIT_KING_mech_desc=Giảm sát thương nhận vào nếu nhát chém dưới 50 ATK
+boss_BOSS_ANGRY_TURKEY_name=Gà Tây Phẫn Nộ
+boss_BOSS_ANGRY_TURKEY_atk1=Mổ Điên Cuồng
+boss_BOSS_ANGRY_TURKEY_atk2=Tiếng Gáy Đinh Tai
+boss_BOSS_ANGRY_TURKEY_mech_name=Điên Cuồng
+boss_BOSS_ANGRY_TURKEY_mech_desc=Tăng mạnh tốc đánh khi máu dưới 30%
+boss_BOSS_ALPHA_WOLF_name=Sói Chóp Bu
+boss_BOSS_ALPHA_WOLF_atk1=Cắn Xé
+boss_BOSS_ALPHA_WOLF_atk2=Lang Quần Gọi bầy
+boss_BOSS_ALPHA_WOLF_mech_name=Tái Sinh Lỗi
+boss_BOSS_ALPHA_WOLF_mech_desc=Hồi dòng máu lớn mỗi lượt
+# --- Master Data: Monsters ---
+monster_Slime_name=Cục Nhầy Slime
+monster_Goblin_name=Yêu Tinh Rừng
+monster_Orc_Warrior_name=Chiến Binh Orc
+monster_Orc_Shaman_name=Phù Thủy Orc
+monster_Troll_name=Quỷ Tượng Khổng Lồ
+monster_Fire_Elemental_name=Hỏa Linh Không Tướng
+monster_Golem_name=Thạch Nhân
+monster_Dragon_Whelp_name=Rồng Con
+monster_Elder_Dragon_name=Rồng Cổ Đại
+# --- Master Data: Evolution Table ---
+evo_reward_30=Mở khóa Nhánh Nghề (Chọn 1 Trait hệ)
+evo_reward_50=Nhận kỹ năng Active Level 2
+evo_reward_70=Đột phá Bậc Hiếm Trait ngẫu nhiên
+evo_reward_100=Hóa Thần! Chọn 1 Trait bậc S trở lên
+# --- Master Data: POI Config ---
+poi_group_Mud_Monster_Camp=Bãi Quái Bùn
+poi_group_Orc_Barracks=Doanh Trại Orc
+poi_group_Black_Dragon_Tomb=Lăng Mộ Rồng Đen
+
+building_upgrade_title_format=Nâng cấp {0}
+building_upgrade_info_format=Cấp độ hiện tại: {0}\nCấp độ tiếp theo: {1}
+building_max_level=Đã đạt cấp tối đa
+building_upgrade_cost_format=Giá: {0} Vàng
+building_upgrade_started_format=Đã yêu cầu xây dựng {0}
+building_TownHall=Nhà Chính
+building_Hospital=Bệnh Viện
+building_Barrack=Trại Huấn Luyện
+building_Arena=Đấu Trường
+
+settings_title=Cài Đặt
+
+btn_close=Đóng
+btn_upgrade=Nâng Cấp
+btn_change_language=Đổi Ngôn Ngữ
+
+btn_breed=Nhân Giống
+btn_confirm=Xác Nhận
+btn_select_father=Chọn Cha
+btn_select_mother=Chọn Mẹ
+btn_manage_population=Quản Lý Dân Số
+btn_challenge=Thách Đấu
+btn_leaderboard=Bảng Xếp Hạng
+btn_shop=Cửa Hàng
+m s g _ m a x _ e x p e d i t i o n _ r e a c h e d = �   �t   g i �i   h �n   s �  �i   v i �n   c h i n h .   H � y   n � n g   c �p   D o a n h   T r �i .  
+ n o t i f i c a t i o n _ n o t _ e n o u g h _ c u r r e n c y = K h � n g   �  V �   C h i � u   M �  h o �c   K i m   C ��n g !  
+ n o t i f i c a t i o n _ r e c r u i t _ s u c c e s s = C h i � u   m �  t h � n h   c � n g   { 0 } !  
+ n o t i f i c a t i o n _ r e c r u i t _ m u l t i _ s u c c e s s = C h i � u   m �  t h � n h   c � n g   { 0 }   a n h   h � n g   m �i !  
+ a r e n a _ r a n k = H �n g  
+ a r e n a _ p o i n t s = i �m :   { 0 }  
+ a r e n a _ t i c k e t s = V � :   { 0 }  
+ m s g _ n o t _ e n o u g h _ a r e n a _ t i c k e t s = K h � n g   �  v �   �u   t r ��n g !  
+ m s g _ n o t _ e n o u g h _ h e r o e s = K h � n g   �  t ��n g   s �n   s � n g !  
+ t i t l e _ s e l e c t _ a r e n a _ s q u a d = C h �n   �i   h � n h   �u   t r ��n g  
+ m s g _ a r e n a _ w i n _ r e s u l t = T h �n g !   + 2 5   i �m ,   + 3 0   H u y   h i �u  
+ m s g _ a r e n a _ l o s e _ r e s u l t = T h u a !   - 2 0   i �m ,   + 1 0   H u y   h i �u  
+ u i _ b o s s _ n o r m a l _ a t k = < c o l o r = o r a n g e > [ � n h   T h ��n g ] < / c o l o r >   { 0 }   ( x { 1 } )  
+ u i _ b o s s _ a o e _ a t k = < c o l o r = r e d > [ T u y �t   K �] < / c o l o r >   { 0 }   ( x { 1 } )  
+ t i t l e _ c h a l l e n g e _ b o s s = K h i � u   C h i �n :   { 0 }  
+ t o w e r _ f l o o r = T �n g   { 0 }  
+ t o w e r _ c u r r e n t _ f l o o r = T �n g   H i �n   T �i :   { 0 }  
+ t o w e r _ r e c o v e r y _ t i m e = H �i   p h �c   s a u :   { 0 : D 2 } : { 1 : D 2 } : { 2 : D 2 }  
+ t o w e r _ r e a d y = S �n   s � n g   t h i   �u !  
+ t o w e r _ m o n s t e r _ c o u n t = S �  l ��n g   q u � i :   { 0 }  
+ t i t l e _ t o w e r _ c h a l l e n g e = T h �  T h � c h   T �n g   { 0 }  
+ e q u i p _ l e v e l _ m a x = C �p :   M A X  
+ e q u i p _ l e v e l = C �p :   { 0 }  
+ e q u i p _ e x p _ m a x = E X P :   �t   G i �i   H �n  
+ e q u i p _ e x p _ p r o g r e s s = E X P :   { 0 }   /   { 1 }  
+ m s g _ e q u i p _ m a x _ l e v e l = T r a n g   b �  �   �t   c �p   t �i   a !  
+ m s g _ n o _ f o d d e r _ e q u i p = K h � n g   c �   t r a n g   b �  r � c   ( 1   S a o ,   c �p   1 )   �  c ��n g   h � a !  
+ m s g _ u p g r a d e _ e q u i p _ s u c c e s s = C ��n g   h � a   t h � n h   c � n g !   �   t i � u   t h �  { 0 }   t r a n g   b �.  
+ c o m b a t _ l o g _ s t a r t = < b > T r �n   �u   b �t   �u ! < / b >  
+ c o m b a t _ l o g _ a u r a _ p l a y e r = < c o l o r = c y a n > �i   h � n h   n g ��i   c h �i   n h �n   H � o   q u a n g   ( + 1 0 %   A T K ) . < / c o l o r >  
+ c o m b a t _ l o g _ a u r a _ e n e m y = < c o l o r = c y a n > �i   h � n h   �c h   n h �n   H � o   q u a n g   ( + 1 0 %   A T K ) . < / c o l o r >  
+ c o m b a t _ l o g _ p l a y e r _ t e a m = �i   h � n h   n g ��i   c h �i  
+ c o m b a t _ l o g _ e n e m y _ t e a m = �i   h � n h   �c h  
+ c o m b a t _ l o g _ t u r n _ h e a d e r = \ n < c o l o r = y e l l o w > - - -   V � n g   { 0 }   - - - < / c o l o r >  
+ c o m b a t _ l o g _ d r a w _ t i m e o u t = T r �n   �u   q u �   d � i ,   k �t   q u �  h � a !  
+ c o m b a t _ l o g _ v i c t o r y = \ n < c o l o r = g r e e n > < b > C H I �N   T H �N G ! < / b > < / c o l o r >  
+ c o m b a t _ l o g _ d e f e a t = \ n < c o l o r = r e d > < b > T H �T   B �I ! < / b > < / c o l o r >  
+ c o m b a t _ l o g _ s k i l l _ c a s t = < c o l o r = l i g h t b l u e > { 0 }   d � n g   k �  n n g   [ { 1 } ] ! < / c o l o r >  
+ c o m b a t _ l o g _ p r e d a t o r _ t r i g g e r = < c o l o r = r e d > K � c h   h o �t   K �  S n   M �i ! < / c o l o r >  
+ c o m b a t _ l o g _ a t t a c k _ n o r m a l = { 0 }   t �n   c � n g   { 1 } ,   g � y   < c o l o r = r e d > { 2 } < / c o l o r >   s � t   t h ��n g .  
+ c o m b a t _ l o g _ a t t a c k _ c r i t =   < c o l o r = o r a n g e > ( C h �   m �n g ! ) < / c o l o r >  
+ c o m b a t _ l o g _ d e a t h = < c o l o r = g r e y > { 0 }   �   b �  h �  g �c ! < / c o l o r >  
+ c o m b a t _ l o g _ c l e a n s e = { 0 }   t h a n h   t �y   h i �u   �n g   x �u   c h o   { 1 } .  
+ c o m b a t _ l o g _ h e a l = { 0 }   h �i   < c o l o r = g r e e n > { 1 } < / c o l o r >   H P   c h o   { 2 } .  
+ c o m b a t _ l o g _ s t a t u s _ a p p l i e d = { 0 }   b �  �n h   h ��n g   b �i   < c o l o r = m a g e n t a > { 1 } < / c o l o r >   t r o n g   { 2 }   l ��t .  
+ c o m b a t _ l o g _ p o i s o n _ t i c k = { 0 }   n h �n   < c o l o r = p u r p l e > { 1 } < / c o l o r >   s � t   t h ��n g   t �  �c .  
+ c o m b a t _ l o g _ r e g e n _ t i c k = { 0 }   ��c   h �i   < c o l o r = g r e e n > { 1 } < / c o l o r >   H P   t �  H �i   P h �c .  
+ c o m b a t _ l o g _ t r a i t _ r e g e n = { 0 }   t �  h �i   < c o l o r = g r e e n > { 1 } < / c o l o r >   H P   n h �  t r a i t   T � i   S i n h .  
+ c o m b a t _ l o g _ r o w _ f r o n t = H � n g   t r ��c :   { 0 }  
+ c o m b a t _ l o g _ r o w _ m i d = H � n g   g i �a :   { 0 }  
+ c o m b a t _ l o g _ r o w _ b a c k = H � n g   s a u :   { 0 }  
+ c o m b a t _ l o g _ r o w _ e m p t y = T r �n g  
+ m s g _ t o w e r _ i n _ r e c o v e r y = T h � p   a n g   t r o n g   t h �i   g i a n   h �i   p h �c .   C h �a   t h �  k h i � u   c h i �n   m �i .  
+ u i _ s h o w _ n o t i f i c a t i o n _ e r r o r = P r e f a b   t h � n g   b � o   U I   k h � n g   t �n   t �i !  
+ p a n e l _ t i t l e _ b a r r a c k = Q U �N   L �   T ��N G   ( B A R R A C K )  
+ p a n e l _ t i t l e _ h o s p i t a l = B �N H   V I �N  
+ l a b e l _ s e v e r e _ i n j u r y = K h u   V �c   C h m   S � c   �c   B i �t   ( T h ��n g   N �n g )  
+ l a b e l _ l i g h t _ i n j u r y = K h u   V �c   H �i   S �c   ( T h ��n g   N h �)  
+ p a n e l _ t i t l e _ b r e e d i n g = L A I   T �O   T ��N G  
+ b t n _ e x p l o r e = K h � m   P h �  
+ b t n _ c l o s e = � n g  
+ r e p o r t _ v i c t o r y = < c o l o r = g r e e n > C h i �n   T h �n g < / c o l o r >  
+ r e p o r t _ d e f e a t = < c o l o r = r e d > T h �t   B �i < / c o l o r >  
+ r e p o r t _ u n k n o w n = < c o l o r = g r e y > K h � n g   r �   k �t   q u �< / c o l o r >  
+ b t n _ c l a i m = N h �n  
+ b t n _ r e p l a y = X e m   L �i  
+ p a n e l _ t i t l e _ m a i l b o x = H � M   T H � 
+ b t n _ c l a i m _ a l l = N h �n   T �t   C � 
+ r e p o r t _ r e w a r d s = N h �n   ��c :   { 0 }   E X P ,   { 1 }   V � n g  
+ p a n e l _ t i t l e _ q u e s t = N H I �M   V � 
+ t a b _ m a i n _ q u e s t = C h � n h  
+ t a b _ d a i l y _ q u e s t = H � n g   N g � y  
+ t a b _ w e e k l y _ q u e s t = H � n g   T u �n  
+ t u t o r i a l _ s t e p _ 1 = C h � o   m �n g   �n   v �i   L e g e n d   o f   B l o o d !   � y   l �   c n   c �  c �a   b �n .  
+ t u t o r i a l _ s t e p _ 2 = T �i   � y   b �n   c �   t h �  x � y   d �n g   c � n g   t r � n h ,   t h u   t h �p   t � i   n g u y � n .  
+ t u t o r i a l _ s t e p _ 3 = D � n g   D o a n h   T r �i   �  t u y �n   m �  a n h   h � n g   v �   T h � p   H u �n   L u y �n   �  t n g   k )  n n g .  
+ t u t o r i a l _ s t e p _ 4 = H � y   g �i   c � c   a n h   h � n g   i   K h � m   P h �   �  n h �n   v �  V � n g   v �   T r a n g   b �  n h � !  
+ b t n _ n e x t = T I �P   T H E O  
+ b t n _ p r e v = L � I   L �I  
+ p a n e l _ t i t l e _ t u t o r i a l = H ��N G   D �N   T � N   T H � 
+ b o o t l o a d e r _ i n i t = a n g   K h �i   T �o   C o r e   S y s t e m s . . .  
+ b o o t l o a d e r _ l o a d _ d a t a = a n g   N �p   D �  L i �u   &   T �  i �n . . .  
+ b o o t l o a d e r _ t a p _ t o _ s t a r t = N H �N   �  B �T   �U  
+ b t n _ s k i p = B �  Q U A  
+ c o m b a t _ r e s u l t _ t i t l e = K �T   Q U � 
+ b t n _ b a c k _ t o _ v i l l a g e = T r �  L �i   L � n g   ( � n g )  
+ p a n e l _ t i t l e _ s t a t _ a l l o c = C �N G   I �M  
+ l a b e l _ f r e e _ p o i n t s = i �m   T �  D o :   { 0 }  
+ b t n _ c o n f i r m = X � C   N H �N  
+ p a n e l _ t i t l e _ t r a i t _ u p g r a d e = N � N G   C �P   �C   T � N H  
+ bootloader_init=�ang Kh?i T?o Core Systems...
+bootloader_load_data=�ang N?p D? Li?u & T? �i?n...
+Thu Ch�o M?ng T�n Th?=Thu Ch�o M?ng T�n Th?
+report_rewards=Nh?n du?c: {0} EXP, {1} V�ng
+V� Chi�u M?=V� Chi�u M?
+btn_claim=Nh?n
+btn_replay=Xem L?i
+panel_title_mailbox=H�M THU
+btn_claim_all=Nh?n T?t C?
+Ch?m Tr�n Qu�i V?t=Ch?m Tr�n Qu�i V?t
+Ti�u th? Th? L?c kh�m ph� POI 1 l?n.=Ti�u th? Th? L?c kh�m ph� POI 1 l?n.
+D�ng D�i Ho�ng Gia=D�ng D�i Ho�ng Gia
+Th?c hi?n Lai T?o v� c� em b� d?u tay.=Th?c hi?n Lai T?o v� c� em b� d?u tay.
+C? Th? L�ng=C? Th? L�ng
+N�ng c?p Nh� Ch�nh TownHall l�n C?p 2.=N�ng c?p Nh� Ch�nh Barrack l�n C?p 2.
+B?nh Vi?n Y T?=B?nh Vi?n Y T?
+N�ng c?p B?nh Vi?n l�n C?p 2.=N�ng c?p B?nh Vi?n l�n C?p 2.
+Dungeon #85=Dungeon #85
+Rescue Mission #204=Rescue Mission #204
+notification_not_enough_currency=Kh�ng d? t�i nguy�n!
+mailbox_loot_claimed=�� nh?n ph?n thu?ng: {0}
+notification_recruit_success=Chi�u m? th�nh c�ng!
+notification_population_full=D�n s? d� d?t gi?i h?n! Xin h�y n�ng c?p Barrack.
+
+arena_points=Điểm Arena
+arena_rank=Hạng Arena
+arena_tickets=Vé Arena
+bootloader_init=Đang khởi tạo cốt lõi...
+bootloader_tap_to_start=Chạm để Bắt Đầu
+btn_back_to_village=Về Làng
+btn_explore=Khám Phá
+btn_next=Tiếp
+btn_prev=Trở Lại
+btn_skip=Bỏ Qua
+combat_log_attack_crit=Tấn công chí mạng
+combat_log_attack_normal=Tấn công thường
+combat_log_aura_enemy=Hào quang địch
+combat_log_aura_player=Hào quang ta
+combat_log_cleanse=Thanh tẩy
+combat_log_death=Tử vong
+combat_log_defeat=Thất bại
+combat_log_draw_timeout=Hòa (hết giờ)
+combat_log_enemy_team=Đội hình địch
+combat_log_heal=Hồi máu
+combat_log_player_team=Đội hình ta
+combat_log_poison_tick=Trúng độc
+combat_log_predator_trigger=Kích hoạt Predator
+combat_log_regen_tick=Hồi phục
+combat_log_row_back=Hàng sau
+combat_log_row_empty=Hàng trống
+combat_log_row_front=Hàng tiền đạo
+combat_log_row_mid=Hàng giữa
+combat_log_skill_cast=Dùng kỹ năng
+combat_log_start=Bắt đầu chiến đấu
+combat_log_status_applied=Dính trạng thái
+combat_log_trait_regen=Hồi phục nội tại
+combat_log_turn_header=Lượt {0}
+combat_log_victory=Chiến thắng
+combat_result_title=Kết quả chiến đấu
+equip_exp_max=Kinh nghiệm trang bị (Tối đa)
+equip_exp_progress=Kinh nghiệm trang bị ({0}/{1})
+equip_level=Cấp độ trang bị: {0}
+equip_level_max=Cấp độ trang bị: Tối đa
+gold_cost_format={0} Vàng
+heal_light=Chữa trị nhẹ
+heal_severe=Chữa trị nặng
+hero_dismissed_success=Đã sa thải {0}
+hospital_hero_healed_format=Đã chữa khỏi cho {0}
+inventory_item_used_success=Sử dụng vật phẩm thành công
+label_free_points=Điểm tự do: {0}
+label_light_injury=Chấn thương nhẹ
+label_severe_injury=Chấn thương nặng
+msg_arena_lose_result=Bạn đã thua
+msg_arena_win_result=Bạn đã thắng
+msg_equip_max_level=Trang bị đã đạt cấp tối đa
+msg_max_expedition_reached=Đã đạt giới hạn thám hiểm
+msg_no_fodder_equip=Không có trang bị vật liệu
+msg_not_enough_arena_tickets=Không đủ vé Arena
+msg_not_enough_heroes=Không đủ anh hùng
+msg_tower_in_recovery=Tháp đang trong thời gian hồi phục
+msg_upgrade_equip_success=Nâng cấp trang bị thành công
+notification_building_already_upgrading=Công trình đang được nâng cấp
+notification_building_max_level=Công trình đã đạt cấp tối đa
+notification_not_enough_mutation_potion=Không đủ thuốc đột biến
+notification_not_enough_resources=Không đủ tài nguyên
+notification_recruit_multi_success=Chiêu mộ thành công {0} anh hùng
+panel_title_barrack=BARRACK
+panel_title_breeding=LAI TẠO
+panel_title_hospital=BỆNH VIỆN
+panel_title_quest=NHIỆM VỤ
+panel_title_stat_alloc=CỘNG ĐIỂM
+panel_title_trait_upgrade=NÂNG CẤP ĐẶC ĐIỂM
+panel_title_tutorial=HƯỚNG DẪN
+population_count_format=Dân số: {0}/{1}
+profession_selection_title=Chọn nghề cho {0}
+ready=Sẵn sàng
+report_defeat=Thất bại
+report_unknown=Chưa rõ
+report_victory=Chiến thắng
+stats_dmg_increase_format=Tăng ST: {0}%
+stats_dmg_reduction_format=Giảm ST: {0}%
+stats_evasion_format=Né tránh: {0}%
+stats_spd_format=Tốc độ: {0}
+tab_daily_quest=Hàng ngày
+tab_main_quest=Chính
+tab_weekly_quest=Hàng tuần
+time_left_format=Còn {0}
+title_challenge_boss=Thách Đấu Boss
+title_select_arena_squad=Chọn đội hình Arena
+title_tower_challenge=Thử Thách Tháp Tầng {0}
+tower_current_floor=Tầng Hiện Tại: {0}
+tower_current_floor_format=Tầng: {0}
+tower_floor=Tầng {0}
+tower_monster_count=Số lượng quái: {0}
+tower_ready=Sẵn sàng khiêu chiến!
+tower_recovery_time=Hồi phục trong: {0:D2}:{1:D2}:{2:D2}
+tutorial_step_1=Chào mừng đến với thế giới của chúng tôi!
+tutorial_step_2=Hãy bắt đầu xây dựng quân đội của bạn.
+tutorial_step_3=Chiến đấu với quái vật để nhận phần thưởng.
+tutorial_step_4=Chúc may mắn trên con đường chinh phục!
+ui_boss_aoe_atk=Boss đánh diện rộng
+ui_boss_normal_atk=Boss đánh thường
+
+building_BreedingPen=Khu Lai Tạo
+building_Hospital=Bệnh Viện
+building_TownHall=Trại Lính
+building_Barrack=Trại Lính

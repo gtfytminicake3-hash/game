@@ -133,3 +133,396 @@ stats_atk_format=ATK: {0}
 stats_def_format=DEF: {0}
 notification_feature_locked=This feature is locked!
 poi_tower_name_format=Tower of {0}
+
+# --- Master Data: Traits ---
+trait_TR_ATK_D_name=Rookie Strength
+trait_TR_ATK_D_desc=Joined the army. Weak arm strength. +5 ATK.
+trait_TR_ATK_C_name=Warrior Strength
+trait_TR_ATK_C_desc=Trained over the years. +15 ATK.
+trait_TR_ATK_B_name=Brawn Over Brains
+trait_TR_ATK_B_desc=Huge biceps. +35 ATK.
+trait_TR_ATK_A_name=Giant Rock Power
+trait_TR_ATK_A_desc=Can shatter rocks and mountains. +100 ATK.
+trait_TR_ATK_S_name=Titan Strength
+trait_TR_ATK_S_desc=Mutant Titan genes. Increases ATK by 20%.
+trait_TR_ATK_SS_name=Infinite Fist
+trait_TR_ATK_SS_desc=Peerless infinite power. Increases ATK by 50%.
+trait_TR_HP_D_name=Normal Constitution
+trait_TR_HP_D_desc=+20 Max HP.
+trait_TR_HP_C_name=Abundant Stamina
+trait_TR_HP_C_desc=+80 Max HP.
+trait_TR_HP_B_name=Robust Body
+trait_TR_HP_B_desc=+200 Max HP.
+trait_TR_HP_A_name=Buffalo Blood
+trait_TR_HP_A_desc=+500 Max HP.
+trait_TR_HP_S_name=Divine Tree Life
+trait_TR_HP_S_desc=Increases HP by 20%.
+trait_TR_HP_SS_name=Immortal Demon Bone
+trait_TR_HP_SS_desc=Massively increases HP by 50%.
+trait_TR_DEF_D_name=Thin Thick Skin
+trait_TR_DEF_D_desc=+2 DEF.
+trait_TR_DEF_C_name=Copper Grass Skin
+trait_TR_DEF_C_desc=+10 DEF.
+trait_TR_DEF_B_name=Rock Bug Skin
+trait_TR_DEF_B_desc=+25 DEF.
+trait_TR_DEF_A_name=Iron Armor Skin
+trait_TR_DEF_A_desc=+60 DEF.
+trait_TR_DEF_S_name=Indestructible Vajra
+trait_TR_DEF_S_desc=Increases DEF by 20%.
+trait_TR_SPD_D_name=Hurried Footsteps
+trait_TR_SPD_D_desc=+2 SPD.
+trait_TR_SPD_C_name=Stubborn Footsteps
+trait_TR_SPD_C_desc=+5 SPD.
+trait_TR_SPD_B_name=Swift as Wind
+trait_TR_SPD_B_desc=+12 SPD.
+trait_TR_SPD_A_name=Phantom Steps
+trait_TR_SPD_A_desc=+30 SPD.
+trait_TR_SPD_S_name=Flash Step
+trait_TR_SPD_S_desc=Increases SPD by 20%.
+trait_D_08_name=Fast Grower
+trait_D_08_desc=Reduces maturation time by 20%.
+trait_TR_ALL_S_name=Royal Blood
+trait_TR_ALL_S_desc=Descendant of royalty. Increases all stats evenly by 10%.
+trait_TR_ALL_SS_name=Dragon Descendant
+trait_TR_ALL_SS_desc=Boiling dragon bloodline. Increases all stats evenly by 25%.
+trait_S_04_name=Twin Oracle
+trait_S_04_desc=Small chance (2%) to give birth to twins when breeding.
+trait_SS_07_name=Elite Lineage
+trait_SS_07_desc=Outstanding genes. Offspring have a 10% chance to increase all base stats by 5%.
+trait_SSS_04_name=Gene Selector
+trait_SSS_04_desc=Dominant selection. Can actively retain 1 specified Trait when breeding.
+# --- Master Data: Skills ---
+skill_SK_WAR_DMG_1_name=Slash
+skill_SK_WAR_DMG_1_desc=Strong attack on the front row.
+skill_SK_WAR_DMG_2_name=Blood Rage
+skill_SK_WAR_DMG_2_desc=Cleaves the enemy, causing critical damage.
+skill_SK_WAR_TANK_1_name=Brace
+skill_SK_WAR_TANK_1_desc=Area attack that reduces enemy defense.
+skill_SK_WAR_TANK_2_name=Phantom Shield
+skill_SK_WAR_TANK_2_desc=Creates a protective shield for self.
+skill_SK_ARC_FIRE_1_name=Fire Arrow
+skill_SK_ARC_FIRE_1_desc=Shoots a flaming arrow, causing burn.
+skill_SK_ARC_FIRE_2_name=Rain of Fire
+skill_SK_ARC_FIRE_2_desc=Shoots 3 random targets, high chance of burning.
+skill_SK_ARC_ICE_1_name=Ice Arrow
+skill_SK_ARC_ICE_1_desc=Freezing arrow that slows the enemy.
+skill_SK_ARC_NATURE_1_name=Poison Arrow
+skill_SK_ARC_NATURE_1_desc=Shoots a poisoned arrow dealing damage over time.
+skill_SK_MAG_ICE_1_name=Blizzard
+skill_SK_MAG_ICE_1_desc=Summons a blizzard freezing all enemies.
+skill_SK_MAG_FIRE_1_name=Meteor
+skill_SK_MAG_FIRE_1_desc=Drops a giant fireball, burning enemies.
+skill_SK_HEA_SINGLE_1_name=Recover
+skill_SK_HEA_SINGLE_1_desc=Heals wounds for the weakest ally.
+skill_SK_HEA_AOE_1_name=Herb Breeze
+skill_SK_HEA_AOE_1_desc=Cool breeze heals the entire squad.
+skill_SK_HEA_BUFF_1_name=Holy Light
+skill_SK_HEA_BUFF_1_desc=Blessing that increases critical chance for allies.
+# --- Master Data: Items ---
+item_IT_FERTILITY_POTION_name=Fertility Potion
+item_IT_FERTILITY_POTION_desc=Drink to gain (+2) breeding turns. Max 20 turns per Hero.
+item_IT_SPEEDUP_1H_name=1H Clock
+item_IT_SPEEDUP_1H_desc=Reduces waiting time by 1 Hour.
+item_IT_SPEEDUP_8H_name=8H Clock
+item_IT_SPEEDUP_8H_desc=Reduces waiting time by 8 Hours.
+item_ITEM_MUTATION_POTION_name=SS Mutation Potion
+item_ITEM_MUTATION_POTION_desc=Greatly increases the chance of rare Traits appearing when Breeding.
+item_IT_MATURATION_POTION_name=Maturation Fruit
+item_IT_MATURATION_POTION_desc=Instantly reduces infant waiting time to 30 Minutes.
+item_IT_EXP_BOOK_S_name=Textbook
+item_IT_EXP_BOOK_S_desc=Provides experience when used. Drops randomly.
+item_IT_WISH_CHARM_name=Wish Charm
+item_IT_WISH_CHARM_desc=Increases the chance of spawning a desired profession when breeding.
+item_IT_GACHA_TICKET_name=Recruitment Ticket
+item_IT_GACHA_TICKET_desc=Ticket used to recruit new Heroes.
+# --- Master Data: Quests ---
+quest_Q_T_01_name=Monster Encounter
+quest_Q_T_01_desc=Consume Stamina to explore POI once.
+quest_Q_T_02_name=Royal Lineage
+quest_Q_T_02_desc=Perform Breeding and have your first baby.
+quest_Q_T_03_name=Village Defense
+quest_Q_T_03_desc=Upgrade the TownHall to Level 2.
+quest_Q_T_04_name=Medical Hospital
+quest_Q_T_04_desc=Upgrade the Hospital to Level 2.
+quest_Q_D_01_name=Monster Cleanup
+quest_Q_D_01_desc=Explore and fight in any land 3 times.
+quest_Q_D_02_name=Maintain Reproduction
+quest_Q_D_02_desc=Perform Breeding once.
+quest_Q_W_01_name=Mass Recruitment
+quest_Q_W_01_desc=Recruit a total of 10 new Heroes.
+# --- Master Data: Bosses ---
+boss_BOSS_RABBIT_KING_name=Giant Rabbit King
+boss_BOSS_RABBIT_KING_atk1=Thunder Kick
+boss_BOSS_RABBIT_KING_atk2=Mini Earthquake
+boss_BOSS_RABBIT_KING_mech_name=Thick Skin
+boss_BOSS_RABBIT_KING_mech_desc=Reduces incoming damage if the slash is under 50 ATK.
+boss_BOSS_ANGRY_TURKEY_name=Angry Turkey
+boss_BOSS_ANGRY_TURKEY_atk1=Frenzied Peck
+boss_BOSS_ANGRY_TURKEY_atk2=Deafening Crow
+boss_BOSS_ANGRY_TURKEY_mech_name=Frenzy
+boss_BOSS_ANGRY_TURKEY_mech_desc=Greatly increases attack speed when HP is below 30%.
+boss_BOSS_ALPHA_WOLF_name=Alpha Wolf
+boss_BOSS_ALPHA_WOLF_atk1=Tear
+boss_BOSS_ALPHA_WOLF_atk2=Wolf Pack Call
+boss_BOSS_ALPHA_WOLF_mech_name=Bugged Regeneration
+boss_BOSS_ALPHA_WOLF_mech_desc=Recovers a massive amount of HP every turn.
+# --- Master Data: Monsters ---
+monster_Slime_name=Slime Blob
+monster_Goblin_name=Forest Goblin
+monster_Orc_Warrior_name=Orc Warrior
+monster_Orc_Shaman_name=Orc Shaman
+monster_Troll_name=Giant Troll
+monster_Fire_Elemental_name=Fire Elemental
+monster_Golem_name=Stone Golem
+monster_Dragon_Whelp_name=Dragon Whelp
+monster_Elder_Dragon_name=Elder Dragon
+# --- Master Data: Evolution Table ---
+evo_reward_30=Unlock Class Branch (Choose 1 Trait family)
+evo_reward_50=Gain Level 2 Active Skill
+evo_reward_70=Breakthrough Random Trait Rarity
+evo_reward_100=God Mode! Choose 1 Trait rank S or above
+# --- Master Data: POI Config ---
+poi_group_Mud_Monster_Camp=Mud Monster Camp
+poi_group_Orc_Barracks=Orc Barracks
+poi_group_Black_Dragon_Tomb=Black Dragon Tomb
+
+building_upgrade_title_format=Upgrade {0}
+building_upgrade_info_format=Current Level: {0}\nNext Level: {1}
+building_max_level=Max Level Reached
+building_upgrade_cost_format=Cost: {0} Gold
+building_upgrade_started_format=Started upgrading {0}
+building_TownHall=Town Hall
+building_Hospital=Hospital
+building_Barrack=Barracks
+building_Arena=Arena
+
+settings_title=Settings
+
+btn_close=Close
+btn_upgrade=Upgrade
+btn_change_language=Change Language
+
+btn_breed=Breed
+btn_confirm=Confirm
+btn_select_father=Select Male
+btn_select_mother=Select Female
+btn_manage_population=Manage Population
+btn_challenge=Challenge
+btn_leaderboard=Leaderboard
+btn_shop=Shop
+m s g _ m a x _ e x p e d i t i o n _ r e a c h e d = M a x   e x p e d i t i o n   l i m i t   r e a c h e d .   U p g r a d e   B a r r a c k s   t o   s e n d   m o r e   s q u a d s .  
+ n o t i f i c a t i o n _ n o t _ e n o u g h _ c u r r e n c y = N o t   e n o u g h   R e c r u i t m e n t   T i c k e t s   o r   D i a m o n d s !  
+ n o t i f i c a t i o n _ r e c r u i t _ s u c c e s s = S u c c e s s f u l l y   r e c r u i t e d   { 0 } !  
+ n o t i f i c a t i o n _ r e c r u i t _ m u l t i _ s u c c e s s = S u c c e s s f u l l y   r e c r u i t e d   { 0 }   n e w   h e r o e s !  
+ a r e n a _ r a n k = R a n k  
+ a r e n a _ p o i n t s = P o i n t s :   { 0 }  
+ a r e n a _ t i c k e t s = T i c k e t s :   { 0 }  
+ m s g _ n o t _ e n o u g h _ a r e n a _ t i c k e t s = N o t   e n o u g h   A r e n a   t i c k e t s !  
+ m s g _ n o t _ e n o u g h _ h e r o e s = N o t   e n o u g h   r e a d y   h e r o e s !  
+ t i t l e _ s e l e c t _ a r e n a _ s q u a d = S e l e c t   A r e n a   S q u a d  
+ m s g _ a r e n a _ w i n _ r e s u l t = V i c t o r y !   + 2 5   P o i n t s ,   + 3 0   C o i n s  
+ m s g _ a r e n a _ l o s e _ r e s u l t = D e f e a t !   - 2 0   P o i n t s ,   + 1 0   C o i n s  
+ u i _ b o s s _ n o r m a l _ a t k = < c o l o r = o r a n g e > [ B a s i c   A t t a c k ] < / c o l o r >   { 0 }   ( x { 1 } )  
+ u i _ b o s s _ a o e _ a t k = < c o l o r = r e d > [ U l t i m a t e ] < / c o l o r >   { 0 }   ( x { 1 } )  
+ t i t l e _ c h a l l e n g e _ b o s s = C h a l l e n g e :   { 0 }  
+ t o w e r _ f l o o r = F l o o r   { 0 }  
+ t o w e r _ c u r r e n t _ f l o o r = C u r r e n t   F l o o r :   { 0 }  
+ t o w e r _ r e c o v e r y _ t i m e = R e c o v e r s   i n :   { 0 : D 2 } : { 1 : D 2 } : { 2 : D 2 }  
+ t o w e r _ r e a d y = R e a d y   t o   b a t t l e !  
+ t o w e r _ m o n s t e r _ c o u n t = M o n s t e r s :   { 0 }  
+ t i t l e _ t o w e r _ c h a l l e n g e = T o w e r   C h a l l e n g e   F l o o r   { 0 }  
+ e q u i p _ l e v e l _ m a x = L e v e l :   M A X  
+ e q u i p _ l e v e l = L e v e l :   { 0 }  
+ e q u i p _ e x p _ m a x = E X P :   M a x   R e a c h e d  
+ e q u i p _ e x p _ p r o g r e s s = E X P :   { 0 }   /   { 1 }  
+ m s g _ e q u i p _ m a x _ l e v e l = E q u i p m e n t   a l r e a d y   a t   m a x   l e v e l !  
+ m s g _ n o _ f o d d e r _ e q u i p = N o   f o d d e r   e q u i p m e n t   ( 1   S t a r ,   L e v e l   1 )   t o   c o n s u m e !  
+ m s g _ u p g r a d e _ e q u i p _ s u c c e s s = U p g r a d e   s u c c e s s f u l !   C o n s u m e d   { 0 }   i t e m s .  
+ c o m b a t _ l o g _ s t a r t = < b > B a t t l e   s t a r t e d ! < / b >  
+ c o m b a t _ l o g _ a u r a _ p l a y e r = < c o l o r = c y a n > P l a y e r   t e a m   r e c e i v e s   A u r a   ( + 1 0 %   A T K ) . < / c o l o r >  
+ c o m b a t _ l o g _ a u r a _ e n e m y = < c o l o r = c y a n > E n e m y   t e a m   r e c e i v e s   A u r a   ( + 1 0 %   A T K ) . < / c o l o r >  
+ c o m b a t _ l o g _ p l a y e r _ t e a m = P l a y e r   T e a m  
+ c o m b a t _ l o g _ e n e m y _ t e a m = E n e m y   T e a m  
+ c o m b a t _ l o g _ t u r n _ h e a d e r = \ n < c o l o r = y e l l o w > - - -   T u r n   { 0 }   - - - < / c o l o r >  
+ c o m b a t _ l o g _ d r a w _ t i m e o u t = B a t t l e   t o o k   t o o   l o n g ,   i t ' s   a   d r a w !  
+ c o m b a t _ l o g _ v i c t o r y = \ n < c o l o r = g r e e n > < b > V I C T O R Y ! < / b > < / c o l o r >  
+ c o m b a t _ l o g _ d e f e a t = \ n < c o l o r = r e d > < b > D E F E A T ! < / b > < / c o l o r >  
+ c o m b a t _ l o g _ s k i l l _ c a s t = < c o l o r = l i g h t b l u e > { 0 }   c a s t s   [ { 1 } ] ! < / c o l o r >  
+ c o m b a t _ l o g _ p r e d a t o r _ t r i g g e r = < c o l o r = r e d > P r e d a t o r   a c t i v a t e d ! < / c o l o r >  
+ c o m b a t _ l o g _ a t t a c k _ n o r m a l = { 0 }   a t t a c k s   { 1 } ,   d e a l i n g   < c o l o r = r e d > { 2 } < / c o l o r >   d a m a g e .  
+ c o m b a t _ l o g _ a t t a c k _ c r i t =   < c o l o r = o r a n g e > ( C r i t i c a l   H i t ! ) < / c o l o r >  
+ c o m b a t _ l o g _ d e a t h = < c o l o r = g r e y > { 0 }   h a s   f a l l e n ! < / c o l o r >  
+ c o m b a t _ l o g _ h e a l = { 0 }   r e s t o r e s   < c o l o r = g r e e n > { 1 } < / c o l o r >   H P   t o   { 2 } .  
+ c o m b a t _ l o g _ s t a t u s _ a p p l i e d = { 0 }   i s   a f f e c t e d   b y   < c o l o r = m a g e n t a > { 1 } < / c o l o r >   f o r   { 2 }   t u r n s .  
+ c o m b a t _ l o g _ p o i s o n _ t i c k = { 0 }   t a k e s   < c o l o r = p u r p l e > { 1 } < / c o l o r >   p o i s o n   d a m a g e .  
+ c o m b a t _ l o g _ r e g e n _ t i c k = { 0 }   r e s t o r e s   < c o l o r = g r e e n > { 1 } < / c o l o r >   H P   f r o m   R e g e n e r a t i o n .  
+ c o m b a t _ l o g _ t r a i t _ r e g e n = { 0 }   r e s t o r e s   < c o l o r = g r e e n > { 1 } < / c o l o r >   H P   v i a   R e g e n e r a t i o n   t r a i t .  
+ c o m b a t _ l o g _ r o w _ f r o n t = F r o n t   R o w :   { 0 }  
+ c o m b a t _ l o g _ r o w _ m i d = M i d d l e   R o w :   { 0 }  
+ c o m b a t _ l o g _ r o w _ b a c k = B a c k   R o w :   { 0 }  
+ c o m b a t _ l o g _ r o w _ e m p t y = E m p t y  
+ m s g _ t o w e r _ i n _ r e c o v e r y = T o w e r   i s   r e c o v e r i n g .   C a n n o t   c h a l l e n g e   y e t .  
+ u i _ s h o w _ n o t i f i c a t i o n _ e r r o r = U I   N o t i f i c a t i o n   P r e f a b   i s   m i s s i n g !  
+ p a n e l _ t i t l e _ b a r r a c k = H E R O   M A N A G E M E N T   ( B A R R A C K )  
+ p a n e l _ t i t l e _ h o s p i t a l = H O S P I T A L  
+ l a b e l _ s e v e r e _ i n j u r y = I n t e n s i v e   C a r e   U n i t   ( S e v e r e   I n j u r y )  
+ l a b e l _ l i g h t _ i n j u r y = R e c o v e r y   R o o m   ( L i g h t   I n j u r y )  
+ p a n e l _ t i t l e _ b r e e d i n g = H E R O   B R E E D I N G  
+ b t n _ e x p l o r e = E x p l o r e  
+ b t n _ c l o s e = C l o s e  
+ r e p o r t _ v i c t o r y = < c o l o r = g r e e n > V i c t o r y < / c o l o r >  
+ r e p o r t _ d e f e a t = < c o l o r = r e d > D e f e a t < / c o l o r >  
+ r e p o r t _ u n k n o w n = < c o l o r = g r e y > U n k n o w n   R e s u l t < / c o l o r >  
+ b t n _ c l a i m = C l a i m  
+ b t n _ r e p l a y = R e p l a y  
+ p a n e l _ t i t l e _ m a i l b o x = M A I L B O X  
+ b t n _ c l a i m _ a l l = C l a i m   A l l  
+ r e p o r t _ r e w a r d s = R e w a r d s :   { 0 }   E X P ,   { 1 }   G o l d  
+ p a n e l _ t i t l e _ q u e s t = Q U E S T S  
+ t a b _ m a i n _ q u e s t = M a i n  
+ t a b _ d a i l y _ q u e s t = D a i l y  
+ t a b _ w e e k l y _ q u e s t = W e e k l y  
+ t u t o r i a l _ s t e p _ 1 = W e l c o m e   t o   L e g e n d   o f   B l o o d !   T h i s   i s   y o u r   b a s e .  
+ t u t o r i a l _ s t e p _ 2 = H e r e   y o u   c a n   b u i l d   s t r u c t u r e s   a n d   g a t h e r   r e s o u r c e s .  
+ t u t o r i a l _ s t e p _ 3 = U s e   t h e   B a r r a c k s   t o   r e c r u i t   h e r o e s   a n d   t h e   T r a i n i n g   T o w e r   t o   u p g r a d e   s k i l l s .  
+ t u t o r i a l _ s t e p _ 4 = S e n d   y o u r   h e r o e s   o n   E x p e d i t i o n s   t o   e a r n   G o l d   a n d   E q u i p m e n t !  
+ b t n _ n e x t = N E X T  
+ b t n _ p r e v = B A C K  
+ p a n e l _ t i t l e _ t u t o r i a l = T U T O R I A L  
+ b o o t l o a d e r _ i n i t = I n i t i a l i z i n g   C o r e   S y s t e m s . . .  
+ b o o t l o a d e r _ l o a d _ d a t a = L o a d i n g   L o c a l i z a t i o n   &   D a t a b a s e . . .  
+ b o o t l o a d e r _ t a p _ t o _ s t a r t = T A P   T O   S T A R T  
+ b t n _ s k i p = S K I P  
+ c o m b a t _ r e s u l t _ t i t l e = R E S U L T  
+ b t n _ b a c k _ t o _ v i l l a g e = B a c k   t o   V i l l a g e   ( C l o s e )  
+ p a n e l _ t i t l e _ s t a t _ a l l o c = S T A T   A L L O C A T I O N  
+ l a b e l _ f r e e _ p o i n t s = F r e e   P o i n t s :   { 0 }  
+ b t n _ c o n f i r m = C O N F I R M  
+ p a n e l _ t i t l e _ t r a i t _ u p g r a d e = T R A I T   U P G R A D E  
+ bootloader_init=Initializing Core Systems...
+bootloader_load_data=Loading Data & Dictionary...
+Thu Chào M?ng Tân Th?=Welcome to the game!
+report_rewards=Rewards: {0} EXP, {1} Gold
+Vé Chiêu M?=Recruit Ticket
+btn_claim=Claim
+btn_replay=Replay
+panel_title_mailbox=MAILBOX
+btn_claim_all=Claim All
+Ch?m Trán Quái V?t=Monster Encounter
+Tiêu th? Th? L?c khám phá POI 1 l?n.=Consume stamina to explore a POI one time.
+Dòng Dõi Hoàng Gia=Royal Bloodline
+Th?c hi?n Lai T?o và có em bé d?u tay.=Perform breeding and get your first baby.
+C? Th? Làng=Village Defense
+Nâng c?p Nhà Chính TownHall lên C?p 2.=Upgrade Barrack to Level 2.
+B?nh Vi?n Y T?=Medical Hospital
+Nâng c?p B?nh Vi?n lên C?p 2.=Upgrade Hospital to Level 2.
+Dungeon #85=Dungeon #85
+Rescue Mission #204=Rescue Mission #204
+notification_not_enough_currency=Not enough resources!
+mailbox_loot_claimed=Claimed reward: {0}
+notification_recruit_success=Recruitment successful!
+notification_population_full=Population is full! Please upgrade Barrack.
+
+arena_points=Arena Points
+arena_rank=Arena Rank
+arena_tickets=Arena Tickets
+bootloader_init=Initializing core system...
+bootloader_tap_to_start=Tap to Start
+btn_back_to_village=Back to Village
+btn_explore=Explore
+btn_next=Next
+btn_prev=Previous
+btn_skip=Skip
+combat_log_attack_crit=Crit Attack
+combat_log_attack_normal=Normal Attack
+combat_log_aura_enemy=Enemy Aura
+combat_log_aura_player=Player Aura
+combat_log_cleanse=Cleanse
+combat_log_death=Death
+combat_log_defeat=Defeat
+combat_log_draw_timeout=Draw (Timeout)
+combat_log_enemy_team=Enemy Team
+combat_log_heal=Heal
+combat_log_player_team=Player Team
+combat_log_poison_tick=Poison Damage
+combat_log_predator_trigger=Predator Trigger
+combat_log_regen_tick=Regeneration
+combat_log_row_back=Back Row
+combat_log_row_empty=Empty Row
+combat_log_row_front=Front Row
+combat_log_row_mid=Mid Row
+combat_log_skill_cast=Skill Cast
+combat_log_start=Combat Started
+combat_log_status_applied=Status Applied
+combat_log_trait_regen=Trait Regen
+combat_log_turn_header=Turn {0}
+combat_log_victory=Victory
+combat_result_title=Combat Result
+equip_exp_max=Equip EXP (Max)
+equip_exp_progress=Equip EXP ({0}/{1})
+equip_level=Equip Level: {0}
+equip_level_max=Equip Level: Max
+gold_cost_format={0} Gold
+heal_light=Light Heal
+heal_severe=Severe Heal
+hero_dismissed_success=Dismissed {0}
+hospital_hero_healed_format=Healed {0}
+inventory_item_used_success=Item used successfully
+label_free_points=Free Points: {0}
+label_light_injury=Light Injury
+label_severe_injury=Severe Injury
+msg_arena_lose_result=You Lose
+msg_arena_win_result=You Win
+msg_equip_max_level=Equipment is at max level
+msg_max_expedition_reached=Max expeditions reached
+msg_no_fodder_equip=No fodder equipment
+msg_not_enough_arena_tickets=Not enough arena tickets
+msg_not_enough_heroes=Not enough heroes
+msg_tower_in_recovery=Tower is in recovery
+msg_upgrade_equip_success=Equipment upgraded successfully
+notification_building_already_upgrading=Building already upgrading
+notification_building_max_level=Building is at max level
+notification_not_enough_mutation_potion=Not enough mutation potions
+notification_not_enough_resources=Not enough resources
+notification_recruit_multi_success=Recruited {0} heroes successfully
+panel_title_barrack=BARRACK
+panel_title_breeding=BREEDING
+panel_title_hospital=HOSPITAL
+panel_title_quest=QUESTS
+panel_title_stat_alloc=STAT ALLOCATION
+panel_title_trait_upgrade=TRAIT UPGRADE
+panel_title_tutorial=TUTORIAL
+population_count_format=Population: {0}/{1}
+profession_selection_title=Select Profession for {0}
+ready=Ready
+report_defeat=Defeat
+report_unknown=Unknown
+report_victory=Victory
+stats_dmg_increase_format=DMG Increase: {0}%
+stats_dmg_reduction_format=DMG Reduction: {0}%
+stats_evasion_format=Evasion: {0}%
+stats_spd_format=Speed: {0}
+tab_daily_quest=Daily
+tab_main_quest=Main
+tab_weekly_quest=Weekly
+time_left_format={0} left
+title_challenge_boss=Boss Challenge
+title_select_arena_squad=Select Arena Squad
+title_tower_challenge=Tower Challenge Floor {0}
+tower_current_floor=Current Floor: {0}
+tower_current_floor_format=Floor: {0}
+tower_floor=Floor {0}
+tower_monster_count=Monsters: {0}
+tower_ready=Ready to challenge!
+tower_recovery_time=Recovery in: {0:D2}:{1:D2}:{2:D2}
+tutorial_step_1=Welcome to our world!
+tutorial_step_2=Let's start building your army.
+tutorial_step_3=Fight monsters to earn rewards.
+tutorial_step_4=Good luck on your conquest!
+ui_boss_aoe_atk=Boss AOE Attack
+ui_boss_normal_atk=Boss Normal Attack
+
+building_BreedingPen=Breeding Pen
+building_Hospital=Hospital
+building_TownHall=Barrack
+building_Barrack=Barrack

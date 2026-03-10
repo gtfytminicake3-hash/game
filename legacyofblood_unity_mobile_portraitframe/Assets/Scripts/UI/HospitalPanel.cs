@@ -11,10 +11,17 @@ namespace LegendOfBlood
     public class HospitalPanel : MonoBehaviour
     {
         [Header("UI References")]
+        [SerializeField] private TMPro.TextMeshProUGUI panelTitleText;
+        [SerializeField] private TMPro.TextMeshProUGUI severeInjuryLabelText;
+        [SerializeField] private TMPro.TextMeshProUGUI lightInjuryLabelText;
         [SerializeField] private Transform severeInjuryListContainer;
         [SerializeField] private Transform lightInjuryListContainer;
         [SerializeField] private GameObject injuredHeroCardPrefab;
         [SerializeField] private Button closeButton;
+
+        [Header("Upgrade Feature")]
+        [SerializeField] private Button upgradeBuildingButton;
+        [SerializeField] private string associatedBuildingId = "Hospital";
 
         private List<GameObject> _instantiatedCards = new List<GameObject>();
 
@@ -24,9 +31,33 @@ namespace LegendOfBlood
 
         private void Start()
         {
+            if (panelTitleText != null) panelTitleText.text = LocalizationSystem.GetText("panel_title_hospital");
+            if (severeInjuryLabelText != null) severeInjuryLabelText.text = LocalizationSystem.GetText("label_severe_injury");
+            if (lightInjuryLabelText != null) lightInjuryLabelText.text = LocalizationSystem.GetText("label_light_injury");
+
             if (closeButton != null) closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.HidePanel(UIPanelType.Hospital)); 
+            if (upgradeBuildingButton != null) 
+            {
+                upgradeBuildingButton.onClick.AddListener(OnUpgradeBuildingClicked);
+                var upgTxt = upgradeBuildingButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                if (upgTxt != null) upgTxt.text = global::LocalizationSystem.GetText("btn_upgrade");
+            }
             _isInitialized = true;
             RefreshLists();
+        }
+
+        private void OnUpgradeBuildingClicked()
+        {
+            GameManager.Instance.UIManager.ShowPanel(UIPanelType.BuildingUpgrade, true);
+            var upgradePanel = GameManager.Instance.UIManager.GetPanel<BuildingUpgradePanel>(UIPanelType.BuildingUpgrade);
+            if (upgradePanel != null && !string.IsNullOrEmpty(associatedBuildingId))
+            {
+                upgradePanel.Setup(associatedBuildingId);
+            }
+            else
+            {
+                Debug.LogWarning($"[HospitalPanel] Cannot open BuildingUpgradePanel! upgradePanel null? {upgradePanel == null}, associatedBuildingId empty? {string.IsNullOrEmpty(associatedBuildingId)}");
+            }
         }
 
         private void OnEnable()

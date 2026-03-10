@@ -1,0 +1,10 @@
+﻿﻿Mã Quái Vật (ID),Tên Nhận Diện,Nghề Nghiệp,Máu (Base HP),Tấn Công (Base ATK),Phòng Thủ (Base DEF),Chớp Nhoáng (Base SPD),Tỉ Lệ Chí Mạng (Crit Chance),Sát Thương Chí Mạng (Crit Dmg)
+Slime,"Cục Nhầy Slime",Warrior,150,10,5,5,0.05,1.50
+Goblin,"Yêu Tinh Rừng",Archer,120,15,2,15,0.05,1.50
+Orc Warrior,"Chiến Binh Orc",Warrior,400,35,25,12,0.05,1.50
+Orc Shaman,"Phù Thủy Orc",Mage,250,50,10,10,0.05,1.50
+Troll,"Quỷ Tượng Khổng Lồ",Warrior,800,25,40,8,0.05,1.50
+Fire Elemental,"Hỏa Linh Không Tướng",Mage,600,80,30,20,0.05,1.50
+Golem,"Thạch Nhân",Warrior,1500,40,100,5,0.05,1.50
+Dragon Whelp,"Rồng Con",Archer,1000,100,50,30,0.05,1.50
+Elder Dragon,"Rồng Cổ Đại",Mage,3000,200,150,25,0.05,1.50

@@ -19,14 +19,53 @@ namespace LegendOfBlood
         [SerializeField] private Button leaderboardButton;
         [SerializeField] private Button shopButton;
 
+        [Header("Upgrade Feature")]
+        [SerializeField] private Button upgradeBuildingButton;
+        [SerializeField] private string associatedBuildingId = "Arena";
+
         private const int ARENA_SQUAD_SIZE = 5;
 
         private void Start()
         {
-            if (challengeButton != null) challengeButton.onClick.AddListener(OnChallengeClicked);
+            if (challengeButton != null)
+            {
+                challengeButton.onClick.AddListener(OnChallengeClicked);
+                var chTxt = challengeButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                if (chTxt != null) chTxt.text = global::LocalizationSystem.GetText("btn_challenge");
+            }
             if (closeButton != null) closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.HidePanel(UIPanelType.Arena));
-            if (leaderboardButton != null) leaderboardButton.onClick.AddListener(OnLeaderboardClicked);
-            if (shopButton != null) shopButton.onClick.AddListener(OnShopClicked);
+            if (leaderboardButton != null)
+            {
+                leaderboardButton.onClick.AddListener(OnLeaderboardClicked);
+                var lbTxt = leaderboardButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                if (lbTxt != null) lbTxt.text = global::LocalizationSystem.GetText("btn_leaderboard");
+            }
+            if (shopButton != null)
+            {
+                shopButton.onClick.AddListener(OnShopClicked);
+                var shTxt = shopButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                if (shTxt != null) shTxt.text = global::LocalizationSystem.GetText("btn_shop");
+            }
+            if (upgradeBuildingButton != null) 
+            {
+                upgradeBuildingButton.onClick.AddListener(OnUpgradeBuildingClicked);
+                var upgTxt = upgradeBuildingButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                if (upgTxt != null) upgTxt.text = global::LocalizationSystem.GetText("btn_upgrade");
+            }
+        }
+
+        private void OnUpgradeBuildingClicked()
+        {
+            GameManager.Instance.UIManager.ShowPanel(UIPanelType.BuildingUpgrade, true);
+            var upgradePanel = GameManager.Instance.UIManager.GetPanel<BuildingUpgradePanel>(UIPanelType.BuildingUpgrade);
+            if (upgradePanel != null && !string.IsNullOrEmpty(associatedBuildingId))
+            {
+                upgradePanel.Setup(associatedBuildingId);
+            }
+            else
+            {
+                Debug.LogWarning($"[ArenaPanel] Cannot open BuildingUpgradePanel! upgradePanel null? {upgradePanel == null}, associatedBuildingId empty? {string.IsNullOrEmpty(associatedBuildingId)}");
+            }
         }
 
         private void OnEnable()
@@ -41,9 +80,9 @@ namespace LegendOfBlood
 
             // This part needs the ArenaRankData assets to be functional
             // For now, I'll just display the points.
-            rankNameText.text = "Hạng"; // Placeholder
-            rankPointsText.text = $"Điểm: {playerData.arenaPoints}";
-            ticketsText.text = $"Vé: {playerData.arenaTickets}";
+            rankNameText.text = LocalizationSystem.GetText("arena_rank"); // Placeholder
+            rankPointsText.text = string.Format(LocalizationSystem.GetText("arena_points"), playerData.arenaPoints);
+            ticketsText.text = string.Format(LocalizationSystem.GetText("arena_tickets"), playerData.arenaTickets);
             // rankIconImage.sprite = ...; // Needs logic to get sprite from ArenaRankData
         }
 
@@ -66,7 +105,7 @@ namespace LegendOfBlood
             if (playerData == null || playerData.arenaTickets <= 0)
             {
                 // Show error message
-                GameManager.Instance.UINotificationManager.ShowNotification("Không đủ vé Đấu trường!");
+                GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("msg_not_enough_arena_tickets"));
                 return;
             }
 
@@ -75,12 +114,12 @@ namespace LegendOfBlood
 
             if (availableHeroes.Count < ARENA_SQUAD_SIZE)
             {
-                GameManager.Instance.UINotificationManager.ShowNotification("Không đủ tướng sẵn sàng!");
+                GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("msg_not_enough_heroes"));
                 return;
             }
 
             squadSelectionPanel.Show(
-                "Chọn đội hình Đấu trường",
+                LocalizationSystem.GetText("title_select_arena_squad"),
                 availableHeroes,
                 ARENA_SQUAD_SIZE,
                 OnArenaSquadSelected
@@ -132,7 +171,7 @@ namespace LegendOfBlood
 
             // Show result popup (to be implemented)
             // For now, just a debug log
-            string popupMessage = result.DidPlayerWin ? "Thắng! +25 điểm, +30 Huy hiệu" : "Thua! -20 điểm, +10 Huy hiệu";
+            string popupMessage = result.DidPlayerWin ? LocalizationSystem.GetText("msg_arena_win_result") : LocalizationSystem.GetText("msg_arena_lose_result");
             GameManager.Instance.UINotificationManager.ShowNotification(popupMessage);
         }
 

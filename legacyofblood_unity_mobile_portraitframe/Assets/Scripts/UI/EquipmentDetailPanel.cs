@@ -45,18 +45,18 @@ namespace LegendOfBlood
             if (equipNameText != null) equipNameText.text = _currentEquip.equipmentName;
             
             if (equipLevelText != null)
-                equipLevelText.text = _currentEquip.level >= EquipmentSystem.MAX_LEVEL ? "Cấp: MAX" : $"Cấp: {_currentEquip.level}";
+                equipLevelText.text = _currentEquip.level >= EquipmentSystem.MAX_LEVEL ? LocalizationSystem.GetText("equip_level_max") : string.Format(LocalizationSystem.GetText("equip_level"), _currentEquip.level);
 
             if (expProgressText != null)
             {
                 if (_currentEquip.level >= EquipmentSystem.MAX_LEVEL)
                 {
-                    expProgressText.text = "EXP: Đạt Giới Hạn";
+                    expProgressText.text = LocalizationSystem.GetText("equip_exp_max");
                 }
                 else
                 {
                     int required = EquipmentSystem.GetExpRequiredForLevel(_currentEquip.level);
-                    expProgressText.text = $"EXP: {_currentEquip.currentExp} / {required}";
+                    expProgressText.text = string.Format(LocalizationSystem.GetText("equip_exp_progress"), _currentEquip.currentExp, required);
                 }
             }
 
@@ -74,7 +74,7 @@ namespace LegendOfBlood
         {
             if (_currentEquip == null || _currentEquip.level >= EquipmentSystem.MAX_LEVEL)
             {
-                GameManager.Instance.UINotificationManager.ShowNotification("Trang bị đã đạt cấp tối đa!");
+                GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("msg_equip_max_level"));
                 return;
             }
 
@@ -92,7 +92,7 @@ namespace LegendOfBlood
 
             if (fodder.Count == 0)
             {
-                GameManager.Instance.UINotificationManager.ShowNotification("Không có trang bị rác (1 Sao, cấp 1) để cường hóa!");
+                GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("msg_no_fodder_equip"));
                 return;
             }
 
@@ -104,7 +104,8 @@ namespace LegendOfBlood
                 InventoryManager.Instance?.RemoveEquipment(f);
             }
 
-            GameManager.Instance.UINotificationManager.ShowNotification($"Cường hóa thành công! Đã tiêu thụ {fodder.Count} trang bị.");
+            string msg = string.Format(LocalizationSystem.GetText("msg_upgrade_equip_success"), fodder.Count);
+            GameManager.Instance.UINotificationManager.ShowNotification(msg);
             
             // Update UI
             RefreshUI();

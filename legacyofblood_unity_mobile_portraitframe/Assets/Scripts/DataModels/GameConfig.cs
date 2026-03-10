@@ -110,6 +110,9 @@ namespace LegendOfBlood.GameConfigs
         [Tooltip("Cấu hình quái vật cho các điểm quan tâm (POI).")]
         public POIMonsterConfig POIMonsterConfig;
 
+        [Tooltip("Danh sách chỉ số cơ bản của Quái Thường.")]
+        public List<MonsterData> AllMonsters;
+
         [Tooltip("Danh sách tất cả các Boss có trong game.")]
         public List<BossData> AllBosses;
 

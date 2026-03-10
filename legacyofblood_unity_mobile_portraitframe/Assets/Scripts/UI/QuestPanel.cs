@@ -17,19 +17,29 @@ namespace LegendOfBlood.UI
         [SerializeField] private UnityEngine.UI.Button dailyTabButton;
         [SerializeField] private UnityEngine.UI.Button weeklyTabButton;
         [SerializeField] private UnityEngine.UI.Button closeButton;
+        
+        [Header("Localization")]
+        [SerializeField] private TMPro.TextMeshProUGUI panelTitleText;
+        [SerializeField] private TMPro.TextMeshProUGUI mainTabText;
+        [SerializeField] private TMPro.TextMeshProUGUI dailyTabText;
+        [SerializeField] private TMPro.TextMeshProUGUI weeklyTabText;
 
         private LegendOfBlood.GameConfigs.QuestCategory _currentCategory = LegendOfBlood.GameConfigs.QuestCategory.Main;
 
         private void Awake()
         {
             PanelType = UIPanelType.Quest;
-            _questManager = GameManager.Instance.QuestManager;
             
             if (closeButton) closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.GoBack());
             
             if (mainTabButton) mainTabButton.onClick.AddListener(() => SetCategory(LegendOfBlood.GameConfigs.QuestCategory.Main));
             if (dailyTabButton) dailyTabButton.onClick.AddListener(() => SetCategory(LegendOfBlood.GameConfigs.QuestCategory.Daily));
             if (weeklyTabButton) weeklyTabButton.onClick.AddListener(() => SetCategory(LegendOfBlood.GameConfigs.QuestCategory.Weekly));
+            
+            if (panelTitleText != null) panelTitleText.text = global::LocalizationSystem.GetText("panel_title_quest");
+            if (mainTabText != null) mainTabText.text = global::LocalizationSystem.GetText("tab_main_quest");
+            if (dailyTabText != null) dailyTabText.text = global::LocalizationSystem.GetText("tab_daily_quest");
+            if (weeklyTabText != null) weeklyTabText.text = global::LocalizationSystem.GetText("tab_weekly_quest");
             
             Debug.Log("QuestPanel Initialized in Awake");
         }
@@ -42,10 +52,14 @@ namespace LegendOfBlood.UI
 
         private void OnEnable()
         {
+            if (_questManager == null && GameManager.Instance != null)
+            {
+                _questManager = GameManager.Instance.QuestManager;
+            }
             RefreshQuestList();
         }
 
-        private void RefreshQuestList()
+        public void RefreshQuestList()
         {
             // Clear existing quest items
             foreach (Transform child in questListContainer)

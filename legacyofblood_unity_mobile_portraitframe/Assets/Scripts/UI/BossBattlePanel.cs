@@ -75,9 +75,9 @@ namespace LegendOfBlood
             if (_currentBossInfo.skills != null)
             {
                 if (normalSkillOutlineText != null) 
-                    normalSkillOutlineText.text = $"<color=orange>[Đánh Thường]</color> {_currentBossInfo.skills.normalAttackName} (x{_currentBossInfo.skills.normalAttackMultiplier})";
+                    normalSkillOutlineText.text = string.Format(LocalizationSystem.GetText("ui_boss_normal_atk"), _currentBossInfo.skills.normalAttackName, _currentBossInfo.skills.normalAttackMultiplier);
                 if (aoeSkillOutlineText != null) 
-                    aoeSkillOutlineText.text = $"<color=red>[Tuyệt Kỹ]</color> {_currentBossInfo.skills.aoeAttackName} (x{_currentBossInfo.skills.aoeAttackMultiplier})";
+                    aoeSkillOutlineText.text = string.Format(LocalizationSystem.GetText("ui_boss_aoe_atk"), _currentBossInfo.skills.aoeAttackName, _currentBossInfo.skills.aoeAttackMultiplier);
             }
 
             if (_currentBossInfo.mechanic != null)
@@ -97,7 +97,7 @@ namespace LegendOfBlood
             {
                 var availableHeroes = DataManager.Instance.AllHeroes.FindAll(h => h.isMature && !h.IsBusy());
                 squadPanel.Show(
-                    $"Khiêu Chiến: {_currentBossInfo.bossName}",
+                    string.Format(LocalizationSystem.GetText("title_challenge_boss"), _currentBossInfo.bossName),
                     availableHeroes, 5,
                     (selectedHeroIDs) => {
                         squadPanel.gameObject.SetActive(false);

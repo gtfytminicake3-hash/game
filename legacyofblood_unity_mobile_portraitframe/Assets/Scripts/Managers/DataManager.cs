@@ -40,6 +40,8 @@ namespace LegendOfBlood
             InitializeDataManager();
         }
         private bool _isInitialized = false;
+        private float _passiveExpTimer = 0f;
+        private const float PASSIVE_EXP_INTERVAL = 60f; // 60 seconds
 
         #endregion
 
@@ -57,6 +59,7 @@ namespace LegendOfBlood
         public Dictionary<string, Trait> AllTraits { get; private set; }
         public Dictionary<string, Skill> AllSkills { get; private set; }
         public Dictionary<string, ItemData> AllItems { get; private set; }
+        public Dictionary<string, MonsterData> AllMonsters { get; private set; } // NEW
         public Dictionary<string, BossData> AllBosses { get; private set; }
         public Dictionary<int, int> ExpTable { get; private set; }
         // SỬA LỖI: Chỉ định rõ namespace cho EvolutionRewardData để giải quyết lỗi CS0029
@@ -88,6 +91,8 @@ namespace LegendOfBlood
         /// </summary>
         public void InitializeDataManager()
         {
+            if (Instance == null) Instance = this; // Đảm bảo Instance luôn được trỏ về mình nếu bị Unity load lộn xộn
+
             if (_isInitialized) return;
 
             _saveFilePath = Path.Combine(Application.persistentDataPath, SAVE_FILE_NAME);
@@ -155,7 +160,8 @@ namespace LegendOfBlood
             POIMonsterConfig = _gameConfig.POIMonsterConfig;
             
             AllQuests = _gameConfig.AllQuestData?.ToDictionary(q => q.questId, q => q) ?? new Dictionary<string, QuestData>();
-            AllBosses = _gameConfig.AllBosses?.ToDictionary(b => b.id, b => b) ?? new Dictionary<string, BossData>(); 
+            AllBosses = _gameConfig.AllBosses?.ToDictionary(b => b.id, b => b) ?? new Dictionary<string, BossData>();
+            AllMonsters = _gameConfig.AllMonsters?.ToDictionary(m => m.id, m => m) ?? new Dictionary<string, MonsterData>();
 
             Debug.Log($"Đã xử lý xong Game Config: {AllTraits.Count} Traits, {AllSkills.Count} Skills, {BuildingUpgradeConfigs.Count} BuildingConfigs. {AllQuests.Count} Quests.");
         }
@@ -193,6 +199,13 @@ namespace LegendOfBlood
             if (Player.WorldPois == null) Player.WorldPois = new List<POIData>();
             if (AllBuildings == null) AllBuildings = new List<Building>();
 
+            // Ensure default buildings exist for old saves
+            if (!AllBuildings.Any(b => b.id == "Barracks")) AllBuildings.Add(new Building(BuildingType.Barracks, 1) { id = "Barracks" });
+            if (!AllBuildings.Any(b => b.id == "Hospital")) AllBuildings.Add(new Building(BuildingType.Hospital, 1) { id = "Hospital" });
+            if (!AllBuildings.Any(b => b.id == "BreedingPen")) AllBuildings.Add(new Building(BuildingType.BreedingPen, 1) { id = "BreedingPen" });
+
+            CalculateOfflineProgress();
+
             OnPlayerDataLoaded?.Invoke();
             OnHeroListChanged?.Invoke();
         }
@@ -204,6 +217,11 @@ namespace LegendOfBlood
             Player.QuestStatuses = new List<LegendOfBlood.Managers.PlayerQuestStatus>();
             Player.WorldPois = new List<POIData>();
             AllBuildings = new List<Building>();
+            
+            // Add default buildings
+            AllBuildings.Add(new Building(BuildingType.Barracks, 1) { id = "Barracks" });
+            AllBuildings.Add(new Building(BuildingType.Hospital, 1) { id = "Hospital" });
+            AllBuildings.Add(new Building(BuildingType.BreedingPen, 1) { id = "BreedingPen" });
             
             HeroData startingMale = CreateStartingHero(Gender.Male, "Adam");
             HeroData startingFemale = CreateStartingHero(Gender.Female, "Eva");
@@ -221,6 +239,7 @@ namespace LegendOfBlood
 
             try
             {
+                Player.lastOfflineTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 string json = JsonUtility.ToJson(saveData, true);
                 File.WriteAllText(_saveFilePath, json);
                 Debug.Log($"Lưu game thành công tại: {_saveFilePath}");
@@ -230,18 +249,84 @@ namespace LegendOfBlood
                 Debug.LogError($"Lỗi khi lưu game! Lỗi: {e.Message}");
             }
         }
+        
+        private void CalculateOfflineProgress()
+        {
+            if (Player.lastOfflineTimestamp == 0) return;
+
+            long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            long timePassedMs = currentTime - Player.lastOfflineTimestamp;
+            int minutesPassed = (int)(timePassedMs / 60000);
+
+            if (minutesPassed > 0)
+            {
+                int totalExpGranted = 0;
+                foreach (var hero in Player.Heroes)
+                {
+                    if (!hero.IsBusy())
+                    {
+                        // 1% of current level requirement per minute
+                        if (ExpTable != null && ExpTable.TryGetValue(hero.level, out int reqExp))
+                        {
+                            int expPerMinute = Mathf.Max(1, reqExp / 100);
+                            int gainedExp = expPerMinute * minutesPassed;
+                            hero.AddExperience(gainedExp);
+                            totalExpGranted += gainedExp;
+                        }
+                    }
+                }
+
+                if (totalExpGranted > 0)
+                {
+                    Debug.Log($"<color=green>[Offline Progress] Awarded {totalExpGranted} total EXP to idle heroes across {minutesPassed} minutes offline.</color>");
+                }
+            }
+        }
+
+        public void Tick(float deltaTime)
+        {
+            if (!_isInitialized || Player?.Heroes == null) return;
+
+            _passiveExpTimer += deltaTime;
+            if (_passiveExpTimer >= PASSIVE_EXP_INTERVAL)
+            {
+                _passiveExpTimer = 0f;
+                // Update offline timestamp every minute so we don't double dip if the game crashes
+                Player.lastOfflineTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+
+                int totalExpGranted = 0;
+                foreach (var hero in Player.Heroes)
+                {
+                    if (!hero.IsBusy())
+                    {
+                        if (ExpTable != null && ExpTable.TryGetValue(hero.level, out int reqExp))
+                        {
+                            int expPerMinute = Mathf.Max(1, reqExp / 100);
+                            hero.AddExperience(expPerMinute);
+                            totalExpGranted += expPerMinute;
+                        }
+                    }
+                }
+                if (totalExpGranted > 0)
+                {
+                    Debug.Log($"<color=green>[Online Progress] Awarded {totalExpGranted} total EXP to idle heroes for the past minute.</color>");
+                }
+            }
+        }
         #endregion
 
         #region Public API (Helpers & Modifiers)
 
         public int GetPopulationCapacity()
         {
-            var mainHall = AllBuildings.FirstOrDefault(b => b.id == "MainHall");
+            var mainHall = AllBuildings.FirstOrDefault(b => b.id == "TownHall");
             if (mainHall != null)
             {
-                return 10 + (mainHall.level * 2);
+                // Giả định TownHall bắt đầu ở cấp 1, sức chứa sẽ là 50
+                // Có thể điều chỉnh công thức tăng tiến theo ý muốn, ví dụ: +5 mỗi cấp
+                return 50 + ((mainHall.level > 0 ? mainHall.level - 1 : 0) * 5);
             }
-            return 10;
+            return 50;
         }
 
         public bool IsPopulationFull()
@@ -290,18 +375,20 @@ namespace LegendOfBlood
             return Player.WorldPois.FirstOrDefault(p => p.poiId == poiId);
         }
 
-        public HeroData GetMonsterByID(string id)
+        public HeroData GetMonsterByID(string id, int difficultyLevel = 1)
         {
             if (string.IsNullOrEmpty(id)) return null;
 
+            // 1. Phục vụ xuất hiện Boss
             BossData bossCfg = AllBosses.TryGetValue(id, out var boss) ? boss : null;
             if (bossCfg != null) 
             {
+                 // Bosses may optionally scale, but for now we keep giving them their hardcoded base stats
                  return new HeroData
                 {
                     id = id,
                     heroName = bossCfg.bossName,
-                    level = bossCfg.level,
+                    level = Mathf.Max(bossCfg.level, difficultyLevel),
                     profession = Profession.Warrior,
                     baseStats = new HeroStats { hp = bossCfg.baseHp, atk = bossCfg.baseAtk, def = bossCfg.baseDef, spd = bossCfg.baseSpd },
                     currentHp = bossCfg.baseHp,
@@ -309,15 +396,40 @@ namespace LegendOfBlood
                 };
             }
 
-            Debug.LogWarning($"GetMonsterByID chưa tìm thấy trong AllBosses. Trả về quái vật giả cho ID: {id}");
+            // 2. Lấy dữ liệu Monster cơ sở và Scale theo Difficulty
+            MonsterData monsterCfg = AllMonsters != null && AllMonsters.TryGetValue(id, out var m) ? m : null;
+            if (monsterCfg != null)
+            {
+                // Công thức tính Scale: Tăng 10% mỗi cấp độ lấy từ difficultyLevel (tối thiểu là 1)
+                float multiplier = Mathf.Pow(1.1f, Mathf.Max(1, difficultyLevel) - 1);
+                
+                float scaledHp = monsterCfg.baseHp * multiplier;
+                float scaledAtk = monsterCfg.baseAtk * multiplier;
+                float scaledDef = monsterCfg.baseDef * multiplier;
+                float scaledSpd = monsterCfg.baseSpd * multiplier;
+
+                return new HeroData
+                {
+                    id = id,
+                    heroName = monsterCfg.monsterName,
+                    level = difficultyLevel,
+                    profession = monsterCfg.profession,
+                    baseStats = new HeroStats { hp = scaledHp, atk = scaledAtk, def = scaledDef, spd = scaledSpd, critChance = monsterCfg.critChance, critDamage = monsterCfg.critDamage },
+                    currentHp = scaledHp,
+                    isMature = true
+                };
+            }
+
+            // 3. Quái giả (Fallback cuối cùng)
+            float fbMultiplier = Mathf.Pow(1.1f, Mathf.Max(1, difficultyLevel) - 1);
             return new HeroData
             {
                 id = id,
-                heroName = $"Quái vật {id}",
-                level = 5,
+                heroName = $"Quái Nhỏ {id}",
+                level = difficultyLevel,
                 profession = Profession.Warrior,
-                baseStats = new HeroStats { hp = 200, atk = 20, def = 15, spd = 10 },
-                currentHp = 200,
+                baseStats = new HeroStats { hp = 200 * fbMultiplier, atk = 20 * fbMultiplier, def = 15 * fbMultiplier, spd = 10 * fbMultiplier },
+                currentHp = 200 * fbMultiplier,
                 isMature = true
             };
         }

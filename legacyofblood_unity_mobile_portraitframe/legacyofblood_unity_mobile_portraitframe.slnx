@@ -3,4 +3,5 @@
   <Project Path="Tests.csproj" />
   <Project Path="LegendOfBlood.Tests.PlayMode.csproj" />
   <Project Path="Demigiant.DOTween.csproj" />
+  <Project Path="LegendOfBlood.Editor.csproj" />
 </Solution>

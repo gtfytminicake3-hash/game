@@ -10,8 +10,6 @@ namespace LegendOfBlood.UI
         [SerializeField] private Button recruitTenButton;
         [SerializeField] private Button closeButton;
 
-        private RecruitmentSystem _recruitmentSystem;
-
         private void Awake()
         {
             PanelType = UIPanelType.Recruitment;
@@ -19,8 +17,6 @@ namespace LegendOfBlood.UI
 
         private void Start()
         {
-            _recruitmentSystem = GameManager.Instance.RecruitmentSystem;
-
             recruitOneButton.onClick.AddListener(OnRecruitOne);
             recruitTenButton.onClick.AddListener(OnRecruitTen);
             if (closeButton != null) closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.GoBack());
@@ -48,15 +44,16 @@ namespace LegendOfBlood.UI
             }
             else
             {
-                GameManager.Instance.UINotificationManager.ShowNotification("Không Cầm Đủ Vé Chiêu Mộ Hoặc Kim Cương!");
+                GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("notification_not_enough_currency"));
                 return;
             }
 
-            var newHeroes = _recruitmentSystem.PerformRecruitment(1);
+            var newHeroes = GameManager.Instance.RecruitmentSystem.PerformRecruitment(1);
             // TODO: Show hero results UI
             if (newHeroes.Count > 0)
             {
-                GameManager.Instance.UINotificationManager.ShowNotification($"Chiêu mộ thành công {newHeroes[0].heroName}!");
+                string msgTemplate = LocalizationSystem.GetText("notification_recruit_success");
+                GameManager.Instance.UINotificationManager.ShowNotification(string.Format(msgTemplate, newHeroes[0].heroName));
             }
         }
 
@@ -80,15 +77,16 @@ namespace LegendOfBlood.UI
             }
             else
             {
-                GameManager.Instance.UINotificationManager.ShowNotification("Không Cầm Đủ Vé Chiêu Mộ Hoặc Kim Cương!");
+                GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("notification_not_enough_currency"));
                 return;
             }
 
-            var newHeroes = _recruitmentSystem.PerformRecruitment(10);
+            var newHeroes = GameManager.Instance.RecruitmentSystem.PerformRecruitment(10);
             // TODO: Show hero results UI
             if (newHeroes.Count > 0)
             {
-                GameManager.Instance.UINotificationManager.ShowNotification($"Chiêu mộ thành công {newHeroes.Count} anh hùng mới!");
+                string msgTemplate = LocalizationSystem.GetText("notification_recruit_multi_success");
+                GameManager.Instance.UINotificationManager.ShowNotification(string.Format(msgTemplate, newHeroes.Count));
             }
         }
 

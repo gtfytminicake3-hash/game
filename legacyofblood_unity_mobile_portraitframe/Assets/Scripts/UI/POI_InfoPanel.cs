@@ -13,7 +13,9 @@ namespace LegendOfBlood
         [SerializeField] private TextMeshProUGUI difficultyText;
         [SerializeField] private TextMeshProUGUI recommendedCpText;
         [SerializeField] private Button exploreButton;
+        [SerializeField] private TextMeshProUGUI exploreButtonText;
         [SerializeField] private Button closeButton;
+        [SerializeField] private TextMeshProUGUI closeButtonText;
 
         [Header("Tower of Trials UI")]
         [SerializeField] private GameObject towerInfoContainer; // A parent object for all tower-specific UI
@@ -94,7 +96,7 @@ namespace LegendOfBlood
         {
             if (_currentPoiData == null) return;
 
-            if (poiNameText != null) poiNameText.text = _currentPoiData.poiName;
+            if (poiNameText != null) poiNameText.text = global::LocalizationSystem.GetText(_currentPoiData.poiName);
 
             // Hide regular info for the tower and show tower-specific info
             if (_currentPoiData.type == POIType.TowerOfTrials)
@@ -125,6 +127,9 @@ namespace LegendOfBlood
                 if (difficultyText != null) difficultyText.text = string.Format(LocalizationSystem.GetText("poi_difficulty_format"), _currentPoiData.difficultyLevel);
                 if (recommendedCpText != null) recommendedCpText.text = string.Format(LocalizationSystem.GetText("poi_recommended_cp_format"), recommendedCp);
             }
+
+            if (exploreButtonText != null) exploreButtonText.text = global::LocalizationSystem.GetText("btn_explore");
+            if (closeButtonText != null) closeButtonText.text = global::LocalizationSystem.GetText("btn_close");
         }
 
         private IEnumerator CountdownTimer()

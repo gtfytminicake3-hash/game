@@ -11,6 +11,9 @@ namespace LegendOfBlood
     /// </summary>
     public class BreedingUIController : MonoBehaviour
     {
+        [Header("Panel Titles")]
+        [SerializeField] private TextMeshProUGUI panelTitleText;
+        
         [Header("Slot References")]
         [SerializeField] private GameObject fatherSlot;
         [SerializeField] private Button selectFatherButton;
@@ -24,6 +27,10 @@ namespace LegendOfBlood
         [SerializeField] private Button breedButton;
         [SerializeField] private Button closeButton;
         [SerializeField] private Button confirmResultButton; // Nút mới: "Xác nhận"
+        
+        [Header("Upgrade Feature")]
+        [SerializeField] private Button upgradeBuildingButton;
+        [SerializeField] private string associatedBuildingId = "BreedingPen";
         
         [Header("Area Groups")]
         [SerializeField] private GameObject selectionArea; // Tham chiếu đến nhóm chọn Cha/Mẹ
@@ -57,11 +64,39 @@ namespace LegendOfBlood
 
         private void Awake()
         {
-            selectFatherButton.onClick.AddListener(OnSelectFatherClicked);
-            selectMotherButton.onClick.AddListener(OnSelectMotherClicked);
-            breedButton.onClick.AddListener(OnBreedClicked);
-            closeButton.onClick.AddListener(CloseBreedingPanel);
-            confirmResultButton.onClick.AddListener(OnConfirmResultClicked);
+            if (selectFatherButton != null)
+            {
+                selectFatherButton.onClick.AddListener(OnSelectFatherClicked);
+                var t = selectFatherButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                if (t != null) t.text = global::LocalizationSystem.GetText("btn_select_father");
+            }
+            if (selectMotherButton != null)
+            {
+                selectMotherButton.onClick.AddListener(OnSelectMotherClicked);
+                var t = selectMotherButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                if (t != null) t.text = global::LocalizationSystem.GetText("btn_select_mother");
+            }
+            if (breedButton != null)
+            {
+                breedButton.onClick.AddListener(OnBreedClicked);
+                var t = breedButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                if (t != null) t.text = global::LocalizationSystem.GetText("btn_breed");
+            }
+            if (panelTitleText != null) panelTitleText.text = global::LocalizationSystem.GetText("panel_title_breeding");
+
+            if (closeButton != null) closeButton.onClick.AddListener(CloseBreedingPanel);
+            if (confirmResultButton != null)
+            {
+                confirmResultButton.onClick.AddListener(OnConfirmResultClicked);
+                var t = confirmResultButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                if (t != null) t.text = global::LocalizationSystem.GetText("btn_confirm");
+            }
+            if (upgradeBuildingButton != null) 
+            {
+                upgradeBuildingButton.onClick.AddListener(OnUpgradeBuildingClicked);
+                var upgTxt = upgradeBuildingButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                if (upgTxt != null) upgTxt.text = global::LocalizationSystem.GetText("btn_upgrade");
+            }
 
             if (heroPickerPanel == null)
             {
@@ -113,6 +148,20 @@ namespace LegendOfBlood
             GameManager.Instance.UIManager.HidePanel(UIPanelType.Breeding);
             // Hoặc nếu bạn muốn quay về màn hình trước đó một cách linh hoạt:
             // GameManager.Instance.UIManager.GoBack();
+        }
+
+        private void OnUpgradeBuildingClicked()
+        {
+            GameManager.Instance.UIManager.ShowPanel(UIPanelType.BuildingUpgrade, true);
+            var upgradePanel = GameManager.Instance.UIManager.GetPanel<BuildingUpgradePanel>(UIPanelType.BuildingUpgrade);
+            if (upgradePanel != null && !string.IsNullOrEmpty(associatedBuildingId))
+            {
+                upgradePanel.Setup(associatedBuildingId);
+            }
+            else
+            {
+                Debug.LogWarning($"[BreedingUIController] Cannot open BuildingUpgradePanel! upgradePanel null? {upgradePanel == null}, associatedBuildingId empty? {string.IsNullOrEmpty(associatedBuildingId)}");
+            }
         }
         private void OnSelectFatherClicked()
         {
