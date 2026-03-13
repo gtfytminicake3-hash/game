@@ -36,6 +36,6 @@ namespace LegendOfBlood
         public long recoveryEndTime;    // Timestamp until which the tower progress is saved.
         
         // Optional: Require specific profession to enter (e.g. for Class Towers)
-        public Profession? requiredProfession; 
+        public Profession requiredProfession = Profession.None; 
     }
 }

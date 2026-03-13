@@ -96,7 +96,7 @@ namespace LegendOfBlood
         {
             if (_currentPoiData == null) return;
 
-            if (poiNameText != null) poiNameText.text = global::LocalizationSystem.GetText(_currentPoiData.poiName);
+            if (poiNameText != null) poiNameText.text = _currentPoiData.poiName;
 
             // Hide regular info for the tower and show tower-specific info
             if (_currentPoiData.type == POIType.TowerOfTrials)
@@ -121,7 +121,18 @@ namespace LegendOfBlood
                 int recommendedCp = 0;
                 if (_currentPoiData.monsterIDs != null)
                 {
-                    foreach (var monsterId in _currentPoiData.monsterIDs) recommendedCp += 500; // Placeholder
+                    foreach (var monsterId in _currentPoiData.monsterIDs)
+                    {
+                        var monsterData = DataManager.Instance.GetMonsterByID(monsterId, _currentPoiData.difficultyLevel);
+                        if (monsterData != null)
+                        {
+                            recommendedCp += monsterData.GetCombatPower();
+                        }
+                        else
+                        {
+                            recommendedCp += 500; // Placeholder fallback
+                        }
+                    }
                 }
                 
                 if (difficultyText != null) difficultyText.text = string.Format(LocalizationSystem.GetText("poi_difficulty_format"), _currentPoiData.difficultyLevel);

@@ -62,6 +62,9 @@ namespace LegendOfBlood
         [TextArea(3, 5)]
         public string description;
 
+        [Tooltip("Icon đại diện cho Đặc tính.")]
+        public Sprite icon;
+
         [Header("Trait Evolution")]
         public RarityRank rank;
         public string familyId; // Ví dụ: "ATK_UP", "HP_ON_HIT"

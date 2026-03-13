@@ -1,0 +1,40 @@
+====== PREFAB/SCENE STRUCTURE FOR HeroCard_Prefab.prefab ======
+========================================================
+GameObject: gender icon (1) (ID: 814180615393494116)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: avatar (ID: 1646296473026367775)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: StatsInfo (ID: 1942560315164621433)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: CP (ID: 3824334475931491440)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: ProfessionIcon (ID: 4048924172095997838)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Level (ID: 4723221669914607855)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Is busy (ID: 4826710684172089826)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: icon (ID: 5040923221916715142)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: BusyIndicator (ID: 5811103611929009209)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Name (ID: 7264841217421320012)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: HeroCard_Prefab (ID: 7683568588064255933)
+  - MonoBehaviour (Script GUID: c97c19d436ddd264d80a09326d2f6bb6)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)

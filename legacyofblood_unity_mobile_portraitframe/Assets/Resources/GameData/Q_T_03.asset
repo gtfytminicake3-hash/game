@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.GameConfigs.QuestData
   questId: Q_T_03
   category: 0
-  questName: "C\u1ED1 Th\u1EE7 L\xE0ng"
-  description: "N\xE2ng c\u1EA5p Nh\xE0 Ch\xEDnh TownHall l\xEAn C\u1EA5p 2."
+  questName: quest_Q_T_03_name
+  description: quest_Q_T_03_desc
   type: 0
-  targetId: TownHall
+  targetId: Barracks
   targetValue: 2
   rewards:
   - resourceId: Gold

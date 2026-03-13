@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MON_Goblin
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.MonsterData
   id: Goblin
-  monsterName: "Y\xEAu Tinh R\u1EEBng"
+  monsterName: monster_Goblin_name
   profession: 2
   baseHp: 120
   baseAtk: 15

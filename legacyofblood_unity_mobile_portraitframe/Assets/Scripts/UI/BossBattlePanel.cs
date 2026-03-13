@@ -98,7 +98,7 @@ namespace LegendOfBlood
                 var availableHeroes = DataManager.Instance.AllHeroes.FindAll(h => h.isMature && !h.IsBusy());
                 squadPanel.Show(
                     string.Format(LocalizationSystem.GetText("title_challenge_boss"), _currentBossInfo.bossName),
-                    availableHeroes, 5,
+                    availableHeroes, 15, // Allow up to 3 squads (15 heroes)
                     (selectedHeroIDs) => {
                         squadPanel.gameObject.SetActive(false);
                         this.gameObject.SetActive(false);

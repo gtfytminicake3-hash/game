@@ -2,13 +2,14 @@ namespace LegendOfBlood
 {
     using UnityEngine;
     using UnityEngine.UI;
+    using UnityEngine.EventSystems;
     using TMPro;
 
     /// <summary>
     /// Script điều khiển một ô (slot) trong đội hình được chọn.
-    /// Sử dụng một placeholder cố định để giữ layout ổn định.
+    /// Hỗ trợ kéo thả để đổi chỗ các Hero trong đội hình.
     /// </summary>
-    public class SquadSlotCard : MonoBehaviour
+    public class SquadSlotCard : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
     {
         [Header("UI References")]
         [Tooltip("Khung nền/placeholder, luôn hiển thị để cố định kích thước.")]
@@ -27,14 +28,27 @@ namespace LegendOfBlood
         [SerializeField] private Button slotButton;
 
         // --- State Variables ---
+        public int SlotIndex => _slotIndex;
         private int _slotIndex;
         private SquadSelectionPanel _selectionPanel;
+        public HeroData AssignedHero => _assignedHero;
         private HeroData _assignedHero;
+
+        // --- Drag & Drop state ---
+        private RectTransform _rectTransform;
+        private CanvasGroup _canvasGroup;
+        private Vector2 _originalPosition;
+        private Transform _originalParent;
+        private int _originalSiblingIndex;
 
         #region Initialization
 
         private void Awake()
         {
+            _rectTransform = GetComponent<RectTransform>();
+            _canvasGroup = GetComponent<CanvasGroup>();
+            if (_canvasGroup == null) _canvasGroup = gameObject.AddComponent<CanvasGroup>();
+
             if (slotButton != null)
             {
                 slotButton.onClick.AddListener(OnSlotClicked);
@@ -101,17 +115,82 @@ namespace LegendOfBlood
 
         #region Event Handlers
 
-        /// <summary>
-        /// Được gọi khi người chơi click vào ô.
-        /// </summary>
         private void OnSlotClicked()
         {
-            // Nếu ô đã có hero, hành động click là để loại bỏ hero đó.
-            if (_assignedHero != null)
+            // Bỏ click remove hero ra vì drag drop có thể can thiệp. 
+            // Vẫn giữ lại nếu muốn click thả nhanh:
+            if (_assignedHero != null && !_isDragging)
             {
                 _selectionPanel.RemoveHeroFromSquad(_slotIndex);
             }
-            // Nếu ô trống, không làm gì. Việc thêm hero được xử lý từ danh sách bên cạnh.
+        }
+
+        #endregion
+
+        #region Drag and Drop
+        
+        private bool _isDragging = false;
+        
+        public void OnBeginDrag(PointerEventData eventData)
+        {
+            if (_assignedHero == null) return; // Chỉ drag được ô có người
+            
+            _isDragging = true;
+            _originalPosition = _rectTransform.anchoredPosition;
+            _originalParent = transform.parent;
+            _originalSiblingIndex = transform.GetSiblingIndex();
+            
+            // Đưa lên lớp trên cùng để không bị đè che khi kéo
+            Transform rootCanvas = transform.root.GetComponentInChildren<Canvas>()?.transform ?? transform.root;
+            transform.SetParent(rootCanvas);
+            transform.SetAsLastSibling();
+            
+            _canvasGroup.blocksRaycasts = false; // Để tia ray có thể đâm xuyên qua cái thẻ đang kéo trúng thẻ nằm bên dưới
+            _canvasGroup.alpha = 0.6f;
+        }
+
+        public void OnDrag(PointerEventData eventData)
+        {
+            if (!_isDragging) return;
+            _rectTransform.anchoredPosition += eventData.delta / GetCanvasScale();
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            if (!_isDragging) return;
+            
+            _isDragging = false;
+            _canvasGroup.blocksRaycasts = true;
+            _canvasGroup.alpha = 1f;
+
+            // Xoay về chỗ cũ (mọi hoán đổi thực tế sẽ diễn ra bên trong OnDrop)
+            transform.SetParent(_originalParent);
+            transform.SetSiblingIndex(_originalSiblingIndex);
+            
+            // LayoutGroup sẽ tự giật thẻ về vị trí cũ, đây chỉ là dự phòng
+            _rectTransform.anchoredPosition = _originalPosition;
+        }
+
+        public void OnDrop(PointerEventData eventData)
+        {
+            // Xảy ra khi có một cái Card (DraggedCard) thả lên cái Card này
+            if (eventData.pointerDrag != null)
+            {
+                SquadSlotCard draggedCard = eventData.pointerDrag.GetComponent<SquadSlotCard>();
+                if (draggedCard != null && draggedCard != this)
+                {
+                    // Hoán đổi 2 thẻ trong đội hình
+                    _selectionPanel.SwapHeroes(draggedCard.SlotIndex, this.SlotIndex);
+                }
+            }
+        }
+        
+        private float GetCanvasScale()
+        {
+            Canvas canvas = GetComponentInParent<Canvas>();
+            if (canvas != null)
+                return canvas.scaleFactor;
+            return 1f;
         }
 
         #endregion

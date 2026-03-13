@@ -16,6 +16,7 @@ namespace LegendOfBlood
         [SerializeField] private TextMeshProUGUI timerText;
         [SerializeField] private TextMeshProUGUI costText;
         [SerializeField] private Button healButton;
+        [SerializeField] private Button healAdButton; // NEW: Nút chữa bệnh miễn phí bằng Ads
 
         private HeroData _heroData;
         private HospitalPanel _hospitalPanel;
@@ -47,8 +48,14 @@ namespace LegendOfBlood
             _baseHeroCard.Setup(heroData);
 
             // Gán sự kiện cho nút
-            healButton.onClick.RemoveAllListeners();
-            healButton.onClick.AddListener(OnHealButtonClicked);
+            if (healButton != null) {
+                healButton.onClick.RemoveAllListeners();
+                healButton.onClick.AddListener(OnHealButtonClicked);
+            }
+            if (healAdButton != null) {
+                healAdButton.onClick.RemoveAllListeners();
+                healAdButton.onClick.AddListener(OnHealAdButtonClicked);
+            }
             
             UpdateCardState();
         }
@@ -76,21 +83,42 @@ namespace LegendOfBlood
             _hospitalPanel.RequestHeal(_heroData);
         }
 
+        private void OnHealAdButtonClicked()
+        {
+            if (LegendOfBlood.Managers.AdRewardGateway.Instance != null)
+            {
+                LegendOfBlood.Managers.AdRewardGateway.Instance.RequestAd(LegendOfBlood.Managers.RewardType.FreeHeal, () => {
+                    GameManager.Instance.HospitalSystem.HealSevereInjuryFree(_heroData);
+                    // Hospital Panel lắng nghe sự kiện OnHeroHealed nên tự nó RefreshLists()
+                });
+            }
+        }
+
         private void UpdateCardState()
         {
             int cost = 0;
             if (_heroData.isSeverelyInjured)
             {
                 cost = Mathf.FloorToInt(_heroData.GetCombatPower() / 10f) + 50;
-                healButton.GetComponentInChildren<TextMeshProUGUI>().text = global::LocalizationSystem.GetText("heal_severe");
+                if (healButton != null) healButton.GetComponentInChildren<TextMeshProUGUI>().text = global::LocalizationSystem.GetText("heal_severe");
+                
+                // Show free ad button if limit not reached
+                if (healAdButton != null) 
+                {
+                    bool canShowAd = DataManager.Instance.Player.dailyFreeHealsWatched < 2;
+                    healAdButton.gameObject.SetActive(canShowAd);
+                }
             }
             else if (_heroData.isLightlyInjured)
             {
                 cost = Mathf.FloorToInt(_heroData.GetCombatPower() / 50f) + 10;
-                healButton.GetComponentInChildren<TextMeshProUGUI>().text = global::LocalizationSystem.GetText("heal_light");
+                if (healButton != null) healButton.GetComponentInChildren<TextMeshProUGUI>().text = global::LocalizationSystem.GetText("heal_light");
+                
+                // Light injuries do not get free heals
+                if (healAdButton != null) healAdButton.gameObject.SetActive(false);
             }
 
-            costText.text = string.Format(global::LocalizationSystem.GetText("gold_cost_format"), cost);
+            if (costText != null) costText.text = string.Format(global::LocalizationSystem.GetText("gold_cost_format"), cost);
         }
     }
 }

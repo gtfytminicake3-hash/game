@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.GameConfigs.QuestData
   questId: Q_T_02
   category: 0
-  questName: "D\xF2ng D\xF5i Ho\xE0ng Gia"
-  description: "Th\u1EF1c hi\u1EC7n Lai T\u1EA1o v\xE0 c\xF3 em b\xE9 \u0111\u1EA7u
-    tay."
+  questName: quest_Q_T_02_name
+  description: quest_Q_T_02_desc
   type: 1
   targetId: 
   targetValue: 1

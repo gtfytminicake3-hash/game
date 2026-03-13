@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SK_HEA_SINGLE_1
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Skill
   id: SK_HEA_SINGLE_1
-  skillName: "H\u1ED3i Ph\u1EE5c"
-  description: "Ch\u1EEFa tr\u1ECB v\u1EBFt th\u01B0\u01A1ng cho \u0111\u1ED3ng minh
-    y\u1EBFu nh\u1EA5t."
+  skillName: skill_SK_HEA_SINGLE_1_name
+  description: skill_SK_HEA_SINGLE_1_desc
+  icon: {fileID: 21300000, guid: 04dfb0d9c8323ca419144cb1979b4341, type: 3}
   type: 0
   requiredProfession: 3
   cooldown: 2

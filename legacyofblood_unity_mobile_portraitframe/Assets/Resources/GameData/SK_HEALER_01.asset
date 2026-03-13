@@ -15,6 +15,7 @@ MonoBehaviour:
   id: SK_HEALER_01
   skillName: "Ch\u1EEFa L\xE0nh"
   description: "H\u1ED3i m\xE1u cho \u0111\u1ED3ng minh th\u1EA5p m\xE1u nh\u1EA5t."
+  icon: {fileID: 21300000, guid: 04dfb0d9c8323ca419144cb1979b4341, type: 3}
   type: 0
   requiredProfession: 3
   cooldown: 2

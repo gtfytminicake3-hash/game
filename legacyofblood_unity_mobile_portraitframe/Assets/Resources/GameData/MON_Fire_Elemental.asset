@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MON_Fire_Elemental
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.MonsterData
   id: Fire Elemental
-  monsterName: "H\u1ECFa Linh Kh\xF4ng T\u01B0\u1EDBng"
+  monsterName: monster_Fire_Elemental_name
   profession: 3
   baseHp: 600
   baseAtk: 80

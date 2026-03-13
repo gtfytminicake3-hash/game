@@ -358,6 +358,11 @@ namespace LegendOfBlood
             HeroData heroToRemove = GetHeroByID(heroId);
             if (heroToRemove != null)
             {
+                // Refund some resources based on level
+                int refundGold = heroToRemove.level * 50;
+                GameManager.Instance.InventoryManager.AddResource(ResourceType.Gold, refundGold);
+                Debug.Log($"Sa thải Hero {heroToRemove.heroName}, thu về {refundGold} Vàng.");
+
                 Player.Heroes.Remove(heroToRemove);
                 OnHeroListChanged?.Invoke();
             }
@@ -396,12 +401,30 @@ namespace LegendOfBlood
                 };
             }
 
-            // 2. Lấy dữ liệu Monster cơ sở và Scale theo Difficulty
+            // 2. Add special case for Healer Tower "Injured Soldiers"
+            if (id == "INJURED_SOLDIER")
+            {
+                // Generate a dummy soldier that acts as a target for healing.
+                // We want high maxHp and low currentHp.
+                float soldierHp = 500f * difficultyLevel; // e.g. 500 at floor 1, 10000 at floor 20
+                return new HeroData
+                {
+                    id = Guid.NewGuid().ToString(), // unique ID so combat doesn't overlap them
+                    heroName = string.Format(LocalizationSystem.GetText("healer_tower_soldier_name"), difficultyLevel),
+                    level = difficultyLevel,
+                    profession = Profession.Warrior,
+                    baseStats = new HeroStats { hp = soldierHp, atk = 0, def = 10 * difficultyLevel, spd = 50 }, // Slow, no atk
+                    currentHp = 1, // extremely low health
+                    isMature = true
+                };
+            }
+
+            // 3. Lấy dữ liệu Monster cơ sở và Scale theo Difficulty
             MonsterData monsterCfg = AllMonsters != null && AllMonsters.TryGetValue(id, out var m) ? m : null;
             if (monsterCfg != null)
             {
-                // Công thức tính Scale: Tăng 10% mỗi cấp độ lấy từ difficultyLevel (tối thiểu là 1)
-                float multiplier = Mathf.Pow(1.1f, Mathf.Max(1, difficultyLevel) - 1);
+                // Công thức tính Scale: Tăng 40% mỗi cấp độ lấy từ difficultyLevel (tối thiểu là 1)
+                float multiplier = Mathf.Pow(1.4f, Mathf.Max(1, difficultyLevel) - 1);
                 
                 float scaledHp = monsterCfg.baseHp * multiplier;
                 float scaledAtk = monsterCfg.baseAtk * multiplier;
@@ -421,7 +444,7 @@ namespace LegendOfBlood
             }
 
             // 3. Quái giả (Fallback cuối cùng)
-            float fbMultiplier = Mathf.Pow(1.1f, Mathf.Max(1, difficultyLevel) - 1);
+            float fbMultiplier = Mathf.Pow(1.4f, Mathf.Max(1, difficultyLevel) - 1);
             return new HeroData
             {
                 id = id,
@@ -486,14 +509,15 @@ namespace LegendOfBlood
 
             var hero = new HeroData(Guid.NewGuid().ToString(), name, gender)
             {
-                level = 1,
+                level = 10,
                 potential = 18,
                 baseStats = new HeroStats { hp = 200, atk = 25, def = 15, spd = 20 },
                 isMature = true,
-                profession = prof,
                 traitIDs = new List<string> { "TR_ATK_D", "TR_ALL_S" }, // Tặng Tân thủ 2 gen xịn từ GameConfig 
                 skillIDs = new List<string>(startingSkills) 
             };
+            hero.SetProfession(prof);
+            hero.freeStatPoints = 18 * 9; // 9 levels of potential for reaching level 10
             hero.currentHp = hero.GetFinalStats().hp; 
             return hero;
         }

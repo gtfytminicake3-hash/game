@@ -1,0 +1,5 @@
+====== PREFAB/SCENE STRUCTURE FOR DungeonPoi_Prefab.prefab ======
+========================================================
+GameObject: DungeonPoi_Prefab (ID: 4535212889762830006)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)

@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: IT_EXP_BOOK_S
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.ItemData
   id: IT_EXP_BOOK_S
-  itemName: "S\xE1ch Gi\xE1o Khoa"
-  description: "Cung c\u1EA5p kinh nghi\u1EC7m khi s\u1EED d\u1EE5ng. R\u01A1i ng\u1EABu
-    nhi\xEAn."
+  itemName: item_IT_EXP_BOOK_S_name
+  description: item_IT_EXP_BOOK_S_desc
   icon: {fileID: 0}
   type: 0
   isStackable: 1

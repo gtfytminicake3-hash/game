@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SK_WAR_DMG_2
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Skill
   id: SK_WAR_DMG_2
-  skillName: "Cu\u1ED3ng N\u1ED9 Huy\u1EBFt"
-  description: "B\u1ED5 \u0111\xF4i k\u1EBB th\xF9, s\xE1t th\u01B0\u01A1ng tr\xED
-    m\u1EA1ng."
+  skillName: skill_SK_WAR_DMG_2_name
+  description: skill_SK_WAR_DMG_2_desc
+  icon: {fileID: 21300000, guid: d5847fa12dca7cc4db8157d65e7df110, type: 3}
   type: 0
   requiredProfession: 0
   cooldown: 3

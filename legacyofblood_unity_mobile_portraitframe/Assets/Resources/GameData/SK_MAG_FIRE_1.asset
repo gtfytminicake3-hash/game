@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SK_MAG_FIRE_1
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Skill
   id: SK_MAG_FIRE_1
-  skillName: "Thi\xEAn Th\u1EA1ch"
-  description: "Gi\xE1ng qu\u1EA3 c\u1EA7u l\u1EEDa kh\u1ED5ng l\u1ED3, thi\xEAu
-    \u0111\u1ED1t \u0111\u1ECBch."
+  skillName: skill_SK_MAG_FIRE_1_name
+  description: skill_SK_MAG_FIRE_1_desc
+  icon: {fileID: 21300000, guid: 9464c4d373a3a114bbf69862d0cfc935, type: 3}
   type: 0
   requiredProfession: 2
   cooldown: 5

@@ -106,6 +106,11 @@ namespace LegendOfBlood.Managers
             if (player.lastDailyResetTimestamp < todayTs)
             {
                 ResetQuestsByCategory(QuestCategory.Daily);
+                
+                // --- NEW: Reset daily ad limits ---
+                player.dailySummonAdsWatched = 0;
+                player.dailyDoubleGoldAdsWatched = 0;
+
                 player.lastDailyResetTimestamp = todayTs;
                 Debug.Log("Daily Quests Reset!");
             }

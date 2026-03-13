@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: TR_SPD_B
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Trait
   id: TR_SPD_B
-  traitName: "Nhanh Nh\u01B0 Gi\xF3"
-  description: +12 SPD.
+  traitName: trait_TR_SPD_B_name
+  description: trait_TR_SPD_B_desc
+  icon: {fileID: 21300000, guid: 68abc2190248c4249803d227b9bb2b7c, type: 3}
   rank: 2
   familyId: SPD_UP
   nextUpgradeTraitID: TR_SPD_A

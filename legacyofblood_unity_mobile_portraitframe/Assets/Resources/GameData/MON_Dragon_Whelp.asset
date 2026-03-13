@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MON_Dragon_Whelp
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.MonsterData
   id: Dragon Whelp
-  monsterName: "R\u1ED3ng Con"
+  monsterName: monster_Dragon_Whelp_name
   profession: 2
   baseHp: 1000
   baseAtk: 100

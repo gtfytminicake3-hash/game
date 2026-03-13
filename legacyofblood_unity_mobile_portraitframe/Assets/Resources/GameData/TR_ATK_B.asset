@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: TR_ATK_B
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Trait
   id: TR_ATK_B
-  traitName: "Tay To H\u01A1n N\xE3o"
-  description: "B\u1EAFp tay to b\u1EF1. +35 ATK."
+  traitName: trait_TR_ATK_B_name
+  description: trait_TR_ATK_B_desc
+  icon: {fileID: 21300000, guid: 2f0e47a8a57ed0146b78f10a4d7917f9, type: 3}
   rank: 2
   familyId: ATK_UP
   nextUpgradeTraitID: TR_ATK_A

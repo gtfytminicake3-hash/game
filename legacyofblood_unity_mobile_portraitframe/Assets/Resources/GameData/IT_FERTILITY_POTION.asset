@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: IT_FERTILITY_POTION
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.ItemData
   id: IT_FERTILITY_POTION
-  itemName: "Thu\u1ED1c M\u1EAFn \u0110\u1EBB"
-  description: "U\u1ED1ng v\xE0o (+2) l\u01B0\u1EE3t sinh s\u1EA3n. T\u1ED1i \u0111a
-    20 l\u01B0\u1EE3t cho 1 Hero."
+  itemName: item_IT_FERTILITY_POTION_name
+  description: item_IT_FERTILITY_POTION_desc
   icon: {fileID: 0}
   type: 0
   isStackable: 1

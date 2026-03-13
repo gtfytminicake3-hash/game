@@ -10,6 +10,7 @@ namespace LegendOfBlood
     {
         [Header("UI References")]
         [SerializeField] private Button challengeButton;
+        [SerializeField] private Button addTicketAdButton; // NEW: Nút xem Ad lấy vé
         [SerializeField] private Button closeButton;
         [SerializeField] private SquadSelectionPanel squadSelectionPanel;
         [SerializeField] private Text rankNameText;
@@ -33,6 +34,7 @@ namespace LegendOfBlood
                 var chTxt = challengeButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
                 if (chTxt != null) chTxt.text = global::LocalizationSystem.GetText("btn_challenge");
             }
+            if (addTicketAdButton != null) addTicketAdButton.onClick.AddListener(OnAddTicketAdClicked);
             if (closeButton != null) closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.HidePanel(UIPanelType.Arena));
             if (leaderboardButton != null)
             {
@@ -84,6 +86,12 @@ namespace LegendOfBlood
             rankPointsText.text = string.Format(LocalizationSystem.GetText("arena_points"), playerData.arenaPoints);
             ticketsText.text = string.Format(LocalizationSystem.GetText("arena_tickets"), playerData.arenaTickets);
             // rankIconImage.sprite = ...; // Needs logic to get sprite from ArenaRankData
+            
+            if (addTicketAdButton != null)
+            {
+                bool showAdButton = (playerData.arenaTickets <= 0) && (playerData.dailyArenaTicketAdsWatched < 3);
+                addTicketAdButton.gameObject.SetActive(showAdButton);
+            }
         }
 
         private void OnLeaderboardClicked()
@@ -175,6 +183,14 @@ namespace LegendOfBlood
             GameManager.Instance.UINotificationManager.ShowNotification(popupMessage);
         }
 
-        // Phương thức CreateDummyEnemySquad đã được thay thế bởi ArenaSystem.FindOpponentSquad
+        private void OnAddTicketAdClicked()
+        {
+            if (LegendOfBlood.Managers.AdRewardGateway.Instance != null)
+            {
+                LegendOfBlood.Managers.AdRewardGateway.Instance.RequestAd(LegendOfBlood.Managers.RewardType.ArenaTicket, () => {
+                    UpdateArenaInfo();
+                });
+            }
+        }
     }
 }

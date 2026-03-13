@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: TR_DEF_B
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Trait
   id: TR_DEF_B
-  traitName: "Da Th\u1EA1ch Tr\xF9ng"
-  description: +25 DEF.
+  traitName: trait_TR_DEF_B_name
+  description: trait_TR_DEF_B_desc
+  icon: {fileID: 21300000, guid: 6590d04a9e4c9b94e8cabe276a5ddd7c, type: 3}
   rank: 2
   familyId: DEF_UP
   nextUpgradeTraitID: TR_DEF_A

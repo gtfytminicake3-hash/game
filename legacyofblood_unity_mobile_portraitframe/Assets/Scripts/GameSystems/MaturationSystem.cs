@@ -62,22 +62,9 @@ namespace LegendOfBlood
         private void MatureHero(HeroData hero)
         {
             hero.isMature = true;
+            // Removed: profession assignment and starting skill assignment. Hero stays at Profession.None.
 
-            // 1. Gán ngẫu nhiên 1 trong 4 nghề nghiệp
-            var professions = Enum.GetValues(typeof(Profession)).Cast<Profession>().ToList();
-            professions.Remove(Profession.None); // Loại bỏ trạng thái "None"
-            hero.profession = professions[UnityEngine.Random.Range(0, professions.Count)];
-
-            // 2. Gán ngẫu nhiên một kỹ năng khởi đầu của nghề đó
-            var startingSkills = DataManager.Instance.GetStartingSkills(hero.profession);
-            if(startingSkills != null && startingSkills.Count > 0)
-            {
-                string randomSkillID = startingSkills[UnityEngine.Random.Range(0, startingSkills.Count)];
-                hero.skillIDs.Add(randomSkillID);
-                Debug.Log($"Hero đã học được kỹ năng khởi đầu: {randomSkillID}");
-            }
-
-            Debug.Log($"Hero {hero.heroName} (ID: {hero.id}) đã trưởng thành! Thức tỉnh thành nghề: {hero.profession}.");
+            Debug.Log($"Hero {hero.heroName} (ID: {hero.id}) đã trưởng thành! Vẫn đang chờ chọn hệ ở Cấp 10.");
 
             // Phát sự kiện để UI có thể cập nhật
             OnHeroMatured?.Invoke(hero);

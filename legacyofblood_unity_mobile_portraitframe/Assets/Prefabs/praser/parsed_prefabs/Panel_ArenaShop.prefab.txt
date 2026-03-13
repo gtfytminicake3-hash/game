@@ -1,0 +1,23 @@
+====== PREFAB/SCENE STRUCTURE FOR Panel_ArenaShop.prefab ======
+========================================================
+GameObject: Content (ID: 4341028672665964337)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+  - MonoBehaviour (Script GUID: 3245ec927659c4140ac4f8d17403cc18)
+GameObject: Btn_Close (ID: 4607325412645525262)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Panel_ArenaShop (ID: 4927908484359450023)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 619cdd331192ee141a573c3821e1de96)
+    PanelType: 0
+  - MonoBehaviour (Script GUID: 86c7fcef2ea226d42961cfe0220fd013)
+GameObject: Scroll View (ID: 4987238840495238675)
+  - MonoBehaviour (Script GUID: 1aa08ab6e0800fa44ae55d278d1423e3)
+GameObject: Viewport (ID: 7636307686461068845)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 31a19414c41e5ae4aae2af33fee712f6)
+GameObject: Text (TMP) (ID: 7968710195800500168)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0

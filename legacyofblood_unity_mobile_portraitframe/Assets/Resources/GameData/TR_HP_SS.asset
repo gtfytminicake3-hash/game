@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: TR_HP_SS
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Trait
   id: TR_HP_SS
-  traitName: "B\u1EA5t T\u1EED Ma C\u1ED1t"
-  description: "T\u0103ng kh\u1EE7ng khi\u1EBFp 50% HP."
+  traitName: trait_TR_HP_SS_name
+  description: trait_TR_HP_SS_desc
+  icon: {fileID: 21300000, guid: 8bec6dfadc3f17648b6b18a891e61de8, type: 3}
   rank: 5
   familyId: HP_UP
   nextUpgradeTraitID: 

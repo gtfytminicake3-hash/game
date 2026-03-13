@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: SK_HEA_AOE_1
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Skill
   id: SK_HEA_AOE_1
-  skillName: "Th\xE2n L\u1EA1c D\u01B0\u1EE3c"
-  description: "L\xE0n gi\xF3 m\xE1t h\u1ED3i m\xE1u to\xE0n \u0111\u1ED9i H\xECnh."
+  skillName: skill_SK_HEA_AOE_1_name
+  description: skill_SK_HEA_AOE_1_desc
+  icon: {fileID: 21300000, guid: 04dfb0d9c8323ca419144cb1979b4341, type: 3}
   type: 0
   requiredProfession: 3
   cooldown: 4

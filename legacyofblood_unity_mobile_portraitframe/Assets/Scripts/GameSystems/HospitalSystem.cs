@@ -9,8 +9,6 @@ namespace LegendOfBlood
     /// </summary>
     public class HospitalSystem
     {
-        // Hằng số thời gian chờ, tính bằng mili giây, dựa trên GDD_02
-        private const long LIGHT_INJURY_DURATION_MS = 5 * 60 * 1000; // 5 phút
         private const long SEVERE_INJURY_DURATION_MS = 8 * 60 * 60 * 1000; // 8 giờ
 
         // Events để UI có thể lắng nghe
@@ -36,14 +34,32 @@ namespace LegendOfBlood
             }
         }
 
-        /// <summary>
-        /// Gây ra trạng thái bị thương nhẹ cho một hero.
-        /// </summary>
         public void InflictLightInjury(HeroData hero)
         {
+            float maxHp = hero.GetFinalStats().hp;
+            float missingHp = maxHp - hero.currentHp;
+            if (missingHp <= 0) return;
+
+            // Get Hospital level to calculate healing rate
+            int hospitalLevel = 1;
+            if (DataManager.Instance != null && DataManager.Instance.AllBuildings != null)
+            {
+                var hospital = DataManager.Instance.AllBuildings.FirstOrDefault(b => b.id == "Hospital");
+                if (hospital != null && hospital.level > 0)
+                {
+                    hospitalLevel = hospital.level;
+                }
+            }
+
+            // Tốc độ hồi máu = 1 HP/s * Cấp độ bệnh viện
+            float healRatePerSecond = 1f * hospitalLevel;
+            
+            // Thời gian hồi phục = Số máu mất / Tốc độ hồi máu
+            long recoveryDurationMs = (long)((missingHp / healRatePerSecond) * 1000);
+
             hero.isLightlyInjured = true;
-            hero.lightInjuryEndTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + LIGHT_INJURY_DURATION_MS;
-            Debug.Log($"{hero.heroName} bị thương nhẹ. Cần {LIGHT_INJURY_DURATION_MS / 1000}s để hồi phục.");
+            hero.lightInjuryEndTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + recoveryDurationMs;
+            Debug.Log($"{hero.heroName} bị thương nhẹ (thiếu {missingHp} HP). Cần {recoveryDurationMs / 1000}s để hồi phục (Tốc độ: {healRatePerSecond} HP/s).");
         }
 
         /// <summary>
@@ -100,6 +116,15 @@ namespace LegendOfBlood
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Cứu chữa vết thương nặng MIỄN PHÍ.
+        /// </summary>
+        public void HealSevereInjuryFree(HeroData hero)
+        {
+            Debug.Log($"{hero.heroName} đã được cứu chữa khỏi vết thương nặng MIỄN PHÍ.");
+            ClearSevereInjury(hero);
         }
 
         /// <summary>

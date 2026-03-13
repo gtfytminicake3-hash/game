@@ -527,3 +527,5 @@ building_BreedingPen=Khu Lai Tạo
 building_Hospital=Bệnh Viện
 building_TownHall=Trại Lính
 building_Barrack=Trại Lính
+
+building_upgrading=Đang Nâng Cấp

@@ -27,6 +27,8 @@ Vương Triều Di Truyền là một game chiến thuật, nơi người chơi 
 *   [**Hệ thống Giao diện Người dùng (UI)**](./GDD_04_UI_Systems.md)
 *   [**Hệ thống Bản đồ Thế giới**](./GDD_05_WorldMap_System.md)
 *   [**Hệ thống Túi đồ & Vật phẩm**](./GDD_06_Inventory_And_Items.md)
+*   [**Hệ thống Trang bị**](./GDD_07_Equipment_System.md)
+*   [**Các Hệ thống Khác (Đấu trường, Nhiệm vụ, Ngôn ngữ)**](./GDD_08_Other_Systems.md)
 
 ---
 

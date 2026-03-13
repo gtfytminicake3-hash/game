@@ -8,6 +8,7 @@ namespace LegendOfBlood.UI
     {
         [SerializeField] private Button recruitOneButton;
         [SerializeField] private Button recruitTenButton;
+        public Button recruitAdButton; // NEW: Nút quay miễn phí
         [SerializeField] private Button closeButton;
 
         private void Awake()
@@ -17,11 +18,26 @@ namespace LegendOfBlood.UI
 
         private void Start()
         {
-            recruitOneButton.onClick.AddListener(OnRecruitOne);
-            recruitTenButton.onClick.AddListener(OnRecruitTen);
+            if (recruitOneButton != null) recruitOneButton.onClick.AddListener(OnRecruitOne);
+            if (recruitTenButton != null) recruitTenButton.onClick.AddListener(OnRecruitTen);
+            if (recruitAdButton != null) recruitAdButton.onClick.AddListener(OnRecruitAd);
             if (closeButton != null) closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.GoBack());
 
             Debug.Log("RecruitmentPanel Initialized");
+        }
+
+        private void OnEnable()
+        {
+            RefreshUI();
+        }
+
+        private void RefreshUI()
+        {
+            if (recruitAdButton != null)
+            {
+                bool canWatchAd = DataManager.Instance.Player.dailyFreeSummonsWatched == 0;
+                recruitAdButton.gameObject.SetActive(canWatchAd);
+            }
         }
 
         private void OnRecruitOne()
@@ -90,10 +106,34 @@ namespace LegendOfBlood.UI
             }
         }
 
+        private void OnRecruitAd()
+        {
+            Debug.Log("Attempting to recruit 1 hero via Ad.");
+            if (DataManager.Instance.IsPopulationFull())
+            {
+                GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("notification_population_full"));
+                return;
+            }
+
+            if (LegendOfBlood.Managers.AdRewardGateway.Instance != null)
+            {
+                LegendOfBlood.Managers.AdRewardGateway.Instance.RequestAd(LegendOfBlood.Managers.RewardType.DailySummon, () => {
+                    var newHeroes = GameManager.Instance.RecruitmentSystem.PerformRecruitment(1);
+                    if (newHeroes.Count > 0)
+                    {
+                        string msgTemplate = LocalizationSystem.GetText("notification_recruit_success");
+                        GameManager.Instance.UINotificationManager.ShowNotification(string.Format(msgTemplate, newHeroes[0].heroName));
+                    }
+                    RefreshUI();
+                });
+            }
+        }
+
         private void OnDestroy()
         {
-            recruitOneButton.onClick.RemoveListener(OnRecruitOne);
-            recruitTenButton.onClick.RemoveListener(OnRecruitTen);
+            if (recruitOneButton != null) recruitOneButton.onClick.RemoveListener(OnRecruitOne);
+            if (recruitTenButton != null) recruitTenButton.onClick.RemoveListener(OnRecruitTen);
+            if (recruitAdButton != null) recruitAdButton.onClick.RemoveListener(OnRecruitAd);
         }
     }
 }

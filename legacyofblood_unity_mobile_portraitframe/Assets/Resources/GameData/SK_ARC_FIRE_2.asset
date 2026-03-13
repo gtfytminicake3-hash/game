@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SK_ARC_FIRE_2
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Skill
   id: SK_ARC_FIRE_2
-  skillName: "M\u01B0a H\u1ECFa Ti\u1EC5n"
-  description: "B\u1EAFn 3 m\u1EE5c ti\xEAu ng\u1EABu nhi\xEAn, t\u1EC9 l\u1EC7 thi\xEAu
-    \u0111\u1ED1t cao."
+  skillName: skill_SK_ARC_FIRE_2_name
+  description: skill_SK_ARC_FIRE_2_desc
+  icon: {fileID: 21300000, guid: 035ddaaa597550f43bc49015c31b101e, type: 3}
   type: 0
   requiredProfession: 1
   cooldown: 3

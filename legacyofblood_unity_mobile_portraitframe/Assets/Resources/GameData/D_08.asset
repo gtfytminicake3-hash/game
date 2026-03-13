@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: D_08
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Trait
   id: D_08
-  traitName: "L\u1EDBn Nhanh"
-  description: "Gi\u1EA3m 20% th\u1EDDi gian tr\u01B0\u1EDFng th\xE0nh."
+  traitName: trait_D_08_name
+  description: trait_D_08_desc
+  icon: {fileID: 21300000, guid: 68abc2190248c4249803d227b9bb2b7c, type: 3}
   rank: 0
   familyId: MATURE_SPEED
   nextUpgradeTraitID: 

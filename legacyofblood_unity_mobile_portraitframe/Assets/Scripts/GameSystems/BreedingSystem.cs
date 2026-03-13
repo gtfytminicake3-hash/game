@@ -8,6 +8,7 @@ namespace LegendOfBlood
     {
         public bool UseMutationPotion { get; set; } = false;
         public string GuaranteedTraitID { get; set; } = null;
+        public LegendOfBlood.Profession? GuaranteedProfession { get; set; } = null;
     }
 
     public class BreedingSystem
@@ -71,6 +72,12 @@ namespace LegendOfBlood
             CalculateBaseStats(offspring);
             offspring.traitIDs = InheritTraits(father.traitIDs, mother.traitIDs, options);
             
+            // Pass the guaranteed profession from the Wish Amulet to the newborn
+            if (options.GuaranteedProfession.HasValue)
+            {
+                offspring.guaranteedProfession = options.GuaranteedProfession.Value;
+            }
+            
             if (father.traitIDs.Contains(TRAIT_ELITE_BLOODLINE) || mother.traitIDs.Contains(TRAIT_ELITE_BLOODLINE))
             {
                 if (Random.value < 0.10f)
@@ -86,6 +93,14 @@ namespace LegendOfBlood
 
             offspring.isMature = false;
             long maturationDuration = 60000;
+            
+            // Xử lý Trait: Lớn Nhanh (Fast Grower - D_08)
+            if (offspring.traitIDs.Contains("D_08"))
+            {
+                maturationDuration = (long)(maturationDuration * 0.7f); // Giảm 30% thời gian trưởng thành
+                Debug.Log($"Hero {offspring.heroName} có trait Lớn Nhanh (D_08), giảm thời gian trưởng thành còn {maturationDuration}ms.");
+            }
+
             offspring.maturationEndTime = new System.DateTimeOffset(System.DateTime.UtcNow).ToUnixTimeMilliseconds() + maturationDuration;
 
             return offspring;

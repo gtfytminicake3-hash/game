@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: TR_SPD_C
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Trait
   id: TR_SPD_C
-  traitName: "B\u01B0\u1EDBc Ch\xE2n L\xEC L\u1EE3m"
-  description: +5 SPD.
+  traitName: trait_TR_SPD_C_name
+  description: trait_TR_SPD_C_desc
+  icon: {fileID: 21300000, guid: 68abc2190248c4249803d227b9bb2b7c, type: 3}
   rank: 1
   familyId: SPD_UP
   nextUpgradeTraitID: TR_SPD_B

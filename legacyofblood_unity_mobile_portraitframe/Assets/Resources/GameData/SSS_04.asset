@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SSS_04
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Trait
   id: SSS_04
-  traitName: "K\u1EBB Ch\u1ECDn L\u1ECDc Gene"
-  description: "Th\u1ED1ng tr\u1ECB ch\u1ECDn l\u1ECDc. C\xF3 th\u1EC3 ch\u1EE7 \u0111\u1ED9ng
-    gi\u1EEF l\u1EA1i 1 Trait ch\u1EC9 \u0111\u1ECBnh khi lai t\u1EA1o."
+  traitName: trait_SSS_04_name
+  description: trait_SSS_04_desc
+  icon: {fileID: 21300000, guid: 9821da3587ea88d4fbe8759791249d29, type: 3}
   rank: 6
   familyId: GENE_SELECTOR
   nextUpgradeTraitID: 

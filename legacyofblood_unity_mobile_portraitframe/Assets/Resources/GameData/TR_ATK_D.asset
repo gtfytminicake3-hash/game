@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: TR_ATK_D
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Trait
   id: TR_ATK_D
-  traitName: "S\u1EE9c M\u1EA1nh T\xE2n Binh"
-  description: "Tham gia qu\xE2n ng\u0169. L\u1EF1c Tay y\u1EBFu +5 ATK."
+  traitName: trait_TR_ATK_D_name
+  description: trait_TR_ATK_D_desc
+  icon: {fileID: 21300000, guid: 2f0e47a8a57ed0146b78f10a4d7917f9, type: 3}
   rank: 0
   familyId: ATK_UP
   nextUpgradeTraitID: TR_ATK_C

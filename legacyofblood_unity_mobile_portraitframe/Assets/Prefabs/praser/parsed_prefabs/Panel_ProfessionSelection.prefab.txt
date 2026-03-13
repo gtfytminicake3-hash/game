@@ -1,0 +1,44 @@
+====== PREFAB/SCENE STRUCTURE FOR Panel_ProfessionSelection.prefab ======
+========================================================
+GameObject: Text (TMP) (ID: 2181797653412054142)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (TMP) (ID: 3291906251848165866)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: TitleText (ID: 3888971366339274670)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_Warrior (ID: 4137919879536709647)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Text (TMP) (ID: 4347219848083581429)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_Archer (ID: 5107785776973624778)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Panel_ProfessionSelection (ID: 5533898502626062598)
+  - MonoBehaviour (Script GUID: 156cfdfd2eee8924c8dbb3577f8876e6)
+    PanelType: 0
+GameObject: ProfGroup (ID: 6216039846220898823)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+GameObject: Btn_Close (ID: 6754849269759118394)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Text (TMP) (ID: 6814871631315392560)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_Mage (ID: 9127657584193860200)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)

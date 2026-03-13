@@ -1,0 +1,15 @@
+====== PREFAB/SCENE STRUCTURE FOR InfoItem_Prefeb.prefab ======
+========================================================
+GameObject: DescriptionText (ID: 521579583593773175)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: TitleText (ID: 1639098578942106763)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: InfoItem_Prefeb (ID: 4967570760233438285)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)

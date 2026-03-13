@@ -131,9 +131,13 @@ namespace LegendOfBlood.Editor
             TextMeshProUGUI title = CreateText("TitleText", panel.transform, new Vector2(0, 300), new Vector2(500, 50), "NÂNG CẤP CÔNG TRÌNH", 36);
             TextMeshProUGUI info = CreateText("InfoText", panel.transform, new Vector2(0, 100), new Vector2(400, 100), "Cấp hiện tại: 1\nCấp tiếp theo: 2", 24);
             TextMeshProUGUI cost = CreateText("CostText", panel.transform, new Vector2(0, 0), new Vector2(400, 50), "Giá: 1000 Vàng", 24);
+            TextMeshProUGUI benefit = CreateText("BenefitText", panel.transform, new Vector2(0, -80), new Vector2(500, 50), "Lợi ích: ...", 24);
+            benefit.color = Color.green;
+            TextMeshProUGUI timer = CreateText("UpgradeTimerText", panel.transform, new Vector2(0, -120), new Vector2(400, 50), "Thời gian: 00:00:00", 24);
+            timer.color = new Color(1f, 0.8f, 0.2f);
             
-            Button upgradeBtn = CreateButton("UpgradeButton", panel.transform, new Vector2(0, -100), new Vector2(250, 60), "NÂNG CẤP");
-            Button closeBtn = CreateButton("CloseButton", panel.transform, new Vector2(0, -300), new Vector2(200, 50), "HỦY BỎ");
+            Button upgradeBtn = CreateButton("UpgradeButton", panel.transform, new Vector2(0, -200), new Vector2(250, 60), "NÂNG CẤP");
+            Button closeBtn = CreateButton("CloseButton", panel.transform, new Vector2(0, -320), new Vector2(200, 50), "HỦY BỎ");
 
             var so = new SerializedObject(script);
             so.FindProperty("closeButton").objectReferenceValue = closeBtn;
@@ -141,6 +145,8 @@ namespace LegendOfBlood.Editor
             so.FindProperty("titleText").objectReferenceValue = title;
             so.FindProperty("infoText").objectReferenceValue = info;
             so.FindProperty("costText").objectReferenceValue = cost;
+            so.FindProperty("benefitText").objectReferenceValue = benefit;
+            so.FindProperty("upgradeTimerText").objectReferenceValue = timer;
             so.ApplyModifiedProperties();
 
             panel.SetActive(false);

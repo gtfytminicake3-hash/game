@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.GameConfigs.QuestData
   questId: Q_D_02
   category: 1
-  questName: "Duy Tr\xEC Sinh S\xF4i"
-  description: "Th\u1EF1c hi\u1EC7n Lai T\u1EA1o 1 l\u1EA7n."
+  questName: quest_Q_D_02_name
+  description: quest_Q_D_02_desc
   type: 1
   targetId: 
   targetValue: 1

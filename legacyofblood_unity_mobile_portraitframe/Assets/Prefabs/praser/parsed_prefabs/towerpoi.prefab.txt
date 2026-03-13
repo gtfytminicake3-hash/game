@@ -1,0 +1,10 @@
+====== PREFAB/SCENE STRUCTURE FOR towerpoi.prefab ======
+========================================================
+GameObject: Text (TMP) (ID: 1475693911655138048)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: towerpoi (ID: 4535212889762830006)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)

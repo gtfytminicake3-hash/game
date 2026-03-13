@@ -1,0 +1,24 @@
+====== PREFAB/SCENE STRUCTURE FOR BattleUnit_Prefab.prefab ======
+========================================================
+GameObject: Avatar (ID: 866759620738265902)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Fill Area (ID: 897713203383246850)
+GameObject: DamageText (ID: 1642281435958191264)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Background (ID: 3087382119019346958)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Fill (ID: 3804598675403851517)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: HpText (ID: 5307620057117814011)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: BattleUnit_Prefab (ID: 5663224656169859103)
+  - MonoBehaviour (Script GUID: a85ffffbf3eef4046b3fd485f77b6f10)
+GameObject: HpSlider (ID: 8189739756681375321)
+  - MonoBehaviour (Script GUID: 67db9e8f0e2ae9c40bc1e2b64352a6b4)
+GameObject: DamageTextContainer (ID: 8641471798320234463)

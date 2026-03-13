@@ -13,14 +13,14 @@ namespace LegendOfBlood
         // Các nút bấm điều hướng và popups đã được giữ nguyên
 
         [Header("Navigation Buttons")]
-        //[SerializeField] private Button breedingButton;
-        //[SerializeField] private Button hospitalButton;
-        //[SerializeField] private Button worldMapButton;
-        [SerializeField] private Button backToVillageButton;
-        [SerializeField] private Button mailboxButton;
-        [SerializeField] private GameObject mailboxRedDot;
+        [SerializeField] private Button watchAdButton; // Nút xem quảng cáo cũ
+        
+        [Header("New Ad Placements")]
+        public Button mysticChestAdButton; // Vị trí 4: Rương bí ẩn
+
         [Header("Popups")]
-        [SerializeField] private ProfessionSelectionPanel professionSelectionPanel;
+        public ProfessionSelectionPanel professionSelectionPanel;
+
 
 
 
@@ -32,14 +32,11 @@ namespace LegendOfBlood
            // breedingButton.onClick.AddListener(OnBreedingClicked);
             //hospitalButton.onClick.AddListener(OnHospitalClicked);
            // worldMapButton.onClick.AddListener(OnWorldMapClicked);
-            if (backToVillageButton != null) // Kiểm tra để tránh lỗi nếu quên kéo vào
+            if (watchAdButton != null) // NEW
             {
-                backToVillageButton.onClick.AddListener(BackToVillageView);
+                watchAdButton.onClick.AddListener(OnWatchAdClicked);
             }
-            if (mailboxButton != null)
-            {
-                mailboxButton.onClick.AddListener(OpenMailbox);
-            }
+            if (mysticChestAdButton != null) mysticChestAdButton.onClick.AddListener(OnMysticChestAdClicked);
         }
 
         private void OnDisable()
@@ -48,19 +45,43 @@ namespace LegendOfBlood
            // breedingButton.onClick.RemoveListener(OnBreedingClicked);
            // hospitalButton.onClick.RemoveListener(OnHospitalClicked);
             //worldMapButton.onClick.RemoveListener(OnWorldMapClicked);
-            if (backToVillageButton != null)
+            if (watchAdButton != null) // NEW
             {
-                backToVillageButton.onClick.RemoveListener(BackToVillageView);
+                watchAdButton.onClick.RemoveListener(OnWatchAdClicked);
             }
-            if (mailboxButton != null)
-            {
-                mailboxButton.onClick.RemoveListener(OpenMailbox);
-            }
+
+            if (mysticChestAdButton != null) mysticChestAdButton.onClick.RemoveListener(OnMysticChestAdClicked);
         }
+
+        private float _mysticChestTimer = 0f;
+        private const float MYSTIC_CHEST_INTERVAL = 3600f; // 1 tiếng xuất hiện 1 lần (đơn vị: giây)
 
         private void Start()
         {
-            UpdateMailboxNotification();
+            
+            if (mysticChestAdButton != null) 
+            {
+                mysticChestAdButton.gameObject.SetActive(false);
+                _mysticChestTimer = MYSTIC_CHEST_INTERVAL; // Sẵn sàng spawn rương sau 1 khoảng thời gian
+            }
+        }
+
+        private void Update()
+        {
+            // Logic cho Mystic Chest
+            if (mysticChestAdButton != null && !mysticChestAdButton.gameObject.activeSelf)
+            {
+                _mysticChestTimer -= Time.deltaTime;
+                if (_mysticChestTimer <= 0)
+                {
+                    if (DataManager.Instance.Player.dailyMysticChestAdsWatched < 3) 
+                    {
+                        mysticChestAdButton.gameObject.SetActive(true);
+                        // Có thể thêm hiệu ứng rung lắc nhẹ hoặc hạt (particle) ở đây
+                    }
+                    _mysticChestTimer = MYSTIC_CHEST_INTERVAL; // Reset timer bất kể có spawn hay không
+                }
+            }
         }
 
         #endregion
@@ -89,10 +110,25 @@ namespace LegendOfBlood
             GameManager.Instance.UIManager.ShowPanel(UIPanelType.WorldMap);
         }
 
-        // --- HÀM NÀY LÀ PUBLIC VÌ SẼ ĐƯỢC GỌI TỪ INSPECTOR ---
-        private void BackToVillageView()
+
+        private void OnWatchAdClicked() // NEW
         {
-            GameManager.Instance.UIManager.BackToVillageView();
+            if (Managers.AdRewardGateway.Instance != null && DataManager.Instance != null)
+            {
+                // Giới hạn 3 lần mỗi ngày
+                if (DataManager.Instance.Player.dailySummonAdsWatched < 3)
+                {
+                    Managers.AdRewardGateway.Instance.RequestAd(Managers.RewardType.DailySummon);
+                }
+                else
+                {
+                    GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("ad_limit_reached") ?? "Hôm nay bạn đã hết lượt xem quảng cáo nhận vé!");
+                }
+            }
+            else
+            {
+                Debug.LogError("AdRewardGateway is missing!");
+            }
         }
 
         private void ShowProfessionSelection(HeroData hero)
@@ -110,21 +146,31 @@ namespace LegendOfBlood
             }
         }
 
-        private void OpenMailbox()
+        // --- NEW: Vị Trí 4 - Mystic Chest ---
+        private void OnMysticChestAdClicked()
         {
-            GameManager.Instance.UIManager.ShowPanel(UIPanelType.Mailbox);
-            UpdateMailboxNotification();
-        }
-
-        public void UpdateMailboxNotification()
-        {
-            if (mailboxRedDot != null && DataManager.Instance != null && DataManager.Instance.Player != null)
+            if (Managers.AdRewardGateway.Instance != null && DataManager.Instance != null)
             {
-                var reports = DataManager.Instance.Player.UnclaimedReports;
-                bool hasMail = reports != null && reports.Count > 0;
-                mailboxRedDot.SetActive(hasMail);
+                Managers.AdRewardGateway.Instance.RequestAd(Managers.RewardType.MysticChest, () => {
+                    // Tặng ngẫu nhiên Vàng hoặc Sách Kinh nghiệp
+                    if (Random.value > 0.5f)
+                    {
+                        GameManager.Instance.InventoryManager.AddGold(5000);
+                        GameManager.Instance.UINotificationManager.ShowNotification("Rương bí ẩn mở ra 5000 Vàng!");
+                    }
+                    else
+                    {
+                        GameManager.Instance.InventoryManager.AddItem("IT_EXP_BOOK_S", 5);
+                        GameManager.Instance.UINotificationManager.ShowNotification("Rương bí ẩn mở ra 5 Quyển Sách EXP (Nhỏ)!");
+                    }
+
+                    // Ẩn nút đi và bắt đầu đếm thời gian lại
+                    if (mysticChestAdButton != null) mysticChestAdButton.gameObject.SetActive(false);
+                    _mysticChestTimer = MYSTIC_CHEST_INTERVAL;
+                });
             }
         }
+
 
         #endregion
     }

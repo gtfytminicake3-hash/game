@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SS_07
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Trait
   id: SS_07
-  traitName: "D\xF2ng D\xF5i Tinh Anh"
-  description: "Gen xu\u1EA5t ch\xFAng. Con ch\xE1u lai t\u1EA1o c\xF3 10% c\u01A1
-    h\u1ED9i t\u0103ng 5% to\xE0n b\u1ED9 ch\u1EC9 s\u1ED1 c\u01A1 b\u1EA3n."
+  traitName: trait_SS_07_name
+  description: trait_SS_07_desc
+  icon: {fileID: 21300000, guid: 9821da3587ea88d4fbe8759791249d29, type: 3}
   rank: 5
   familyId: ELITE
   nextUpgradeTraitID: 

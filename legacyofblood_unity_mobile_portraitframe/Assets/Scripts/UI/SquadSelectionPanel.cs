@@ -159,6 +159,30 @@ namespace LegendOfBlood
             UpdateUIState();
         }
 
+        public void SwapHeroes(int indexA, int indexB)
+        {
+            if (indexA < 0 || indexA >= _selectedHeroes.Length || indexB < 0 || indexB >= _selectedHeroes.Length) return;
+
+            // Đổi chỗ trong mảng Data
+            HeroData temp = _selectedHeroes[indexA];
+            _selectedHeroes[indexA] = _selectedHeroes[indexB];
+            _selectedHeroes[indexB] = temp;
+
+            // Cập nhật lại 2 ô UI
+            if (_selectedHeroes[indexA] != null) 
+                _squadSlotCards[indexA].SetHero(_selectedHeroes[indexA]);
+            else 
+                _squadSlotCards[indexA].SetEmpty();
+
+            if (_selectedHeroes[indexB] != null) 
+                _squadSlotCards[indexB].SetHero(_selectedHeroes[indexB]);
+            else 
+                _squadSlotCards[indexB].SetEmpty();
+                
+            // Không cần RefreshAvailableList() vì danh sách tổng Hero được chọn không đổi
+            UpdateUIState();
+        }
+
         // Được gọi từ các SquadSlotCard
         public void RemoveHeroFromSquad(int slotIndex)
         {

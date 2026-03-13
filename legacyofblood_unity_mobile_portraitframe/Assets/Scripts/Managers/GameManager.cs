@@ -113,6 +113,7 @@ namespace LegendOfBlood
         [SerializeField] private UIManager _uiManager;
         [SerializeField] private UINotificationManager _uiNotificationManager;
         [SerializeField] private ArenaSystem _arenaSystem; // Thêm dòng này
+        [SerializeField] private AdManager _adManager; // NEW: Thêm dòng này
         [SerializeField] private QuestManager _questManager;
 
         // Các lớp logic không nhất thiết phải là MonoBehaviour
@@ -157,6 +158,7 @@ namespace LegendOfBlood
         public UIManager UIManager => _uiManager;
         public UINotificationManager UINotificationManager => _uiNotificationManager;
         public ArenaSystem ArenaSystem => _arenaSystem; // Thêm dòng này
+        public AdManager AdManager => _adManager; // NEW: Thêm thuộc tính này
         public QuestManager QuestManager => _questManager;
 
         #endregion
@@ -184,6 +186,8 @@ namespace LegendOfBlood
             if (_expeditionManager == null) { _expeditionManager = transform.root.GetComponentInChildren<ExpeditionManager>(true); if (_expeditionManager == null) _expeditionManager = gameObject.AddComponent<ExpeditionManager>(); }
             if (_uiManager == null) { _uiManager = transform.root.GetComponentInChildren<UIManager>(true); if (_uiManager == null) _uiManager = gameObject.AddComponent<UIManager>(); }
             if (_uiNotificationManager == null) { _uiNotificationManager = transform.root.GetComponentInChildren<UINotificationManager>(true); if (_uiNotificationManager == null) _uiNotificationManager = gameObject.AddComponent<UINotificationManager>(); }
+            if (_adManager == null) { _adManager = transform.root.GetComponentInChildren<AdManager>(true); if (_adManager == null) _adManager = gameObject.AddComponent<AdManager>(); } // NEW
+            if (gameObject.GetComponent<AdRewardGateway>() == null) { gameObject.AddComponent<AdRewardGateway>(); } // NEW: Gateway Part
             if (_arenaSystem == null) { _arenaSystem = transform.root.GetComponentInChildren<ArenaSystem>(true); if (_arenaSystem == null) _arenaSystem = gameObject.AddComponent<ArenaSystem>(); }
             if (_questManager == null) { _questManager = transform.root.GetComponentInChildren<QuestManager>(true); if (_questManager == null) _questManager = gameObject.AddComponent<QuestManager>(); }
 
@@ -198,6 +202,12 @@ namespace LegendOfBlood
                 if (_dataManager != null)
                 {
                     _dataManager.InitializeDataManager();
+                }
+
+                // GỌI KHỞI TẠO QUẢNG CÁO
+                if (_adManager != null)
+                {
+                    _adManager.InitializeSystem();
                 }
 
                 // Gọi một Get để ép khởi tạo sớm

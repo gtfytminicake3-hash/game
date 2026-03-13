@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BOSS_RABBIT_KING
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.BossData
   id: BOSS_RABBIT_KING
-  bossName: "Vua Th\u1ECF Kh\u1ED5ng L\u1ED3"
+  bossName: boss_BOSS_RABBIT_KING_name
   modelPrefab: {fileID: 0}
   level: 10
   baseHp: 5000
@@ -28,12 +28,11 @@ MonoBehaviour:
     critChance: 0.05
     critDamage: 1.5
   skills:
-    normalAttackName: "C\xFA \u0110\xE1 S\u1EA5m S\xE9t"
+    normalAttackName: boss_BOSS_RABBIT_KING_atk1
     normalAttackMultiplier: 1.2
-    aoeAttackName: "\u0110\u1ED9ng \u0110\u1EA5t Mini"
+    aoeAttackName: boss_BOSS_RABBIT_KING_atk2
     aoeAttackMultiplier: 0.6
   mechanic:
-    name: "Da D\xE0y"
-    description: "Gi\u1EA3m s\xE1t th\u01B0\u01A1ng nh\u1EADn v\xE0o n\u1EBFu nh\xE1t
-      ch\xE9m d\u01B0\u1EDBi 50 ATK"
+    name: boss_BOSS_RABBIT_KING_mech_name
+    description: boss_BOSS_RABBIT_KING_mech_desc
     value: 50

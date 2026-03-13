@@ -15,6 +15,7 @@ MonoBehaviour:
   id: SK_WARRIOR_01
   skillName: "Tr\u1EA3m K\xEDch"
   description: "Ch\xE9m k\u1EBB th\xF9 h\xE0ng tr\u01B0\u1EDBc 150% s\xE1t th\u01B0\u01A1ng."
+  icon: {fileID: 21300000, guid: d5847fa12dca7cc4db8157d65e7df110, type: 3}
   type: 0
   requiredProfession: 0
   cooldown: 2

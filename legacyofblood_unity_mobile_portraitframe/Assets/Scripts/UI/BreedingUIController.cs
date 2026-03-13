@@ -37,7 +37,8 @@ namespace LegendOfBlood
         [SerializeField] private GameObject resultArea;    // Tham chiếu đến nhóm kết quả
 
         [Header("Item Usage")]
-        [SerializeField] private Toggle useMutationPotionToggle; // UI Toggle cho Thuốc Đột Biến
+        public Toggle useMutationPotionToggle; // UI Toggle cho Thuốc Đột Biến
+        public Button mutationAdButton;        // NEW: Nút Đột biến bằng Ad
 
         [Header("Result Area References")]
         [SerializeField] private HeroCard newHeroCard_Result; // Thẻ bài trong khu vực kết quả
@@ -48,7 +49,8 @@ namespace LegendOfBlood
         [SerializeField] private TextMeshProUGUI potentialText_Result;
 
         // Tham chiếu đến HeroPickerPanel trong scene để gọi nó
-        [SerializeField] private HeroPickerPanel heroPickerPanel;
+        public HeroPickerPanel heroPickerPanel;
+
 
         // Lưu trữ dữ liệu của cha và mẹ đã chọn
         private HeroData _selectedFather;
@@ -105,6 +107,11 @@ namespace LegendOfBlood
                 {
                     Debug.LogError("[BreedingUIController] CẢNH BÁO: Không tìm thấy HeroPickerPanel nào trong Scene! Trò chơi sẽ bị lỗi nếu gọi bảng chọn tướng.");
                 }
+            }
+            
+            if (mutationAdButton != null)
+            {
+                mutationAdButton.onClick.AddListener(OnMutationAdClicked);
             }
         }
 
@@ -282,6 +289,11 @@ namespace LegendOfBlood
                 Debug.LogError("LỖI NGHIÊM TRỌNG: GameManager.Instance đang bị null! Hãy kiểm tra xem có GameObject GameManager trong scene không.");
                 return;
             }
+            if (GameManager.Instance == null)
+            {
+                Debug.LogError("LỖI NGHIÊM TRỌNG: GameManager.Instance đang bị null! Hãy kiểm tra xem có GameObject GameManager trong scene không.");
+                return;
+            }
             if (GameManager.Instance.BreedingSystem == null)
             {
                 Debug.LogError("LỖI NGHIÊM TRỌNG: GameManager.Instance.BreedingSystem đang bị null! Hãy kiểm tra xem component BreedingSystem đã được gán/thêm vào GameManager chưa.");
@@ -289,12 +301,14 @@ namespace LegendOfBlood
             }
             // --- KẾT THÚC KIỂM TRA ---
 
+            PerformBreeding(OptionsFromPotion());
+        }
+        
+        private BreedingOptions OptionsFromPotion()
+        {
             BreedingOptions options = new BreedingOptions();
-            
-            // Xử lý sử dụng Thuốc Đột Biến
             if (useMutationPotionToggle != null && useMutationPotionToggle.isOn)
             {
-                // Kiểm tra và trừ vật phẩm
                 if (GameManager.Instance.InventoryManager.UseItem("IT_MUTATION_POTION", 1))
                 {
                     options.UseMutationPotion = true;
@@ -303,9 +317,32 @@ namespace LegendOfBlood
                 else
                 {
                     GameManager.Instance.UINotificationManager.ShowNotification(global::LocalizationSystem.GetText("notification_not_enough_mutation_potion"));
-                    return; // Ngừng lai tạo nếu chọn dùng nhưng không có đồ
+                    return null; // Trả về null báo lỗi
                 }
             }
+            return options;
+        }
+
+        private void OnMutationAdClicked()
+        {
+            if (_selectedFather == null || _selectedMother == null)
+            {
+                GameManager.Instance.UINotificationManager.ShowNotification(global::LocalizationSystem.GetText("breeding_error_select_parents_first"));
+                return;
+            }
+
+            if (LegendOfBlood.Managers.AdRewardGateway.Instance != null)
+            {
+                LegendOfBlood.Managers.AdRewardGateway.Instance.RequestAd(LegendOfBlood.Managers.RewardType.BreedingMutation, () => {
+                    BreedingOptions adOptions = new BreedingOptions { UseMutationPotion = true };
+                    PerformBreeding(adOptions);
+                });
+            }
+        }
+
+        private void PerformBreeding(BreedingOptions options)
+        {
+            if (options == null) return; // Bị lỗi không đủ đồ
 
             // Gọi hệ thống logic để thực hiện lai tạo
             BreedingSystem breedingSystem = GameManager.Instance.BreedingSystem;
@@ -365,6 +402,13 @@ namespace LegendOfBlood
                 breedButton.gameObject.SetActive(true);
                 closeButton.gameObject.SetActive(true);
                 confirmResultButton.gameObject.SetActive(false);
+                
+                if (mutationAdButton != null)
+                {
+                    bool canUseAd = DataManager.Instance.Player.dailyMutationAdsWatched < 2;
+                    mutationAdButton.gameObject.SetActive(canUseAd);
+                }
+                
                 ResetSelection(); // Reset lựa chọn Cha/Mẹ
             }
             else // Result State
@@ -372,6 +416,7 @@ namespace LegendOfBlood
                 selectionArea.SetActive(false);
                 resultArea.SetActive(true);
                 breedButton.gameObject.SetActive(false);
+                if (mutationAdButton != null) mutationAdButton.gameObject.SetActive(false); // Ẩn khi đang ở Result
                 closeButton.gameObject.SetActive(false);
                 confirmResultButton.gameObject.SetActive(true);
             }

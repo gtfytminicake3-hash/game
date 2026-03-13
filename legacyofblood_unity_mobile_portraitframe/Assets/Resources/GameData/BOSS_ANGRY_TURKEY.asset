@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BOSS_ANGRY_TURKEY
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.BossData
   id: BOSS_ANGRY_TURKEY
-  bossName: "G\xE0 T\xE2y Ph\u1EABn N\u1ED9"
+  bossName: boss_BOSS_ANGRY_TURKEY_name
   modelPrefab: {fileID: 0}
   level: 25
   baseHp: 25000
@@ -28,12 +28,11 @@ MonoBehaviour:
     critChance: 0.05
     critDamage: 1.5
   skills:
-    normalAttackName: "M\u1ED5 \u0110i\xEAn Cu\u1ED3ng"
+    normalAttackName: boss_BOSS_ANGRY_TURKEY_atk1
     normalAttackMultiplier: 1.5
-    aoeAttackName: "Ti\u1EBFng G\xE1y \u0110inh Tai"
+    aoeAttackName: boss_BOSS_ANGRY_TURKEY_atk2
     aoeAttackMultiplier: 0.8
   mechanic:
-    name: "\u0110i\xEAn Cu\u1ED3ng"
-    description: "T\u0103ng m\u1EA1nh t\u1ED1c \u0111\xE1nh khi m\xE1u d\u01B0\u1EDBi
-      30%"
+    name: boss_BOSS_ANGRY_TURKEY_mech_name
+    description: boss_BOSS_ANGRY_TURKEY_mech_desc
     value: 30

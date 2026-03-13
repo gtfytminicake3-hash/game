@@ -17,6 +17,7 @@ namespace LegendOfBlood
         [SerializeField] private TextMeshProUGUI difficultyText;
         [SerializeField] private TextMeshProUGUI monsterCountText;
         [SerializeField] private Button enterButton;
+        public Button skipCooldownAdButton; // NEW: Nút hủy chờ phạt Tháp
         [SerializeField] private Button closeButton;
 
         private POIData _currentTowerData;
@@ -25,6 +26,7 @@ namespace LegendOfBlood
         {
             PanelType = UIPanelType.Tower;
             if (enterButton != null) enterButton.onClick.AddListener(OnEnterClicked);
+            if (skipCooldownAdButton != null) skipCooldownAdButton.onClick.AddListener(OnSkipCooldownAdClicked);
             if (closeButton != null) closeButton.onClick.AddListener(ClosePanel);
         }
 
@@ -92,11 +94,18 @@ namespace LegendOfBlood
                 if (difficultyText != null) 
                     difficultyText.text = string.Format(LocalizationSystem.GetText("tower_recovery_time"), timeSpan.Hours, timeSpan.Minutes, timeSpan.Seconds);
                 if (enterButton != null) enterButton.interactable = false;
+                
+                if (skipCooldownAdButton != null)
+                {
+                    bool canShowAd = DataManager.Instance.Player.dailyTowerSkipAdsWatched < 3;
+                    skipCooldownAdButton.gameObject.SetActive(canShowAd);
+                }
             }
             else
             {
                 if (difficultyText != null) difficultyText.text = LocalizationSystem.GetText("tower_ready");
                 if (enterButton != null) enterButton.interactable = true;
+                if (skipCooldownAdButton != null) skipCooldownAdButton.gameObject.SetActive(false);
             }
             
             if (monsterCountText != null) 
@@ -122,8 +131,23 @@ namespace LegendOfBlood
                         this.gameObject.SetActive(false);
                         GameManager.Instance.ExpeditionManager.StartExpedition(selectedHeroIDs, _currentTowerData);
                     },
-                    _currentTowerData.requiredProfession ?? Profession.None
+                    _currentTowerData.requiredProfession
                 );
+            }
+        }
+
+        private void OnSkipCooldownAdClicked()
+        {
+            if (LegendOfBlood.Managers.AdRewardGateway.Instance != null && _currentTowerData != null)
+            {
+                LegendOfBlood.Managers.AdRewardGateway.Instance.RequestAd(LegendOfBlood.Managers.RewardType.TowerCooldownSkip, () => {
+                    // Cập nhật lại thời gian recovery về hiện tại (hoặc tương lai một chút là 0)
+                    _currentTowerData.recoveryEndTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                    
+                    // Force refresh list trong DataManager để lưu trữ
+                    // UpdateFooterDetails() sẽ chạy và hiện lại nút Enter
+                    UpdateFooterDetails();
+                });
             }
         }
 

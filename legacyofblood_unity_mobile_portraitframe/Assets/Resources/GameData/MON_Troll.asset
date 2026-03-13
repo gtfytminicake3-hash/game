@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MON_Troll
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.MonsterData
   id: Troll
-  monsterName: "Qu\u1EF7 T\u01B0\u1EE3ng Kh\u1ED5ng L\u1ED3"
+  monsterName: monster_Troll_name
   profession: 1
   baseHp: 800
   baseAtk: 25

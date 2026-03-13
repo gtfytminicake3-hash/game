@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: TR_HP_S
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Trait
   id: TR_HP_S
-  traitName: "Sinh M\u1EC7nh C\xE2y Th\u1EA7n"
-  description: "T\u0103ng 20% HP."
+  traitName: trait_TR_HP_S_name
+  description: trait_TR_HP_S_desc
+  icon: {fileID: 21300000, guid: 8bec6dfadc3f17648b6b18a891e61de8, type: 3}
   rank: 4
   familyId: HP_UP
   nextUpgradeTraitID: TR_HP_SS

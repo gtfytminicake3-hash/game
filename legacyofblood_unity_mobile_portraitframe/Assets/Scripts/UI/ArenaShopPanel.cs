@@ -8,12 +8,14 @@ namespace LegendOfBlood
     {
         [Header("UI References")]
         [SerializeField] private Button closeButton;
+        public Button adFreebieButton; // NEW: Nút nhận quà miễn phí mỗi ngày
         [SerializeField] private Transform itemContainer; // To hold the shop items
         [SerializeField] private GameObject shopItemPrefab; // Prefab for a single shop item
 
         private void Awake()
         {
-            closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.GoBack());
+            if (closeButton != null) closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.GoBack());
+            if (adFreebieButton != null) adFreebieButton.onClick.AddListener(OnAdFreebieClicked);
         }
 
         private void OnEnable()
@@ -46,6 +48,27 @@ namespace LegendOfBlood
                 item.Setup(itemName, price);
             }
             Debug.Log($"Created shop item: {itemName} for {price} Arena Coins.");
+        }
+
+        private void OnAdFreebieClicked()
+        {
+            if (Managers.AdRewardGateway.Instance != null && DataManager.Instance != null)
+            {
+                if (DataManager.Instance.Player.dailyShopFreebieAdsWatched < 3)
+                {
+                    Managers.AdRewardGateway.Instance.RequestAd(Managers.RewardType.ShopFreebie, () => {
+                        // Cập nhật trạng thái nút nếu full lượt (Tùy chọn)
+                        if (DataManager.Instance.Player.dailyShopFreebieAdsWatched >= 3)
+                        {
+                             if (adFreebieButton != null) adFreebieButton.gameObject.SetActive(false);
+                        }
+                    });
+                }
+                else
+                {
+                    GameManager.Instance.UINotificationManager.ShowNotification(global::LocalizationSystem.GetText("ad_limit_reached") ?? "Hôm nay bạn đã hết lượt nhận xu miễn phí!");
+                }
+            }
         }
     }
 }

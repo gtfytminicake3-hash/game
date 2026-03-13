@@ -10,13 +10,14 @@ namespace LegendOfBlood
     {
         public string expeditionId;
         public POIData destination;
-        public float totalDuration;
+        public float travelDuration;
+        public float combatDuration;
     }
 
     public class ExpeditionManager : MonoBehaviour
     {
         private const long EXPLORATION_TIME_MS = 2000;
-        private const long TOWER_BATTLE_TIME_MS = 3000; // Time per tower floor battle
+        private const long COMBAT_TURN_DURATION_MS = 3000; // Time per combat turn
         private const long TOWER_RECOVERY_DURATION_MS = 2 * 60 * 60 * 1000; // 2 hours
 
         private List<ActiveExpedition> _activeExpeditions;
@@ -65,8 +66,45 @@ namespace LegendOfBlood
                             OnPOICleared?.Invoke(poi);
                         }
                     }
+
+                    // --- HOSPITAL LOGIC ---
+                    // Process injuries immediately when the expedition returns
+                    if (GameManager.Instance != null && GameManager.Instance.HospitalSystem != null)
+                    {
+                        var result = expedition.preCalculatedReport.combatResult;
+                        if (result != null)
+                        {
+                            // 1. Severe Injury for Casualties
+                            if (result.PlayerCasualties != null)
+                            {
+                                foreach (var casualty in result.PlayerCasualties)
+                                {
+                                    GameManager.Instance.HospitalSystem.AdmitHero(casualty.id);
+                                }
+                            }
+
+                            // 2. Light Injury for Survivors with HP < MaxHP
+                            if (result.PlayerSurvivors != null)
+                            {
+                                foreach (var survivor in result.PlayerSurvivors)
+                                {
+                                    // Fetch the actual hero object from DataManager to get true MaxHP and apply injury
+                                    var realHero = DataManager.Instance.GetHeroByID(survivor.id);
+                                    if (realHero != null)
+                                    {
+                                        float maxHp = realHero.GetFinalStats().hp;
+                                        if (realHero.currentHp < maxHp)
+                                        {
+                                            GameManager.Instance.HospitalSystem.InflictLightInjury(realHero);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // ----------------------
                     
-                    Debug.Log($"Expedition {expedition.expeditionId} finished. Report moved to mailbox.");
+                    Debug.Log($"Expedition {expedition.expeditionId} finished. Report moved to mailbox and injuries applied.");
                 }
             }
         }
@@ -106,6 +144,10 @@ namespace LegendOfBlood
             {
                 StartTowerChallenge(squadHeroIDs, destination);
             }
+            else if (destination.type == POIType.Boss)
+            {
+                StartBossExpedition(squadHeroIDs, destination);
+            }
             else
             {
                 StartNormalExpedition(squadHeroIDs, destination);
@@ -114,14 +156,14 @@ namespace LegendOfBlood
 
         private void StartNormalExpedition(List<string> squadHeroIDs, POIData destination)
         {
-            long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             long travelTime = CalculateTravelTime(destination.position);
-            long totalDuration = travelTime + EXPLORATION_TIME_MS + travelTime;
 
             var heroSquad = squadHeroIDs.Select(id => DataManager.Instance.GetHeroByID(id)?.Clone()).Where(h => h != null).ToList();
             if (GameManager.Instance == null || GameManager.Instance.CombatSystem == null) return;
 
             CombatResult combatResult = GameManager.Instance.CombatSystem.Simulate(heroSquad, destination.monsterIDs, destination.difficultyLevel);
+
+            long combatTimeMs = EXPLORATION_TIME_MS + (combatResult.TotalTurns * COMBAT_TURN_DURATION_MS);
 
             var report = new ExpeditionReport
             {
@@ -132,7 +174,33 @@ namespace LegendOfBlood
                 experienceGained = CalculateExperience(destination, combatResult.DidPlayerWin)
             };
 
-            CreateAndDispatchActiveExpedition(squadHeroIDs, destination, totalDuration, report);
+            CreateAndDispatchActiveExpedition(squadHeroIDs, destination, travelTime, combatTimeMs, report);
+        }
+
+        private void StartBossExpedition(List<string> squadHeroIDs, POIData destination)
+        {
+            long travelTime = CalculateTravelTime(destination.position);
+
+            var heroSquad = squadHeroIDs.Select(id => DataManager.Instance.GetHeroByID(id)?.Clone()).Where(h => h != null).ToList();
+            if (GameManager.Instance == null || GameManager.Instance.CombatSystem == null) return;
+
+            string bossId = destination.monsterIDs != null && destination.monsterIDs.Count > 0 ? destination.monsterIDs[0] : "BOSS_01";
+            
+            CombatResult combatResult = GameManager.Instance.CombatSystem.SimulateBoss(heroSquad, bossId);
+
+            long combatTimeMs = EXPLORATION_TIME_MS + (combatResult.TotalTurns * COMBAT_TURN_DURATION_MS);
+
+            var report = new ExpeditionReport
+            {
+                poiId = destination.poiId,
+                poiName = destination.poiName,
+                combatResult = combatResult,
+                // Bosses usually drop better loot and more exp
+                loot = CalculateBossLoot(bossId, combatResult.DidPlayerWin),
+                experienceGained = combatResult.DidPlayerWin ? 500 : 50
+            };
+
+            CreateAndDispatchActiveExpedition(squadHeroIDs, destination, travelTime, combatTimeMs, report);
         }
 
         private void StartTowerChallenge(List<string> squadHeroIDs, POIData towerPoi)
@@ -159,12 +227,17 @@ namespace LegendOfBlood
             var participatingHeroes = squadHeroIDs.Select(id => DataManager.Instance.GetHeroByID(id)?.Clone()).Where(h => h != null).ToList();
             var finalCombatLog = new List<string>();
             int floorsCleared = 0;
+            long totalCombatTimeMs = 0;
+            bool isHealingChallenge = towerPoi.requiredProfession == Profession.Healer;
             bool towerConquered = false;
 
             for (int floor = towerPoi.currentFloor; floor <= 20; floor++)
             {
-                var monsters = GetMonstersForTowerFloor(floor);
-                var floorResult = GameManager.Instance.CombatSystem.Simulate(participatingHeroes, monsters, floor);
+                // In healing challenge, we generate injured soldiers instead of monsters.
+                var enemyMonsters = isHealingChallenge ? GenerateInjuredSoldiers(floor) : GetMonstersForTowerFloor(floor);
+                
+                var floorResult = GameManager.Instance.CombatSystem.Simulate(participatingHeroes, enemyMonsters, floor, isHealingChallenge);
+                totalCombatTimeMs += floorResult.TotalTurns * COMBAT_TURN_DURATION_MS;
 
                 finalCombatLog.Add($"<color=yellow>--- Tầng {floor} ---</color>");
                 finalCombatLog.AddRange(floorResult.CombatLog);
@@ -196,6 +269,7 @@ namespace LegendOfBlood
             CombatResult finalResult = new CombatResult
             {
                 DidPlayerWin = towerConquered,
+                TotalTurns = (int)(totalCombatTimeMs / COMBAT_TURN_DURATION_MS),
                 CombatLog = finalCombatLog,
                 PlayerSurvivors = participatingHeroes.Where(h => h.currentHp > 0).ToList(),
                 PlayerCasualties = participatingHeroes.Where(h => h.currentHp <= 0).ToList()
@@ -215,19 +289,20 @@ namespace LegendOfBlood
                 OnTowerConquered?.Invoke(towerPoi);
             }
 
-            long totalDuration = CalculateTravelTime(towerPoi.position) * 2 + (floorsCleared * TOWER_BATTLE_TIME_MS);
-            CreateAndDispatchActiveExpedition(squadHeroIDs, towerPoi, totalDuration, report);
+            long travelTimeMs = CalculateTravelTime(towerPoi.position);
+            CreateAndDispatchActiveExpedition(squadHeroIDs, towerPoi, travelTimeMs, totalCombatTimeMs, report);
         }
 
-        private void CreateAndDispatchActiveExpedition(List<string> heroIds, POIData destination, long duration, ExpeditionReport report)
+        private void CreateAndDispatchActiveExpedition(List<string> heroIds, POIData destination, long travelTimeMs, long combatTimeMs, ExpeditionReport report)
         {
+            long totalDurationMs = travelTimeMs * 2 + combatTimeMs;
             long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             var newExpedition = new ActiveExpedition
             {
                 expeditionId = Guid.NewGuid().ToString(),
                 heroIds = heroIds,
                 poiId = destination.poiId,
-                completionTimestamp = currentTime + duration,
+                completionTimestamp = currentTime + totalDurationMs,
                 preCalculatedReport = report
             };
 
@@ -237,10 +312,11 @@ namespace LegendOfBlood
             {
                 expeditionId = newExpedition.expeditionId,
                 destination = destination,
-                totalDuration = duration / 1000f
+                travelDuration = travelTimeMs / 1000f,
+                combatDuration = combatTimeMs / 1000f
             };
             OnExpeditionStarted?.Invoke(displayData);
-            Debug.Log($"Expedition {newExpedition.expeditionId} started. Completion in {duration / 1000f}s.");
+            Debug.Log($"Expedition {newExpedition.expeditionId} started. Completion in {totalDurationMs / 1000f}s.");
         }
 
         public bool IsHeroOnExpedition(string heroId)
@@ -283,15 +359,96 @@ namespace LegendOfBlood
             return monsters;
         }
 
-        private LootData CalculateLoot(POIData poi, bool playerWon)
+        private List<string> GenerateInjuredSoldiers(int floor)
         {
-            if (!playerWon) return new LootData();
-            return new LootData { gold = 100 + (10 * poi.difficultyLevel) };
+            // For the healer challenge, we need to spawn dummy "monsters" that act as our injured soldiers.
+            // We'll create temporary monster IDs that the CombatSystem will request from DataManager,
+            // OR we must ensure DataManager.GetMonsterByID can handle these dynamic IDs,
+            // OR we modify CombatSystem to accept HeroData objects for the enemy team directly.
+            
+            // To be safe and avoid touching CombatSystem's existing `List<string> enemyMonsterIDs` requirement,
+            // We will add a special ID format that DataManager will intercept, 
+            // OR better yet, we can intercept it in CombatSystem.
+            // But actually, CombatSystem uses DataManager.Instance.GetMonsterByID(id, difficultyLevel).
+            // Let's create a special Monster ID pattern: "INJURED_SOLDIER"
+            
+            var monsters = new List<string>();
+            int soldierCount = 1 + (floor / 4); // 1 to 6 soldiers
+            for (int i = 0; i < soldierCount; i++)
+            {
+                monsters.Add("INJURED_SOLDIER");
+            }
+            return monsters;
         }
 
-        private int CalculateExperience(POIData poi, bool playerWon)
+        public LootData CalculateLoot(POIData poi, bool playerWon)
+        {
+            if (!playerWon) return new LootData();
+            
+            var loot = new LootData { 
+                gold = 100 + (10 * poi.difficultyLevel),
+                wood = UnityEngine.Random.Range(0, (5 * poi.difficultyLevel) + 1),
+                stone = UnityEngine.Random.Range(0, (5 * poi.difficultyLevel) + 1)
+            };
+
+            // Process Rescue Mission Rewards
+            if (poi.type == POIType.RescueMission)
+            {
+                int maxLvl = Mathf.Min(40, Mathf.Max(10, poi.difficultyLevel * 4)); 
+                int minLvl = Mathf.Max(10, maxLvl / 2);
+                int randomLvl = UnityEngine.Random.Range(minLvl, maxLvl + 1);
+                
+                Profession prof = (Profession)UnityEngine.Random.Range(0, 4);
+                string[] possibleNames = { "Arthur", "Merlin", "Gawain", "Lancelot", "Morgan", "Guinevere", "Robin", "Tristan" };
+                string randomName = possibleNames[UnityEngine.Random.Range(0, possibleNames.Length)];
+                
+                var rescued = new HeroData(Guid.NewGuid().ToString(), "Rescue " + randomName, (Gender)UnityEngine.Random.Range(0, 2));
+                rescued.level = randomLvl;
+                rescued.SetProfession(prof);
+                rescued.isMature = true;
+                
+                // Base CP mục tiêu 400-1000 cho độ khó 1. Hệ số CP trung bình mỗi điểm potential là khoảng 62.
+                // Do đó, potential 7-15 sẽ cho CP ~400-1000. Scale theo difficultyLevel.
+                int minPotential = 7 * poi.difficultyLevel;
+                int maxPotential = 15 * poi.difficultyLevel;
+                rescued.potential = UnityEngine.Random.Range(minPotential, maxPotential + 1);
+                rescued.CalculateBaseStats(); // Randomize các chỉ số hp, atk, def, spd dựa trên potential
+                
+                // Tích luỹ điểm cộng chỉ số (freeStatPoints) tương ứng với các level đã có sẵn
+                rescued.freeStatPoints = rescued.potential * (randomLvl - 1);
+                
+                rescued.currentHp = rescued.GetFinalStats().hp;
+                
+                loot.rescuedHeroes.Add(rescued);
+            }
+
+            return loot;
+        }
+
+        public int CalculateExperience(POIData poi, bool playerWon)
         {
             return playerWon ? 50 + (5 * poi.difficultyLevel) : 0;
+        }
+
+        public LootData CalculateBossLoot(string bossId, bool playerWon)
+        {
+            if (!playerWon) return new LootData();
+            
+            var loot = new LootData { 
+                gold = 2000,
+                wood = 500,
+                stone = 500,
+                items = new Dictionary<string, int> { { "IT_EXP_BOOK_L", 2 }, { "IT_TICKET_RECRUIT", 3 } }
+            };
+
+            // Drop 1-2 pieces of high tier equipment
+            int eqCount = UnityEngine.Random.Range(1, 3);
+            for(int i = 0; i < eqCount; i++)
+            {
+                loot.equipments.Add(EquipmentSystem.GenerateRandomEquipment(30)); // Treat boss as floor 30 equivalent
+            }
+            
+            return loot;
         }
 
         private LootData CalculateTowerLoot(int maxFloorCleared)

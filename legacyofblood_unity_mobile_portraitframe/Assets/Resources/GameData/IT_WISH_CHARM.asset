@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: IT_WISH_CHARM
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.ItemData
   id: IT_WISH_CHARM
-  itemName: "B\xF9a \u01AF\u1EDBc Nguy\u1EC7n"
-  description: "T\u0103ng t\u1EC9 l\u1EC7 sinh ra m\u1ED9t ngh\u1EC1 nghi\u1EC7p
-    mong mu\u1ED1n khi lai t\u1EA1o."
+  itemName: item_IT_WISH_CHARM_name
+  description: item_IT_WISH_CHARM_desc
   icon: {fileID: 0}
   type: 2
   isStackable: 1

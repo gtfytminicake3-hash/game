@@ -89,6 +89,16 @@ namespace LegendOfBlood
             return false;
         }
 
+        public bool SpeedUpConstructionMs(string buildingId, long timeInMs)
+        {
+            var building = DataManager.Instance.AllBuildings.FirstOrDefault(b => b.id == buildingId);
+            if (building == null || !building.isUnderConstruction) return false;
+
+            building.constructionEndTime -= timeInMs;
+            Debug.Log($"Building {building.id} construction sped up by {timeInMs}ms.");
+            return true;
+        }
+
         public void Tick(float deltaTime)
         {
             var buildings = DataManager.Instance.AllBuildings;

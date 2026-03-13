@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: SK_ARC_FIRE_1
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Skill
   id: SK_ARC_FIRE_1
-  skillName: "Ti\u1EC5n H\u1ECFa"
-  description: "B\u1EAFn m\u0169i t\xEAn r\u1EF1c l\u1EEDa, g\xE2y \u0111\u1ED9c(Burn)."
+  skillName: skill_SK_ARC_FIRE_1_name
+  description: skill_SK_ARC_FIRE_1_desc
+  icon: {fileID: 21300000, guid: 035ddaaa597550f43bc49015c31b101e, type: 3}
   type: 0
   requiredProfession: 1
   cooldown: 2

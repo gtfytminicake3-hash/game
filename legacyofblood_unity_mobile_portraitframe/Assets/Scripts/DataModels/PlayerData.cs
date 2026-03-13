@@ -16,12 +16,18 @@ namespace LegendOfBlood
         public List<EquipmentData> equipments;
         // Can be extended with gold, wood, etc. if needed
         public int gold;
+        public int wood;
+        public int stone;
+        public List<HeroData> rescuedHeroes;
 
         public LootData()
         {
             items = new Dictionary<string, int>();
             equipments = new List<EquipmentData>();
+            rescuedHeroes = new List<HeroData>();
             gold = 0;
+            wood = 0;
+            stone = 0;
         }
     }
 
@@ -90,6 +96,21 @@ namespace LegendOfBlood
         public long lastDailyResetTimestamp;
         public long lastWeeklyResetTimestamp;
 
+        // --- NEW: Ad Tracking ---
+        public int dailySummonAdsWatched;
+        public int dailyDoubleGoldAdsWatched;
+        public int dailyFreeHealsWatched;            // Mới thêm
+        public int dailyFreeSummonsWatched;          // Mới thêm
+        public int dailyBuildingSpeedUpsWatched;     // Mới thêm
+        public int dailyArenaTicketAdsWatched;       // Mới thêm
+        public int dailyMutationAdsWatched;          // Mới thêm
+        public int dailyTowerSkipAdsWatched;         // Mới thêm
+        
+        // --- CÁC VỊ TRÍ CUỐI CÙNG ---
+        public int dailyShopFreebieAdsWatched;
+        public int dailyCombatReviveAdsWatched;
+        public int dailyMysticChestAdsWatched;
+
         // --- NEW: Offline Progression ---
         public long lastOfflineTimestamp;
 
@@ -117,6 +138,8 @@ namespace LegendOfBlood
             arenaTickets = 5;
             lastTicketRefreshTimestamp = 0;
             arenaCoins = 0;
+            dailySummonAdsWatched = 0;
+            dailyDoubleGoldAdsWatched = 0;
             lastOfflineTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
             // --- QUÀ TÂN THỦ: 10 VÉ CHIÊU MỘ ---

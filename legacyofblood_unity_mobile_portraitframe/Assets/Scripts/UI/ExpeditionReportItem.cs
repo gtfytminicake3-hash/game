@@ -14,18 +14,24 @@ namespace LegendOfBlood
         [SerializeField] private TextMeshProUGUI rewardsText; // Thêm trường text phần thưởng
         [SerializeField] private Button claimButton;
         [SerializeField] private TextMeshProUGUI claimButtonText;
+        [SerializeField] private Button claimX2Button; // NEW
         [SerializeField] private Button replayButton; // Thêm biến cho nút Xem Lại
         [SerializeField] private TextMeshProUGUI replayButtonText;
+        [SerializeField] private Button reviveRetryButton; // NEW: Nút Hồi sinh và Đánh tiếp
 
         private ExpeditionReport _report;
         private Action _onClaimCallback;
         private Action _onReplayCallback;
+        private Action _onClaimX2Callback;
+        private Action _onReviveRetryCallback;
 
         private void OnDestroy()
         {
             // Clean up the listener when the object is destroyed
             if (claimButton != null) claimButton.onClick.RemoveAllListeners();
+            if (claimX2Button != null) claimX2Button.onClick.RemoveAllListeners();
             if (replayButton != null) replayButton.onClick.RemoveAllListeners();
+            if (reviveRetryButton != null) reviveRetryButton.onClick.RemoveAllListeners();
         }
 
         /// <summary>
@@ -34,16 +40,20 @@ namespace LegendOfBlood
         /// <param name="report">The expedition result data.</param>
         /// <param name="onClaimCallback">The action to execute when the Claim button is clicked.</param>
         /// <param name="onReplayCallback">The action to execute when the Replay button is clicked.</param>
-        public void Initialize(ExpeditionReport report, Action onClaimCallback, Action onReplayCallback = null)
+        /// <param name="onClaimX2Callback">The action to execute when the Claim X2 button is clicked.</param>
+        /// <param name="onReviveRetryCallback">The action to execute when the Revive & Retry button is clicked.</param>
+        public void Initialize(ExpeditionReport report, Action onClaimCallback, Action onReplayCallback = null, Action onClaimX2Callback = null, Action onReviveRetryCallback = null)
         {
             _report = report;
             _onClaimCallback = onClaimCallback;
             _onReplayCallback = onReplayCallback;
+            _onClaimX2Callback = onClaimX2Callback;
+            _onReviveRetryCallback = onReviveRetryCallback;
 
             // Populate UI elements
             if (poiNameText != null)
             {
-                poiNameText.text = global::LocalizationSystem.GetText(report.poiName);
+                poiNameText.text = report.poiName;
             }
 
             if (outcomeText != null)
@@ -101,11 +111,31 @@ namespace LegendOfBlood
                 claimButton.onClick.AddListener(HandleClaimButtonClick);
             }
 
+            // Set up the claim x2 button
+            if (claimX2Button != null)
+            {
+                claimX2Button.gameObject.SetActive(report.combatResult != null && report.combatResult.DidPlayerWin);
+                claimX2Button.onClick.RemoveAllListeners();
+                claimX2Button.onClick.AddListener(HandleClaimX2ButtonClick);
+            }
+
             // Set up the replay button
             if (replayButton != null)
             {
                 replayButton.onClick.RemoveAllListeners();
                 replayButton.onClick.AddListener(HandleReplayButtonClick);
+            }
+            
+            // Set up the revive & retry button
+            if (reviveRetryButton != null)
+            {
+                // Chỉ hiển thị nút Hồi Sinh khi Thất bại (DidPlayerWin == false)
+                bool isDefeat = report.combatResult != null && !report.combatResult.DidPlayerWin;
+                // Có thể kiểm tra thêm điều kiện boss/tower nếu cần thiết, tạm thời áp dụng cho mọi trận thua.
+                reviveRetryButton.gameObject.SetActive(isDefeat);
+
+                reviveRetryButton.onClick.RemoveAllListeners();
+                reviveRetryButton.onClick.AddListener(HandleReviveRetryButtonClick);
             }
         }
 
@@ -118,8 +148,16 @@ namespace LegendOfBlood
         { 
             // Invoke the callback that was passed from MailboxPanel
             _onClaimCallback?.Invoke();
+        }
 
-            // The panel will handle destroying this object by refreshing the UI
+        private void HandleClaimX2ButtonClick()
+        {
+            _onClaimX2Callback?.Invoke();
+        }
+
+        private void HandleReviveRetryButtonClick()
+        {
+            _onReviveRetryCallback?.Invoke();
         }
     }
 }

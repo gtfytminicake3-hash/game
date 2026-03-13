@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: IT_SPEEDUP_1H
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.ItemData
   id: IT_SPEEDUP_1H
-  itemName: "\u0110\u1ED3ng H\u1ED3 1H"
-  description: "Gi\u1EA3m th\u1EDDi gian ch\u1EDD \u0111i 1 Ti\u1EBFng."
+  itemName: item_IT_SPEEDUP_1H_name
+  description: item_IT_SPEEDUP_1H_desc
   icon: {fileID: 0}
   type: 1
   isStackable: 1

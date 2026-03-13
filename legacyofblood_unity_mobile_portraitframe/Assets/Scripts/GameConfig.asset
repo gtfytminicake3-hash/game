@@ -259,13 +259,13 @@ MonoBehaviour:
   EvolutionTable:
     rewards:
     - level: 30
-      description: "M\u1EDF kh\xF3a Nh\xE1nh Ngh\u1EC1 (Ch\u1ECDn 1 Trait h\u1EC7)"
+      description: evo_reward_30
     - level: 50
-      description: "Nh\u1EADn k\u1EF9 n\u0103ng Active Level 2"
+      description: evo_reward_50
     - level: 70
-      description: "\u0110\u1ED9t ph\xE1 B\u1EADc Hi\u1EBFm Trait ng\u1EABu nhi\xEAn"
+      description: evo_reward_70
     - level: 100
-      description: "H\xF3a Th\u1EA7n! Ch\u1ECDn 1 Trait b\u1EADc S tr\u1EDF l\xEAn"
+      description: evo_reward_100
   StartingSkills:
   - profession: 1
     startingSkillIDs:
@@ -340,7 +340,6 @@ MonoBehaviour:
     defDownRatio: -0.15
     healOverTimeRatio: 0.5
   BuildingUpgradeDataList:
-  - {fileID: 11400000, guid: 4fb67c6fc37eb214fbc94339c2052237, type: 2}
   - {fileID: 11400000, guid: c2c4ac0e455661d459367ca8e89c6f42, type: 2}
   - {fileID: 11400000, guid: 90485e37bc702c3479d48418d2cf7e84, type: 2}
   - {fileID: 11400000, guid: 32d4a19429c1f104a8a85cfdaf5f58b9, type: 2}

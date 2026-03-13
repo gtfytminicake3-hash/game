@@ -31,9 +31,9 @@ namespace LegendOfBlood
         [SerializeField] private float maxZoom = 2.0f;
         [SerializeField] private float zoomSpeed = 0.1f;
         [SerializeField] private float minPoiDistance = 100f;
-        [SerializeField] private Vector2 mapSize = new Vector2(2000, 1500);
-        [SerializeField] private int numberOfDungeons = 10;
-        [SerializeField] private int numberOfRescues = 5;
+        [SerializeField] private Vector2 mapSize = new Vector2(2160, 3840);
+        [SerializeField] private int numberOfDungeons = 40;
+        [SerializeField] private int numberOfRescues = 20;
 
         [Header("Navigation")]
         [SerializeField] private Button backToVillageButton;
@@ -50,6 +50,15 @@ namespace LegendOfBlood
 
         private void Start()
         {
+            // Cập nhật khoảng cách an toàn tối thiểu dựa trên kích thước thật của POI (khoảng 200x200)
+            if (numberOfDungeons < 40) numberOfDungeons = 40;
+            if (numberOfRescues < 20) numberOfRescues = 20;
+            if (minPoiDistance < 150f) minPoiDistance = 150f;
+
+            // Đảm bảo không bị Inspector ghi đè Size theo config màn hình dọc
+            if (mapSize.x < 2160) mapSize.x = 2160;
+            if (mapSize.y < 3840) mapSize.y = 3840;
+
             if (poiInfoPanel == null)
             {
                 poiInfoPanel = FindFirstObjectByType<POI_InfoPanel>(FindObjectsInactive.Include);
@@ -226,24 +235,93 @@ namespace LegendOfBlood
 
             var worldPois = DataManager.Instance.Player.WorldPois;
 
-            if (worldPois == null || worldPois.Count == 0)
+            if (worldPois == null)
+            {
+                DataManager.Instance.Player.WorldPois = new List<POIData>();
+                worldPois = DataManager.Instance.Player.WorldPois;
+            }
+
+            int currentDungeons = worldPois.Count(p => p.type == POIType.Dungeon);
+            int currentRescues = worldPois.Count(p => p.type == POIType.RescueMission);
+            int currentBosses = worldPois.Count(p => p.type == POIType.Boss);
+
+            if (currentDungeons == 0 && currentRescues == 0)
             {
                 Debug.Log("No POI data found, generating new POIs...");
-                for (int i = 0; i < numberOfDungeons; i++) GenerateAndRegisterNewPOI(POIType.Dungeon, null);
-                for (int i = 0; i < numberOfRescues; i++) GenerateAndRegisterNewPOI(POIType.RescueMission, null);
-                
-                // Initialize the list if it was null
-                if (DataManager.Instance.Player.WorldPois == null)
-                {
-                    DataManager.Instance.Player.WorldPois = new List<POIData>();
-                }
-                
-                // Spawn one Boss POI on new map generation
-                GenerateBossPOI();
             }
             else
             {
-                Debug.Log($"Loading {worldPois.Count} POIs from DataManager.");
+                Debug.Log($"Bypass check: current Dungeon {currentDungeons}, Rescue {currentRescues}. Target: {numberOfDungeons}, {numberOfRescues}");
+            }
+            
+            // Top up Dungeons if missing
+            if (currentDungeons < numberOfDungeons)
+            {
+                int missingDungeons = numberOfDungeons - currentDungeons;
+                for (int i = 0; i < missingDungeons; i++) GenerateAndRegisterNewPOI(POIType.Dungeon, null, (i % 10) + 1);
+            }
+            // Top up Rescues if missing
+            if (currentRescues < numberOfRescues)
+            {
+                int missingRescues = numberOfRescues - currentRescues;
+                for (int i = 0; i < missingRescues; i++) GenerateAndRegisterNewPOI(POIType.RescueMission, null, (i % 10) + 1);
+            }
+            
+            // Spawn Boss if missing
+            if (currentBosses == 0)
+            {
+                GenerateBossPOI();
+            }
+
+            Debug.Log($"Loading {worldPois.Count} POIs from DataManager.");
+                
+                // --- BẮT ĐẦU FIX LỖI ĐẺ TRÙNG THÁP ---
+                // Thu thập danh sách các Tháp hợp lệ (giữ lại 1 tháp duy nhất cho mỗi Nghề, ưu tiên tầng cao nhất)
+                var validTowers = new Dictionary<Profession, POIData>();
+                var duplicateTowersToRemove = new List<POIData>();
+
+                foreach (var poiData in worldPois.ToList())
+                {
+                    if (poiData.type == POIType.TowerOfTrials)
+                    {
+                        if (poiData.requiredProfession != Profession.None)
+                        {
+                            if (!validTowers.ContainsKey(poiData.requiredProfession))
+                            {
+                                validTowers[poiData.requiredProfession] = poiData;
+                            }
+                            else
+                            {
+                                // Nếu đã có tháp nghề này rồi, ưu tiên giữ tháp có tầng cao hơn
+                                if (poiData.currentFloor > validTowers[poiData.requiredProfession].currentFloor)
+                                {
+                                    duplicateTowersToRemove.Add(validTowers[poiData.requiredProfession]);
+                                    validTowers[poiData.requiredProfession] = poiData;
+                                }
+                                else
+                                {
+                                    duplicateTowersToRemove.Add(poiData);
+                                }
+                            }
+                        }
+                        else
+                        {
+                             // Xóa những tháp bị mất System Data (requiredProfession = None) do lỗi Nullable cũ
+                             duplicateTowersToRemove.Add(poiData);
+                        }
+                    }
+                }
+
+                if (duplicateTowersToRemove.Count > 0)
+                {
+                    Debug.Log($"[WorldMap] Tìm thấy {duplicateTowersToRemove.Count} Tháp bị trùng lặp/giả mạo. Đang dọn dẹp...");
+                    foreach (var badTower in duplicateTowersToRemove)
+                    {
+                        worldPois.Remove(badTower);
+                    }
+                }
+                // --- KẾT THÚC FIX LỖI ĐẺ TRÙNG THÁP ---
+
                 foreach (var poiData in worldPois)
                 {
                     // FIX: Nếu POIData cũ bị lỗi list rỗng (trừ Tower), sinh lại quái!
@@ -253,26 +331,29 @@ namespace LegendOfBlood
                     }
                     InstantiatePOI(poiData);
                 }
-            }
 
-            // Luôn đảm bảo có đủ 3 tháp nghề nghiệp
+            // Luôn đảm bảo có đủ 4 tháp nghề nghiệp
             GenerateProfessionTowers();
         }
 
-        private void GenerateAndRegisterNewPOI(POIType type, string specificName)
+        private void GenerateAndRegisterNewPOI(POIType type, string specificName, int targetDifficulty = -1)
         {
-            Vector2 newPosition = FindValidPosition();
+            Vector2 newPosition = targetDifficulty > 0 ? FindValidPositionForDifficulty(targetDifficulty) : FindValidPosition();
             if (newPosition == Vector2.zero) return;
 
             string newId = Guid.NewGuid().ToString();
             
-            // Calculate distance from center (Village)
-            float distanceToCenter = Vector2.Distance(newPosition, Vector2.zero);
-            float maxDistance = Mathf.Max(mapSize.x, mapSize.y) / 2f;
-            float distanceRatio = Mathf.Clamp01(distanceToCenter / maxDistance);
-            
-            // Map the ratio to difficulty level (1 to 10)
-            int calculatedDifficulty = Mathf.Clamp(Mathf.RoundToInt(distanceRatio * 10f), 1, 10);
+            int calculatedDifficulty = targetDifficulty;
+            if (calculatedDifficulty <= 0)
+            {
+                // Calculate distance from center (Village)
+                float distanceToCenter = Vector2.Distance(newPosition, Vector2.zero);
+                float maxDistance = Mathf.Max(mapSize.x, mapSize.y) / 2f;
+                float distanceRatio = Mathf.Clamp01(distanceToCenter / maxDistance);
+                
+                // Map the ratio to difficulty level (1 to 10)
+                calculatedDifficulty = Mathf.Clamp(Mathf.RoundToInt(distanceRatio * 10f), 1, 10);
+            }
             
             // FIX: Create the object first, then assign monsterIDs
             POIData poiData = new POIData
@@ -291,7 +372,7 @@ namespace LegendOfBlood
         
         private void GenerateProfessionTowers()
         {
-            Profession[] professions = { Profession.Warrior, Profession.Archer, Profession.Mage };
+            Profession[] professions = { Profession.Warrior, Profession.Archer, Profession.Mage, Profession.Healer };
             
             foreach (var profession in professions)
             {
@@ -349,20 +430,68 @@ namespace LegendOfBlood
 
         private Vector2 FindValidPosition()
         {
+            // Pick a random difficulty ring (1 to 10) to keep the concentric circle constraint always active even for random POIs
+            int randomRing = UnityEngine.Random.Range(1, 11);
+            return FindValidPositionForDifficulty(randomRing);
+        }
+
+        private Vector2 FindValidPositionForDifficulty(int targetDifficulty)
+        {
             int attempts = 0;
-            const int maxAttempts = 100;
+            const int maxAttempts = 1000;
+            
+            // Dùng toàn bộ chiều cao màn hình để rải các vòng (elliptical distribution cho màn dọc)
+            // Lấy kích thước thực làm trục lớn (Height) và trục nhỏ (Width)
+            float maxRadiusY = mapSize.y / 2f - 200f; // Chừa lề trên dưới 200px
+            float maxRadiusX = mapSize.x / 2f - 150f; // Chừa lề trái phải 150px
+            
+            // Core safety gap in the middle
+            float minGapY = 350f;
+            float minGapX = 250f;
+
+            // Mỗi ring tier sẽ chiếm 1 khoảng
+            float ringThicknessY = (maxRadiusY - minGapY) / 10f;
+            float ringThicknessX = (maxRadiusX - minGapX) / 10f;
+
+            float minRankY = minGapY + ((targetDifficulty - 1) * ringThicknessY);
+            float maxRankY = minGapY + (targetDifficulty * ringThicknessY);
+
+            float minRankX = minGapX + ((targetDifficulty - 1) * ringThicknessX);
+            float maxRankX = minGapX + (targetDifficulty * ringThicknessX);
+
             do
             {
-                float x = UnityEngine.Random.Range(-mapSize.x / 2, mapSize.x / 2);
-                float y = UnityEngine.Random.Range(-mapSize.y / 2, mapSize.y / 2);
+                // Chọn một góc ngẫu nhiên trên hệ trục Ellipse
+                float angle = UnityEngine.Random.Range(0f, Mathf.PI * 2);
+                
+                // Chọn một điểm cách tâm theo Rank hiện tại
+                float radiusY = UnityEngine.Random.Range(minRankY, maxRankY);
+                float radiusX = UnityEngine.Random.Range(minRankX, maxRankX);
+                
+                // Áp dụng tính toán Ellipse (x= a*cos, y = b*sin)
+                float x = Mathf.Cos(angle) * radiusX;
+                float y = Mathf.Sin(angle) * radiusY;
+                
                 Vector2 newPosition = new Vector2(x, y);
-                if (IsPositionValid(newPosition)) return newPosition;
+                
+                // Chỉ cần check khoảng cách min giữa các hạt POI, không cần cắt gọt bằng boundary nữa 
+                // vì công thức x,y ở trên đã được scale chặt vào maxRadiusX và maxRadiusY của màn hình rồi.
+                if (IsPositionValid(newPosition)) 
+                {
+                    return newPosition;
+                }
+                
                 attempts++;
             }
             while (attempts < maxAttempts);
             
-            Debug.LogError($"Could not find a valid position for a new POI after {maxAttempts} attempts.");
-            return Vector2.zero;
+            Debug.LogWarning($"[WorldMap] Không tìm được chỗ trống khắt khe cho vòng {targetDifficulty} sau {maxAttempts} thử nghiệm. Rải bừa.");
+            
+            // Fallback random (nếu bản đồ quá chật)
+            return new Vector2(
+                UnityEngine.Random.Range(-mapSize.x/2f + 150f, mapSize.x/2f - 150f),
+                UnityEngine.Random.Range(-mapSize.y/2f + 200f, mapSize.y/2f - 200f)
+            );
         }
 
         private List<string> GenerateMonstersForPOI(POIData poiData)
@@ -382,8 +511,8 @@ namespace LegendOfBlood
                     var group = validGroups[UnityEngine.Random.Range(0, validGroups.Count)];
                     if (group.monsterIDs != null && group.monsterIDs.Count > 0)
                     {
-                        // Sinh 2 đến 5 quái ngẫu nhiên
-                        int monsterCount = UnityEngine.Random.Range(2, 6);
+                        // Sinh 2 đến 4 quái ngẫu nhiên thay vì 2 đến 6 để map nhẹ hơn nếu cần
+                        int monsterCount = UnityEngine.Random.Range(2, 5);
                         for (int i = 0; i < monsterCount; i++)
                         {
                             string randomMonster = group.monsterIDs[UnityEngine.Random.Range(0, group.monsterIDs.Count)];
@@ -449,6 +578,38 @@ namespace LegendOfBlood
             poiInstance.SetActive(true); // Đảm bảo icon nổi lên
             poiInstance.GetComponent<RectTransform>().anchoredPosition = poiData.position;
 
+            // --- Tùy chỉnh Hình Ảnh cho Tháp Thử Thách theo Nghề Nghiệp ---
+            if (poiData.type == POIType.TowerOfTrials)
+            {
+                Image iconImage = poiInstance.GetComponent<Image>();
+                if (iconImage != null)
+                {
+                    string spriteName = string.Empty;
+                    switch (poiData.requiredProfession)
+                    {
+                        case Profession.Mage: spriteName = "thap_mage"; break;
+                        case Profession.Healer: spriteName = "thap_healer"; break;
+                        case Profession.Archer: spriteName = "thap_acher"; break;
+                        case Profession.Warrior: spriteName = "thap_warior"; break;
+                    }
+
+                    if (!string.IsNullOrEmpty(spriteName))
+                    {
+                        Sprite towerSprite = Resources.Load<Sprite>($"UI/Towers/{spriteName}");
+                        if (towerSprite != null)
+                        {
+                            iconImage.sprite = towerSprite;
+
+                            // Đảm bảo không bị méo ảnh
+                            iconImage.preserveAspect = true;
+                            // Optionally set native size if the tower image is tiny
+                            // iconImage.SetNativeSize(); 
+                        }
+                    }
+                }
+            }
+            // -----------------------------------------------------------
+
             Button poiButton = poiInstance.GetComponent<Button>();
             if (poiButton != null) 
             {
@@ -504,14 +665,14 @@ namespace LegendOfBlood
             if (squadSelectionPanel == null) return;
             var availableHeroes = DataManager.Instance.AllHeroes.Where(h => h.isMature && !h.IsBusy()).ToList();
             squadSelectionPanel.Show(
-                string.Format(global::LocalizationSystem.GetText("worldmap_select_squad_title_format"), global::LocalizationSystem.GetText(poiData.poiName)),
+                string.Format(global::LocalizationSystem.GetText("worldmap_select_squad_title_format"), poiData.poiName),
                 availableHeroes, 5,
                 (selectedHeroIDs) => {
                     squadSelectionPanel.gameObject.SetActive(false);
                     poiInfoPanel.gameObject.SetActive(false);
                     GameManager.Instance.ExpeditionManager.StartExpedition(selectedHeroIDs, poiData);
                 },
-                poiData.requiredProfession ?? Profession.None
+                poiData.requiredProfession
             );
         }
 
@@ -524,7 +685,7 @@ namespace LegendOfBlood
                 _activePoiObjects.Remove(clearedPoiData.poiId);
             }
             DataManager.Instance.Player.WorldPois.RemoveAll(p => p.poiId == clearedPoiData.poiId);
-            GenerateAndRegisterNewPOI(clearedPoiData.type, null);
+            GenerateAndRegisterNewPOI(clearedPoiData.type, null, clearedPoiData.difficultyLevel);
         }
 
         private void HandleTowerConquered(POIData towerData)
@@ -542,6 +703,12 @@ namespace LegendOfBlood
 
         private bool IsPositionValid(Vector2 position)
         {
+            // Yêu cầu: Cách Tâm (Làng) ÍT NHẤT 300px 
+            if (Vector2.Distance(position, Vector2.zero) < 300f)
+            {
+                return false;
+            }
+
             if (DataManager.Instance.Player.WorldPois == null) return true;
             return DataManager.Instance.Player.WorldPois.All(poi => Vector2.Distance(poi.position, position) >= minPoiDistance);
         }
@@ -562,12 +729,41 @@ namespace LegendOfBlood
             RectTransform cartRect = cartInstance.GetComponent<RectTransform>();
             cartRect.anchoredPosition = Vector2.zero; // Start from village (center map)
 
-            // Animate travel to destination and back
-            cartRect.DOAnchorPos(displayData.destination.position, displayData.totalDuration / 2)
+            // --- Thêm hiệu ứng Highlight (Viền sáng nhấp nháy) cho xe ---
+            UnityEngine.UI.Image cartImage = cartInstance.GetComponentInChildren<UnityEngine.UI.Image>();
+            if (cartImage != null)
+            {
+                var outline = cartImage.gameObject.AddComponent<UnityEngine.UI.Outline>();
+                outline.effectColor = new Color(1f, 0.85f, 0.0f, 1f); // Màu Vàng Sáng nổi bật
+                outline.effectDistance = new Vector2(4f, -4f);
+                
+                // Hiệu ứng nhấp nháy sáng tối viền để dễ chú ý trên map
+                DOTween.To(() => outline.effectColor, x => outline.effectColor = x, new Color(1f, 0.85f, 0.0f, 0.2f), 0.6f)
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetTarget(cartRect); // Target để tự tắt tween khi xe hủy
+            }
+
+            // Kiểm tra hướng đi ban đầu (Từ Làng -> POI)
+            Vector2 destinationPos = displayData.destination.position;
+            // Nếu destination.x > 0 (bên phải làng), mặt xe quay sang phải (scale.x = 1 hoặc -1 tùy sprite gốc).
+            // Giả sử sprite gốc quay sang phải -> scale.x = 1. Nếu quay trái -> scale.x = -1.
+            // (Ảnh hanhquan.png có gốc hướng sang trái, nên ta set scale.x = -1 để quay phải, 1 để quay trái)
+            bool isMovingRight = destinationPos.x > cartRect.anchoredPosition.x;
+            cartRect.localScale = new Vector3(isMovingRight ? -1f : 1f, 1f, 1f);
+
+            // Animate travel to destination, wait for combat, and travel back
+            cartRect.DOAnchorPos(displayData.destination.position, displayData.travelDuration)
                 .SetEase(Ease.Linear)
                 .OnComplete(() => {
-                    cartRect.DOAnchorPos(Vector2.zero, displayData.totalDuration / 2)
-                        .SetEase(Ease.Linear);
+                    DOVirtual.DelayedCall(displayData.combatDuration, () => {
+                        if (cartRect != null) {
+                            // Khi quay về làng, đảo ngược hướng
+                            cartRect.localScale = new Vector3(isMovingRight ? 1f : -1f, 1f, 1f);
+
+                            cartRect.DOAnchorPos(Vector2.zero, displayData.travelDuration)
+                                .SetEase(Ease.Linear);
+                        }
+                    });
                 });
         }
 

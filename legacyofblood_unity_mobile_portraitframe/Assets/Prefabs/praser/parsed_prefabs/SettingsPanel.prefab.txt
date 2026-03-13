@@ -1,0 +1,36 @@
+====== PREFAB/SCENE STRUCTURE FOR SettingsPanel.prefab ======
+========================================================
+GameObject: Slider (ID: 355670779818774789)
+  - MonoBehaviour (Script GUID: 67db9e8f0e2ae9c40bc1e2b64352a6b4)
+GameObject: LanguageButton (ID: 1357512505984822244)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: SettingsPanel (ID: 1359199883922427590)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: abd01567b6e5fe84fb468c3c47ecdae0)
+    PanelType: 13
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+GameObject: Background (ID: 3020026164531740859)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Fill (ID: 3817531310275964314)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Text (ID: 4284232693072067066)
+  - MonoBehaviour (Script GUID: 5f7201a12d95ffc409449d95f23cf332)
+GameObject: Handle Slide Area (ID: 5340993002068568905)
+GameObject: Text (TMP) (ID: 5874248450666815040)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: CloseButton (ID: 6377435367289449356)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: title (ID: 7231098315948310704)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Handle (ID: 7578386807006299753)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Fill Area (ID: 7902923596220467365)

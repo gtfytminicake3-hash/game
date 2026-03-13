@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SK_MAG_ICE_1
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Skill
   id: SK_MAG_ICE_1
-  skillName: "B\xE3o Tuy\u1EBFt"
-  description: "Tri\u1EC7u h\u1ED3i b\xE3o tuy\u1EBFt \u0111\xF3ng b\u0103ng to\xE0n
-    b\u1ED9 k\u1EBB \u0111\u1ECBch."
+  skillName: skill_SK_MAG_ICE_1_name
+  description: skill_SK_MAG_ICE_1_desc
+  icon: {fileID: 21300000, guid: 9464c4d373a3a114bbf69862d0cfc935, type: 3}
   type: 0
   requiredProfession: 2
   cooldown: 4

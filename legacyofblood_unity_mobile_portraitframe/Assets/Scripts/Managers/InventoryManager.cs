@@ -88,8 +88,6 @@ namespace LegendOfBlood
             {
                 Debug.LogError(LocalizationSystem.GetText("inventory_error_no_playerdata"));
                 return;
-            }
-            
             // KIỂM TRA TÂN THỦ: Cấp Vốn Khởi Nghiệp (1000 Vàng, 1000 Gỗ)
             if (GetResourceAmount(ResourceType.Gold) == 0 && GetResourceAmount(ResourceType.Wood) == 0)
             {
@@ -98,6 +96,7 @@ namespace LegendOfBlood
                 AddResource(ResourceType.Gold, 1000);
                 AddResource(ResourceType.Wood, 1000);
             }
+        }
         }
 
 

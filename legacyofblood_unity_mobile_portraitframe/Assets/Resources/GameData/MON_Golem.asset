@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MON_Golem
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.MonsterData
   id: Golem
-  monsterName: "Th\u1EA1ch Nh\xE2n"
+  monsterName: monster_Golem_name
   profession: 1
   baseHp: 1500
   baseAtk: 40

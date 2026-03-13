@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: IT_MATURATION_POTION
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.ItemData
   id: IT_MATURATION_POTION
-  itemName: "Qu\u1EA3 Tr\u01B0\u1EDFng Th\xE0nh"
-  description: "Gi\u1EA3m s\u1ED1c th\u1EDDi gian ch\u1EDD l\u1EDBn l\xEAn c\u1EE7a
-    tr\u1EBB s\u01A1 sinh xu\u1ED1ng 30 Ph\xFAt."
+  itemName: item_IT_MATURATION_POTION_name
+  description: item_IT_MATURATION_POTION_desc
   icon: {fileID: 0}
   type: 1
   isStackable: 1

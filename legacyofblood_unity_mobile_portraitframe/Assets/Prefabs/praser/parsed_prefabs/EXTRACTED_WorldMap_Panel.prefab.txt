@@ -1,0 +1,24 @@
+====== PREFAB/SCENE STRUCTURE FOR EXTRACTED_WorldMap_Panel.prefab ======
+========================================================
+GameObject: GeneratedPOIsContainer (ID: 1872456735288448486)
+GameObject: Text (TMP) (ID: 2391133498905070476)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: map (ID: 5464457666890726023)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: EXTRACTED_WorldMap_Panel (ID: 5494236967931014758)
+  - MonoBehaviour (Script GUID: 315efb5dd0434cd49a5b06e697d0ecda)
+    minZoom: 0.5
+    maxZoom: 2
+    zoomSpeed: 0.1
+    minPoiDistance: 100
+    numberOfDungeons: 10
+    numberOfRescues: 5
+  - MonoBehaviour (Script GUID: 619cdd331192ee141a573c3821e1de96)
+    PanelType: 6
+GameObject: TravelLayer (ID: 7293907488278797203)
+GameObject: closebtn (ID: 8771829957860636600)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)

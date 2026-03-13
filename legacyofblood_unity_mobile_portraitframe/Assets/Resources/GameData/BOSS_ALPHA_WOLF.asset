@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BOSS_ALPHA_WOLF
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.BossData
   id: BOSS_ALPHA_WOLF
-  bossName: "S\xF3i Ch\xF3p Bu"
+  bossName: boss_BOSS_ALPHA_WOLF_name
   modelPrefab: {fileID: 0}
   level: 50
   baseHp: 120000
@@ -28,11 +28,11 @@ MonoBehaviour:
     critChance: 0.05
     critDamage: 1.5
   skills:
-    normalAttackName: "C\u1EAFn X\xE9"
+    normalAttackName: boss_BOSS_ALPHA_WOLF_atk1
     normalAttackMultiplier: 2
-    aoeAttackName: "Lang Qu\u1EA7n G\u1ECDi b\u1EA7y"
+    aoeAttackName: boss_BOSS_ALPHA_WOLF_atk2
     aoeAttackMultiplier: 1.2
   mechanic:
-    name: "T\xE1i Sinh L\u1ED7i"
-    description: "H\u1ED3i d\xF2ng m\xE1u l\u1EDBn m\u1ED7i l\u01B0\u1EE3t"
+    name: boss_BOSS_ALPHA_WOLF_mech_name
+    description: boss_BOSS_ALPHA_WOLF_mech_desc
     value: 5000

@@ -1,6 +1,7 @@
+Ôªøimport os
 import re
 
-file_path = r'e:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Editor\buildpanelmissng.cs'
+file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Assets', 'Scripts', 'Editor', 'buildpanelmissng.cs')
 
 with open(file_path, 'r', encoding='utf-8') as f:
     text = f.read()
@@ -52,15 +53,15 @@ inject('''    static void CreateScrollView(string name, Transform parent, out Re
         sv.GetComponent<RectTransform>().offsetMax = new Vector2(0, -150);''')
 
 # 4. Vertical Layout Group Spacing 
-inject('''        vlg.spacing = 10; // Kho?ng c·ch gi?a c·c item''',
-       '''        vlg.spacing = 30; // Kho?ng c·ch gi?a c·c item
+inject('''        vlg.spacing = 10; // Kho?ng c√°ch gi?a c√°c item''',
+       '''        vlg.spacing = 30; // Kho?ng c√°ch gi?a c√°c item
         vlg.padding = new RectOffset(20, 20, 20, 20);''')
 
 
 # 5. Fix Info Frame in EquipmentDetailPanel
-inject('''        // Khung thÙng tin
+inject('''        // Khung th√¥ng tin
         GameObject infoFrame = CreateUIObject("InfoFrame", panelGO.transform);''',
-'''        // Khung thÙng tin
+'''        // Khung th√¥ng tin
         GameObject infoFrame = CreateUIObject("InfoFrame", panelGO.transform);
         RectTransform infoRect = infoFrame.GetComponent<RectTransform>();
         infoRect.anchorMin = new Vector2(0.1f, 0.4f); infoRect.anchorMax = new Vector2(0.9f, 0.8f);
@@ -69,11 +70,11 @@ inject('''        // Khung thÙng tin
         infoVlg.childControlHeight = true; infoVlg.childForceExpandHeight = false; infoVlg.spacing = 20;''')
 
 # 6. Fix EquipmentDetail Buttons to be horizontal bottom
-inject('''        // C·c n˙t b?m
-        AssignPrivateField(script, "closeButton", CreateButton("Btn_Close", panelGO.transform, "–Ûng"));
-        AssignPrivateField(script, "equipButton", CreateButton("Btn_Equip", panelGO.transform, "M?c v‡o"));
-        AssignPrivateField(script, "quickUpgradeButton", CreateButton("Btn_QuickUpgrade", panelGO.transform, "N‚ng c?p nhanh"));''',
-'''        // C·c n˙t b?m
+inject('''        // C√°c n√∫t b?m
+        AssignPrivateField(script, "closeButton", CreateButton("Btn_Close", panelGO.transform, "√ê√≥ng"));
+        AssignPrivateField(script, "equipButton", CreateButton("Btn_Equip", panelGO.transform, "M?c v√†o"));
+        AssignPrivateField(script, "quickUpgradeButton", CreateButton("Btn_QuickUpgrade", panelGO.transform, "N√¢ng c?p nhanh"));''',
+'''        // C√°c n√∫t b?m
         GameObject btnGroup = CreateUIObject("ButtonGroup", panelGO.transform);
         RectTransform btnRect = btnGroup.GetComponent<RectTransform>();
         btnRect.anchorMin = new Vector2(0, 0); btnRect.anchorMax = new Vector2(1, 0.15f);
@@ -81,9 +82,9 @@ inject('''        // C·c n˙t b?m
         var hlg = btnGroup.AddComponent<HorizontalLayoutGroup>();
         hlg.childControlWidth = true; hlg.spacing = 30; hlg.padding = new RectOffset(50, 50, 50, 50);
 
-        AssignPrivateField(script, "closeButton", CreateButton("Btn_Close", btnGroup.transform, "–Ûng"));
-        AssignPrivateField(script, "equipButton", CreateButton("Btn_Equip", btnGroup.transform, "M?c v‡o"));
-        AssignPrivateField(script, "quickUpgradeButton", CreateButton("Btn_QuickUpgrade", btnGroup.transform, "N‚ng c?p nhanh"));''')
+        AssignPrivateField(script, "closeButton", CreateButton("Btn_Close", btnGroup.transform, "√ê√≥ng"));
+        AssignPrivateField(script, "equipButton", CreateButton("Btn_Equip", btnGroup.transform, "M?c v√†o"));
+        AssignPrivateField(script, "quickUpgradeButton", CreateButton("Btn_QuickUpgrade", btnGroup.transform, "N√¢ng c?p nhanh"));''')
 
 # 7. Fix Top Padding on Vertical Layout View
 inject('''    static void CreateVerticalScrollView(string name, Transform parent, out RectTransform contentRect)
@@ -101,7 +102,7 @@ inject('''    static void CreateVerticalScrollView(string name, Transform parent
         RectTransform svRect = sv.GetComponent<RectTransform>();
         svRect.anchorMin = Vector2.zero;
         svRect.anchorMax = Vector2.one;
-        svRect.offsetMax = new Vector2(0, -150); // C·ch top 150 d? ch?a view
+        svRect.offsetMax = new Vector2(0, -150); // C√°ch top 150 d? ch?a view
         svRect.sizeDelta = Vector2.zero;''')
 
 # 8. Add top text padding to createText generic
@@ -119,3 +120,4 @@ with open(file_path, 'w', encoding='utf-8') as f:
     f.write(text)
 
 print("Applied 1080x1920 layout logic successfully.")
+

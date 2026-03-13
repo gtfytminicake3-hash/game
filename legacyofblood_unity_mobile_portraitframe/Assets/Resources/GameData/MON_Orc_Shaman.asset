@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MON_Orc_Shaman
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.MonsterData
   id: Orc Shaman
-  monsterName: "Ph\xF9 Th\u1EE7y Orc"
+  monsterName: monster_Orc_Shaman_name
   profession: 3
   baseHp: 250
   baseAtk: 50

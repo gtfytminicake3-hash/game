@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.GameConfigs.QuestData
   questId: Q_D_01
   category: 1
-  questName: "D\u1ECDn D\u1EB9p Qu\xE1i V\u1EADt"
-  description: "Kh\xE1m ph\xE1 v\xE0 chi\u1EBFn \u0111\u1EA5u t\u1EA1i b\u1EA5t k\u1EF3
-    v\xF9ng \u0111\u1EA5t n\xE0o 3 l\u1EA7n."
+  questName: quest_Q_D_01_name
+  description: quest_Q_D_01_desc
   type: 5
   targetId: 
   targetValue: 3

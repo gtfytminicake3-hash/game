@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: SK_WAR_TANK_2
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Skill
   id: SK_WAR_TANK_2
-  skillName: "Khi\xEAn \u1EA2o"
-  description: "T\u1EA1o l\u1EDBp khi\xEAn b\u1EA3o v\u1EC7 cho b\u1EA3n th\xE2n."
+  skillName: skill_SK_WAR_TANK_2_name
+  description: skill_SK_WAR_TANK_2_desc
+  icon: {fileID: 21300000, guid: d5847fa12dca7cc4db8157d65e7df110, type: 3}
   type: 0
   requiredProfession: 0
   cooldown: 4

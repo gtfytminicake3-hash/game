@@ -189,11 +189,13 @@ namespace LegendOfBlood.Editor
 
                     int costGold = level * 100;
                     int costWood = level * 50;
+                    int costStone = level * 25;
 
                     List<UpgradeCost> costs = new List<UpgradeCost>
                     {
                         new UpgradeCost { resourceId = "Gold", amount = costGold },
-                        new UpgradeCost { resourceId = "Wood", amount = costWood }
+                        new UpgradeCost { resourceId = "Wood", amount = costWood },
+                        new UpgradeCost { resourceId = "Stone", amount = costStone }
                     };
 
                     data.levels.Add(new BuildingLevelData

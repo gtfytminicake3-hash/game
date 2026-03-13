@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MON_Slime
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.MonsterData
   id: Slime
-  monsterName: "C\u1EE5c Nh\u1EA7y Slime"
+  monsterName: monster_Slime_name
   profession: 1
   baseHp: 150
   baseAtk: 10

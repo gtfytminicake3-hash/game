@@ -526,3 +526,5 @@ building_BreedingPen=Breeding Pen
 building_Hospital=Hospital
 building_TownHall=Barrack
 building_Barrack=Barrack
+
+building_upgrading=Upgrading

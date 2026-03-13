@@ -1,0 +1,40 @@
+====== PREFAB/SCENE STRUCTURE FOR Panel_Bootloader.prefab ======
+========================================================
+GameObject: Text_Percent (ID: 876594761304322636)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Background (ID: 1773505604056622936)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Slider (ID: 2011159821287818751)
+  - MonoBehaviour (Script GUID: 67db9e8f0e2ae9c40bc1e2b64352a6b4)
+GameObject: Percent_BG (ID: 2044226447413644296)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: LoadingBar_Chassis (ID: 2154223603950550355)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: LegendOfBlood_UI_Container (ID: 2501565844682892088)
+GameObject: Fill Area (ID: 3047837697549788440)
+GameObject: BootloaderBackgroundImage (ID: 4144360121692980119)
+GameObject: TapToStart_Text (ID: 6237644884665063563)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: TrackerPercent (ID: 6437558623217052230)
+GameObject: Panel_Bootloader (ID: 6641492258237539226)
+  - MonoBehaviour (Script GUID: 619cdd331192ee141a573c3821e1de96)
+    PanelType: 16
+  - MonoBehaviour (Script GUID: 968c68cb316f147489c0748b4241fbb6)
+GameObject: TapToStart_Group (ID: 6719451913849895360)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Fill (ID: 7710979661524994168)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: LoadingScreen_Group (ID: 8896881261017489310)
+GameObject: loadingtext (ID: 8966065959504321007)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Fill_Blood (ID: 8980604835468587751)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)

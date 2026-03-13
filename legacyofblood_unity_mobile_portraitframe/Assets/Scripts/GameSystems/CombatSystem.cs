@@ -16,6 +16,7 @@ namespace LegendOfBlood.Combat
     public class CombatResult
     {
         public bool DidPlayerWin;
+        public int TotalTurns;
         public List<string> CombatLog;
         public List<CombatEvent> EventLog;
         public List<HeroData> PlayerSurvivors;
@@ -112,6 +113,9 @@ namespace LegendOfBlood.Combat
         public float GetCurrentCritChance() => HeroRef.GetFinalStats().critChance + ActiveEffects.Where(e => e.Type == StatusEffectType.CritUp).Sum(e => e.Value);
         public float GetCurrentCritDamage() => HeroRef.GetFinalStats().critDamage;
         public bool IsAlive() => CurrentHp > 0;
+        
+        // --- NEW: Track Revival Status ---
+        public bool HasRevivedOnce { get; set; } = false;
 
         public void AssignSkills(List<Skill> availableSkills, System.Random rng)
         {
@@ -150,13 +154,31 @@ namespace LegendOfBlood.Combat
             return RunSimulation();
         }
 
-        public CombatResult Simulate(List<HeroData> playerHeroes, List<string> enemyMonsterIDs, int difficultyLevel = 1)
+        private bool _isHealingChallenge;
+
+        public CombatResult Simulate(List<HeroData> playerHeroes, List<string> enemyMonsterIDs, int difficultyLevel = 1, bool isHealingChallenge = false)
         {
+            _isHealingChallenge = isHealingChallenge;
             _playerTeam = playerHeroes.Select((h, i) => new Combatant(h, true, i)).ToList();
             var enemyHeroes = enemyMonsterIDs.Select(id => DataManager.Instance.GetMonsterByID(id, difficultyLevel))
                                              .Where(h => h != null)
                                              .ToList();
             _enemyTeam = enemyHeroes.Select((h, i) => new Combatant(h, false, i)).ToList();
+            return RunSimulation();
+        }
+
+        public CombatResult SimulateBoss(List<HeroData> playerHeroes, string bossID)
+        {
+            _isHealingChallenge = false;
+            _playerTeam = playerHeroes.Select((h, i) => new Combatant(h, true, i)).ToList();
+            
+            var bossHero = DataManager.Instance.GetMonsterByID(bossID, 1);
+            _enemyTeam = new List<Combatant>();
+            if (bossHero != null)
+            {
+                _enemyTeam.Add(new Combatant(bossHero, false, 0));
+            }
+
             return RunSimulation();
         }
 
@@ -185,7 +207,9 @@ namespace LegendOfBlood.Combat
             LogFormation(_enemyTeam, LocalizationSystem.GetText("combat_log_enemy_team"));
 
             int turn = 1;
-            while (IsTeamAlive(_playerTeam) && IsTeamAlive(_enemyTeam))
+            int maxTurns = _isHealingChallenge ? 50 : 50; // The user requested 50 for the healer tower as well.
+            
+            while (IsTeamAlive(_playerTeam) && (_isHealingChallenge ? !IsTeamFullyHealed(_enemyTeam) : IsTeamAlive(_enemyTeam)))
             {
                 _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_turn_header"), turn));
                 _eventLog.Add(new CombatEvent { EventType = CombatEventType.TurnStart, Value = turn });
@@ -199,11 +223,12 @@ namespace LegendOfBlood.Combat
                     TickCooldowns(combatant);
                     var action = DecideAction(combatant);
                     ExecuteAction(action);
-                    if (!IsTeamAlive(_playerTeam) || !IsTeamAlive(_enemyTeam)) break;
+                    
+                    if (!IsTeamAlive(_playerTeam) || (_isHealingChallenge ? IsTeamFullyHealed(_enemyTeam) : !IsTeamAlive(_enemyTeam))) break;
                 }
 
                 turn++;
-                if (turn > 50) { _combatLog.Add(LocalizationSystem.GetText("combat_log_draw_timeout")); break; }
+                if (turn > maxTurns) { _combatLog.Add(LocalizationSystem.GetText("combat_log_draw_timeout")); break; }
             }
 
             // Cập nhật lại currentHp của HeroData gốc trước khi trả về
@@ -212,12 +237,13 @@ namespace LegendOfBlood.Combat
                 combatant.HeroRef.currentHp = combatant.CurrentHp;
             }
 
-            bool playerWon = IsTeamAlive(_playerTeam) && !IsTeamAlive(_enemyTeam);
+            bool playerWon = IsTeamAlive(_playerTeam) && (_isHealingChallenge ? IsTeamFullyHealed(_enemyTeam) : !IsTeamAlive(_enemyTeam));
             _combatLog.Add(playerWon ? LocalizationSystem.GetText("combat_log_victory") : LocalizationSystem.GetText("combat_log_defeat"));
 
             return new CombatResult
             {
                 DidPlayerWin = playerWon,
+                TotalTurns = turn,
                 CombatLog = _combatLog,
                 EventLog = _eventLog,
                 PlayerSurvivors = _playerTeam.Where(c => c.IsAlive()).Select(c => c.HeroRef).ToList(),
@@ -226,6 +252,11 @@ namespace LegendOfBlood.Combat
                 EnemyCasualties = _enemyTeam.Where(c => !c.IsAlive()).Select(c => c.HeroRef).ToList(),
                 InitialPositions = initialPos
             };
+        }
+
+        private bool IsTeamFullyHealed(List<Combatant> team)
+        {
+            return team.All(c => c.CurrentHp >= c.MaxHp);
         }
 
         private void AssignGridSlots(List<Combatant> team, bool isAlly, List<CombatantPosition> positionList)
@@ -250,8 +281,12 @@ namespace LegendOfBlood.Combat
                 else if (fIdx < 3) slot = frontSlots[fIdx++]; // Fallback nếu mid đầy
                 else if (bIdx < 3) slot = backSlots[bIdx++]; // Fallback
 
-                // Fallback cuối cùng nếu có nhiều hơn 9 tướng (ít xảy ra)
-                if (slot == -1) slot = 4; // Nhét tạm vào giữa
+                // Fallback cuối cùng nếu có nhiều hơn 9 tướng (như trường hợp đánh Boss 15 tướng)
+                if (slot == -1) 
+                {
+                     slot = mIdx + 9; // Tạm xếp ra ngoài grid cơ bản
+                     mIdx++;
+                }
 
                 positionList.Add(new CombatantPosition
                 {
@@ -270,8 +305,9 @@ namespace LegendOfBlood.Combat
             {
                 if (actor.HeroRef.profession == Profession.Healer)
                 {
-                    var allies = actor.IsPlayerTeam ? _playerTeam : _enemyTeam;
-                    bool needsHealing = allies.Any(a => a.IsAlive() && a.CurrentHp / a.MaxHp < 0.6f);
+                    // In healing challenge, healers want to heal the most injured enemy (soldier), otherwise allies.
+                    var allies = _isHealingChallenge ? _enemyTeam : (actor.IsPlayerTeam ? _playerTeam : _enemyTeam);
+                    bool needsHealing = allies.Any(a => a.IsAlive() && a.CurrentHp / a.MaxHp < 1.0f);
                     var healingSkill = usableSkills.FirstOrDefault(s => s.targeting == TargetingType.LowestHpAlly || s.targeting == TargetingType.AllAllies);
                     if (needsHealing && healingSkill != null) return new CombatAction { Actor = actor, Skill = healingSkill };
                 }
@@ -285,21 +321,44 @@ namespace LegendOfBlood.Combat
             var actor = action.Actor;
             var allies = actor.IsPlayerTeam ? _playerTeam : _enemyTeam;
             var enemies = actor.IsPlayerTeam ? _enemyTeam : _playerTeam;
+            
             if (action.IsBasicAttack)
             {
-                var target = GetTargets(actor, TargetingType.SingleFrontEnemy, allies, enemies).FirstOrDefault();
-                if (target != null) PerformAttack(actor, target, 1.0f, null);
+                if (_isHealingChallenge && actor.HeroRef.profession == Profession.Healer)
+                {
+                    var target = GetTargets(actor, TargetingType.LowestHpAlly, _enemyTeam, _playerTeam).FirstOrDefault(); // Heal the enemy team (soldiers)
+                    if (target != null) 
+                    {
+                        // Use a dummy skill for the power ratio
+                        Skill dummyHeal = new Skill { powerRatio = 1.0f, appliedEffect = StatusEffectType.None };
+                        PerformHeal(actor, target, dummyHeal);
+                    }
+                }
+                else
+                {
+                    var target = GetTargets(actor, TargetingType.SingleFrontEnemy, allies, enemies).FirstOrDefault();
+                    if (target != null) PerformAttack(actor, target, 1.0f, null);
+                }
             }
             else
             {
                 var skill = action.Skill;
-                var targets = GetTargets(actor, skill.targeting, allies, enemies);
+                
+                // In a healing challenge, if it's a healing skill, target the injured soldiers (_enemyTeam)
+                var skillAllies = (_isHealingChallenge && actor.HeroRef.profession == Profession.Healer) ? _enemyTeam : allies; 
+                var skillEnemies = (_isHealingChallenge && actor.HeroRef.profession == Profession.Healer) ? _playerTeam : enemies;
+
+                var targets = GetTargets(actor, skill.targeting, skillAllies, skillEnemies);
                 if (!targets.Any()) return;
+                
                 _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_skill_cast"), actor.HeroRef.heroName, skill.skillName));
                 _eventLog.Add(new CombatEvent { EventType = CombatEventType.SkillCast, SourceID = actor.InstanceID, Message = skill.skillName });
+                
                 for (int i = 0; i < skill.hitCount; i++)
                 {
-                    var currentTargets = (skill.hitCount > 1 && skill.targeting == TargetingType.RandomEnemy) ? GetTargets(actor, skill.targeting, allies, enemies) : targets;
+                    var currentTargets = (skill.hitCount > 1 && skill.targeting == TargetingType.RandomEnemy) ? 
+                                         GetTargets(actor, skill.targeting, skillAllies, skillEnemies) : targets;
+                    
                     foreach (var target in currentTargets)
                     {
                         switch (actor.HeroRef.profession)
@@ -335,6 +394,16 @@ namespace LegendOfBlood.Combat
             target.CurrentHp -= damageInt;
             string log = string.Format(LocalizationSystem.GetText("combat_log_attack_normal"), attacker.HeroRef.heroName, target.HeroRef.heroName, damageInt);
             if (isCrit) log += LocalizationSystem.GetText("combat_log_attack_crit");
+            
+            // Xử lý Trait: Hút máu (Lifesteal)
+            if (attacker.HeroRef.traitIDs.Any(t => t != null && t.Contains("LIFESTEAL")))
+            {
+                int healAmount = Mathf.FloorToInt(damageInt * 0.2f); // Hút lại 20% sát thương
+                attacker.CurrentHp = Mathf.Min(attacker.MaxHp, attacker.CurrentHp + healAmount);
+                log += $" <color=#00ff00>(+{healAmount} HP Hút máu)</color>";
+                _eventLog.Add(new CombatEvent { EventType = CombatEventType.Heal, SourceID = attacker.InstanceID, TargetID = attacker.InstanceID, Value = healAmount });
+            }
+
             _combatLog.Add(log);
             _eventLog.Add(new CombatEvent { EventType = CombatEventType.Attack, SourceID = attacker.InstanceID, TargetID = target.InstanceID, Value = damageInt, IsCrit = isCrit });
 
@@ -344,8 +413,20 @@ namespace LegendOfBlood.Combat
             }
             if (!target.IsAlive()) 
             {
-                _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_death"), target.HeroRef.heroName));
-                _eventLog.Add(new CombatEvent { EventType = CombatEventType.Death, TargetID = target.InstanceID });
+                // Xử lý Trait: Hồi sinh (Revive)
+                if (target.HeroRef.traitIDs.Any(t => t != null && t.Contains("REVIVE")) && !target.HasRevivedOnce)
+                {
+                    target.HasRevivedOnce = true;
+                    int reviveHp = Mathf.FloorToInt(target.MaxHp * 0.3f); // Hồi sinh với 30% máu
+                    target.CurrentHp = reviveHp;
+                    _combatLog.Add($"<color=#ffff00> {target.HeroRef.heroName} đã kích hoạt Tái Sinh và hồi {reviveHp} HP!</color>");
+                    _eventLog.Add(new CombatEvent { EventType = CombatEventType.Heal, SourceID = target.InstanceID, TargetID = target.InstanceID, Value = reviveHp });
+                }
+                else
+                {
+                    _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_death"), target.HeroRef.heroName));
+                    _eventLog.Add(new CombatEvent { EventType = CombatEventType.Death, TargetID = target.InstanceID });
+                }
             }
         }
 

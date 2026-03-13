@@ -15,5 +15,13 @@ MonoBehaviour:
   id: SK_WARRIOR_01
   skillName: "Ch\xE9m D\u0169ng M\xE3nh"
   description: "G\xE2y 150% ATK l\xEAn m\u1ED9t m\u1EE5c ti\xEAu h\xE0ng tr\u01B0\u1EDBc"
+  icon: {fileID: 21300000, guid: 035ddaaa597550f43bc49015c31b101e, type: 3}
   type: 0
   requiredProfession: 1
+  cooldown: 0
+  targeting: 0
+  powerRatio: 0
+  hitCount: 1
+  appliedEffect: 0
+  effectDuration: 0
+  effectChance: 0

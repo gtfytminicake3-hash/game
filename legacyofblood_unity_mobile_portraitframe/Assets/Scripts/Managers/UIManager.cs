@@ -105,6 +105,8 @@ namespace LegendOfBlood
                     else if (className == "MenuPanel") panel.PanelType = UIPanelType.Menu;
                     else if (className == "ProfessionSelectionPanel") panel.PanelType = UIPanelType.ProfessionSelection;
                     else if (className == "BuildingUpgradePanel") panel.PanelType = UIPanelType.BuildingUpgrade;
+                    else if (className == "BossBattlePanel") panel.PanelType = UIPanelType.BossBattle;
+                    else if (className == "TowerPanel") panel.PanelType = UIPanelType.Tower;
                     
                     if (panel.PanelType == UIPanelType.None) 
                     {
@@ -301,8 +303,8 @@ namespace LegendOfBlood
             if (DataManager.Instance == null || DataManager.Instance.AllBuildings == null) return;
 
             // Arena Unlock Condition
-            var mainHall = DataManager.Instance.AllBuildings.FirstOrDefault(b => b.id == "TownHall");
-            if (mainHall != null && mainHall.level >= 5)
+            var barracks = DataManager.Instance.AllBuildings.FirstOrDefault(b => b.id == "Barracks");
+            if (barracks != null && barracks.level >= 5)
             {
                 IsArenaUnlocked = true;
             }

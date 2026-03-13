@@ -1,6 +1,7 @@
 import re
+import os
 
-file_path = r'e:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Editor\buildpanelmissng.cs'
+file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Assets", "Scripts", "Editor", "buildpanelmissng.cs")
 
 with open(file_path, 'r', encoding='utf-8') as f:
     text = f.read()

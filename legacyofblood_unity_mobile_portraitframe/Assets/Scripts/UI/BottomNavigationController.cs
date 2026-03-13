@@ -8,7 +8,53 @@ namespace LegendOfBlood
     /// </summary>
     public class BottomNavigationController : MonoBehaviour
     {
-        // Chúng ta không cần tham chiếu đến các nút, chỉ cần các hàm public.
+        [Header("Notification Badges")]
+        [SerializeField] private GameObject hospitalBadge;
+        [SerializeField] private GameObject breedingBadge;
+
+        private void Update()
+        {
+            UpdateNotificationBadges();
+        }
+
+        private void UpdateNotificationBadges()
+        {
+            if (GameManager.Instance == null || DataManager.Instance?.Player == null) return;
+
+            // 1. Hospital Badge: Show if any hero is finished healing
+            if (hospitalBadge != null)
+            {
+                bool hasHealedHero = false;
+                if (GameManager.Instance.HospitalSystem != null && DataManager.Instance.AllHeroes != null)
+                {
+                    foreach (var hero in DataManager.Instance.AllHeroes)
+                    {
+                        if (hero.isLightlyInjured || hero.isSeverelyInjured)
+                        {
+                            hasHealedHero = true;
+                            break;
+                        }
+                    }
+                }
+                hospitalBadge.SetActive(hasHealedHero);
+            }
+
+            // 2. Breeding/Maturation Badge: Show if any newborn is ready to mature
+            if (breedingBadge != null)
+            {
+                bool hasMatureHero = false;
+                long currentTime = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                foreach (var hero in DataManager.Instance.AllHeroes)
+                {
+                    if (!hero.isMature && currentTime >= hero.maturationEndTime)
+                    {
+                        hasMatureHero = true;
+                        break;
+                    }
+                }
+                breedingBadge.SetActive(hasMatureHero);
+            }
+        }
 
         public void OpenMainScreenPanel()
         {
@@ -68,6 +114,15 @@ namespace LegendOfBlood
                 GameManager.Instance.UIManager.ShowPanel(UIPanelType.Mailbox, true);
             }
         }
+        
+        public void OpenInventoryPanel()
+        {
+            if (GameManager.Instance != null && GameManager.Instance.UIManager != null)
+            {
+                GameManager.Instance.UIManager.ShowPanel(UIPanelType.Inventory, true);
+            }
+        }
+
         
         // Hàm này dùng cho nút bấm trên màn hình chính cũ để vào làng
         // hoặc nút bấm trên các panel để vào WorldMap Scene

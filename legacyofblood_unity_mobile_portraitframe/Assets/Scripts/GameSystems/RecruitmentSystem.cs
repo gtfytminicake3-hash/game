@@ -26,14 +26,33 @@ namespace LegendOfBlood
                 // 3. Create Hero
                 Gender gender = (Random.value < 0.5f) ? Gender.Male : Gender.Female;
                 string name = GetRandomName(gender);
+                
+                // Gacha heroes start at level 10 and are mature.
                 var newHero = new HeroData(System.Guid.NewGuid().ToString(), name, gender)
                 {
-                    level = 1,
-                    potential = pot
+                    level = 10,
+                    potential = pot,
+                    isMature = true
                 };
+
+                // Assign random Profession
+                var professions = System.Enum.GetValues(typeof(Profession)).Cast<Profession>().ToList();
+                professions.Remove(Profession.None);
+                newHero.SetProfession(professions[Random.Range(0, professions.Count)]);
+
+                // Assign starting skill
+                var startingSkills = DataManager.Instance.GetStartingSkills(newHero.profession);
+                if(startingSkills != null && startingSkills.Count > 0)
+                {
+                    string randomSkillID = startingSkills[Random.Range(0, startingSkills.Count)];
+                    newHero.skillIDs.Add(randomSkillID);
+                }
 
                 // 4. Calculate Base Stats
                 CalculateBaseStats(newHero);
+                
+                // Give free stat points for level 1 to 10 (9 levels worth of potential)
+                newHero.freeStatPoints = newHero.potential * 9;
 
                 // 5. Assign Traits
                 newHero.traitIDs = AssignRandomTraits();
@@ -43,7 +62,7 @@ namespace LegendOfBlood
                 // 6. Add to Player's Hero List
                 DataManager.Instance.AddHero(newHero); // Sẽ được xử lý bởi UI sau này, tạm thời vẫn thêm trực tiếp
                 newHeroes.Add(newHero);
-                Debug.Log($"<color=green>Recruited!</color> A new {rarity}-rank hero named {name} with POT {pot} has joined.");
+                Debug.Log($"<color=green>Recruited!</color> A new {rarity}-rank hero named {name} with POT {pot} has joined at Level 10.");
             }
             return newHeroes;
         }

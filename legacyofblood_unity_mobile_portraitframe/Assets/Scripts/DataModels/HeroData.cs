@@ -55,6 +55,7 @@ namespace LegendOfBlood
         // --- NEW: Breeding Limits ---
         public int breedingCount = 0;
         public int maxBreedingCount = 10;
+        public Profession? guaranteedProfession = null;
         #endregion
 
         #region Status & Timers
@@ -126,6 +127,32 @@ namespace LegendOfBlood
             
             Debug.LogError("Attempted to get avatar but AvatarManager does not exist.");
             return null;
+        }
+
+        public void SetProfession(Profession newProfession)
+        {
+            this.profession = newProfession;
+            if (AvatarManager.Instance != null)
+            {
+                this.avatarIndex = AvatarManager.Instance.GetRandomAvatarIndexByClass(this.gender, this.profession.ToString());
+            }
+            
+            // Assign starting skills when profession is set
+            if (DataManager.Instance != null && newProfession != Profession.None)
+            {
+                var startingSkills = DataManager.Instance.GetStartingSkills(newProfession);
+                if (startingSkills != null)
+                {
+                    this.skillIDs ??= new List<string>();
+                    foreach (var skillId in startingSkills)
+                    {
+                        if (!this.skillIDs.Contains(skillId))
+                        {
+                            this.skillIDs.Add(skillId);
+                        }
+                    }
+                }
+            }
         }
 
         public EquipmentData GetEquipment(EquipmentSlot slot)

@@ -1,6 +1,7 @@
+Ôªøimport os
 import re
 
-file_path = r'e:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Assets\Scripts\Editor\buildpanelmissng.cs'
+file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'Assets', 'Scripts', 'Editor', 'buildpanelmissng.cs')
 
 with open(file_path, 'r', encoding='utf-8') as f:
     content = f.read()
@@ -41,7 +42,7 @@ repl_close = '''
     }'''
 
 if 'CreateCloseButton(Transform' not in content:
-    content = content.replace('    // ================= C¡C H¿M TI?N ÕCH D?NG UI ================= //', '    // ================= C¡C H¿M TI?N ÕCH D?NG UI ================= //\n' + repl_close)
+    content = content.replace('    // ================= C√ÅC H√ÄM TI?N √çCH D?NG UI ================= //', '    // ================= C√ÅC H√ÄM TI?N √çCH D?NG UI ================= //\n' + repl_close)
 
 # Add layout specifically for Inventory tabs
 search_inv_tabs = '''AssignPrivateField(script, "itemTabButton", CreateButton("Btn_ItemTab", panelGO.transform, "Items"));
@@ -64,3 +65,4 @@ with open(file_path, 'w', encoding='utf-8') as f:
     f.write(content)
 
 print("Final adjustments done.")
+

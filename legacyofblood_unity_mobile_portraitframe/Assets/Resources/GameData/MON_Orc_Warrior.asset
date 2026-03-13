@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MON_Orc_Warrior
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.MonsterData
   id: Orc Warrior
-  monsterName: "Chi\u1EBFn Binh Orc"
+  monsterName: monster_Orc_Warrior_name
   profession: 1
   baseHp: 400
   baseAtk: 35

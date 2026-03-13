@@ -39,11 +39,26 @@ namespace LegendOfBlood
         {
             if (_targetHero == null) return;
 
-            _targetHero.profession = profession;
+            _targetHero.SetProfession(profession);
             Debug.Log($"Hero {_targetHero.heroName} selected profession: {profession}");
+
+            // Assign starting skill
+            var startingSkills = DataManager.Instance.GetStartingSkills(profession);
+            if(startingSkills != null && startingSkills.Count > 0)
+            {
+                string randomSkillID = startingSkills[UnityEngine.Random.Range(0, startingSkills.Count)];
+                if (!_targetHero.skillIDs.Contains(randomSkillID))
+                {
+                    _targetHero.skillIDs.Add(randomSkillID);
+                    Debug.Log($"Hero learned starting skill: {randomSkillID}");
+                }
+            }
             
             // Save data
             DataManager.Instance.SavePlayerData();
+
+            // Refresh Hero Panel UI explicitly so we see the new Avatar and Skill
+            EventManager.TriggerEvent(GameEvents.OnHeroCardClicked, _targetHero);
 
             // Callback
             _onComplete?.Invoke();

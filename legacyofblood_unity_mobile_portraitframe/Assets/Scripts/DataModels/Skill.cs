@@ -32,6 +32,9 @@ namespace LegendOfBlood
         [TextArea(3, 5)]
         public string description;
 
+        [Tooltip("Icon đại diện cho Kỹ năng.")]
+        public Sprite icon;
+
         [Header("Thuộc tính Kỹ năng")]
         [Tooltip("Loại kỹ năng: Chủ động hay Bị động.")]
         public SkillType type;

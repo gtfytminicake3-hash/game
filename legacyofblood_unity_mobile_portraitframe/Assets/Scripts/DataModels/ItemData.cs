@@ -9,8 +9,8 @@ namespace LegendOfBlood
     {
         Consumable,      // Vật phẩm tiêu thụ (thuốc, bùa)
         SpeedUp,         // Vật phẩm tăng tốc
-        BreedingMaterial // Vật phẩm dùng cho lai tạo
-        // Có thể thêm Equipment, QuestItem, etc. trong tương lai
+        BreedingMaterial,// Vật phẩm dùng cho lai tạo
+        ExpPotion        // Thẻ kinh nghiệm
     }
 
     /// <summary>

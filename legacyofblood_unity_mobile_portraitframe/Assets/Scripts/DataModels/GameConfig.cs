@@ -14,9 +14,9 @@ namespace LegendOfBlood.GameConfigs
     {
         public int level;
         public string description;
-        // Có thể thêm các loại phần thưởng khác ở đây, ví dụ:
-        // public int freeStatPoints;
-        // public string guaranteedTraitId;
+        public bool giveRandomTrait = false;
+        public bool giveRandomSkill = false;
+        public bool allowProfessionSelection = false;
     }
 
     [System.Serializable]

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.GameConfigs.QuestData
   questId: Q_W_01
   category: 2
-  questName: "Tuy\u1EC3n M\u1ED9 Di\u1EC7n R\u1ED9ng"
-  description: "Chi\xEAu m\u1ED9 t\u1ED5ng c\u1ED9ng 10 Anh H\xF9ng m\u1EDBi."
+  questName: quest_Q_W_01_name
+  description: quest_Q_W_01_desc
   type: 2
   targetId: 
   targetValue: 10

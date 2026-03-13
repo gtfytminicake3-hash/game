@@ -20,23 +20,27 @@ namespace LegendOfBlood
 
         private void HandleHeroLeveledUp(HeroData hero)
         {
-            // Grant new traits at specific evolution milestones
-            switch (hero.level)
+            if (DataManager.Instance == null || DataManager.Instance.GameConfig == null) return;
+            var evolutionTable = DataManager.Instance.GameConfig.EvolutionTable;
+            if (evolutionTable == null || evolutionTable.rewards == null) return;
+
+            var reward = evolutionTable.rewards.FirstOrDefault(r => r.level == hero.level);
+            if (reward != null)
             {
-                case 30:
+                if (reward.allowProfessionSelection && hero.profession == Profession.None)
+                {
                     EventManager.TriggerEvent(GameEvents.OnProfessionSelectionRequested, hero);
+                }
+                
+                if (reward.giveRandomTrait)
+                {
                     GrantNewTrait_TwoRolls(hero);
-                    break;
-                case 50:
+                }
+                
+                if (reward.giveRandomSkill)
+                {
                     GrantNewSkill(hero);
-                    break;
-                case 70:
-                    GrantNewTrait_TwoRolls(hero);
-                    break;
-                case 100:
-                    GrantNewTrait_TwoRolls(hero);
-                    GrantNewSkill(hero);
-                    break;
+                }
             }
         }
 

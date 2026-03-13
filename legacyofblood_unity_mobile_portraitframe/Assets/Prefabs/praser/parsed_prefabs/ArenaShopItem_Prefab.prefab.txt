@@ -1,0 +1,10 @@
+====== PREFAB/SCENE STRUCTURE FOR ArenaShopItem_Prefab.prefab ======
+========================================================
+GameObject: ArenaShopItem_Prefab (ID: 8829572244263219601)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 0de4dc06a235bd849ab3ba0760568195)
+GameObject: PriceText (ID: 9038780108045931297)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0

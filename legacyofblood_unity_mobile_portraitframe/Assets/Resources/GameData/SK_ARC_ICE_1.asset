@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: SK_ARC_ICE_1
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Skill
   id: SK_ARC_ICE_1
-  skillName: "Ti\u1EC5n B\u0103ng"
-  description: "M\u0169i t\xEAn l\u1EA1nh gi\xE1 l\xE0m ch\u1EADm k\u1EBB \u0111\u1ECBch."
+  skillName: skill_SK_ARC_ICE_1_name
+  description: skill_SK_ARC_ICE_1_desc
+  icon: {fileID: 21300000, guid: 035ddaaa597550f43bc49015c31b101e, type: 3}
   type: 0
   requiredProfession: 1
   cooldown: 2

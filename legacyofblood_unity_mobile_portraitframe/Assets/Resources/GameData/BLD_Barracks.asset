@@ -23,6 +23,8 @@ MonoBehaviour:
       amount: 200
     - resourceId: Wood
       amount: 100
+    - resourceId: Stone
+      amount: 50
     duration: 60
   - level: 3
     costs:
@@ -30,6 +32,8 @@ MonoBehaviour:
       amount: 300
     - resourceId: Wood
       amount: 150
+    - resourceId: Stone
+      amount: 75
     duration: 1240
   - level: 4
     costs:
@@ -37,6 +41,8 @@ MonoBehaviour:
       amount: 400
     - resourceId: Wood
       amount: 200
+    - resourceId: Stone
+      amount: 100
     duration: 2420
   - level: 5
     costs:
@@ -44,6 +50,8 @@ MonoBehaviour:
       amount: 500
     - resourceId: Wood
       amount: 250
+    - resourceId: Stone
+      amount: 125
     duration: 3600
   - level: 6
     costs:
@@ -51,6 +59,8 @@ MonoBehaviour:
       amount: 600
     - resourceId: Wood
       amount: 300
+    - resourceId: Stone
+      amount: 150
     duration: 7650
   - level: 7
     costs:
@@ -58,6 +68,8 @@ MonoBehaviour:
       amount: 700
     - resourceId: Wood
       amount: 350
+    - resourceId: Stone
+      amount: 175
     duration: 11700
   - level: 8
     costs:
@@ -65,6 +77,8 @@ MonoBehaviour:
       amount: 800
     - resourceId: Wood
       amount: 400
+    - resourceId: Stone
+      amount: 200
     duration: 15750
   - level: 9
     costs:
@@ -72,6 +86,8 @@ MonoBehaviour:
       amount: 900
     - resourceId: Wood
       amount: 450
+    - resourceId: Stone
+      amount: 225
     duration: 19800
   - level: 10
     costs:
@@ -79,6 +95,8 @@ MonoBehaviour:
       amount: 1000
     - resourceId: Wood
       amount: 500
+    - resourceId: Stone
+      amount: 250
     duration: 23850
   - level: 11
     costs:
@@ -86,6 +104,8 @@ MonoBehaviour:
       amount: 1100
     - resourceId: Wood
       amount: 550
+    - resourceId: Stone
+      amount: 275
     duration: 27900
   - level: 12
     costs:
@@ -93,6 +113,8 @@ MonoBehaviour:
       amount: 1200
     - resourceId: Wood
       amount: 600
+    - resourceId: Stone
+      amount: 300
     duration: 31950
   - level: 13
     costs:
@@ -100,6 +122,8 @@ MonoBehaviour:
       amount: 1300
     - resourceId: Wood
       amount: 650
+    - resourceId: Stone
+      amount: 325
     duration: 36000
   - level: 14
     costs:
@@ -107,6 +131,8 @@ MonoBehaviour:
       amount: 1400
     - resourceId: Wood
       amount: 700
+    - resourceId: Stone
+      amount: 350
     duration: 117257
   - level: 15
     costs:
@@ -114,6 +140,8 @@ MonoBehaviour:
       amount: 1500
     - resourceId: Wood
       amount: 750
+    - resourceId: Stone
+      amount: 375
     duration: 198514
   - level: 16
     costs:
@@ -121,6 +149,8 @@ MonoBehaviour:
       amount: 1600
     - resourceId: Wood
       amount: 800
+    - resourceId: Stone
+      amount: 400
     duration: 279771
   - level: 17
     costs:
@@ -128,6 +158,8 @@ MonoBehaviour:
       amount: 1700
     - resourceId: Wood
       amount: 850
+    - resourceId: Stone
+      amount: 425
     duration: 361028
   - level: 18
     costs:
@@ -135,6 +167,8 @@ MonoBehaviour:
       amount: 1800
     - resourceId: Wood
       amount: 900
+    - resourceId: Stone
+      amount: 450
     duration: 442285
   - level: 19
     costs:
@@ -142,6 +176,8 @@ MonoBehaviour:
       amount: 1900
     - resourceId: Wood
       amount: 950
+    - resourceId: Stone
+      amount: 475
     duration: 523542
   - level: 20
     costs:
@@ -149,4 +185,6 @@ MonoBehaviour:
       amount: 2000
     - resourceId: Wood
       amount: 1000
+    - resourceId: Stone
+      amount: 500
     duration: 604800

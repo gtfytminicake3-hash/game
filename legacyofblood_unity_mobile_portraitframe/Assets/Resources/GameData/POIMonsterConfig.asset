@@ -13,20 +13,20 @@ MonoBehaviour:
   m_Name: POIMonsterConfig
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.POIMonsterConfig
   monsterGroups:
-  - groupName: "B\xE3i Qu\xE1i B\xF9n"
+  - groupName: poi_group_Mud_Monster_Camp
     minDifficulty: 1
     maxDifficulty: 3
     monsterIDs:
     - Goblin
     - Slime
-  - groupName: "Doanh Tr\u1EA1i Orc"
+  - groupName: poi_group_Orc_Barracks
     minDifficulty: 4
     maxDifficulty: 7
     monsterIDs:
     - Orc Warrior
     - Orc Shaman
     - Troll
-  - groupName: "L\u0103ng M\u1ED9 R\u1ED3ng \u0110en"
+  - groupName: poi_group_Black_Dragon_Tomb
     minDifficulty: 8
     maxDifficulty: 10
     monsterIDs:

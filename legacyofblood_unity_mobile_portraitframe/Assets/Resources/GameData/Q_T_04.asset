@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.GameConfigs.QuestData
   questId: Q_T_04
   category: 0
-  questName: "B\u1EC7nh Vi\u1EC7n Y T\u1EBF"
-  description: "N\xE2ng c\u1EA5p B\u1EC7nh Vi\u1EC7n l\xEAn C\u1EA5p 2."
+  questName: quest_Q_T_04_name
+  description: quest_Q_T_04_desc
   type: 0
   targetId: Hospital
   targetValue: 2

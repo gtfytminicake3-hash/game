@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: TR_HP_D
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Trait
   id: TR_HP_D
-  traitName: "Th\u1EC3 Ch\u1EA5t B\xECnh Th\u01B0\u1EDDng"
-  description: "+20 HP t\u1ED1i \u0111a."
+  traitName: trait_TR_HP_D_name
+  description: trait_TR_HP_D_desc
+  icon: {fileID: 21300000, guid: 8bec6dfadc3f17648b6b18a891e61de8, type: 3}
   rank: 0
   familyId: HP_UP
   nextUpgradeTraitID: TR_HP_C

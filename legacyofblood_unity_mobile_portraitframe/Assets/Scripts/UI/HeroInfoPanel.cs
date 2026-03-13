@@ -33,6 +33,7 @@ namespace LegendOfBlood
         [SerializeField] private Button closeButton;
         [SerializeField] private Button statAllocationButton;
         [SerializeField] private Button traitUpgradeButton;
+        [SerializeField] private Button useExpItemButton; 
 
         [Header("Panels")]
         [SerializeField] private StatAllocationPanel statAllocationPanel;
@@ -44,7 +45,7 @@ namespace LegendOfBlood
         private void Awake()
         {
             // AUTO-WIRE: Tự động đánh hơi tìm các Nút bị rớt (không được gắn trong Inspector)
-            if (statAllocationButton == null || traitUpgradeButton == null)
+            if (statAllocationButton == null || traitUpgradeButton == null || useExpItemButton == null)
             {
                 Button[] allButtons = GetComponentsInChildren<Button>(true);
                 foreach(var btn in allButtons)
@@ -54,12 +55,15 @@ namespace LegendOfBlood
                         statAllocationButton = btn;
                     if (traitUpgradeButton == null && (btnName.Contains("trait") || btnName.Contains("upgrade")))
                         traitUpgradeButton = btn;
+                    if (useExpItemButton == null && (btnName.Contains("exp") || btnName.Contains("item")))
+                        useExpItemButton = btn;
                 }
             }
 
             if (closeButton != null) closeButton.onClick.AddListener(ClosePanel);
             if (statAllocationButton != null) statAllocationButton.onClick.AddListener(OpenStatAllocationPanel);
             if (traitUpgradeButton != null) traitUpgradeButton.onClick.AddListener(OpenTraitUpgradePanel);
+            if (useExpItemButton != null) useExpItemButton.onClick.AddListener(OnUseExpItemClicked);
         }
         
         private void OnEnable()
@@ -121,6 +125,13 @@ namespace LegendOfBlood
                 statAllocationButton.gameObject.SetActive(_currentHero.freeStatPoints > 0);
             if (traitUpgradeButton != null)
                 traitUpgradeButton.gameObject.SetActive(_currentHero.level == 60 || _currentHero.level == 100);
+            
+            if (useExpItemButton != null)
+            {
+                // Only active if hero is mature and not max level
+                bool canUseExp = _currentHero.isMature && _currentHero.level < 100;
+                useExpItemButton.gameObject.SetActive(canUseExp);
+            }
 
             ClearInfoItems();
             PopulateInfoList(traitsContainer, _currentHero.traitIDs, true);
@@ -158,6 +169,42 @@ namespace LegendOfBlood
         {
             foreach (var item in _instantiatedInfoItems) { Destroy(item); }
             _instantiatedInfoItems.Clear();
+        }
+
+        private void OnUseExpItemClicked()
+        {
+            if (_currentHero == null) return;
+            
+            // Simple logic: Use the largest EXP book available
+            // In a full game, this would open an item selection panel
+            string[] expPotions = { "IT_EXP_BOOK_L", "IT_EXP_BOOK_M", "IT_EXP_BOOK_S" };
+            
+            bool itemUsed = false;
+            foreach(string itemId in expPotions)
+            {
+                ItemData item = null;
+                if(DataManager.Instance.AllItems.TryGetValue(itemId, out item) && item.type == ItemType.ExpPotion)
+                {
+                    if (GameManager.Instance.InventoryManager.UseItem(itemId, 1))
+                    {
+                        // Assume expValue is stored in speedUpValueInSeconds or similar field for generic items, 
+                        // or we hardcode the values based on ID if the struct doesn't have an exp field.
+                        int expGained = itemId == "IT_EXP_BOOK_L" ? 1000 : (itemId == "IT_EXP_BOOK_M" ? 500 : 100);
+                        _currentHero.AddExperience(expGained);
+                        Debug.Log($"Used {item.itemName} on {_currentHero.heroName}. Gained {expGained} EXP.");
+                        
+                        GameManager.Instance.UINotificationManager?.ShowNotification($"Sử dụng {item.itemName} thành công!");
+                        PopulateData(_currentHero); // Refresh UI
+                        itemUsed = true;
+                        break;
+                    }
+                }
+            }
+
+            if (!itemUsed)
+            {
+                GameManager.Instance.UINotificationManager?.ShowNotification("Không có Vật phẩm Kinh nghiệm nào trong Túi!");
+            }
         }
 
         private void OpenStatAllocationPanel()
