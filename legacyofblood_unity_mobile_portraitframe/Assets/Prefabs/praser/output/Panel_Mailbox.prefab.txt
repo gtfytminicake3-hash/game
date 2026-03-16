@@ -1,0 +1,99 @@
+====== PREFAB/SCENE STRUCTURE FOR Panel_Mailbox.prefab ======
+========================================================
+GameObject: Viewport (ID: 472100362185509352)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 31a19414c41e5ae4aae2af33fee712f6)
+GameObject: Panel_Mailbox (ID: 1123133606206074804)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 619cdd331192ee141a573c3821e1de96)
+    PanelType: 17
+    useDynamicBackground: 0
+    backgroundResourcePath: UI/Panel/panel_dong_frames
+  - MonoBehaviour (Script GUID: 104497cf83795a84cbde84020abc1098)
+    PanelType: 0
+    useDynamicBackground: 0
+    backgroundResourcePath: UI/Panel/panel_dong_frames
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+GameObject: Text (ID: 1183186028775782165)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Claim x2 (Ad)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: ReportItemTemplate (ID: 3019220323337204389)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 650b05f771105b148aa0de1b6efb1c6e)
+GameObject: PoiName (ID: 4042488628571778874)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "T\xEAn \u0110\u1ECBa \u0110i\u1EC3m Kh\xE1m Ph\xE1"
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (ID: 4238286535979202241)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "NH\u1EACN"
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_Replay (ID: 5446935326912728558)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: ClaimButton (ID: 5515461030379603031)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: CloseButton (ID: 5931379245291298728)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (ID: 6154179304168083808)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Replay Battle
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (ID: 6462753957519539463)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Revive Retry
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_ClaimX2 (ID: 6866779541175543217)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: OutcomeText (ID: 6898949583396245259)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "K\u1EBFt Qu\u1EA3"
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (ID: 7207657897052320357)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "Tr\u1EDF v\u1EC1 L\xE0ng (\u0110\xF3ng)"
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: ClaimAllButton (ID: 7835975890656090388)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Content (ID: 7927673109087307877)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+  - MonoBehaviour (Script GUID: 3245ec927659c4140ac4f8d17403cc18)
+GameObject: Text (ID: 8498436517376743497)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "Nh\u1EADn T\u1EA5t C\u1EA3 Qu\xE0"
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: ScrollView (ID: 8731962725302203656)
+  - MonoBehaviour (Script GUID: 1aa08ab6e0800fa44ae55d278d1423e3)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Btn_ReviveRetry (ID: 8777472861957888096)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Title (ID: 9082867142551832822)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "H\xD2M TH\u01AF (INBOX)"
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0

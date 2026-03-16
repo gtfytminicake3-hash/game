@@ -1,0 +1,63 @@
+====== PREFAB/SCENE STRUCTURE FOR Panel_Quest.prefab ======
+========================================================
+GameObject: Content (ID: 30732439773837982)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+GameObject: Viewport (ID: 763860717648205844)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 31a19414c41e5ae4aae2af33fee712f6)
+GameObject: Text (TMP) (ID: 1201817381354883138)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Weekly
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Title (ID: 2399294010814398637)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Title
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_Daily (ID: 2943547944948127511)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Btn_Weekly (ID: 3469755236299869453)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Btn_Main (ID: 5082303337503689515)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: TabGroup (ID: 5459566053283188984)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: Panel_Quest (ID: 5723017878438913891)
+  - MonoBehaviour (Script GUID: ce8132fa531e34b43b8a3fc0f160f216)
+    PanelType: 21
+    useDynamicBackground: 0
+    backgroundResourcePath: UI/Panel/panel_dong_frames
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+GameObject: ListArea (ID: 6613795506815458414)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (TMP) (ID: 6625073351731733886)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Main Quest
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (TMP) (ID: 7499545543913576131)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Daily
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (TMP) (ID: 7551607627927293870)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: X
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_Close (ID: 7870827099788306425)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Scroll View (ID: 9142862087926553556)
+  - MonoBehaviour (Script GUID: 1aa08ab6e0800fa44ae55d278d1423e3)

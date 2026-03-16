@@ -195,10 +195,21 @@ public class ClickableBuilding : MonoBehaviour, IPointerDownHandler, IPointerUpH
         }
 
         // Hiệu ứng "Thở" (Zoom in/out) nếu có thể nâng cấp và không bị người dùng đè chuột
-        if (_canUpgrade && !_isPointerDown)
+        bool isDynamicUIEnabled = false;
+        if (LegendOfBlood.DataManager.Instance != null && LegendOfBlood.DataManager.Instance.Player != null)
+        {
+            isDynamicUIEnabled = LegendOfBlood.DataManager.Instance.Player.useDynamicUI;
+        }
+
+        if (_canUpgrade && !_isPointerDown && isDynamicUIEnabled)
         {
             float scaleFactor = 1.0f + (maxBreatheScale - 1.0f) * (Mathf.Sin(Time.time * breatheSpeed * Mathf.PI) + 1f) / 2f;
             transform.localScale = _originalScale * scaleFactor;
+        }
+        else if (_canUpgrade && !_isPointerDown && !isDynamicUIEnabled)
+        {
+            // Nếu tắt UI động, giữ tỷ lệ gốc
+            transform.localScale = _originalScale;
         }
     }
 

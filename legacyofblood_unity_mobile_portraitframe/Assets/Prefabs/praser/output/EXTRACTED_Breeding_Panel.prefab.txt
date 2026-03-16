@@ -1,0 +1,148 @@
+====== PREFAB/SCENE STRUCTURE FOR EXTRACTED_Breeding_Panel.prefab ======
+========================================================
+GameObject: spd (ID: 142354250743945689)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: spd
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: FatherSlots (ID: 354546928909191794)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: 'BreedButton ' (ID: 625395229549928676)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: resultArea (ID: 709281217349081011)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: def (ID: 759829266396568422)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: def
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: atk (ID: 843373867991271168)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: atk
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (TMP) (ID: 1418444275490912718)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: CloseButton (ID: 1578635456618169435)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (TMP) (ID: 1627524737579871290)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: ok
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: ActionsArea (ID: 1742687482261076380)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: pot (ID: 1744839630345125980)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: POT
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: SelectMother (ID: 2215514692342999533)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Label (ID: 2583702350960130988)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Use Potion
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_MutationAd (ID: 2868905976516753591)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Checkmark (ID: 3260440236370471858)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: SelectionArena (ID: 3303390206731662946)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: infonewhero (ID: 3449915527323939599)
+  - MonoBehaviour (Script GUID: 8a8695521f0d02e499659fee002a26c2)
+GameObject: Upgrade Building Button (ID: 3607215546628812773)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (ID: 3884814768603578250)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Mutation Boost
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (TMP) (ID: 4498390909378671271)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: ok (ID: 4634550732384683364)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: SelectFatherButton (ID: 4905037782253431753)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (TMP) (ID: 5560225539620595418)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Background (ID: 5851081723277634431)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: FatherCard (ID: 6496742819319800550)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: HP (ID: 7086560745292340423)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: HP
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: TitleText (ID: 7088882613999552555)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Sinh con
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: childcard (ID: 7943379764107351346)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: MotherSlot (ID: 8119275349171394032)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: MotherCard (ID: 8494440522852963470)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (TMP) (ID: 8616253827934492243)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Sinh con
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: EXTRACTED_Breeding_Panel (ID: 8772089428100446515)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: c217b5d05c552f84bb57b701ac5b0302)
+    associatedBuildingId: BreedingPen
+  - MonoBehaviour (Script GUID: 619cdd331192ee141a573c3821e1de96)
+    PanelType: 3
+    useDynamicBackground: 0
+    backgroundResourcePath: UI/Panel/panel_dong_frames
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+GameObject: Toggle_MutationPotion (ID: 9171359878719876887)
+  - MonoBehaviour (Script GUID: 9085046f02f69544eb97fd06b6048fe2)
+    toggleTransition: 1
+GameObject: Unknown (ID: 2244824364571452197)

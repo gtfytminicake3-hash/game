@@ -1,4 +1,0 @@
-====== PREFAB/SCENE STRUCTURE FOR InventoryItemCard_Prefab.prefab ======
-========================================================
-GameObject: InventoryItemCard_Prefab (ID: 8759386656440894577)
-  - MonoBehaviour (Script GUID: d29d644be582f0242abfdffa73c6d459)

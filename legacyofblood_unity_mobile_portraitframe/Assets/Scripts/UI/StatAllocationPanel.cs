@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace LegendOfBlood
 {
-    public class StatAllocationPanel : MonoBehaviour
+    public class StatAllocationPanel : UIPanel
     {
         [Header("UI References")]
         public TextMeshProUGUI panelTitleText;
@@ -40,6 +40,7 @@ namespace LegendOfBlood
 
         private void Awake()
         {
+            PanelType = UIPanelType.None;
             AutoWire();
             
             if (closeButton) closeButton.onClick.AddListener(ClosePanel);

@@ -1,0 +1,15 @@
+﻿combo_war_1=<color=#aaaaaa>{0} tự nhận 1 điểm [Khiên Ngự].</color>
+combo_war_2=<color=#aaaaaa>{0} gầm lên khiêu khích toàn địch! Nhận 1 [Khiên Ngự].</color>
+combo_war_3=<color=#ffff00>{0} tạo Khiên Ảo chặn {1} Sát Thương (Tiêu thụ {2} Khiên Ngự).</color>
+combo_war_4=<color=#aaaaaa>Sức mạnh Khiên Ảo cộng hưởng gây Choáng toàn bộ kẻ địch!</color>
+combo_mag_4=<color=#00ff00>{0} hút sinh thủ về {1} HP.</color>
+combo_mag_5=<color=#ff00ff>[Ấn Độc] nổ tung trên {0} gây {1} ST CHUẨN!</color>
+combo_arc_2=<color=#00ffff>{0} ngưng thần, +30% ATK và chắc chắn chí mạng đòn sau!</color>
+combo_arc_4=<color=#00ffff>{0} lùi chiến thuật, giảm 2 lượt Hồi chiêu toàn đội & Xóa Debuff!</color>
+combo_arc_5=<color=#ffaa00>Phát Đạn Đoạt Mệnh hiệu quả, {0} được đánh thêm 1 lượt!</color>
+combo_hea_2=<color=#00ff00>{0} chúc phúc, tăng Sức Tấn Công toàn đội.</color>
+combo_hea_3=<color=#ff00ff>{0} tạo Liên Kết Huyết Mạch chia sẻ 50% ST với {1}!</color>
+combo_hea_4=<color=#00ff00>[Hạt Giống] trên {0} bung nở tụ thể hồi {1} Máu!</color>
+combo_hea_5=<color=#ffff00>{0} nhận 1 lớp [Khiên Bất Tử] chặn chết 1 lần!</color>
+combo_dmg_link=<color=#ff00ff>{0} gánh chịu {1} ST thay thế cho {2}!</color>
+combo_immortal_pop=<color=#ffff00>[Khiên Bất Tử] đã vỡ, {0} thoát chết kỳ diệu với 1 HP!</color>

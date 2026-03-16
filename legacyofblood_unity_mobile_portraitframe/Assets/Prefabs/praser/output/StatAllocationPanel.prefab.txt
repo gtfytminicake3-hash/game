@@ -1,0 +1,149 @@
+====== PREFAB/SCENE STRUCTURE FOR StatAllocationPanel.prefab ======
+========================================================
+GameObject: SPDValText (ID: 286216600545046107)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: 20 (+0)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Title (ID: 372026249750350405)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "C\u1ED8NG \u0110I\u1EC2M"
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: ATKPlusBtn (ID: 499213589480324835)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: 'SPDRow ' (ID: 1123752853404588387)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: DEFValText (ID: 1277672017578072912)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: 15 (+0)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: HPRow (ID: 1317718427016466099)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: StatAllocationPanel (ID: 1661022032067818648)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 5f19ee0631253aa4c9f24a830083608b)
+    PanelType: 0
+    useDynamicBackground: 0
+    backgroundResourcePath: UI/Panel/panel_dong_frames
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+GameObject: 'ConfirmBtn ' (ID: 2388359189156012162)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: DEFRow (ID: 2709277422299877661)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (TMP) (ID: 3116115261064664658)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: DEFPlusBtn (ID: 3536902697480100203)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Text (TMP) (ID: 3564922951815844401)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: ATKRow (ID: 4345426397195097569)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (TMP) (ID: 4584276691637450031)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (TMP) (ID: 4625861130242443616)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: FreePointsText (ID: 4730506365142542055)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "\u0110i\u1EC3m T\u1EF1 Do: 162"
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (TMP) (ID: 4812976752910825047)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: SPDPlusBtn (ID: 4832546108037199323)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Text (TMP) (ID: 5168256563002283444)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: CloseBtn (ID: 5630968276378913496)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (TMP) (ID: 5948494709592040940)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: HPMinusBtn (ID: 6431190960683990472)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Text (TMP) (ID: 6773535388750236384)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (TMP) (ID: 6991359624290227354)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: ATKValText (ID: 7320961671046779591)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: 25 (+0)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (TMP) (ID: 7459675629497208320)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: SPDMinusBtn (ID: 7742836771656806186)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: DEFMinusBtn (ID: 7978133910057843826)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: HPPlusBtn (ID: 7990788975414347618)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: HPValText (ID: 8164362123952952097)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: 200 (+0)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: ATKMinusBtn (ID: 9015954571261322142)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)

@@ -6,7 +6,7 @@ namespace LegendOfBlood.Combat
     using System.Collections;
     using System.Collections.Generic;
 
-    public class CombatVisualizerPanel : MonoBehaviour
+    public class CombatVisualizerPanel : UIPanel
     {
         [Header("Containers")]
         public Transform allyContainer;
@@ -37,6 +37,8 @@ namespace LegendOfBlood.Combat
 
         private void Awake()
         {
+            PanelType = UIPanelType.Battle; // Tương ứng với loại mà UIManager đang check
+
             if (skipButtonText != null) skipButtonText.text = global::LocalizationSystem.GetText("btn_skip");
             if (victoryTitleText != null) victoryTitleText.text = global::LocalizationSystem.GetText("combat_result_title");
             if (defeatTitleText != null) defeatTitleText.text = global::LocalizationSystem.GetText("combat_result_title");
@@ -47,6 +49,11 @@ namespace LegendOfBlood.Combat
             if (closeDefeatButton != null) closeDefeatButton.onClick.AddListener(ClosePanel);
             
             ToggleSpeedDisplay();
+        }
+
+        protected virtual void Start()
+        {
+            base.Start();
         }
 
         public void PlayCombat(CombatResult result, List<HeroData> initialAllies, List<HeroData> initialEnemies, List<string> monsterIds = null)
@@ -323,13 +330,19 @@ namespace LegendOfBlood.Combat
                  {
                      if (kv.Key.StartsWith(prefix))
                      {
+                         // Kiểm tra null trước khi thao tác vì obj có thể đã bị unity destroy
+                         if (kv.Value == null || kv.Value.gameObject == null) continue;
+
                          // Nếu HeroData trong listCasualties trùng khớp Profession/ID với Key
                          foreach(var dead in teamList)
                          {
                              if (kv.Key.Contains(dead.profession.ToString()))
                              {
-                                 kv.Value.TakeDamage(99999, false); // Nổ máu ảo để xám ảnh
-                                 kv.Value.gameObject.SetActive(false); // Ẩn luôn unit đã chết khi skip cho sạch bàn cờ
+                                 if (kv.Value != null && kv.Value.gameObject.activeInHierarchy)
+                                 {
+                                     kv.Value.TakeDamage(99999, false); // Nổ máu ảo để xám ảnh
+                                     kv.Value.gameObject.SetActive(false); // Ẩn luôn unit đã chết khi skip cho sạch bàn cờ
+                                 }
                              }
                          }
                      }

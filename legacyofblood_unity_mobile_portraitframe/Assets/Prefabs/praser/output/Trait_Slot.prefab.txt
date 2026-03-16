@@ -1,0 +1,6 @@
+====== PREFAB/SCENE STRUCTURE FOR Trait_Slot.prefab ======
+========================================================
+GameObject: Trait_Slot (ID: 2336022961355427958)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)

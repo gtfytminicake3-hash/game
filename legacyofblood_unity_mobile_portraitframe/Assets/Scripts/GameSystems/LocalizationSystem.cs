@@ -28,7 +28,7 @@ public static class LocalizationSystem
                 string[] parts = line.Split(new[] { '=' }, 2);
                 if (parts.Length == 2)
                 {
-                    _localizedText[parts[0]] = parts[1].Trim(); // Thêm Trim() để loại bỏ khoảng trắng thừa
+                    _localizedText[parts[0]] = parts[1].Trim().Replace("\\n", "\n");
                 }
             }
             _isReady = true;

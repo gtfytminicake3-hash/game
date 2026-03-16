@@ -6,8 +6,12 @@ namespace LegendOfBlood
     using UnityEngine;
     using UnityEngine.UI;
 
-    public class ArenaPanel : MonoBehaviour
+    public class ArenaPanel : UIPanel
     {
+        private void Awake()
+        {
+            PanelType = UIPanelType.Arena;
+        }
         [Header("UI References")]
         [SerializeField] private Button challengeButton;
         [SerializeField] private Button addTicketAdButton; // NEW: Nút xem Ad lấy vé
@@ -26,8 +30,9 @@ namespace LegendOfBlood
 
         private const int ARENA_SQUAD_SIZE = 5;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             if (challengeButton != null)
             {
                 challengeButton.onClick.AddListener(OnChallengeClicked);
@@ -82,9 +87,10 @@ namespace LegendOfBlood
 
             // This part needs the ArenaRankData assets to be functional
             // For now, I'll just display the points.
-            rankNameText.text = LocalizationSystem.GetText("arena_rank"); // Placeholder
-            rankPointsText.text = string.Format(LocalizationSystem.GetText("arena_points"), playerData.arenaPoints);
-            ticketsText.text = string.Format(LocalizationSystem.GetText("arena_tickets"), playerData.arenaTickets);
+            // rankNameText, rankPointsText, ticketsText might be null if not assigned in Inspector
+            if (rankNameText != null) rankNameText.text = LocalizationSystem.GetText("arena_rank"); 
+            if (rankPointsText != null) rankPointsText.text = string.Format(LocalizationSystem.GetText("arena_points"), playerData.arenaPoints);
+            if (ticketsText != null) ticketsText.text = string.Format(LocalizationSystem.GetText("arena_tickets"), playerData.arenaTickets);
             // rankIconImage.sprite = ...; // Needs logic to get sprite from ArenaRankData
             
             if (addTicketAdButton != null)

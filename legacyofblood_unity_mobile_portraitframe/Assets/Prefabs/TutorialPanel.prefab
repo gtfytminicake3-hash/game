@@ -350,7 +350,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f0ad6484b69787d4db45a7621de3a2fb, type: 3}
+  m_Sprite: {fileID: -1689044644082195043, guid: 578ae092257f4c14ab637fa71dc8fc20, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -373,6 +373,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.TutorialPanel
   PanelType: 0
+  useDynamicBackground: 0
+  backgroundResourcePath: UI/Panel/panel_dong_frames
   panelTitleText: {fileID: 0}
   closeButton: {fileID: 8884515423987712716}
   nextButton: {fileID: 6653415214391875185}
@@ -416,7 +418,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -268.06, y: -228.25}
+  m_AnchoredPosition: {x: -254, y: -228.25}
   m_SizeDelta: {x: 336.1138, y: 116.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1913300100797446268
@@ -695,7 +697,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 243.06, y: -228.25}
+  m_AnchoredPosition: {x: 260, y: -228.25}
   m_SizeDelta: {x: 336.12, y: 116.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2773660059328861484

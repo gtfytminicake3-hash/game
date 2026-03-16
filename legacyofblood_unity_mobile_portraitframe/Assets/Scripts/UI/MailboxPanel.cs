@@ -6,9 +6,12 @@ namespace LegendOfBlood
     using UnityEngine;
     using UnityEngine.UI;
 
-    public class MailboxPanel : MonoBehaviour
+    public class MailboxPanel : UIPanel
     {
-        [Header("UI References")]
+        private void Awake()
+        {
+            PanelType = UIPanelType.Mailbox;
+        }
         [SerializeField] private TMPro.TextMeshProUGUI panelTitleText;
         [SerializeField] private Button closeButton;
         [SerializeField] private TMPro.TextMeshProUGUI claimAllButtonText;
@@ -26,8 +29,9 @@ namespace LegendOfBlood
         private Action _onClaimX2Callback; // Thêm Action này
         private List<GameObject> _instantiatedReportItems = new List<GameObject>();
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             if (panelTitleText != null) panelTitleText.text = global::LocalizationSystem.GetText("panel_title_mailbox");
             if (claimAllButtonText != null) claimAllButtonText.text = global::LocalizationSystem.GetText("btn_claim_all");
 

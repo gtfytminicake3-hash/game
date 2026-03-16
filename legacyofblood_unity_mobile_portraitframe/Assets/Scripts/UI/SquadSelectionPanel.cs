@@ -10,7 +10,7 @@ namespace LegendOfBlood
     /// <summary>
     /// Một panel đa dụng để người chơi chọn một đội hình với số lượng hero định trước.
     /// </summary>
-    public class SquadSelectionPanel : MonoBehaviour
+    public class SquadSelectionPanel : UIPanel
     {
         [Header("UI References")]
         [SerializeField] private TextMeshProUGUI titleText;
@@ -32,10 +32,16 @@ namespace LegendOfBlood
         private List<SquadSlotCard> _squadSlotCards = new List<SquadSlotCard>();
         private List<GameObject> _availableHeroCards = new List<GameObject>();
 
+        private void Awake()
+        {
+            PanelType = UIPanelType.SquadSelection;
+        }
+
         #region Unity Lifecycle
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             if (confirmButton != null) confirmButton.onClick.AddListener(OnConfirmClicked);
             if (closeButton != null) closeButton.onClick.AddListener(ClosePanel);
         }
@@ -76,8 +82,21 @@ namespace LegendOfBlood
         private void CreateSquadSlots(int count)
         {
             // Dọn dẹp ô cũ
-            foreach (var slot in _squadSlotCards) Destroy(slot.gameObject);
-            _squadSlotCards.Clear();
+            if (_squadSlotCards != null)
+            {
+                foreach (var slot in _squadSlotCards)
+                {
+                    if (slot != null && slot.gameObject != null)
+                    {
+                        Destroy(slot.gameObject);
+                    }
+                }
+                _squadSlotCards.Clear();
+            }
+            else
+            {
+                _squadSlotCards = new List<SquadSlotCard>();
+            }
             
             for (int i = 0; i < count; i++)
             {
@@ -91,8 +110,21 @@ namespace LegendOfBlood
         private void RefreshAvailableList()
         {
             // Dọn dẹp danh sách cũ
-            foreach (var card in _availableHeroCards) Destroy(card);
-            _availableHeroCards.Clear();
+            if (_availableHeroCards != null)
+            {
+                foreach (var card in _availableHeroCards)
+                {
+                    if (card != null)
+                    {
+                        Destroy(card);
+                    }
+                }
+                _availableHeroCards.Clear();
+            }
+            else
+            {
+                _availableHeroCards = new List<GameObject>();
+            }
 
             // Lọc ra những hero chưa được chọn và hợp lệ
             var heroesToShow = _availableHeroes.Where(h =>

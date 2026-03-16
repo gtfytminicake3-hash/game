@@ -301,6 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 315efb5dd0434cd49a5b06e697d0ecda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.WorldMapController
+  regenerateMapButton: {fileID: 0}
   mapContainer: {fileID: 8721272311812192686}
   generatedPOIsContainer: {fileID: 2231649489793655578}
   travelLayer: {fileID: 7063225778736938181}
@@ -332,6 +333,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.UIPanel
   PanelType: 6
+  useDynamicBackground: 0
+  backgroundResourcePath: UI/Panel/panel_dong_frames
 --- !u!1 &7293907488278797203
 GameObject:
   m_ObjectHideFlags: 0

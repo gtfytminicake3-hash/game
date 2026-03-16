@@ -8,9 +8,12 @@ namespace LegendOfBlood
     /// <summary>
     /// Điều khiển giao diện của Bệnh viện, hiển thị danh sách hero bị thương.
     /// </summary>
-    public class HospitalPanel : MonoBehaviour
+    public class HospitalPanel : UIPanel
     {
-        [Header("UI References")]
+        private void Awake()
+        {
+            PanelType = UIPanelType.Hospital;
+        }
         [SerializeField] private TMPro.TextMeshProUGUI panelTitleText;
         [SerializeField] private TMPro.TextMeshProUGUI severeInjuryLabelText;
         [SerializeField] private TMPro.TextMeshProUGUI lightInjuryLabelText;
@@ -29,8 +32,10 @@ namespace LegendOfBlood
         
         private bool _isInitialized = false;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+
             if (panelTitleText != null) panelTitleText.text = LocalizationSystem.GetText("panel_title_hospital");
             if (severeInjuryLabelText != null) severeInjuryLabelText.text = LocalizationSystem.GetText("label_severe_injury");
             if (lightInjuryLabelText != null) lightInjuryLabelText.text = LocalizationSystem.GetText("label_light_injury");
@@ -45,6 +50,7 @@ namespace LegendOfBlood
             _isInitialized = true;
             RefreshLists();
         }
+
 
         private void OnUpgradeBuildingClicked()
         {

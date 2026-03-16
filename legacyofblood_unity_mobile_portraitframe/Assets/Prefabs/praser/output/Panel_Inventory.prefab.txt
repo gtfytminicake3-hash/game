@@ -1,0 +1,82 @@
+====== PREFAB/SCENE STRUCTURE FOR Panel_Inventory.prefab ======
+========================================================
+GameObject: TabGroup (ID: 480614738528084851)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Viewport (ID: 682206199694870484)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 31a19414c41e5ae4aae2af33fee712f6)
+GameObject: Viewport (ID: 1557567266072382364)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 31a19414c41e5ae4aae2af33fee712f6)
+GameObject: DetailCount (ID: 1633996208407526252)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: DetailCount
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_Close (ID: 2159535167907899625)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: DetailDesc (ID: 2559025464081407970)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: DetailDesc
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: DetailName (ID: 3185401417467519912)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: DetailName
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Scroll View (ID: 4593514258476069284)
+  - MonoBehaviour (Script GUID: 1aa08ab6e0800fa44ae55d278d1423e3)
+GameObject: Text (TMP) (ID: 5122923111356280879)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Equipments
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Content (ID: 5683833402258021511)
+  - MonoBehaviour (Script GUID: 8a8695521f0d02e499659fee002a26c2)
+GameObject: Page_Equipments (ID: 6413583666117796212)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Btn_EquipmentTab (ID: 6815475675988139757)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: DetailIcon (ID: 6882781282870509178)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Text (TMP) (ID: 6939843676257017383)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: X
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_ItemTab (ID: 7196080782346412157)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Content (ID: 7516156636096910673)
+  - MonoBehaviour (Script GUID: 8a8695521f0d02e499659fee002a26c2)
+GameObject: DetailView (ID: 7608416690072233977)
+GameObject: Panel_Inventory (ID: 7876757982392627776)
+  - MonoBehaviour (Script GUID: 697f56359bafee0488c22fabf39e03dd)
+    PanelType: 9
+    useDynamicBackground: 0
+    backgroundResourcePath: UI/Panel/panel_dong_frames
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Page_Items (ID: 8483304454606231680)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (TMP) (ID: 8724851862988850605)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Items
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Scroll View (ID: 8967850584851662739)
+  - MonoBehaviour (Script GUID: 1aa08ab6e0800fa44ae55d278d1423e3)
+GameObject: Use (ID: 9001315688114105647)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)

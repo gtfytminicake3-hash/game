@@ -73,8 +73,9 @@ def parse_unity_yaml(filepath, output_path):
                     match = re.search(r'guid:\s*([a-f0-9]+)', line_s)
                     if match:
                         script_guid = match.group(1)
-                elif ':' in line_s and not line_s.startswith('m_') and not line_s.startswith('serializedVersion') and not 'fileID' in line_s:
-                    props.append(line_s)
+                elif ':' in line_s and not line_s.startswith('serializedVersion') and not 'fileID' in line_s:
+                    if line_s.startswith('m_text:') or line_s.startswith('m_Text:') or not line_s.startswith('m_'):
+                        props.append(line_s)
             
             components[obj_id] = {'type': obj['type_name'], 'script_guid': script_guid, 'props': props}
             

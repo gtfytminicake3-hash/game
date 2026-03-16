@@ -34,6 +34,8 @@ namespace LegendOfBlood
         private void RefreshList()
         {
             if (listContainer == null || heroCardPrefab == null) return;
+            // Thêm kiểm tra an toàn vì OnEnable() có thể chạy trước lúc Game Khởi tạo xong Singletons
+            if (DataManager.Instance == null || DataManager.Instance.Player == null) return;
 
             // Clear current items
             foreach (Transform child in listContainer)

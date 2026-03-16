@@ -1,8 +1,7 @@
-namespace LegendOfBlood.UI
+namespace LegendOfBlood
 {
     using UnityEngine;
     using UnityEngine.UI;
-    using LegendOfBlood;
 
     public class RecruitmentPanel : UIPanel
     {
@@ -16,8 +15,29 @@ namespace LegendOfBlood.UI
             PanelType = UIPanelType.Recruitment;
         }
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+
+            // Set up animated background
+            Image bgImage = GetComponent<Image>();
+            if (bgImage == null)
+            {
+                Transform bgTransform = transform.Find("Background");
+                if (bgTransform != null) bgImage = bgTransform.GetComponent<Image>();
+            }
+
+            if (bgImage != null)
+            {
+                LegendOfBlood.UI.AnimatedUIBackground animBg = bgImage.gameObject.GetComponent<LegendOfBlood.UI.AnimatedUIBackground>();
+                if (animBg == null)
+                {
+                    animBg = bgImage.gameObject.AddComponent<LegendOfBlood.UI.AnimatedUIBackground>();
+                    animBg.resourceFolderPath = "UI/RecruitmentBG";
+                    animBg.fps = 24f; 
+                }
+            }
+
             if (recruitOneButton != null) recruitOneButton.onClick.AddListener(OnRecruitOne);
             if (recruitTenButton != null) recruitTenButton.onClick.AddListener(OnRecruitTen);
             if (recruitAdButton != null) recruitAdButton.onClick.AddListener(OnRecruitAd);
@@ -35,7 +55,11 @@ namespace LegendOfBlood.UI
         {
             if (recruitAdButton != null)
             {
-                bool canWatchAd = DataManager.Instance.Player.dailyFreeSummonsWatched == 0;
+                bool canWatchAd = false;
+                if (DataManager.Instance != null && DataManager.Instance.Player != null)
+                {
+                    canWatchAd = DataManager.Instance.Player.dailyFreeSummonsWatched == 0;
+                }
                 recruitAdButton.gameObject.SetActive(canWatchAd);
             }
         }

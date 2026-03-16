@@ -13,6 +13,9 @@ namespace LegendOfBlood
 
     public class WorldMapController : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IScrollHandler
     {
+        [Header("Testing / Debug")]
+        [SerializeField] private Button regenerateMapButton; // Nút ẩn để test, hoặc bạn có thể gán tạm một nút nào đó trên Canvas để bấm
+
         [Header("Scene References")]
         [SerializeField] private RectTransform mapContainer;
         [SerializeField] private Transform generatedPOIsContainer;
@@ -53,7 +56,7 @@ namespace LegendOfBlood
             // Cập nhật khoảng cách an toàn tối thiểu dựa trên kích thước thật của POI (khoảng 200x200)
             if (numberOfDungeons < 40) numberOfDungeons = 40;
             if (numberOfRescues < 20) numberOfRescues = 20;
-            if (minPoiDistance < 150f) minPoiDistance = 150f;
+            if (minPoiDistance < 350f) minPoiDistance = 350f;
 
             // Đảm bảo không bị Inspector ghi đè Size theo config màn hình dọc
             if (mapSize.x < 2160) mapSize.x = 2160;
@@ -61,13 +64,13 @@ namespace LegendOfBlood
 
             if (poiInfoPanel == null)
             {
-                poiInfoPanel = FindFirstObjectByType<POI_InfoPanel>(FindObjectsInactive.Include);
-                if (poiInfoPanel != null) Debug.Log("[WorldMap] Đã Auto-Wire thành công POI_InfoPanel!");
+                poiInfoPanel = System.Linq.Enumerable.FirstOrDefault(Resources.FindObjectsOfTypeAll<POI_InfoPanel>(), obj => obj.gameObject.scene.IsValid());
+                if (poiInfoPanel != null) Debug.Log("[WorldMap] Đã Auto-Wire thành công POI_InfoPanel từ Scene!");
             }
             if (squadSelectionPanel == null)
             {
-                squadSelectionPanel = FindFirstObjectByType<SquadSelectionPanel>(FindObjectsInactive.Include);
-                if (squadSelectionPanel != null) Debug.Log("[WorldMap] Đã Auto-Wire thành công SquadSelectionPanel!");
+                squadSelectionPanel = System.Linq.Enumerable.FirstOrDefault(Resources.FindObjectsOfTypeAll<SquadSelectionPanel>(), obj => obj.gameObject.scene.IsValid());
+                if (squadSelectionPanel != null) Debug.Log("[WorldMap] Đã Auto-Wire thành công SquadSelectionPanel từ Scene!");
             }
 
             // AUTO-FIX: Đưa nút Close (lối về làng) và TravelLayer vào trong MapContainer 
@@ -104,6 +107,13 @@ namespace LegendOfBlood
             {
                 backToVillageButtonText.text = global::LocalizationSystem.GetText("btn_back_to_village");
             }
+
+            if (regenerateMapButton != null)
+            {
+                regenerateMapButton.onClick.RemoveAllListeners();
+                regenerateMapButton.onClick.AddListener(ForceRegenerateMap);
+            }
+
             _isInitialized = true;
             InitializeWorldMap();
         }
@@ -226,6 +236,22 @@ namespace LegendOfBlood
 
         #region POI & Expedition Logic
 
+        public void ForceRegenerateMap()
+        {
+            if (DataManager.Instance == null || DataManager.Instance.Player == null) return;
+            
+            Debug.Log("[WorldMap] Forcing full map regeneration...");
+            
+            // Xóa hết Model hiện tại trong Save Data
+            if (DataManager.Instance.Player.WorldPois != null)
+            {
+                DataManager.Instance.Player.WorldPois.Clear();
+            }
+            
+            // Reset UI Khởi tạo Game
+            InitializeWorldMap();
+        }
+
         private void InitializeWorldMap()
         {
             if (DataManager.Instance == null || DataManager.Instance.Player == null) return;
@@ -276,45 +302,23 @@ namespace LegendOfBlood
             Debug.Log($"Loading {worldPois.Count} POIs from DataManager.");
                 
                 // --- BẮT ĐẦU FIX LỖI ĐẺ TRÙNG THÁP ---
-                // Thu thập danh sách các Tháp hợp lệ (giữ lại 1 tháp duy nhất cho mỗi Nghề, ưu tiên tầng cao nhất)
-                var validTowers = new Dictionary<Profession, POIData>();
+                // Giữ lại tối đa 4 tháp, ưu tiên các tháp có tầng cao nhất
+                var allTowers = worldPois.Where(p => p.type == POIType.TowerOfTrials).ToList();
+                var validTowersList = allTowers.Where(p => p.requiredProfession != Profession.None).OrderByDescending(p => p.currentFloor).ToList();
                 var duplicateTowersToRemove = new List<POIData>();
 
-                foreach (var poiData in worldPois.ToList())
+                // Xóa tháp bị lỗi System Data
+                duplicateTowersToRemove.AddRange(allTowers.Where(p => p.requiredProfession == Profession.None));
+
+                // Nếu tổng số tháp hợp lệ vượt quá 4, xóa các tháp cấp thấp
+                if (validTowersList.Count > 4)
                 {
-                    if (poiData.type == POIType.TowerOfTrials)
-                    {
-                        if (poiData.requiredProfession != Profession.None)
-                        {
-                            if (!validTowers.ContainsKey(poiData.requiredProfession))
-                            {
-                                validTowers[poiData.requiredProfession] = poiData;
-                            }
-                            else
-                            {
-                                // Nếu đã có tháp nghề này rồi, ưu tiên giữ tháp có tầng cao hơn
-                                if (poiData.currentFloor > validTowers[poiData.requiredProfession].currentFloor)
-                                {
-                                    duplicateTowersToRemove.Add(validTowers[poiData.requiredProfession]);
-                                    validTowers[poiData.requiredProfession] = poiData;
-                                }
-                                else
-                                {
-                                    duplicateTowersToRemove.Add(poiData);
-                                }
-                            }
-                        }
-                        else
-                        {
-                             // Xóa những tháp bị mất System Data (requiredProfession = None) do lỗi Nullable cũ
-                             duplicateTowersToRemove.Add(poiData);
-                        }
-                    }
+                    duplicateTowersToRemove.AddRange(validTowersList.Skip(4));
                 }
 
                 if (duplicateTowersToRemove.Count > 0)
                 {
-                    Debug.Log($"[WorldMap] Tìm thấy {duplicateTowersToRemove.Count} Tháp bị trùng lặp/giả mạo. Đang dọn dẹp...");
+                    Debug.Log($"[WorldMap] Tìm thấy {duplicateTowersToRemove.Count} Tháp dư thừa/lỗi. Đang dọn dẹp...");
                     foreach (var badTower in duplicateTowersToRemove)
                     {
                         worldPois.Remove(badTower);
@@ -374,26 +378,27 @@ namespace LegendOfBlood
         {
             Profession[] professions = { Profession.Warrior, Profession.Archer, Profession.Mage, Profession.Healer };
             
-            foreach (var profession in professions)
-            {
-                // Check if tower for this profession already exists
-                if (DataManager.Instance.Player.WorldPois.Any(p => p.type == POIType.TowerOfTrials && p.requiredProfession == profession))
-                    continue;
+            int currentTowers = DataManager.Instance.Player.WorldPois.Count(p => p.type == POIType.TowerOfTrials);
+            int towersToSpawn = 4 - currentTowers;
 
+            for (int i = 0; i < towersToSpawn; i++)
+            {
                 Vector2 newPosition = FindValidPosition();
                 if (newPosition == Vector2.zero) continue;
 
+                Profession randomProfession = professions[UnityEngine.Random.Range(0, professions.Length)];
+
                 POIData towerData = new POIData
                 {
-                    poiId = $"TOWER_{profession}_{Guid.NewGuid()}",
-                    poiName = string.Format(LocalizationSystem.GetText("poi_tower_name_format"), profession), // "Tháp Chiến Binh", etc.
+                    poiId = $"TOWER_{randomProfession}_{Guid.NewGuid()}",
+                    poiName = string.Format(LocalizationSystem.GetText("poi_tower_name_format"), randomProfession), // "Tháp Chiến Binh", etc.
                     type = POIType.TowerOfTrials,
                     position = newPosition,
                     difficultyLevel = 1,
                     monsterIDs = new List<string>(),
                     currentFloor = 1,
                     recoveryEndTime = 0,
-                    requiredProfession = profession
+                    requiredProfession = randomProfession
                 };
                 
                 DataManager.Instance.Player.WorldPois.Add(towerData);
@@ -442,8 +447,8 @@ namespace LegendOfBlood
             
             // Dùng toàn bộ chiều cao màn hình để rải các vòng (elliptical distribution cho màn dọc)
             // Lấy kích thước thực làm trục lớn (Height) và trục nhỏ (Width)
-            float maxRadiusY = mapSize.y / 2f - 200f; // Chừa lề trên dưới 200px
-            float maxRadiusX = mapSize.x / 2f - 150f; // Chừa lề trái phải 150px
+            float maxRadiusY = mapSize.y / 2f - 100f; // Chừa lề trên dưới ít hơn để mở rộng
+            float maxRadiusX = mapSize.x / 2f - 50f;  // Chừa lề trái phải ít hơn để mở rộng
             
             // Core safety gap in the middle
             float minGapY = 350f;
@@ -485,12 +490,27 @@ namespace LegendOfBlood
             }
             while (attempts < maxAttempts);
             
-            Debug.LogWarning($"[WorldMap] Không tìm được chỗ trống khắt khe cho vòng {targetDifficulty} sau {maxAttempts} thử nghiệm. Rải bừa.");
+            Debug.LogWarning($"[WorldMap] Không tìm được chỗ trống khắt khe cho vòng {targetDifficulty} sau {maxAttempts} thử nghiệm. Rải ngẫu nhiên nhưng vẫn cố gắng giữ khoảng cách.");
             
-            // Fallback random (nếu bản đồ quá chật)
+            // Fallback random nhưng vẫn check khoảng cách
+            attempts = 0;
+            while (attempts < 2000)
+            {
+                Vector2 fallbackPos = new Vector2(
+                    UnityEngine.Random.Range(-mapSize.x/2f + 50f, mapSize.x/2f - 50f),
+                    UnityEngine.Random.Range(-mapSize.y/2f + 100f, mapSize.y/2f - 100f)
+                );
+                if (IsPositionValid(fallbackPos))
+                {
+                    return fallbackPos;
+                }
+                attempts++;
+            }
+            
+            Debug.LogWarning("[WorldMap] Fallback giữ khoảng cách thất bại. Rải đè.");
             return new Vector2(
-                UnityEngine.Random.Range(-mapSize.x/2f + 150f, mapSize.x/2f - 150f),
-                UnityEngine.Random.Range(-mapSize.y/2f + 200f, mapSize.y/2f - 200f)
+                UnityEngine.Random.Range(-mapSize.x/2f + 50f, mapSize.x/2f - 50f),
+                UnityEngine.Random.Range(-mapSize.y/2f + 100f, mapSize.y/2f - 100f)
             );
         }
 
@@ -662,14 +682,24 @@ namespace LegendOfBlood
 
         private void OpenSquadSelectionForPOI(POIData poiData)
         {
-            if (squadSelectionPanel == null) return;
+            // Lấy trực tiếp từ UIManager thay vì dùng cache squadSelectionPanel dễ bị nhầm Prefab
+            var currentSquadPanel = GameManager.Instance.UIManager.GetPanel<SquadSelectionPanel>(UIPanelType.SquadSelection);
+            if (currentSquadPanel == null) 
+            {
+                currentSquadPanel = squadSelectionPanel; // Fallback
+            }
+            if (currentSquadPanel == null) return;
+
             var availableHeroes = DataManager.Instance.AllHeroes.Where(h => h.isMature && !h.IsBusy()).ToList();
-            squadSelectionPanel.Show(
+            currentSquadPanel.Show(
                 string.Format(global::LocalizationSystem.GetText("worldmap_select_squad_title_format"), poiData.poiName),
                 availableHeroes, 5,
                 (selectedHeroIDs) => {
-                    squadSelectionPanel.gameObject.SetActive(false);
-                    poiInfoPanel.gameObject.SetActive(false);
+                    currentSquadPanel.gameObject.SetActive(false);
+                    // Dùng UIManager để Hide Panel cho chuẩn (thay vì gameObject.SetActive)
+                    GameManager.Instance.UIManager.HidePanel(UIPanelType.SquadSelection);
+                    GameManager.Instance.UIManager.HidePanel(UIPanelType.Tower);   // Ẩn Tower Info Panel (dùng chung poiInfoPanel script bên dưới)
+                    if (poiInfoPanel != null) poiInfoPanel.gameObject.SetActive(false);
                     GameManager.Instance.ExpeditionManager.StartExpedition(selectedHeroIDs, poiData);
                 },
                 poiData.requiredProfession
@@ -744,23 +774,28 @@ namespace LegendOfBlood
             }
 
             // Kiểm tra hướng đi ban đầu (Từ Làng -> POI)
+            Vector2 villagePos = Vector2.zero;
             Vector2 destinationPos = displayData.destination.position;
-            // Nếu destination.x > 0 (bên phải làng), mặt xe quay sang phải (scale.x = 1 hoặc -1 tùy sprite gốc).
-            // Giả sử sprite gốc quay sang phải -> scale.x = 1. Nếu quay trái -> scale.x = -1.
-            // (Ảnh hanhquan.png có gốc hướng sang trái, nên ta set scale.x = -1 để quay phải, 1 để quay trái)
-            bool isMovingRight = destinationPos.x > cartRect.anchoredPosition.x;
+            
+            // Xác định xem xe đang đi sang phải hay trái. Làng nằm ở (0,0).
+            bool isMovingRight = destinationPos.x > villagePos.x;
+
+            // Hình ảnh gốc của xe ngựa đang hướng mặt sang trái.
+            // Do đó:
+            // - Để đi sang phải: x = -1
+            // - Để đi sang trái: x = 1
             cartRect.localScale = new Vector3(isMovingRight ? -1f : 1f, 1f, 1f);
 
             // Animate travel to destination, wait for combat, and travel back
-            cartRect.DOAnchorPos(displayData.destination.position, displayData.travelDuration)
+            cartRect.DOAnchorPos(destinationPos, displayData.travelDuration)
                 .SetEase(Ease.Linear)
                 .OnComplete(() => {
                     DOVirtual.DelayedCall(displayData.combatDuration, () => {
                         if (cartRect != null) {
-                            // Khi quay về làng, đảo ngược hướng
+                            // Khi quay về làng, đổi hướng quay đầu xe lại
                             cartRect.localScale = new Vector3(isMovingRight ? 1f : -1f, 1f, 1f);
 
-                            cartRect.DOAnchorPos(Vector2.zero, displayData.travelDuration)
+                            cartRect.DOAnchorPos(villagePos, displayData.travelDuration)
                                 .SetEase(Ease.Linear);
                         }
                     });

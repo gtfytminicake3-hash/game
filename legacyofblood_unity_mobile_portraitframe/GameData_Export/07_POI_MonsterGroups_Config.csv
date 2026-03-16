@@ -1,4 +1,4 @@
 ﻿﻿Tên Khu Vực Khám Phá,Độ Khó Tối Thiểu,Độ Khó Tối Đa,Danh Sách Quái Mặc Định
-"Bãi Quái Bùn",1,3,"Goblin, Slime"
-"Doanh Trại Orc",4,7,"Orc Warrior, Orc Shaman, Troll"
-"Lăng Mộ Rồng Đen",8,10,"Elder Dragon, Dragon Whelp, Fire Elemental, Golem"
+"poi_group_Mud_Monster_Camp",1,3,"Goblin, Slime"
+"poi_group_Orc_Barracks",4,7,"Orc Warrior, Orc Shaman, Troll"
+"poi_group_Black_Dragon_Tomb",8,10,"Elder Dragon, Dragon Whelp, Fire Elemental, Golem"

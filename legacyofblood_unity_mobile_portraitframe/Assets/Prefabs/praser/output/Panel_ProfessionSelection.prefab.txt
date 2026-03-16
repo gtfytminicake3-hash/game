@@ -1,0 +1,111 @@
+====== PREFAB/SCENE STRUCTURE FOR Panel_ProfessionSelection.prefab ======
+========================================================
+GameObject: warior icon (ID: 87470309863419611)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: archerzone (ID: 568884191034758641)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: Btn_healer (ID: 922275362942923459)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: archer icon (ID: 933995858878101577)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (TMP) (ID: 1426281268701964794)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: archer
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: mage icon (ID: 1796971579554437590)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: warriorzone (ID: 2127431788012259053)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: Text (TMP) (ID: 2181797653412054142)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: X
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_Archer (ID: 2646486528305184727)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (TMP) (ID: 3291906251848165866)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Warrior
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (TMP) (ID: 3778462513294564336)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: healer text detail
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: TitleText (ID: 3888971366339274670)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "Ch\u1ECDn ngh\u1EC1 cho <Hero>"
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_Warrior (ID: 4137919879536709647)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (TMP) (ID: 4622154492496032981)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: healer
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Panel_ProfessionSelection (ID: 5533898502626062598)
+  - MonoBehaviour (Script GUID: 156cfdfd2eee8924c8dbb3577f8876e6)
+    PanelType: 0
+    useDynamicBackground: 0
+    backgroundResourcePath: UI/Panel/panel_dong_frames
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Btn_mage (ID: 5539342792753123448)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (TMP) (ID: 5799634449227402539)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: mage text detail
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: ProfGroup (ID: 6216039846220898823)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+GameObject: Text (TMP) (ID: 6433497034992610891)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: warrior text detail
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_Close (ID: 6754849269759118394)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (TMP) (ID: 6989313309021503868)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Mage
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: magezone (ID: 7057826605321587690)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: healer (ID: 7136931897064634325)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: Text (TMP) (ID: 8387780253401559389)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: archer text detail
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: healer icon (ID: 8811240801642098078)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)

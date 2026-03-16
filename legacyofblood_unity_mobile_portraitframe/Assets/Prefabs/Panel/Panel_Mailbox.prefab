@@ -165,7 +165,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f0ad6484b69787d4db45a7621de3a2fb, type: 3}
+  m_Sprite: {fileID: -1689044644082195043, guid: 578ae092257f4c14ab637fa71dc8fc20, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -188,6 +188,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.UIPanel
   PanelType: 17
+  useDynamicBackground: 0
+  backgroundResourcePath: UI/Panel/panel_dong_frames
 --- !u!114 &2683520910136698321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,6 +202,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 104497cf83795a84cbde84020abc1098, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.MailboxPanel
+  PanelType: 0
+  useDynamicBackground: 0
+  backgroundResourcePath: UI/Panel/panel_dong_frames
   panelTitleText: {fileID: 2410682310598741506}
   closeButton: {fileID: 4499309413033952531}
   claimAllButtonText: {fileID: 1663389743164570273}
@@ -217,7 +222,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1123133606206074804}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
@@ -310,7 +315,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -323,7 +328,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -781,10 +786,10 @@ RectTransform:
   - {fileID: 8027714114565766560}
   m_Father: {fileID: 6357480193875793380}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 100, y: -150}
-  m_SizeDelta: {x: 160, y: 50}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 540, y: -1769.7131}
+  m_SizeDelta: {x: 920, y: 0.5742885}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5678319470021935859
 CanvasRenderer:
@@ -1026,8 +1031,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 540, y: -1710.0549}
-  m_SizeDelta: {x: 920, y: 119.890015}
+  m_AnchoredPosition: {x: 539.41, y: -1657.9901}
+  m_SizeDelta: {x: 852.7, y: 100.5743}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6360603199741831510
 CanvasRenderer:
@@ -1205,7 +1210,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -1218,7 +1223,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -1342,7 +1347,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -1355,7 +1360,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -1439,10 +1444,10 @@ RectTransform:
   - {fileID: 2967940683721358465}
   m_Father: {fileID: 6357480193875793380}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: -150}
-  m_SizeDelta: {x: 160, y: 50}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 540, y: -1749.1388}
+  m_SizeDelta: {x: 920, y: 0.5742885}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9206933765056603806
 CanvasRenderer:
@@ -1837,8 +1842,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 540, y: -1570.165}
-  m_SizeDelta: {x: 920, y: 119.890015}
+  m_AnchoredPosition: {x: 539.41, y: -1537.4158}
+  m_SizeDelta: {x: 852.7, y: 100.5743}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2919338438966522538
 CanvasRenderer:
@@ -2192,8 +2197,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 540, y: -880.275}
-  m_SizeDelta: {x: 920, y: 1219.89}
+  m_AnchoredPosition: {x: 539.4133, y: -866.84143}
+  m_SizeDelta: {x: 852.7011, y: 1200.5743}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &5527966437719661060
 MonoBehaviour:
@@ -2279,10 +2284,10 @@ RectTransform:
   - {fileID: 1748115361286646151}
   m_Father: {fileID: 6357480193875793380}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -100}
-  m_SizeDelta: {x: 160, y: 50}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 540, y: -1728.5645}
+  m_SizeDelta: {x: 920, y: 0.5742885}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5596395327996203179
 CanvasRenderer:
@@ -2400,8 +2405,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 540, y: -200.16501}
-  m_SizeDelta: {x: 920, y: 100.33002}
+  m_AnchoredPosition: {x: 540, y: -198.27716}
+  m_SizeDelta: {x: 920, y: 96.5543}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5388226401582083019
 CanvasRenderer:
@@ -2434,7 +2439,7 @@ MonoBehaviour:
   m_text: "H\xD2M TH\u01AF (INBOX)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 319cb99bbda91bb439f81273a9efe931, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 1761099092698597142, guid: 319cb99bbda91bb439f81273a9efe931, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

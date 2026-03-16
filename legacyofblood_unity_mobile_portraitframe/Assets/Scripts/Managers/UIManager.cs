@@ -34,6 +34,7 @@ namespace LegendOfBlood
         Quest,
         BossBattle,
         Tower,
+        POI_Info,
         Menu   // DO NOT INSERT IN THE MIDDLE OF ENUMS!
     }
 
@@ -68,6 +69,13 @@ namespace LegendOfBlood
             // Đăng ký lắng nghe sự kiện khi ngôn ngữ thay đổi
             global::LocalizationSystem.OnLanguageChanged += UpdateAllVisiblePanelsText;
             DataManager.OnPlayerDataLoaded += UpdateFeatureLocks;
+            BuildingSystem.OnBuildingUpgradeCompleted += HandleBuildingUpgradeCompleted;
+        }
+
+        private void Start()
+        {
+            // Kiểm tra lock ngay khi start để đảm bảo UI đồng bộ
+            UpdateFeatureLocks();
         }
 
         private void OnDisable()
@@ -75,6 +83,16 @@ namespace LegendOfBlood
             // Hủy đăng ký sự kiện ngôn ngữ
             global::LocalizationSystem.OnLanguageChanged -= UpdateAllVisiblePanelsText;
             DataManager.OnPlayerDataLoaded -= UpdateFeatureLocks;
+            BuildingSystem.OnBuildingUpgradeCompleted -= HandleBuildingUpgradeCompleted;
+        }
+
+        private void HandleBuildingUpgradeCompleted(Building building)
+        {
+            // Nếu là Nhà lính nâng cấp xong, cập nhật lại toàn bộ khóa tính năng
+            if (building.id == "Barracks" || building.type == BuildingType.Barracks)
+            {
+                UpdateFeatureLocks();
+            }
         }
 
         /// <summary>
@@ -99,23 +117,39 @@ namespace LegendOfBlood
                 if (panel.PanelType == UIPanelType.None)
                 {
                     string className = panel.GetType().Name;
-                    if (className == "QuestPanel") panel.PanelType = UIPanelType.Quest;
-                    else if (className == "InventoryPanel") panel.PanelType = UIPanelType.Inventory;
-                    else if (className == "RecruitmentPanel") panel.PanelType = UIPanelType.Recruitment;
-                    else if (className == "MenuPanel") panel.PanelType = UIPanelType.Menu;
-                    else if (className == "ProfessionSelectionPanel") panel.PanelType = UIPanelType.ProfessionSelection;
-                    else if (className == "BuildingUpgradePanel") panel.PanelType = UIPanelType.BuildingUpgrade;
-                    else if (className == "BossBattlePanel") panel.PanelType = UIPanelType.BossBattle;
-                    else if (className == "TowerPanel") panel.PanelType = UIPanelType.Tower;
+                    string fullClassName = panel.GetType().FullName;
+                    Debug.Log($"[UIManager] 🔍 Kiểm tra fallback cho {panel.name} (Class: {fullClassName})");
+                    
+                    if (fullClassName.Contains("QuestPanel")) panel.PanelType = UIPanelType.Quest;
+                    else if (fullClassName.Contains("InventoryPanel")) panel.PanelType = UIPanelType.Inventory;
+                    else if (fullClassName.Contains("RecruitmentPanel")) panel.PanelType = UIPanelType.Recruitment;
+                    else if (fullClassName.Contains("MenuPanel")) panel.PanelType = UIPanelType.Menu;
+                    else if (fullClassName.Contains("ProfessionSelectionPanel")) panel.PanelType = UIPanelType.ProfessionSelection;
+                    else if (fullClassName.Contains("BuildingUpgradePanel")) panel.PanelType = UIPanelType.BuildingUpgrade;
+                    else if (fullClassName.Contains("BossBattlePanel")) panel.PanelType = UIPanelType.BossBattle;
+                    else if (fullClassName.Contains("TowerPanel")) panel.PanelType = UIPanelType.Tower;
+                    else if (fullClassName.Contains("HeroInfoPanel")) panel.PanelType = UIPanelType.HeroInfo;
+                    else if (fullClassName.Contains("HospitalPanel")) panel.PanelType = UIPanelType.Hospital;
+                    else if (fullClassName.Contains("ArenaPanel")) panel.PanelType = UIPanelType.Arena;
+                    else if (fullClassName.Contains("POI_InfoPanel")) panel.PanelType = UIPanelType.POI_Info;
+                    else if (fullClassName.Contains("MailboxPanel")) panel.PanelType = UIPanelType.Mailbox;
+                    else if (fullClassName.Contains("SquadSelectionPanel")) panel.PanelType = UIPanelType.SquadSelection;
+                    else if (fullClassName.Contains("BarrackPanel")) panel.PanelType = UIPanelType.Barrack;
+                    else if (fullClassName.Contains("ArenaShopPanel")) panel.PanelType = UIPanelType.ArenaShop;
+                    else if (fullClassName.Contains("HeroPickerPanel")) panel.PanelType = UIPanelType.HeroPicker;
+                    else if (fullClassName.Contains("CombatVisualizerPanel")) panel.PanelType = UIPanelType.Battle;
+                    else if (fullClassName.Contains("PopulationManagerPanel")) panel.PanelType = UIPanelType.PopulationManager;
+                    else if (fullClassName.Contains("SettingsPanel")) panel.PanelType = UIPanelType.Settings;
+                    else if (fullClassName.Contains("TutorialPanel")) panel.PanelType = UIPanelType.Tutorial;
                     
                     if (panel.PanelType == UIPanelType.None) 
                     {
                         Debug.LogWarning($"[UIManager] 🚨 Bỏ qua {panel.name} vì PanelType vẫn là None sau khi check Fallback!");
-                        continue; // Vẫn None thì bỏ qua
+                        continue; 
                     }
                     else
                     {
-                        Debug.Log($"[UIManager] 🛠️ Đã dùng Fallback tự cứu PanelType {panel.PanelType} cho {panel.name}");
+                        Debug.Log($"[UIManager] 🛠️ Đã dùng Fallback tự gán PanelType.{panel.PanelType} cho {panel.name}");
                     }
                 }
 
@@ -168,6 +202,13 @@ namespace LegendOfBlood
         {
             if (panelType == UIPanelType.None || panelType == _currentPanel) return;
 
+            // TỰ PHỤC HỒI: Nếu không tìm thấy trong dictionary, thử quét lại scene một lần nữa
+            if (!_panelDictionary.ContainsKey(panelType))
+            {
+                Debug.LogWarning($"[UIManager] ⚠️ Không tìm thấy {panelType} trong register. Đang tiến hành quét lại toàn bộ Scene (Re-scan)...");
+                RegisterAllPanelsInScene();
+            }
+
             // Check feature lock before showing panel
             if (!IsFeatureUnlocked(panelType))
             {
@@ -208,7 +249,10 @@ namespace LegendOfBlood
             }
             else
             {
-                Debug.LogError($"Không tìm thấy panel cho loại: {panelType}");
+                string registeredPanels = string.Join(", ", _panelDictionary.Keys);
+                Debug.LogError($"[UIManager] 🚨 THẤT BẠI: Vẫn không tìm thấy panel [{panelType}].\n" +
+                               $"Danh sách panel đã đăng ký thành công: {registeredPanels}.\n" +
+                               "HƯỚNG DẪN: Bạn hãy kéo Prefab tương ứng vào Hierarchy và đảm bảo nó nằm trong một Canvas!");
             }
         }
 

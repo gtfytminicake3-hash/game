@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521587128dc1e094b92bf9fa2b326995, type: 3}
+  m_Name: SK_HEA_2
+  m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Skill
+  id: SK_HEA_2
+  skillName: SK_HEA_2_name
+  description: SK_HEA_2_desc
+  icon: {fileID: 176360674088776903, guid: 5054f9ac84f43224f8ef20733f722cc2, type: 3}
+  type: 0
+  requiredProfession: 3
+  cooldown: 3
+  targeting: 8
+  powerRatio: 0
+  hitCount: 1
+  appliedEffect: 0
+  effectDuration: 0
+  effectChance: 0

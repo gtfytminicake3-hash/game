@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace LegendOfBlood.UI
+namespace LegendOfBlood
 {
     public class MenuPanel : UIPanel
     {
@@ -22,8 +22,9 @@ namespace LegendOfBlood.UI
             PanelType = UIPanelType.Menu;
         }
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             if (closeButton != null)
                 closeButton.onClick.AddListener(ClosePanel);
 

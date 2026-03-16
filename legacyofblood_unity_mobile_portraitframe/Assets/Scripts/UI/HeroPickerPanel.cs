@@ -11,7 +11,7 @@ namespace LegendOfBlood
     /// Một panel đa dụng để hiển thị một danh sách hero và cho phép người dùng chọn một.
     /// Sau khi chọn, nó sẽ phát ra một sự kiện với hero đã được chọn.
     /// </summary>
-    public class HeroPickerPanel : MonoBehaviour
+    public class HeroPickerPanel : UIPanel
     {
         [Header("UI References")]
         [SerializeField] private Transform listContainer;
@@ -28,8 +28,14 @@ namespace LegendOfBlood
 
         #region Unity Lifecycle
 
-        private void Start()
+        private void Awake()
         {
+            PanelType = UIPanelType.HeroPicker;
+        }
+
+        protected override void Start()
+        {
+            base.Start();
             if (closeButton != null) closeButton.onClick.AddListener(ClosePanel);
         }
 
@@ -85,6 +91,14 @@ namespace LegendOfBlood
                 HeroPickerCard cardScript = cardInstance.AddComponent<HeroPickerCard>(); // Thêm một script phụ để xử lý click
                 cardScript.Setup(hero, this); // Truyền tham chiếu của panel này vào card
                 _instantiatedCards.Add(cardInstance);
+                
+                RectTransform rt = cardInstance.GetComponent<RectTransform>();
+                if (rt != null)
+                {
+                    CanvasGroup cg = cardInstance.GetComponent<CanvasGroup>();
+                    float alpha = cg != null ? cg.alpha : 1f;
+                    Debug.Log($"Card {hero.heroName} rect: pos={rt.anchoredPosition}, Z={rt.position.z}, size={rt.sizeDelta}, scale={rt.localScale}, activeInHier={cardInstance.activeInHierarchy}, alpha={alpha}");
+                }
             }Debug.Log($"Đã tạo xong {_instantiatedCards.Count} thẻ bài.");
         }
 

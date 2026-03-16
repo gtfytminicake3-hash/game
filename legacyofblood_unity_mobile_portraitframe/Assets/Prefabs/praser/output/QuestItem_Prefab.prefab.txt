@@ -1,0 +1,42 @@
+====== PREFAB/SCENE STRUCTURE FOR QuestItem_Prefab.prefab ======
+========================================================
+GameObject: progress (ID: 98485886716990760)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: New Text
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: rewartd (ID: 313043042382100032)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: New Text
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: RewardIcon (ID: 909346714416228501)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: title (ID: 1637415247856783025)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: New Text
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (TMP) (ID: 3642881209415171066)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "Nh\u1EADn th\u01B0\u1EDFng"
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Completed (ID: 6608230781912419335)
+GameObject: QuestItem_Prefab (ID: 7676503441293641102)
+  - MonoBehaviour (Script GUID: 5f0bd50aaa6ff894e87243e6ca36298f)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: tagget (ID: 7942543073080913609)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: New Text
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_Claim (ID: 8137083217109016825)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)

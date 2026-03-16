@@ -1,0 +1,27 @@
+====== PREFAB/SCENE STRUCTURE FOR InventoryItemCard_Prefab.prefab ======
+========================================================
+GameObject: Name (ID: 117076647521730496)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Name
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Count (ID: 2963260102006425644)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Count
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Use (ID: 4891232438653618748)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Icon (ID: 5606630950624662303)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Desc (ID: 6160153152855110587)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Desc
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: InventoryItemCard_Prefab (ID: 8759386656440894577)
+  - MonoBehaviour (Script GUID: d29d644be582f0242abfdffa73c6d459)

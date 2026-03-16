@@ -1,0 +1,58 @@
+====== PREFAB/SCENE STRUCTURE FOR Panel_Tower.prefab ======
+========================================================
+GameObject: Text (ID: 1623771036241257195)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Skip Cooldown
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_Enter (ID: 2211489015726217201)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: DifficultyText (ID: 2392913752257476291)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "\u0110\u1ED9 kh\xF3: Th\u01B0\u1EDDng"
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_Close (ID: 3592334633387950815)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: CurrentFloorDetailText (ID: 4125288159672580726)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "T\u1EA7ng hi\u1EC7n t\u1EA1i: 1"
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Content (ID: 4197881783220197161)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+  - MonoBehaviour (Script GUID: 3245ec927659c4140ac4f8d17403cc18)
+GameObject: Panel_Tower (ID: 4838647516245741287)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e016e6ff18e35e24f8f6221e17a5ddbf)
+    PanelType: 0
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+GameObject: Text (TMP) (ID: 4996252742973178893)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "\u0110i v\xE0o th\xE1p"
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_SkipCooldownAd (ID: 5905432892420170999)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Scroll View (ID: 6090906734753614923)
+  - MonoBehaviour (Script GUID: 1aa08ab6e0800fa44ae55d278d1423e3)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Viewport (ID: 6676042658323580324)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 31a19414c41e5ae4aae2af33fee712f6)
+GameObject: Footer (ID: 6786934883984594291)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: MonsterCountText (ID: 8258392447235347015)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "Qu\xE1i: 10"
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0

@@ -1,0 +1,40 @@
+====== PREFAB/SCENE STRUCTURE FOR PopulationHeroCard_Prefab.prefab ======
+========================================================
+GameObject: Text (TMP) (ID: 352158496395135760)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "Sa Th\u1EA3i"
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Btn_Dismiss (ID: 1380367905901616712)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: HeroNameText (ID: 2638266725607292156)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "T\xEAn D\xE2n"
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Avatar (ID: 3487621728554459497)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: PopulationHeroCard_Prefab (ID: 4891899510743089831)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 98ced35c91071fb499d31bb9932ad809)
+GameObject: Profession (ID: 5146422878724699069)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Profession
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: HeroLevelText (ID: 5665232778916462163)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Lv.1
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: CP (ID: 8208722744109736327)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: CP
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0

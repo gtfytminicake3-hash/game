@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace LegendOfBlood
 {
-    public class TraitUpgradePanel : MonoBehaviour
+    public class TraitUpgradePanel : UIPanel
     {
         [Header("UI References")]
         public TextMeshProUGUI panelTitleText;
@@ -22,6 +22,7 @@ namespace LegendOfBlood
 
         private void Awake()
         {
+            PanelType = UIPanelType.None;
             if (panelTitleText != null) panelTitleText.text = global::LocalizationSystem.GetText("panel_title_trait_upgrade");
             if (closeButtonText != null) closeButtonText.text = global::LocalizationSystem.GetText("btn_close");
             

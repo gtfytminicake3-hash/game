@@ -1,0 +1,48 @@
+====== PREFAB/SCENE STRUCTURE FOR Panel_Barrack.prefab ======
+========================================================
+GameObject: Viewport (ID: 85675940621492010)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 31a19414c41e5ae4aae2af33fee712f6)
+GameObject: Content (ID: 283754321275053888)
+  - MonoBehaviour (Script GUID: 8a8695521f0d02e499659fee002a26c2)
+  - MonoBehaviour (Script GUID: 3245ec927659c4140ac4f8d17403cc18)
+GameObject: CloseButton (ID: 1320355567037374852)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Text (TMP) (ID: 2513104731412431157)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: X
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: ScrollView (ID: 3722403851551968820)
+  - MonoBehaviour (Script GUID: 1aa08ab6e0800fa44ae55d278d1423e3)
+GameObject: Upgrade Building Button (ID: 5363671212792074892)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: BarrackTitle (ID: 5490837567668728153)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "QU\u1EA2N L\xDD T\u01AF\u1EDANG (BARRACK)"
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (TMP) (ID: 6125575734857467172)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: PopManager (ID: 7747270764158532427)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: Panel_Barrack (ID: 8503332928418723918)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 619cdd331192ee141a573c3821e1de96)
+    PanelType: 18
+    useDynamicBackground: 0
+    backgroundResourcePath: UI/Panel/panel_dong_frames
+  - MonoBehaviour (Script GUID: 67601c130fa1ee44f97b236a532b3376)
+    PanelType: 0
+    useDynamicBackground: 0
+    backgroundResourcePath: UI/Panel/panel_dong_frames
+    associatedBuildingId: Barracks

@@ -110,6 +110,7 @@ namespace LegendOfBlood
         public int dailyShopFreebieAdsWatched;
         public int dailyCombatReviveAdsWatched;
         public int dailyMysticChestAdsWatched;
+        public bool useDynamicUI;
 
         // --- NEW: Offline Progression ---
         public long lastOfflineTimestamp;
@@ -141,6 +142,7 @@ namespace LegendOfBlood
             dailySummonAdsWatched = 0;
             dailyDoubleGoldAdsWatched = 0;
             lastOfflineTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            useDynamicUI = false;
 
             // --- QUÀ TÂN THỦ: 10 VÉ CHIÊU MỘ ---
             var welcomeLoot = new LootData();

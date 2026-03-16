@@ -1,14 +1,21 @@
 ﻿﻿Skill ID,Tên Kỹ Năng,Mô Tả,Class Yêu Cầu,Loại Chọn Mục Tiêu,Hệ Số ATK/Heal (Power Ratio),Thời Gian Hồi (Cooldown),Hiệu Ứng Phụ,Tỉ Lệ Gây Hiệu Ứng,Số HIT
-SK_WAR_DMG_1,"Trảm Kích","Tấn công hàng trước cường lực.",Warrior,SingleFrontEnemy,1.50,2,None,0.00,1
-SK_WAR_DMG_2,"Cuồng Nộ Huyết","Bổ đôi kẻ thù, sát thương trí mạng.",Warrior,SingleFrontEnemy,2.50,3,None,0.00,1
-SK_WAR_TANK_1,"Gồng Mình","Tấn công diện rộng và tạo giảm thủ kẻ địch.",Warrior,AllEnemies,0.80,3,DefDown,1.00,1
-SK_WAR_TANK_2,"Khiên Ảo","Tạo lớp khiên bảo vệ cho bản thân.",Warrior,Self,0.00,4,Shield,1.00,1
-SK_ARC_FIRE_1,"Tiễn Hỏa","Bắn mũi tên rực lửa, gây độc(Burn).",Archer,RandomEnemy,1.20,2,Poison,0.80,1
-SK_ARC_FIRE_2,"Mưa Hỏa Tiễn","Bắn 3 mục tiêu ngẫu nhiên, tỉ lệ thiêu đốt cao.",Archer,RandomEnemy,0.90,3,Poison,0.50,3
-SK_ARC_ICE_1,"Tiễn Băng","Mũi tên lạnh giá làm chậm kẻ địch.",Archer,SingleBackEnemy,1.30,2,Slow,1.00,1
-SK_ARC_NATURE_1,"Mũi Tên Độc","Bắn mũi tên tẩm độc gây sát thương theo thời gian.",Archer,RandomEnemy,1.10,3,Poison,1.00,1
-SK_MAG_ICE_1,"Bão Tuyết","Triệu hồi bão tuyết đóng băng toàn bộ kẻ địch.",Mage,AllEnemies,0.70,4,Slow,0.60,1
-SK_MAG_FIRE_1,"Thiên Thạch","Giáng quả cầu lửa khổng lồ, thiêu đốt địch.",Mage,AllEnemies,1.00,5,Poison,0.40,1
-SK_HEA_SINGLE_1,"Hồi Phục","Chữa trị vết thương cho đồng minh yếu nhất.",Healer,LowestHpAlly,2.00,2,None,0.00,1
-SK_HEA_AOE_1,"Thân Lạc Dược","Làn gió mát hồi máu toàn đội Hình.",Healer,AllAllies,0.80,4,None,0.00,1
-SK_HEA_BUFF_1,"Thánh Quang","Ban phước làm tăng trí mạng cho đồng đội.",Healer,AllAllies,0.50,3,CritUp,1.00,1
+SK_WAR_1,"SK_WAR_1_name","SK_WAR_1_desc",Warrior,SingleFrontEnemy,1.20,0,None,0.00,1
+SK_WAR_2,"SK_WAR_2_name","SK_WAR_2_desc",Warrior,AllEnemies,0.00,3,None,0.00,1
+SK_WAR_3,"SK_WAR_3_name","SK_WAR_3_desc",Warrior,Self,0.00,4,None,0.00,1
+SK_WAR_4,"SK_WAR_4_name","SK_WAR_4_desc",Warrior,AllEnemies,0.80,4,None,0.00,1
+SK_WAR_5,"SK_WAR_5_name","SK_WAR_5_desc",Warrior,SingleFrontEnemy,3.00,5,None,0.00,1
+SK_MAG_1,"SK_MAG_1_name","SK_MAG_1_desc",Mage,RandomEnemy,1.00,0,None,0.00,1
+SK_MAG_2,"SK_MAG_2_name","SK_MAG_2_desc",Mage,AllEnemies,0.70,3,None,0.00,1
+SK_MAG_3,"SK_MAG_3_name","SK_MAG_3_desc",Mage,RandomEnemy,0.50,4,None,0.00,1
+SK_MAG_4,"SK_MAG_4_name","SK_MAG_4_desc",Mage,LowestHpAlly,1.50,4,None,0.00,1
+SK_MAG_5,"SK_MAG_5_name","SK_MAG_5_desc",Mage,AllEnemies,2.50,5,None,0.00,1
+SK_ARC_1,"SK_ARC_1_name","SK_ARC_1_desc",Archer,SingleBackEnemy,1.10,0,None,0.00,1
+SK_ARC_2,"SK_ARC_2_name","SK_ARC_2_desc",Archer,Self,0.00,3,None,0.00,1
+SK_ARC_3,"SK_ARC_3_name","SK_ARC_3_desc",Archer,AllEnemies,0.90,4,None,0.00,6
+SK_ARC_4,"SK_ARC_4_name","SK_ARC_4_desc",Archer,Self,0.50,4,None,0.00,1
+SK_ARC_5,"SK_ARC_5_name","SK_ARC_5_desc",Archer,SingleBackEnemy,3.50,5,None,0.00,1
+SK_HEA_1,"SK_HEA_1_name","SK_HEA_1_desc",Healer,LowestHpAlly,1.20,0,None,0.00,1
+SK_HEA_2,"SK_HEA_2_name","SK_HEA_2_desc",Healer,AllAllies,0.00,3,None,0.00,1
+SK_HEA_3,"SK_HEA_3_name","SK_HEA_3_desc",Healer,LowestHpAlly,0.00,4,None,0.00,1
+SK_HEA_4,"SK_HEA_4_name","SK_HEA_4_desc",Healer,AllAllies,0.00,4,None,0.00,1
+SK_HEA_5,"SK_HEA_5_name","SK_HEA_5_desc",Healer,AllAllies,2.50,5,None,0.00,1

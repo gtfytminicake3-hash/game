@@ -1,0 +1,35 @@
+====== PREFAB/SCENE STRUCTURE FOR InventoryEquipmentCard_Prefab.prefab ======
+========================================================
+GameObject: Border (ID: 2141151788167947631)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: ClickButton (ID: 3508708569965394254)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: MainStat (ID: 4864484233918113283)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: MainStat
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Name (ID: 5889159218532117210)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Name
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Level (ID: 7900887459129073406)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Level
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: InventoryEquipmentCard_Prefab (ID: 8391768970447690938)
+  - MonoBehaviour (Script GUID: 2dc0aece04a0c884cad45884f266d6fa)
+GameObject: Icon (ID: 8489642466192154420)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: SubStat (ID: 8685583254470553660)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: SubStat
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0

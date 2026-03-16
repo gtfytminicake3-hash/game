@@ -46,6 +46,20 @@ public class BuildingHighlightPulse : MonoBehaviour
     {
         if (_outline != null)
         {
+            // Kiểm tra cài đặt toàn cục
+            bool isDynamicUIEnabled = false;
+            if (LegendOfBlood.DataManager.Instance != null && LegendOfBlood.DataManager.Instance.Player != null)
+            {
+                isDynamicUIEnabled = LegendOfBlood.DataManager.Instance.Player.useDynamicUI;
+            }
+
+            if (!isDynamicUIEnabled)
+            {
+                // Nếu tắt UI động, giữ Alpha ở mức tối đa
+                _outline.effectColor = new Color(pulseColor.r, pulseColor.g, pulseColor.b, maxAlpha);
+                return;
+            }
+
             // Tính toán giá trị Alpha nhấp nháy theo sóng Sin theo thời gian
             float t = (Mathf.Sin(Time.time * pulseSpeed * Mathf.PI * 2f) + 1f) / 2f; 
             float currentAlpha = Mathf.Lerp(minAlpha, maxAlpha, t);

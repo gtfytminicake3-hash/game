@@ -12,9 +12,12 @@ namespace LegendOfBlood
         SingleFrontEnemy, SingleBackEnemy, LowestHpAlly, AllEnemies, Self,
         AdjacentEnemies, RandomEnemy, AllAlliesInRow, AllAllies
     }
-    public enum StatusEffectType { None, Poison, Slow, CritUp, DefDown, HealOverTime, Shield }
-
-
+    public enum StatusEffectType 
+    { 
+        None, Poison, Slow, CritUp, DefDown, HealOverTime, Shield,
+        // Hiệu ứng Combo mới
+        Aegis, Stun, Taunt, AtkDown, PoisonMark, Weakness, NextAttackCrit, LifeSeed, DamageLink, DeathImmunity, AtkUp
+    }
     /// <summary>
     /// Định nghĩa ScriptableObject cho một Skill (Kỹ năng).
     /// </summary>

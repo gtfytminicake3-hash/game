@@ -21,60 +21,60 @@ breeding_change_mother=Change Mother
 breeding_error_select_father_first=Please select a father first.
 breeding_failed=Breeding failed. Please try again.
 # --- Hero Names ---
-male_name_1=An
-male_name_2=Bao
-male_name_3=Cuong
-male_name_4=Dung
-male_name_5=Hai
-male_name_6=Hieu
-male_name_7=Hoang
-male_name_8=Hung
-male_name_9=Khai
-male_name_10=Kien
-male_name_11=Lam
-male_name_12=Long
-male_name_13=Manh
-male_name_14=Minh
-male_name_15=Nam
-male_name_16=Nghia
-male_name_17=Phong
-male_name_18=Phuc
-male_name_19=Quan
-male_name_20=Son
-male_name_21=Tai
-male_name_22=Thang
-male_name_23=Thanh
-male_name_24=Thien
-male_name_25=Trung
-male_name_26=Tuan
-male_name_27=Viet
-female_name_1=Anh
-female_name_2=Bich
-female_name_3=Chau
-female_name_4=Diep
-female_name_5=Giang
-female_name_6=Ha
-female_name_7=Hanh
-female_name_8=Hoa
-female_name_9=Huong
-female_name_10=Khanh
-female_name_11=Lan
-female_name_12=Linh
-female_name_13=Ly
-female_name_14=Mai
-female_name_15=My
-female_name_16=Nga
-female_name_17=Ngoc
-female_name_18=Nhi
-female_name_19=Oanh
-female_name_20=Phuong
-female_name_21=Quynh
-female_name_22=Thao
-female_name_23=Thu
-female_name_24=Thuy
-female_name_25=Trang
-female_name_26=Tu
-female_name_27=Yen
+male_name_1=James
+male_name_2=John
+male_name_3=Robert
+male_name_4=Michael
+male_name_5=William
+male_name_6=David
+male_name_7=Richard
+male_name_8=Joseph
+male_name_9=Thomas
+male_name_10=Charles
+male_name_11=Christopher
+male_name_12=Daniel
+male_name_13=Matthew
+male_name_14=Anthony
+male_name_15=Mark
+male_name_16=Donald
+male_name_17=Steven
+male_name_18=Paul
+male_name_19=Andrew
+male_name_20=Joshua
+male_name_21=Kenneth
+male_name_22=Kevin
+male_name_23=Brian
+male_name_24=George
+male_name_25=Edward
+male_name_26=Ronald
+male_name_27=Timothy
+female_name_1=Mary
+female_name_2=Patricia
+female_name_3=Jennifer
+female_name_4=Linda
+female_name_5=Elizabeth
+female_name_6=Barbara
+female_name_7=Susan
+female_name_8=Jessica
+female_name_9=Sarah
+female_name_10=Karen
+female_name_11=Nancy
+female_name_12=Lisa
+female_name_13=Betty
+female_name_14=Margaret
+female_name_15=Sandra
+female_name_16=Ashley
+female_name_17=Kimberly
+female_name_18=Emily
+female_name_19=Donna
+female_name_20=Michelle
+female_name_21=Dorothy
+female_name_22=Carol
+female_name_23=Amanda
+female_name_24=Melissa
+female_name_25=Deborah
+female_name_26=Stephanie
+female_name_27=Rebecca
 # --- Inventory & DataManager ---
 inventory_error_no_playerdata=InventoryManager could not get PlayerData from DataManager!
 inventory_error_not_enough_resource=Not enough {0} to spend. Required: {1}, Have: {2}
@@ -133,7 +133,6 @@ stats_atk_format=ATK: {0}
 stats_def_format=DEF: {0}
 notification_feature_locked=This feature is locked!
 poi_tower_name_format=Tower of {0}
-
 # --- Master Data: Traits ---
 trait_TR_ATK_D_name=Rookie Strength
 trait_TR_ATK_D_desc=Joined the army. Weak arm strength. +5 ATK.
@@ -285,7 +284,6 @@ evo_reward_100=God Mode! Choose 1 Trait rank S or above
 poi_group_Mud_Monster_Camp=Mud Monster Camp
 poi_group_Orc_Barracks=Orc Barracks
 poi_group_Black_Dragon_Tomb=Black Dragon Tomb
-
 building_upgrade_title_format=Upgrade {0}
 building_upgrade_info_format=Current Level: {0}\nNext Level: {1}
 building_max_level=Max Level Reached
@@ -295,13 +293,10 @@ building_TownHall=Town Hall
 building_Hospital=Hospital
 building_Barrack=Barracks
 building_Arena=Arena
-
 settings_title=Settings
-
 btn_close=Close
 btn_upgrade=Upgrade
 btn_change_language=Change Language
-
 btn_breed=Breed
 btn_confirm=Confirm
 btn_select_father=Select Male
@@ -310,119 +305,118 @@ btn_manage_population=Manage Population
 btn_challenge=Challenge
 btn_leaderboard=Leaderboard
 btn_shop=Shop
-m s g _ m a x _ e x p e d i t i o n _ r e a c h e d = M a x   e x p e d i t i o n   l i m i t   r e a c h e d .   U p g r a d e   B a r r a c k s   t o   s e n d   m o r e   s q u a d s .  
- n o t i f i c a t i o n _ n o t _ e n o u g h _ c u r r e n c y = N o t   e n o u g h   R e c r u i t m e n t   T i c k e t s   o r   D i a m o n d s !  
- n o t i f i c a t i o n _ r e c r u i t _ s u c c e s s = S u c c e s s f u l l y   r e c r u i t e d   { 0 } !  
- n o t i f i c a t i o n _ r e c r u i t _ m u l t i _ s u c c e s s = S u c c e s s f u l l y   r e c r u i t e d   { 0 }   n e w   h e r o e s !  
- a r e n a _ r a n k = R a n k  
- a r e n a _ p o i n t s = P o i n t s :   { 0 }  
- a r e n a _ t i c k e t s = T i c k e t s :   { 0 }  
- m s g _ n o t _ e n o u g h _ a r e n a _ t i c k e t s = N o t   e n o u g h   A r e n a   t i c k e t s !  
- m s g _ n o t _ e n o u g h _ h e r o e s = N o t   e n o u g h   r e a d y   h e r o e s !  
- t i t l e _ s e l e c t _ a r e n a _ s q u a d = S e l e c t   A r e n a   S q u a d  
- m s g _ a r e n a _ w i n _ r e s u l t = V i c t o r y !   + 2 5   P o i n t s ,   + 3 0   C o i n s  
- m s g _ a r e n a _ l o s e _ r e s u l t = D e f e a t !   - 2 0   P o i n t s ,   + 1 0   C o i n s  
- u i _ b o s s _ n o r m a l _ a t k = < c o l o r = o r a n g e > [ B a s i c   A t t a c k ] < / c o l o r >   { 0 }   ( x { 1 } )  
- u i _ b o s s _ a o e _ a t k = < c o l o r = r e d > [ U l t i m a t e ] < / c o l o r >   { 0 }   ( x { 1 } )  
- t i t l e _ c h a l l e n g e _ b o s s = C h a l l e n g e :   { 0 }  
- t o w e r _ f l o o r = F l o o r   { 0 }  
- t o w e r _ c u r r e n t _ f l o o r = C u r r e n t   F l o o r :   { 0 }  
- t o w e r _ r e c o v e r y _ t i m e = R e c o v e r s   i n :   { 0 : D 2 } : { 1 : D 2 } : { 2 : D 2 }  
- t o w e r _ r e a d y = R e a d y   t o   b a t t l e !  
- t o w e r _ m o n s t e r _ c o u n t = M o n s t e r s :   { 0 }  
- t i t l e _ t o w e r _ c h a l l e n g e = T o w e r   C h a l l e n g e   F l o o r   { 0 }  
- e q u i p _ l e v e l _ m a x = L e v e l :   M A X  
- e q u i p _ l e v e l = L e v e l :   { 0 }  
- e q u i p _ e x p _ m a x = E X P :   M a x   R e a c h e d  
- e q u i p _ e x p _ p r o g r e s s = E X P :   { 0 }   /   { 1 }  
- m s g _ e q u i p _ m a x _ l e v e l = E q u i p m e n t   a l r e a d y   a t   m a x   l e v e l !  
- m s g _ n o _ f o d d e r _ e q u i p = N o   f o d d e r   e q u i p m e n t   ( 1   S t a r ,   L e v e l   1 )   t o   c o n s u m e !  
- m s g _ u p g r a d e _ e q u i p _ s u c c e s s = U p g r a d e   s u c c e s s f u l !   C o n s u m e d   { 0 }   i t e m s .  
- c o m b a t _ l o g _ s t a r t = < b > B a t t l e   s t a r t e d ! < / b >  
- c o m b a t _ l o g _ a u r a _ p l a y e r = < c o l o r = c y a n > P l a y e r   t e a m   r e c e i v e s   A u r a   ( + 1 0 %   A T K ) . < / c o l o r >  
- c o m b a t _ l o g _ a u r a _ e n e m y = < c o l o r = c y a n > E n e m y   t e a m   r e c e i v e s   A u r a   ( + 1 0 %   A T K ) . < / c o l o r >  
- c o m b a t _ l o g _ p l a y e r _ t e a m = P l a y e r   T e a m  
- c o m b a t _ l o g _ e n e m y _ t e a m = E n e m y   T e a m  
- c o m b a t _ l o g _ t u r n _ h e a d e r = \ n < c o l o r = y e l l o w > - - -   T u r n   { 0 }   - - - < / c o l o r >  
- c o m b a t _ l o g _ d r a w _ t i m e o u t = B a t t l e   t o o k   t o o   l o n g ,   i t ' s   a   d r a w !  
- c o m b a t _ l o g _ v i c t o r y = \ n < c o l o r = g r e e n > < b > V I C T O R Y ! < / b > < / c o l o r >  
- c o m b a t _ l o g _ d e f e a t = \ n < c o l o r = r e d > < b > D E F E A T ! < / b > < / c o l o r >  
- c o m b a t _ l o g _ s k i l l _ c a s t = < c o l o r = l i g h t b l u e > { 0 }   c a s t s   [ { 1 } ] ! < / c o l o r >  
- c o m b a t _ l o g _ p r e d a t o r _ t r i g g e r = < c o l o r = r e d > P r e d a t o r   a c t i v a t e d ! < / c o l o r >  
- c o m b a t _ l o g _ a t t a c k _ n o r m a l = { 0 }   a t t a c k s   { 1 } ,   d e a l i n g   < c o l o r = r e d > { 2 } < / c o l o r >   d a m a g e .  
- c o m b a t _ l o g _ a t t a c k _ c r i t =   < c o l o r = o r a n g e > ( C r i t i c a l   H i t ! ) < / c o l o r >  
- c o m b a t _ l o g _ d e a t h = < c o l o r = g r e y > { 0 }   h a s   f a l l e n ! < / c o l o r >  
- c o m b a t _ l o g _ h e a l = { 0 }   r e s t o r e s   < c o l o r = g r e e n > { 1 } < / c o l o r >   H P   t o   { 2 } .  
- c o m b a t _ l o g _ s t a t u s _ a p p l i e d = { 0 }   i s   a f f e c t e d   b y   < c o l o r = m a g e n t a > { 1 } < / c o l o r >   f o r   { 2 }   t u r n s .  
- c o m b a t _ l o g _ p o i s o n _ t i c k = { 0 }   t a k e s   < c o l o r = p u r p l e > { 1 } < / c o l o r >   p o i s o n   d a m a g e .  
- c o m b a t _ l o g _ r e g e n _ t i c k = { 0 }   r e s t o r e s   < c o l o r = g r e e n > { 1 } < / c o l o r >   H P   f r o m   R e g e n e r a t i o n .  
- c o m b a t _ l o g _ t r a i t _ r e g e n = { 0 }   r e s t o r e s   < c o l o r = g r e e n > { 1 } < / c o l o r >   H P   v i a   R e g e n e r a t i o n   t r a i t .  
- c o m b a t _ l o g _ r o w _ f r o n t = F r o n t   R o w :   { 0 }  
- c o m b a t _ l o g _ r o w _ m i d = M i d d l e   R o w :   { 0 }  
- c o m b a t _ l o g _ r o w _ b a c k = B a c k   R o w :   { 0 }  
- c o m b a t _ l o g _ r o w _ e m p t y = E m p t y  
- m s g _ t o w e r _ i n _ r e c o v e r y = T o w e r   i s   r e c o v e r i n g .   C a n n o t   c h a l l e n g e   y e t .  
- u i _ s h o w _ n o t i f i c a t i o n _ e r r o r = U I   N o t i f i c a t i o n   P r e f a b   i s   m i s s i n g !  
- p a n e l _ t i t l e _ b a r r a c k = H E R O   M A N A G E M E N T   ( B A R R A C K )  
- p a n e l _ t i t l e _ h o s p i t a l = H O S P I T A L  
- l a b e l _ s e v e r e _ i n j u r y = I n t e n s i v e   C a r e   U n i t   ( S e v e r e   I n j u r y )  
- l a b e l _ l i g h t _ i n j u r y = R e c o v e r y   R o o m   ( L i g h t   I n j u r y )  
- p a n e l _ t i t l e _ b r e e d i n g = H E R O   B R E E D I N G  
- b t n _ e x p l o r e = E x p l o r e  
- b t n _ c l o s e = C l o s e  
- r e p o r t _ v i c t o r y = < c o l o r = g r e e n > V i c t o r y < / c o l o r >  
- r e p o r t _ d e f e a t = < c o l o r = r e d > D e f e a t < / c o l o r >  
- r e p o r t _ u n k n o w n = < c o l o r = g r e y > U n k n o w n   R e s u l t < / c o l o r >  
- b t n _ c l a i m = C l a i m  
- b t n _ r e p l a y = R e p l a y  
- p a n e l _ t i t l e _ m a i l b o x = M A I L B O X  
- b t n _ c l a i m _ a l l = C l a i m   A l l  
- r e p o r t _ r e w a r d s = R e w a r d s :   { 0 }   E X P ,   { 1 }   G o l d  
- p a n e l _ t i t l e _ q u e s t = Q U E S T S  
- t a b _ m a i n _ q u e s t = M a i n  
- t a b _ d a i l y _ q u e s t = D a i l y  
- t a b _ w e e k l y _ q u e s t = W e e k l y  
- t u t o r i a l _ s t e p _ 1 = W e l c o m e   t o   L e g e n d   o f   B l o o d !   T h i s   i s   y o u r   b a s e .  
- t u t o r i a l _ s t e p _ 2 = H e r e   y o u   c a n   b u i l d   s t r u c t u r e s   a n d   g a t h e r   r e s o u r c e s .  
- t u t o r i a l _ s t e p _ 3 = U s e   t h e   B a r r a c k s   t o   r e c r u i t   h e r o e s   a n d   t h e   T r a i n i n g   T o w e r   t o   u p g r a d e   s k i l l s .  
- t u t o r i a l _ s t e p _ 4 = S e n d   y o u r   h e r o e s   o n   E x p e d i t i o n s   t o   e a r n   G o l d   a n d   E q u i p m e n t !  
- b t n _ n e x t = N E X T  
- b t n _ p r e v = B A C K  
- p a n e l _ t i t l e _ t u t o r i a l = T U T O R I A L  
- b o o t l o a d e r _ i n i t = I n i t i a l i z i n g   C o r e   S y s t e m s . . .  
- b o o t l o a d e r _ l o a d _ d a t a = L o a d i n g   L o c a l i z a t i o n   &   D a t a b a s e . . .  
- b o o t l o a d e r _ t a p _ t o _ s t a r t = T A P   T O   S T A R T  
- b t n _ s k i p = S K I P  
- c o m b a t _ r e s u l t _ t i t l e = R E S U L T  
- b t n _ b a c k _ t o _ v i l l a g e = B a c k   t o   V i l l a g e   ( C l o s e )  
- p a n e l _ t i t l e _ s t a t _ a l l o c = S T A T   A L L O C A T I O N  
- l a b e l _ f r e e _ p o i n t s = F r e e   P o i n t s :   { 0 }  
- b t n _ c o n f i r m = C O N F I R M  
- p a n e l _ t i t l e _ t r a i t _ u p g r a d e = T R A I T   U P G R A D E  
- bootloader_init=Initializing Core Systems...
-bootloader_load_data=Loading Data & Dictionary...
-Thu Chào M?ng Tân Th?=Welcome to the game!
-report_rewards=Rewards: {0} EXP, {1} Gold
-Vé Chiêu M?=Recruit Ticket
+msg_max_expedition_reached=Max expedition limit reached. Upgrade Barracks to send more squads.
+notification_not_enough_currency=Not enough Recruitment Tickets or Diamonds!
+notification_recruit_success=Successfully recruited {0}!
+notification_recruit_multi_success=Successfully recruited {0} new heroes!
+arena_rank=Rank
+arena_points=Points: {0}
+arena_tickets=Tickets: {0}
+msg_not_enough_arena_tickets=Not enough Arena tickets!
+msg_not_enough_heroes=Not enough ready heroes!
+title_select_arena_squad=Select Arena Squad
+msg_arena_win_result=Victory! +25 Points, +30 Coins
+msg_arena_lose_result=Defeat! -20 Points, +10 Coins
+ui_boss_normal_atk=<color=orange>[Basic Attack]</color> {0} (x{1})
+ui_boss_aoe_atk=<color=red>[Ultimate]</color> {0} (x{1})
+title_challenge_boss=Challenge: {0}
+tower_floor=Floor {0}
+tower_current_floor=Current Floor: {0}
+tower_recovery_time=Recovers in: {0:D2}:{1:D2}:{2:D2}
+tower_ready=Ready to battle!
+tower_monster_count=Monsters: {0}
+title_tower_challenge=Tower Challenge Floor {0}
+equip_level_max=Level: MAX
+equip_level=Level: {0}
+equip_exp_max=EXP: Max Reached
+equip_exp_progress=EXP: {0} / {1}
+msg_equip_max_level=Equipment already at max level!
+msg_no_fodder_equip=No fodder equipment (1 Star, Level 1) to consume!
+msg_upgrade_equip_success=Upgrade successful! Consumed {0} items.
+combat_log_start=<b>Battle started!</b>
+combat_log_aura_player=<color=cyan>Player team receives Aura (+10% ATK).</color>
+combat_log_aura_enemy=<color=cyan>Enemy team receives Aura (+10% ATK).</color>
+combat_log_player_team=Player Team
+combat_log_enemy_team=Enemy Team
+combat_log_turn_header=\n<color=yellow>--- Turn {0} ---</color>
+combat_log_draw_timeout=Battle took too long, it's a draw!
+combat_log_victory=\n<color=green><b>VICTORY!</b></color>
+combat_log_defeat=\n<color=red><b>DEFEAT!</b></color>
+combat_log_skill_cast=<color=lightblue>{0} casts [{1}]!</color>
+combat_log_predator_trigger=<color=red>Predator activated!</color>
+combat_log_attack_normal={0} attacks {1}, dealing <color=red>{2}</color> damage.
+combat_log_attack_crit= <color=orange>(Critical Hit!)</color>
+combat_log_death=<color=grey>{0} has fallen!</color>
+combat_log_heal={0} restores <color=green>{1}</color> HP to {2}.
+combat_log_status_applied={0} is affected by <color=magenta>{1}</color> for {2} turns.
+combat_log_poison_tick={0} takes <color=purple>{1}</color> poison damage.
+combat_log_regen_tick={0} restores <color=green>{1}</color> HP from Regeneration.
+combat_log_trait_regen={0} restores <color=green>{1}</color> HP via Regeneration trait.
+combat_log_row_front=Front Row: {0}
+combat_log_row_mid=Middle Row: {0}
+combat_log_row_back=Back Row: {0}
+combat_log_row_empty=Empty
+msg_tower_in_recovery=Tower is recovering. Cannot challenge yet.
+ui_show_notification_error=UI Notification Prefab is missing!
+panel_title_barrack=HERO MANAGEMENT (BARRACK)
+panel_title_hospital=HOSPITAL
+label_severe_injury=Intensive Care Unit (Severe Injury)
+label_light_injury=Recovery Room (Light Injury)
+panel_title_breeding=HERO BREEDING
+btn_explore=Explore
+btn_close=Close
+report_victory=<color=green>Victory</color>
+report_defeat=<color=red>Defeat</color>
+report_unknown=<color=grey>Unknown Result</color>
 btn_claim=Claim
 btn_replay=Replay
 panel_title_mailbox=MAILBOX
 btn_claim_all=Claim All
-Ch?m Trán Quái V?t=Monster Encounter
-Tiêu th? Th? L?c khám phá POI 1 l?n.=Consume stamina to explore a POI one time.
-Dòng Dõi Hoàng Gia=Royal Bloodline
-Th?c hi?n Lai T?o và có em bé d?u tay.=Perform breeding and get your first baby.
-C? Th? Làng=Village Defense
-Nâng c?p Nhà Chính TownHall lên C?p 2.=Upgrade Barrack to Level 2.
+report_rewards=Rewards: {0} EXP, {1} Gold
+panel_title_quest=QUESTS
+tab_main_quest=Main
+tab_daily_quest=Daily
+tab_weekly_quest=Weekly
+tutorial_step_1=Welcome to Legend of Blood! This is your base.
+tutorial_step_2=Here you can build structures and gather resources.
+tutorial_step_3=Use the Barracks to recruit heroes and the Training Tower to upgrade skills.
+tutorial_step_4=Send your heroes on Expeditions to earn Gold and Equipment!
+btn_next=NEXT
+btn_prev=BACK
+panel_title_tutorial=TUTORIAL
+bootloader_init=Initializing Core Systems...
+bootloader_load_data=Loading Localization & Database...
+bootloader_tap_to_start=TAP TO START
+btn_skip=SKIP
+combat_result_title=RESULT
+btn_back_to_village=Back to Village (Close)
+panel_title_stat_alloc=STAT ALLOCATION
+label_free_points=Free Points: {0}
+btn_confirm=CONFIRM
+panel_title_trait_upgrade=TRAIT UPGRADE
+bootloader_init=Initializing Core Systems...
+bootloader_load_data=Loading Data & Dictionary...
+Thu ChÃ o M?ng TÃ¢n Th?=Welcome to the game!
+report_rewards=Rewards: {0} EXP, {1} Gold
+VÃ© ChiÃªu M?=Recruit Ticket
+btn_claim=Claim
+btn_replay=Replay
+panel_title_mailbox=MAILBOX
+btn_claim_all=Claim All
+Ch?m TrÃ¡n QuÃ¡i V?t=Monster Encounter
+TiÃªu th? Th? L?c khÃ¡m phÃ¡ POI 1 l?n.=Consume stamina to explore a POI one time.
+DÌ£ng DÆ¡i HoÃ ng Gia=Royal Bloodline
+Th?c hi?n Lai T?o vÃ  cÃ³ em bÃ© d?u tay.=Perform breeding and get your first baby.
+C? Th? LÃ ng=Village Defense
+NÃ¢ng c?p NhÃ  ChÃ­nh TownHall lÃªn C?p 2.=Upgrade Barrack to Level 2.
 B?nh Vi?n Y T?=Medical Hospital
-Nâng c?p B?nh Vi?n lên C?p 2.=Upgrade Hospital to Level 2.
+NÃ¢ng c?p B?nh Vi?n lÃªn C?p 2.=Upgrade Hospital to Level 2.
 Dungeon #85=Dungeon #85
 Rescue Mission #204=Rescue Mission #204
 notification_not_enough_currency=Not enough resources!
 mailbox_loot_claimed=Claimed reward: {0}
 notification_recruit_success=Recruitment successful!
 notification_population_full=Population is full! Please upgrade Barrack.
-
 arena_points=Arena Points
 arena_rank=Arena Rank
 arena_tickets=Arena Tickets
@@ -521,10 +515,214 @@ tutorial_step_3=Fight monsters to earn rewards.
 tutorial_step_4=Good luck on your conquest!
 ui_boss_aoe_atk=Boss AOE Attack
 ui_boss_normal_atk=Boss Normal Attack
-
 building_BreedingPen=Breeding Pen
 building_Hospital=Hospital
 building_TownHall=Barrack
 building_Barrack=Barrack
-
 building_upgrading=Upgrading
+
+SK_WAR_1_name=Armor Breaker Mace
+SK_WAR_1_desc=Base Effect: Deals physical damage to 1 target.\nCombo Effect: Gains 1 stack of [Aegis].
+SK_WAR_2_name=Subduing Roar
+SK_WAR_2_desc=Base Effect: Taunts all enemies, forcing them to attack the Warrior for 1 turn (Taunt) and reduces their damage by 15%.\nCombo Effect: Gains 1 stack of [Aegis].
+SK_WAR_3_name=Iron Wall
+SK_WAR_3_desc=Base Effect: Instantly creates a Virtual Shield equal to 15% of the Warrior's Max HP, lasting 2 turns.\nCombo Effect: Consumes all current [Aegis] stacks, each stack adds 10% to the Virtual Shield value.
+SK_WAR_4_name=Trembling Smash
+SK_WAR_4_desc=Base Effect: Deals Area of Effect (AoE) physical damage to the entire enemy team.\nCombo Effect: If the Warrior has a Virtual Shield, this attack Stuns all enemies for 1 turn.
+SK_WAR_5_name=Ultimate Strike
+SK_WAR_5_desc=Base Effect: Deals massive physical damage to 1 target.\nCombo Effect: Consumes all [Aegis] stacks, each stack increases Critical Damage for this attack by 30%.
+
+SK_MAG_1_name=Demon Dart
+SK_MAG_1_desc=Base Effect: Deals magic damage to 1 target.\nCombo Effect: Applies 1 [Poison Mark] (deals true damage every turn).
+SK_MAG_2_name=Circle of Decay
+SK_MAG_2_desc=Base Effect: Deals AoE magic damage and reduces Speed of all enemies by 20% for 2 turns.\nCombo Effect: Applies 1 [Poison Mark] to all targets hit.
+SK_MAG_3_name=Frost Shackles
+SK_MAG_3_desc=Base Effect: Chains 1 target, making them lose a turn (Stun).\nCombo Effect: If the target has a [Poison Mark], the lock duration increases to 2 turns.
+SK_MAG_4_name=Life Drain
+SK_MAG_4_desc=Base Effect: Drains health from 1 target, dealing damage and healing the Mage.\nCombo Effect: If the target has a [Poison Mark], spreads this poison mark to an adjacent random enemy.
+SK_MAG_5_name=Grand Detonation
+SK_MAG_5_desc=Base Effect: Deals extremely powerful AoE magic damage to all enemies.\nCombo Effect: Drains all [Poison Marks] on the board. Each drained Mark detonates additional True Damage equal to 5% of the victim's max health.
+
+SK_ARC_1_name=Scouting Arrow
+SK_ARC_1_desc=Base Effect: Deals physical damage to 1 target.\nCombo Effect: Applies [Weakness] status (reduces Target's Evasion rate by 15% for 2 turns).
+SK_ARC_2_name=Owl's Vision
+SK_ARC_2_desc=Base Effect: Self-buffs to increase Physical Damage by 30% for 2 turns.\nCombo Effect: The Archer's next attack is guaranteed to be a Critical Hit.
+SK_ARC_3_name=Piercing Arrow Rain
+SK_ARC_3_desc=Base Effect: Fires AoE attacks at the entire enemy team.\nCombo Effect: Enemies with [Weakness] will have 30% of their Physical Armor broken.
+SK_ARC_4_name=Tactical Retreat
+SK_ARC_4_desc=Base Effect: Steps back on the speed bar and reduces the cooldown of all skills by 2 turns.\nCombo Effect: Removes all negative effects (Debuffs) currently on the Archer.
+SK_ARC_5_name=Fatal Shot
+SK_ARC_5_desc=Base Effect: Fires an extremely powerful shot at 1 target.\nCombo Effect: Consumes [Weakness] on the target to ignore 100% Armor. If this attack kills the enemy, the Archer immediately gets an extra turn.
+
+SK_HEA_1_name=Small Ray of Light
+SK_HEA_1_desc=Base Effect: Restores a moderate amount of health to 1 ally.\nCombo Effect: Plants 1 [Seed of Life] on that ally.
+SK_HEA_2_name=Prayer
+SK_HEA_2_desc=Base Effect: Increases Attack Power for the entire team by 20% for 2 turns.\nCombo Effect: Any ally with a [Seed of Life] gets an additional 15% Critical Hit Rate.
+SK_HEA_3_name=Bloodline Link
+SK_HEA_3_desc=Base Effect: Shares damage between 2 allies for 2 turns (When 1 takes damage, the other bears 50%).\nCombo Effect: Immediately plants a [Seed of Life] on both linked allies.
+SK_HEA_4_name=Purifying Aura
+SK_HEA_4_desc=Base Effect: Instantly removes all negative effects (Debuff, Poison, Stun) for all allies.\nCombo Effect: If an ally has a [Seed], the seed instantly blooms, restoring an additional 10% of their max health.
+SK_HEA_5_name=Blossom Bloom
+SK_HEA_5_desc=Base Effect: Restores a massive amount of health (AoE) to the entire team.\nCombo Effect: Consumes all [Seeds of Life]. Each consumed seed creates an Immortal Shield, completely blocking 1 fatal blow for the bearer.
+
+combo_war_1=<color=#aaaaaa>{0} gains 1 stack of [Aegis].</color>
+combo_war_2=<color=#aaaaaa>{0} roars to taunt all enemies! Gains 1 [Aegis].</color>
+combo_war_3=<color=#ffff00>{0} creates Virtual Shield blocking {1} DMG (Consumes {2} Aegis).</color>
+combo_war_4=<color=#aaaaaa>Virtual Shield resonance Stuns all enemies!</color>
+combo_mag_4=<color=#00ff00>{0} drains life for {1} HP.</color>
+combo_mag_5=<color=#ff00ff>[Poison Mark] detonates on {0} for {1} TRUE DMG!</color>
+combo_arc_2=<color=#00ffff>{0} focuses, +30% ATK and next hit is a Critical Hit!</color>
+combo_arc_4=<color=#00ffff>{0} falls back, reducing team cooldowns by 2 & Cleanses Debuffs!</color>
+combo_arc_5=<color=#ffaa00>Fatal Shot triggered, {0} gains an extra turn!</color>
+combo_hea_2=<color=#00ff00>{0} prays, increasing team Attack Power.</color>
+combo_hea_3=<color=#ff00ff>{0} links bloodline, sharing 50% DMG with {1}!</color>
+combo_hea_4=<color=#00ff00>[Seed] on {0} blooms, restoring {1} HP!</color>
+combo_hea_5=<color=#ffff00>{0} gains 1 [Immortal Shield] to block 1 fatal blow!</color>
+combo_dmg_link=<color=#ff00ff>{0} bears {1} DMG for {2}!</color>
+combo_immortal_pop=<color=#ffff00>[Immortal Shield] shattered, {0} miraculously survives with 1 HP!</color>
+
+# --- Recovered Missing Keys ---
+ad_limit_reached=Ad limit reached!
+ad_reward_gacha_ticket=Watch Ad for Recruit Ticket
+breeding_change_father=Change Father
+breeding_change_mother=Change Mother
+breeding_error_same_gender=Parents must be of different genders.
+breeding_error_select_father_first=Please select a father first.
+breeding_error_select_parents_first=Please select both parents.
+breeding_failed=Breeding failed.
+breeding_select_father=Select Father
+breeding_select_father_title=Select a Father
+breeding_select_mother=Select Mother
+breeding_select_mother_title=Select a Mother
+btn_breed=Breed
+btn_challenge=Challenge
+btn_change_language=Language
+btn_leaderboard=Leaderboard
+btn_manage_population=Manage Population
+btn_select_father=Select Father
+btn_select_mother=Select Mother
+btn_shop=Shop
+btn_upgrade=Upgrade
+building_max_level=Max Level Reached
+building_upgrade_info_format=Current: {0}\nNext: {1}
+building_upgrade_started_format=Upgrading {0} started
+building_upgrade_title_format=Upgrade {0}
+cp_format_short=CP: {0}
+datamanager_error_no_gameconfig=Missing GameConfig in DataManager!
+description_not_found=Description not found.
+gender_format=Gender: {0}
+gold_cost_format={0} Gold
+heal_light=Light Healing
+heal_severe=Severe Healing
+healer_tower_soldier_name=Tower Guard
+hero_dismissed_success=Dismissed {0}
+hospital_hero_healed_format=Healed {0}
+inventory_error_no_playerdata=InventoryManager missing PlayerData!
+inventory_error_not_enough_item=Not enough '{0}'! Needed: {1}, Have: {2}
+inventory_error_not_enough_resource=Not enough {0}! Needed: {1}, Have: {2}
+inventory_item_used_success=Item used successfully!
+inventory_not_enough_resource_notification=Not enough {0}!
+item_IT_EXP_BOOK_S_name=Basic EXP Book
+item_IT_FERTILITY_POTION_name=Fertility Potion
+item_IT_SPEEDUP_1H_name=1H Speedup
+level_format=Level {0}
+level_format_short=Lv.{0}
+mailbox_loot_claimed=Claimed: {0}
+msg_max_expedition_reached=Expedition team limit reached!
+notification_building_already_upgrading=Upgrade already in progress!
+notification_building_max_level=Building has reached max level!
+notification_feature_locked=Feature currently locked!
+notification_not_enough_mutation_potion=Not enough Mutation Potion!
+notification_not_enough_resources=Not enough resources!
+notification_population_full=Population limit exceeded!
+poi_difficulty_format=Difficulty: {0}
+poi_name_format={0} #{1}
+poi_recommended_cp_format=Recommended CP: {0}
+poi_tower_name_format=Tower {0}
+population_count_format=Population: {0}/{1}
+profession_format=Profession: {0}
+profession_selection_title=Select Profession for {0}
+ready=Ready
+settings_title=Settings
+stats_atk_format=ATK: {0}
+stats_atk_format_detailed=ATK: {0} (+{1})
+stats_def_format=DEF: {0}
+stats_def_format_detailed=DEF: {0} (+{1})
+stats_dmg_increase_format=DMG Inc: {0}%
+stats_dmg_reduction_format=DMG Red: {0}%
+stats_evasion_format=Evasion: {0}%
+stats_hp_format=HP: {0}
+stats_hp_format_detailed=HP: {0} (+{1})
+stats_potential_format=Potential: {0}
+stats_spd_format=SPD: {0}
+stats_spd_format_detailed=SPD: {0} (+{1})
+time_left_format=Remaining: {0}
+total_cp_format=Total CP: {0}
+tower_current_floor_format=Floor: {0}
+unknown=Unknown
+worldmap_select_squad_title_format=Squad to {0}
+settings_dynamic_ui=Dynamic UI
+
+
+# --- Prefab Extracted UI Keys ---
+btn_cancel=CANCEL
+panel_title_arena=LEGENDARY ARENA
+btn_breed_action=Give Birth
+title_select_hero=Select Hero
+title_select_squad=Select Squad
+label_total_cp=Total CP
+msg_hero_busy=Hero is busy right now
+label_advanced_stats=Advanced Stats
+label_base_stats=Base Stats
+label_dmg_increase=Dmg Increase
+label_dmg_reduction=Dmg Reduction
+label_evasion=Evasion Rate
+label_trait_upgrade=Trait Upgrade
+btn_use_exp_item=Use EXP Item
+btn_free_gift=Free Gift
+btn_skip_battle=SKIP
+combat_victory=VICTORY!
+combat_defeat=DEFEAT!
+combat_speed_format=SPEED: x{0}
+sys_tap_to_start=TAP TO START
+sys_loading_data=Loading... please wait
+btn_challenge_boss=Challenge
+btn_equip_item=Equip
+btn_quick_upgrade=Quick Upgrade
+tab_equipments=Equipments
+tab_items=Items
+btn_claim_x2_ad=Claim x2 (Ad)
+label_result=Result
+btn_replay_battle=Replay Battle
+btn_revive_retry=Revive Retry
+btn_close_return=Return to Village (Close)
+label_mystic_chest=Mystic Chest
+menu_recruit=RECRUIT
+menu_settings=SETTINGS
+menu_shop=SHOP
+panel_title_menu=MENU
+menu_mailbox=MAILBOX
+menu_inventory=INVENTORY
+title_select_profession=Select Profession for {0}
+prof_mage=Mage
+prof_warrior=Warrior
+prof_archer=Archer
+prof_healer=Healer
+tab_daily=Daily
+tab_main=Main Quest
+tab_weekly=Weekly
+btn_ads_recruit=Ads Recruit
+btn_recruit_x1=Recruit x1
+btn_recruit_x10=Recruit x10
+btn_skip_cooldown=Skip Cooldown
+btn_enter_tower=Enter Tower
+btn_dismiss_hero=Dismiss
+btn_claim_reward=Claim Reward
+btn_view_report=View Report
+btn_close_panel=CLOSE
+btn_tutorial_skip=SKIP
+tutorial_welcome=Welcome to Legend of Blood!
+btn_tutorial_prev=PREVIOUS
+btn_tutorial_next=NEXT
+hospital_light_injury=Recovery Room (Light Injury)
+hospital_severe_injury=Intensive Care Unit (Severe Injury)

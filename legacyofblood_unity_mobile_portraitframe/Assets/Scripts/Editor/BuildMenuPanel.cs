@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
 using TMPro;
-using LegendOfBlood.UI;
+using LegendOfBlood;
 
 public class BuildMenuPanel : EditorWindow
 {

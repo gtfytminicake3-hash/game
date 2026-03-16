@@ -1,0 +1,12 @@
+====== PREFAB/SCENE STRUCTURE FOR TravelCart_Prefab.prefab ======
+========================================================
+GameObject: Text (TMP) (ID: 1475693911655138048)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Button (ID: 2502671731770218473)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: TravelCart_Prefab (ID: 4535212889762830006)

@@ -1,0 +1,70 @@
+====== PREFAB/SCENE STRUCTURE FOR InjuredHeroCard_prefab.prefab ======
+========================================================
+GameObject: HealButton (ID: 277118895369808744)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: dummy (ID: 985677833136578808)
+GameObject: CostText (ID: 1031403515675798237)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: CostText
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Image (ID: 1639582349703928222)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: InjuredHeroCard_prefab (ID: 1739600812783995950)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: ac175c8e57c374c498b82af13addf52b)
+  - MonoBehaviour (Script GUID: c97c19d436ddd264d80a09326d2f6bb6)
+GameObject: Text (TMP) (ID: 2699991318931241482)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Button (ID: 2715485676843767797)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: InfoSEction (ID: 3351784794287867731)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: GameObject (ID: 3616422605757616393)
+GameObject: Text (TMP) (ID: 3895577835316128703)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: New Text
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: TimerText (ID: 4351481108027063279)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: TimerText
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: LevelText (ID: 5132178874991788390)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: LevelText
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: ActionSection (ID: 6087971743896215670)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (TMP) (ID: 6959014885978862959)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Image (1) (ID: 7159701806041060385)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: NameText (ID: 7431711620694212974)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: NameText
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Avatar (ID: 8633277625995815041)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)

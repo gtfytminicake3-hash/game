@@ -11,6 +11,8 @@ namespace LegendOfBlood
         [SerializeField] private Button closeButton;
         [SerializeField] private Slider volumeSlider;
         [SerializeField] private Button changeLanguageButton;
+        [SerializeField] private Toggle dynamicUIToggle;
+        [SerializeField] private TextMeshProUGUI dynamicUIText;
 
         private void Awake()
         {
@@ -18,6 +20,7 @@ namespace LegendOfBlood
             if (closeButton != null) closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.HidePanel(PanelType));
             if (changeLanguageButton != null) changeLanguageButton.onClick.AddListener(OnChangeLanguage);
             if (volumeSlider != null) volumeSlider.onValueChanged.AddListener(OnVolumeChanged);
+            if (dynamicUIToggle != null) dynamicUIToggle.onValueChanged.AddListener(OnDynamicUIToggled);
         }
 
         private void OnEnable()
@@ -42,6 +45,16 @@ namespace LegendOfBlood
                 var txt = changeLanguageButton.GetComponentInChildren<TextMeshProUGUI>();
                 if (txt != null) txt.text = global::LocalizationSystem.GetText("btn_change_language");
             }
+
+            if (dynamicUIToggle != null && DataManager.Instance != null && DataManager.Instance.Player != null)
+            {
+                dynamicUIToggle.isOn = DataManager.Instance.Player.useDynamicUI;
+            }
+
+            if (dynamicUIText != null)
+            {
+                dynamicUIText.text = global::LocalizationSystem.GetText("settings_dynamic_ui");
+            }
         }
 
         private void OnVolumeChanged(float value)
@@ -60,6 +73,20 @@ namespace LegendOfBlood
             if (GameManager.Instance != null && GameManager.Instance.UIManager != null)
             {
                 GameManager.Instance.UIManager.RefreshAllActivePanels();
+            }
+        }
+        private void OnDynamicUIToggled(bool isOn)
+        {
+            if (DataManager.Instance != null && DataManager.Instance.Player != null)
+            {
+                DataManager.Instance.Player.useDynamicUI = isOn;
+                DataManager.Instance.SavePlayerData();
+                
+                // Refresh active panels to apply settings immediately
+                if (GameManager.Instance != null && GameManager.Instance.UIManager != null)
+                {
+                    GameManager.Instance.UIManager.RefreshAllActivePanels();
+                }
             }
         }
     }

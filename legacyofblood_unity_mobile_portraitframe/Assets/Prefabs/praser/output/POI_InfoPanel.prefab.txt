@@ -1,0 +1,47 @@
+====== PREFAB/SCENE STRUCTURE FOR POI_InfoPanel.prefab ======
+========================================================
+GameObject: button (ID: 369384479757710980)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: POI_InfoPanel (ID: 1253833326827494113)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+  - MonoBehaviour (Script GUID: 92cec832b71579649a9c08429734916b)
+GameObject: Text (TMP) (ID: 1720313341208114312)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: close
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (TMP) (ID: 1989788511755895953)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: exploreButton
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: recommendedCpText (ID: 3412778530111642232)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: recommendedCpText
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: difficultyText (ID: 3706087818941283187)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: difficultyText
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: close (ID: 5149489926326973670)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: exploreButton (ID: 5680833865095057427)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: poiNameText (ID: 8097762090154138319)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: poiNameText
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)

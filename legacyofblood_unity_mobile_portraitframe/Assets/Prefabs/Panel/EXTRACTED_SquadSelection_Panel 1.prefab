@@ -73,8 +73,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f0ad6484b69787d4db45a7621de3a2fb, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: -1689044644082195043, guid: 578ae092257f4c14ab637fa71dc8fc20, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 1
@@ -121,6 +121,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a4f7af7efa65d74cbc5dc8f5e2e436a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.SquadSelectionPanel
+  PanelType: 0
+  useDynamicBackground: 0
+  backgroundResourcePath: UI/Panel/panel_dong_frames
   titleText: {fileID: 4780481636929920192}
   squadSlotsContainer: {fileID: 3438198249243828638}
   availableListContainer: {fileID: 1864473959268146290}
@@ -142,6 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.UIPanel
   PanelType: 7
+  useDynamicBackground: 0
+  backgroundResourcePath: UI/Panel/panel_dong_frames
 --- !u!1 &2698499679456718818
 GameObject:
   m_ObjectHideFlags: 0

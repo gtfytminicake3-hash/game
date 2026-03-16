@@ -1,9 +1,0 @@
-====== PREFAB/SCENE STRUCTURE FOR FloorItem_Prefab.prefab ======
-========================================================
-GameObject: FloorItem_Prefab (ID: 973400557925008486)
-  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
-GameObject: FloorNameText (ID: 3411604184087554922)
-  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
-    rgba: 4294967295
-    rgba: 4294967295
-    checkPaddingRequired: 0

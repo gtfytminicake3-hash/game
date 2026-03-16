@@ -1,0 +1,456 @@
+====== PREFAB/SCENE STRUCTURE FOR HeroInfo_Panel.prefab ======
+========================================================
+GameObject: Text_Skills (ID: 58622258659323196)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Skills
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+  - MonoBehaviour (Script GUID: 3245ec927659c4140ac4f8d17403cc18)
+GameObject: Text_Potential (ID: 97100842963475092)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Potential
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: VertLine (ID: 208823909771435782)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Layout (ID: 209357144645056780)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: Btn_Trait Upgrade (ID: 225177528129339574)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text_Level (ID: 305621643409679264)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Level
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text_Gender (ID: 310468921875408592)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Gender
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Portrait (ID: 337763891736766839)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: EquipmentAndPortrait (ID: 383833619292682474)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Layout (ID: 434045077545835293)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: Text_SPD (ID: 462273587397197984)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: SPD
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Layout (ID: 535622443096747449)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: Layout (ID: 626784564684773232)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: Text_+ (ID: 629807231518839248)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: +
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Stat_DEF (ID: 719381737090743673)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+GameObject: Text_Helm (ID: 781782396731687547)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Helm
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Icon (ID: 783832125037453185)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text_Armor (ID: 995777542347676747)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Armor
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Divider_Advanced Stats (ID: 1000245344178459108)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: InnerFrame (ID: 1067777253939151199)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+GameObject: Stat_Dmg Reduction (ID: 1207481448066791092)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+GameObject: Divider_Base Stats (ID: 1236356754984931700)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Icon (ID: 1258660667730221469)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Divider_Traits (ID: 1310312232438279807)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: InnerFrame (ID: 1361014722145475226)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+GameObject: Stat_Dmg Increase (ID: 1409016440012589231)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+GameObject: Icon (ID: 1446055134996729897)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Content (ID: 1468180906164620701)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: AdvStatsGrid (ID: 1691459324290273016)
+  - MonoBehaviour (Script GUID: 8a8695521f0d02e499659fee002a26c2)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: EquipSlot_Weapon (ID: 1896299656513511828)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: InnerFrame (ID: 1902281301927626433)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+GameObject: VertLine (ID: 2026362307627989519)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Icon (ID: 2041661164434256461)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Text_Use EXP Item (ID: 2179086624943344498)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Use EXP Item
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: close_btn (ID: 2366789775463564149)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: LeftEquip (ID: 2391051391486466053)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Text_Dmg Reduction (ID: 2486883264012709280)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Dmg Reduction
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text_HP (ID: 2519864549988963222)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: HP
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: VertLine (ID: 2561222670253635150)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Stat_ATK (ID: 2679865317144402046)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+GameObject: Stat_HP (ID: 2812251804277266345)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+GameObject: ButtonGroup (ID: 2813742408330045939)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: StatsBox (ID: 2849589220270890933)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+GameObject: VertLine (ID: 2954964145252158942)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: EquipSlot_Boots (ID: 2967390458183176119)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Spacer (ID: 3023511609044246727)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Btn_StatAllocation (ID: 3198664218462511103)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text_Dmg Increase (ID: 3200640161782348812)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Dmg Increase
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: TraitsGroup (ID: 3209761478274149895)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Text_Evasion Rate (ID: 3234549163058002589)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Evasion Rate
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: InnerFrame (ID: 3385194533073722779)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+GameObject: VertLine (ID: 3814971134735122364)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text_Ring 2 (ID: 3878829504015318960)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Ring 2
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: InnerFrame (ID: 3995263705708390187)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+GameObject: Text_ATK (ID: 4070647506489829820)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: ATK
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Subheader (ID: 4139392303056398387)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text_Hero Name (ID: 4257045470514982194)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Hero Name
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Layout (ID: 4333502063548563350)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: Stat_Evasion Rate (ID: 4534414111195670943)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+GameObject: Icon (ID: 4888595896194503797)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: InnerFrame (ID: 4924828424775855255)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+GameObject: Layout (ID: 5025479427619101546)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: Icon (ID: 5091623340618682063)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Content (ID: 5360060912549537118)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: Text_Base Stats (ID: 5412362306255555431)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Base Stats
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+  - MonoBehaviour (Script GUID: 3245ec927659c4140ac4f8d17403cc18)
+GameObject: Icon (ID: 5456417038028265817)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text_UNIQUE ICON (ID: 5464722218557731561)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: UNIQUE ICON
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Icon (ID: 5467295134997667609)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Layout (ID: 5585310627831738073)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: Icon (ID: 5646492377933768915)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Text_Profession (Warrior) (ID: 5671514072379667778)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Profession (Warrior)
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Stat_SPD (ID: 5851573133020176172)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+GameObject: EquipSlot_Ring 2 (ID: 5911173707746816333)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Icon (ID: 5979175397778760847)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: EquipSlot_Ring 1 (ID: 6238966612837751843)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text_P (ID: 6364378609542744984)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: P
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Layout (ID: 6448075202740674133)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: Text_DEF (ID: 6474130938036693934)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: DEF
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text_Ring 1 (ID: 6557279812173555035)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Ring 1
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Content (ID: 6600532898546692823)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: Icon (ID: 6619876002090877140)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: EquipSlot_Armor (ID: 6621847416741762378)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Layout (ID: 6798607878237390199)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: VertLine (ID: 6843317633875435575)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Stat_Potential (ID: 6917383205795894577)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+GameObject: Icon (ID: 6996428247462556487)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Icon (ID: 7028897485857311964)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text_Advanced Stats (ID: 7086905526835586753)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Advanced Stats
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+  - MonoBehaviour (Script GUID: 3245ec927659c4140ac4f8d17403cc18)
+GameObject: "Text_\u2191" (ID: 7197558598080161981)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "\u2191"
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: RightEquip (ID: 7256427945809894087)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: HeroInfo_Panel (ID: 7293387432987865559)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+  - MonoBehaviour (Script GUID: 2b793795883abc6479c7d2c48a12d8c7)
+    frameRate: 12
+    loop: 1
+    playOnAwake: 1
+  - MonoBehaviour (Script GUID: 1344c3c82d62a2a41a3576d8abb8e3ea)
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  - MonoBehaviour (Script GUID: 2b793795883abc6479c7d2c48a12d8c7)
+    frameRate: 12
+    loop: 1
+    playOnAwake: 1
+GameObject: Icon (ID: 7312870511229302790)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: VertLine (ID: 7505720348432060890)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: EquipSlot_Helm (ID: 7684148676176439306)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text_Weapon (ID: 7890051832462894822)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Weapon
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: BaseStatsGrid (ID: 8001843928985168032)
+  - MonoBehaviour (Script GUID: 8a8695521f0d02e499659fee002a26c2)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Icon (ID: 8124058139613174664)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: SkillsGroup (ID: 8153666022269062404)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Icon (ID: 8156901143581314541)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Btn_Use EXP Item (ID: 8320152968153492961)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Icon (ID: 8323930152398060085)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Text_Traits (ID: 8352745293945750744)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Traits
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+  - MonoBehaviour (Script GUID: 3245ec927659c4140ac4f8d17403cc18)
+GameObject: Divider_Skills (ID: 8379055239151058409)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: Text (TMP) (ID: 8401201057978075325)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: close
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Stat_UNIQUE ICON (ID: 8506023032174803880)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: e19747de3f5aca642ab2be37e372fb86)
+GameObject: Text_StatAllocation (ID: 8536133319950258791)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: 'Stat
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: VertLine (ID: 8823529025791904129)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: VertLine (ID: 8977379738526890729)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text_Boots (ID: 9045779310986309353)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Boots
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Icon (ID: 9213232508142483611)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text_Trait Upgrade (ID: 9214349278228492892)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Trait Upgrade
+    rgba: 4292467161
+    rgba: 4294967295
+    checkPaddingRequired: 0

@@ -1,0 +1,67 @@
+====== PREFAB/SCENE STRUCTURE FOR EXTRACTED_SquadSelection_Panel 1.prefab ======
+========================================================
+GameObject: EXTRACTED_SquadSelection_Panel 1 (ID: 692243164536219761)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+  - MonoBehaviour (Script GUID: 8a4f7af7efa65d74cbc5dc8f5e2e436a)
+    PanelType: 0
+    useDynamicBackground: 0
+    backgroundResourcePath: UI/Panel/panel_dong_frames
+  - MonoBehaviour (Script GUID: 619cdd331192ee141a573c3821e1de96)
+    PanelType: 7
+    useDynamicBackground: 0
+    backgroundResourcePath: UI/Panel/panel_dong_frames
+GameObject: Text (TMP) (ID: 2698499679456718818)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: confirm
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Text (TMP) (ID: 2704034402239189667)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: close
+    rgba: 4294967295
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: Title (ID: 2965797674654273441)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "Ch\u1ECDn \u0110\u1ED9i H\xECnh"
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: ActionsArea (ID: 3288984603783999587)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Viewport (ID: 4445082236844104853)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 31a19414c41e5ae4aae2af33fee712f6)
+GameObject: Handle (ID: 5735427645354988818)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+GameObject: close (ID: 6425452509427305009)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: AvailableListScrollView (ID: 6972945957344212337)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 1aa08ab6e0800fa44ae55d278d1423e3)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Sliding Area (ID: 7068701247542926507)
+GameObject: confirm (ID: 7510736516581279443)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+GameObject: "T\u1ED5ng Cp" (ID: 7813325467702717411)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "T\u1ED5ng Cp"
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: SquadSlotsContainer (ID: 8526917627441670705)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Scrollbar Vertical (ID: 8865752459177140816)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 2a4db7a114972834c8e4117be1d82ba3)
+GameObject: Content (ID: 9208043363528605524)
+  - MonoBehaviour (Script GUID: 8a8695521f0d02e499659fee002a26c2)
+  - MonoBehaviour (Script GUID: 3245ec927659c4140ac4f8d17403cc18)

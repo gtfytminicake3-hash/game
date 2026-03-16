@@ -6,7 +6,7 @@ using System.Collections;
 
 namespace LegendOfBlood
 {
-    public class POI_InfoPanel : MonoBehaviour, ILocalizable
+    public class POI_InfoPanel : UIPanel, ILocalizable
     {
         [Header("Standard UI References")]
         [SerializeField] private TextMeshProUGUI poiNameText;
@@ -28,6 +28,7 @@ namespace LegendOfBlood
 
         private void Awake()
         {
+            PanelType = UIPanelType.POI_Info;
             // TỰ ĐỘNG CHỮA BỆNH "RƠI KHỎI CANVAS":
             // Nếu POI_InfoPanel vô tình bị bỏ quên ngoài Root hierarchy (không có Canvas bọc), GUI sẽ ko vẽ.
             Canvas mainCanvas = FindFirstObjectByType<Canvas>(FindObjectsInactive.Include);
@@ -62,8 +63,9 @@ namespace LegendOfBlood
             }
         }
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             exploreButton.onClick.AddListener(OnExploreClicked);
             closeButton.onClick.AddListener(ClosePanel);
         }
@@ -179,7 +181,7 @@ namespace LegendOfBlood
                 StopCoroutine(_countdownCoroutine);
                 _countdownCoroutine = null;
             }
-            gameObject.SetActive(false);
+            GameManager.Instance.UIManager.GoBack();
         }
     }
 }

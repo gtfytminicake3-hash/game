@@ -4,7 +4,7 @@ namespace LegendOfBlood
     using UnityEngine;
     using UnityEngine.UI;
 
-    public class BarrackPanel : MonoBehaviour
+    public class BarrackPanel : UIPanel
     {
         [Header("UI References")]
         [SerializeField] private TMPro.TextMeshProUGUI panelTitleText;
@@ -21,8 +21,14 @@ namespace LegendOfBlood
 
         private List<GameObject> _instantiatedHeroCards = new List<GameObject>();
 
-        private void Start()
+        private void Awake()
         {
+            PanelType = UIPanelType.Barrack;
+        }
+
+        protected override void Start()
+        {
+            base.Start();
             if (panelTitleText != null) panelTitleText.text = LocalizationSystem.GetText("panel_title_barrack");
             
             if (closeButton != null)

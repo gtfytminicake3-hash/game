@@ -1,0 +1,48 @@
+====== PREFAB/SCENE STRUCTURE FOR EXTRACTED_HeroPicker_Panel.prefab ======
+========================================================
+GameObject: CloseButton (ID: 838989675046176121)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: title text (ID: 1979009625305079113)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: "Ch\u1ECDn Hero"
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Scroll View (ID: 2344508361604887636)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 1aa08ab6e0800fa44ae55d278d1423e3)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Content (ID: 3800101400241762526)
+  - MonoBehaviour (Script GUID: 8a8695521f0d02e499659fee002a26c2)
+  - MonoBehaviour (Script GUID: 3245ec927659c4140ac4f8d17403cc18)
+GameObject: Viewport (ID: 4096625483684097973)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 31a19414c41e5ae4aae2af33fee712f6)
+  - MonoBehaviour (Script GUID: 3312d7739989d2b4e91e6319e9a96d76)
+GameObject: Sliding Area (ID: 4179630966203421040)
+GameObject: Text (TMP) (ID: 5910933498257814647)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: X
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: EXTRACTED_HeroPicker_Panel (ID: 7178660407384122279)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 9c3f34479ecc1c54281fec156b0b6e23)
+    PanelType: 0
+    useDynamicBackground: 0
+    backgroundResourcePath: UI/Panel/panel_dong_frames
+  - MonoBehaviour (Script GUID: 619cdd331192ee141a573c3821e1de96)
+    PanelType: 8
+    useDynamicBackground: 0
+    backgroundResourcePath: UI/Panel/panel_dong_frames
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+GameObject: Scrollbar Vertical (ID: 8035188169266723032)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 2a4db7a114972834c8e4117be1d82ba3)
+GameObject: Handle (ID: 8098905050556519638)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)

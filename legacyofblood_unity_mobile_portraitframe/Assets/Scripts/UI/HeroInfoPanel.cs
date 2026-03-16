@@ -5,7 +5,7 @@ namespace LegendOfBlood
     using UnityEngine.UI;
     using TMPro;
 
-    public class HeroInfoPanel : MonoBehaviour
+    public class HeroInfoPanel : UIPanel
     {
         [Header("Main Info References")]
         [SerializeField] private TextMeshProUGUI heroNameText;
@@ -44,6 +44,7 @@ namespace LegendOfBlood
 
         private void Awake()
         {
+            PanelType = UIPanelType.HeroInfo;
             // AUTO-WIRE: Tự động đánh hơi tìm các Nút bị rớt (không được gắn trong Inspector)
             if (statAllocationButton == null || traitUpgradeButton == null || useExpItemButton == null)
             {
@@ -146,19 +147,36 @@ namespace LegendOfBlood
             {
                 string itemName = global::LocalizationSystem.GetText("unknown");
                 string itemDescription = global::LocalizationSystem.GetText("description_not_found");
+                Sprite itemIcon = null;
 
                 if (isTrait)
                 {
                     Trait trait = DataManager.Instance.GetTraitByID(id);
-                    if (trait != null) { itemName = global::LocalizationSystem.GetText(trait.traitName); itemDescription = global::LocalizationSystem.GetText(trait.description); }
+                    if (trait != null) { itemName = global::LocalizationSystem.GetText(trait.traitName); itemDescription = global::LocalizationSystem.GetText(trait.description); itemIcon = trait.icon; }
                 }
                 else
                 {
                     Skill skill = DataManager.Instance.GetSkillByID(id);
-                    if (skill != null) { itemName = global::LocalizationSystem.GetText(skill.skillName); itemDescription = global::LocalizationSystem.GetText(skill.description); }
+                    if (skill != null) { 
+                        itemName = global::LocalizationSystem.GetText(skill.skillName); 
+                        itemDescription = global::LocalizationSystem.GetText(skill.description); 
+                        itemIcon = skill.icon;
+                        Debug.Log($"[DEBUG] Skill loaded: {skill.id}, icon is null: {skill.icon == null}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"[DEBUG] Skill with ID {id} was completely null!");
+                    }
                 }
 
                 GameObject itemInstance = Instantiate(infoItemPrefab, container);
+                
+                Image iconImage = itemInstance.GetComponent<Image>();
+                if (iconImage != null && itemIcon != null)
+                {
+                    iconImage.sprite = itemIcon;
+                }
+
                 var texts = itemInstance.GetComponentsInChildren<TextMeshProUGUI>();
                 if (texts.Length >= 2) { texts[0].text = itemName; texts[1].text = itemDescription; }
                 _instantiatedInfoItems.Add(itemInstance);

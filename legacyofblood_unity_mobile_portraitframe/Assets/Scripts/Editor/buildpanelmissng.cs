@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine.UI;
 using TMPro;
 using LegendOfBlood;
-using LegendOfBlood.UI;
+// using LegendOfBlood.UI; // Namespace no longer used
 
 public class AutoUIBuilder : EditorWindow
 {

@@ -1,0 +1,15 @@
+﻿combo_war_1=<color=#aaaaaa>{0} gains 1 stack of [Aegis].</color>
+combo_war_2=<color=#aaaaaa>{0} roars to taunt all enemies! Gains 1 [Aegis].</color>
+combo_war_3=<color=#ffff00>{0} creates Virtual Shield blocking {1} DMG (Consumes {2} Aegis).</color>
+combo_war_4=<color=#aaaaaa>Virtual Shield resonance Stuns all enemies!</color>
+combo_mag_4=<color=#00ff00>{0} drains life for {1} HP.</color>
+combo_mag_5=<color=#ff00ff>[Poison Mark] detonates on {0} for {1} TRUE DMG!</color>
+combo_arc_2=<color=#00ffff>{0} focuses, +30% ATK and next hit is a Critical Hit!</color>
+combo_arc_4=<color=#00ffff>{0} falls back, reducing team cooldowns by 2 & Cleanses Debuffs!</color>
+combo_arc_5=<color=#ffaa00>Fatal Shot triggered, {0} gains an extra turn!</color>
+combo_hea_2=<color=#00ff00>{0} prays, increasing team Attack Power.</color>
+combo_hea_3=<color=#ff00ff>{0} links bloodline, sharing 50% DMG with {1}!</color>
+combo_hea_4=<color=#00ff00>[Seed] on {0} blooms, restoring {1} HP!</color>
+combo_hea_5=<color=#ffff00>{0} gains 1 [Immortal Shield] to block 1 fatal blow!</color>
+combo_dmg_link=<color=#ff00ff>{0} bears {1} DMG for {2}!</color>
+combo_immortal_pop=<color=#ffff00>[Immortal Shield] shattered, {0} miraculously survives with 1 HP!</color>

@@ -1,0 +1,28 @@
+====== PREFAB/SCENE STRUCTURE FOR TraitItem .prefab ======
+========================================================
+GameObject: 'DescText ' (ID: 701669311246277955)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: New Text
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: UpgradeBtn (ID: 1733765934486136271)
+  - MonoBehaviour (Script GUID: fe87c0e1cc204ed48ad3b37840f39efc)
+  - MonoBehaviour (Script GUID: 4e29b1a8efbd4b44bb3f3716e73f07ff)
+  - MonoBehaviour (Script GUID: 306cc8c2b49d7114eaa3623786fc2126)
+GameObject: Text (TMP) (ID: 2571050634238362843)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: Button
+    rgba: 4281479730
+    rgba: 4294967295
+    checkPaddingRequired: 0
+GameObject: 'TraitItem ' (ID: 5265957168344804959)
+  - MonoBehaviour (Script GUID: 30649d3a9faa99c48a7b1166b86bf2a0)
+GameObject: text (ID: 6923786434571313171)
+  - MonoBehaviour (Script GUID: 59f8146938fff824cb5fd77236b75775)
+GameObject: 'NameText ' (ID: 8208495636704157047)
+  - MonoBehaviour (Script GUID: f4688fdb7df04437aeb418b961361dc5)
+    m_text: New Text
+    rgba: 4278190080
+    rgba: 4294967295
+    checkPaddingRequired: 0

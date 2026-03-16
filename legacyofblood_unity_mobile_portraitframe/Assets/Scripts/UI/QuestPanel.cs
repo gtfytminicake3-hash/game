@@ -1,4 +1,4 @@
-namespace LegendOfBlood.UI
+namespace LegendOfBlood
 {
     using UnityEngine;
     using System.Collections.Generic;

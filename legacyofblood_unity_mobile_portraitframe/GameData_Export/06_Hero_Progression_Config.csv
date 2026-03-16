@@ -103,7 +103,7 @@ Cấp Độ (Level),Kinh Nghiệm Yêu Cầu (EXP)
 
 --- BẢNG TIẾN HÓA VÀ ĐỘT PHÁ CẢNH GIỚI ---
 Cấp Độ Yêu Cầu,Mô Tả Phần Thưởng
-30,"Mở khóa Nhánh Nghề (Chọn 1 Trait hệ)"
-50,"Nhận kỹ năng Active Level 2"
-70,"Đột phá Bậc Hiếm Trait ngẫu nhiên"
-100,"Hóa Thần! Chọn 1 Trait bậc S trở lên"
+30,"evo_reward_30"
+50,"evo_reward_50"
+70,"evo_reward_70"
+100,"evo_reward_100"

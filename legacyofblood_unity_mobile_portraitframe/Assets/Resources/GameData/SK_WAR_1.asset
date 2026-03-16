@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521587128dc1e094b92bf9fa2b326995, type: 3}
+  m_Name: SK_WAR_1
+  m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.Skill
+  id: SK_WAR_1
+  skillName: SK_WAR_1_name
+  description: SK_WAR_1_desc
+  icon: {fileID: -4778899992197692158, guid: 1469bf572a116b54cb6e2b6335ff897e, type: 3}
+  type: 0
+  requiredProfession: 0
+  cooldown: 0
+  targeting: 0
+  powerRatio: 1.2
+  hitCount: 1
+  appliedEffect: 0
+  effectDuration: 0
+  effectChance: 0

@@ -3,19 +3,24 @@ using UnityEngine.UI;
 
 namespace LegendOfBlood
 {
-    [RequireComponent(typeof(UIPanel))]
-    public class ArenaShopPanel : MonoBehaviour
+    public class ArenaShopPanel : UIPanel
     {
         [Header("UI References")]
         [SerializeField] private Button closeButton;
-        public Button adFreebieButton; // NEW: Nút nhận quà miễn phí mỗi ngày
-        [SerializeField] private Transform itemContainer; // To hold the shop items
-        [SerializeField] private GameObject shopItemPrefab; // Prefab for a single shop item
+        public Button adFreebieButton; 
+        [SerializeField] private Transform itemContainer;
+        [SerializeField] private GameObject shopItemPrefab;
 
         private void Awake()
         {
+            PanelType = UIPanelType.ArenaShop;
             if (closeButton != null) closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.GoBack());
             if (adFreebieButton != null) adFreebieButton.onClick.AddListener(OnAdFreebieClicked);
+        }
+
+        protected virtual void Start()
+        {
+            base.Start();
         }
 
         private void OnEnable()
