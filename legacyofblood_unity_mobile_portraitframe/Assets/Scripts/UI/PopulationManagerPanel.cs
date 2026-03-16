@@ -11,8 +11,9 @@ namespace LegendOfBlood
         [SerializeField] private GameObject heroCardPrefab;
         [SerializeField] private TextMeshProUGUI populationCountText;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             PanelType = UIPanelType.PopulationManager;
             if (closeButton != null)
             {

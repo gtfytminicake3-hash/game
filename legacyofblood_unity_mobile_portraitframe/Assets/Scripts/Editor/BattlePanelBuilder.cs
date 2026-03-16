@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using LegendOfBlood.Combat;
 using LegendOfBlood;
-using LegendOfBlood;
+// using LegendOfBlood;
 
 public class BattlePanelBuilder : EditorWindow
 {

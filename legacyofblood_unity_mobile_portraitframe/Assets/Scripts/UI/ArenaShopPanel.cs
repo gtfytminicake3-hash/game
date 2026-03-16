@@ -18,7 +18,7 @@ namespace LegendOfBlood
             if (adFreebieButton != null) adFreebieButton.onClick.AddListener(OnAdFreebieClicked);
         }
 
-        protected virtual void Start()
+        protected override void Start()
         {
             base.Start();
         }

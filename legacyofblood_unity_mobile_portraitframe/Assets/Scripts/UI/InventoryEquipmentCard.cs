@@ -24,14 +24,28 @@ namespace LegendOfBlood
 
             if (nameText != null) nameText.text = data.equipmentName;
             if (levelText != null) levelText.text = $"Lv.{data.level}";
+            
+            if (iconImage != null)
+            {
+                iconImage.sprite = data.GetIcon();
+            }
 
             // Main Stat Display
             if (mainStatText != null)
             {
-                if (data.slot == EquipmentSlot.Weapon)
-                    mainStatText.text = $"ATK: +{data.atkBonus}";
-                else
-                    mainStatText.text = $"HP: +{data.hpBonus} | DEF: +{data.defBonus}";
+                switch (data.slot)
+                {
+                    case EquipmentSlot.Weapon: mainStatText.text = $"ATK: +{data.atkBonus}"; break;
+                    case EquipmentSlot.Armor: mainStatText.text = $"HP: +{data.hpBonus} | DEF: +{data.defBonus}"; break;
+                    case EquipmentSlot.Helm: mainStatText.text = $"HP: +{data.hpBonus}"; break;
+                    case EquipmentSlot.Boots: mainStatText.text = $"SPD: +{data.spdBonus}"; break;
+                    case EquipmentSlot.Ring1:
+                    case EquipmentSlot.Ring2:
+                        if (data.atkMultiplier > 0) mainStatText.text = $"ATK: +{data.atkMultiplier * 100:F1}%";
+                        else if (data.critChanceBonus > 0) mainStatText.text = $"C.RATE: +{data.critChanceBonus * 100:F1}%";
+                        else if (data.critDamageBonus > 0) mainStatText.text = $"C.DMG: +{data.critDamageBonus * 100:F1}%";
+                        break;
+                }
             }
 
             // Sub Stats Display
@@ -43,13 +57,15 @@ namespace LegendOfBlood
             // Tùy chỉnh màu viền Rarity
             if (rarityBorder != null)
             {
-                switch (data.rarity)
+                switch (data.tier)
                 {
-                    case 1: rarityBorder.color = Color.white; break;
-                    case 2: rarityBorder.color = Color.green; break;
-                    case 3: rarityBorder.color = Color.blue; break;
-                    case 4: rarityBorder.color = Color.magenta; break;
-                    case 5: rarityBorder.color = Color.red; break;
+                    case EquipmentTier.D: rarityBorder.color = Color.white; break;
+                    case EquipmentTier.C: rarityBorder.color = Color.green; break;
+                    case EquipmentTier.B: rarityBorder.color = Color.blue; break;
+                    case EquipmentTier.A: rarityBorder.color = new Color(0.5f, 0, 0.5f); break; // Purple
+                    case EquipmentTier.S: rarityBorder.color = Color.yellow; break;
+                    case EquipmentTier.SS: rarityBorder.color = new Color(1f, 0.5f, 0f); break; // Orange
+                    case EquipmentTier.SSS: rarityBorder.color = Color.red; break;
                     default: rarityBorder.color = Color.white; break;
                 }
             }

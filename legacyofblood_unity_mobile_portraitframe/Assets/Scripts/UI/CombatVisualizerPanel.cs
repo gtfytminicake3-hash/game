@@ -51,7 +51,7 @@ namespace LegendOfBlood.Combat
             ToggleSpeedDisplay();
         }
 
-        protected virtual void Start()
+        protected override void Start()
         {
             base.Start();
         }

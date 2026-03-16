@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using LegendOfBlood;
-using LegendOfBlood;
+// using LegendOfBlood;
 
 namespace LegendOfBlood.EditorScripts
 {

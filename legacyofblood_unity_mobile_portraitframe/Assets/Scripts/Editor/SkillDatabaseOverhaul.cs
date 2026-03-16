@@ -52,9 +52,6 @@ public class SkillDatabaseOverhaul : EditorWindow
         };
 
         // Reuse icons
-        string iconDir = "Assets/Resources/Icons/GenUnique";
-        string fallbackIconDir = "Assets/Resources/Icons/GenSpecific";
-        string defaultFallbackDir = "Assets/Resources/Icons/Gen";
         
         List<Skill> newSkillAssets = new List<Skill>();
 

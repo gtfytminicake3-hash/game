@@ -7,7 +7,7 @@ public class CanvasAutoSpawner : EditorWindow
     public static void AutoSpawnPanels()
     {
         // 1. Tìm hoặc tạo Canvas trong Scene
-        Canvas canvas = FindObjectOfType<Canvas>();
+        Canvas canvas = GameObject.FindFirstObjectByType<Canvas>();
         if (canvas == null)
         {
             GameObject canvasGO = new GameObject("Canvas", typeof(RectTransform), typeof(Canvas), typeof(UnityEngine.UI.CanvasScaler), typeof(UnityEngine.UI.GraphicRaycaster));
@@ -15,7 +15,7 @@ public class CanvasAutoSpawner : EditorWindow
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
             
             // Tìm hoặc tạo EventSystem
-            if (FindObjectOfType<UnityEngine.EventSystems.EventSystem>() == null)
+            if (GameObject.FindFirstObjectByType<UnityEngine.EventSystems.EventSystem>() == null)
             {
                 new GameObject("EventSystem", typeof(UnityEngine.EventSystems.EventSystem), typeof(UnityEngine.EventSystems.StandaloneInputModule));
             }

@@ -209,6 +209,12 @@ namespace LegendOfBlood
                 critChance = bs.critChance,
                 critDamage = bs.critDamage
             };
+            
+            // Base advanced stats
+            this.evasionRate = 0f;
+            this.damageReduction = 0f;
+            this.damageIncrease = 0f;
+
             float multiplyHp = 1.0f, multiplyAtk = 1.0f, multiplyDef = 1.0f, multiplySpd = 1.0f;
             
             // --- CỘNG DỒN TRANG BỊ ---
@@ -224,6 +230,9 @@ namespace LegendOfBlood
                     finalStats.spd += eq.spdBonus;
                     finalStats.critChance += eq.critChanceBonus;
                     finalStats.critDamage += eq.critDamageBonus;
+                    this.evasionRate += eq.evasionBonus;
+                    this.damageReduction += eq.damageReductionBonus;
+                    this.damageIncrease += eq.damageIncreaseBonus;
                     
                     // Multiplier stats
                     multiplyHp += eq.hpMultiplier;

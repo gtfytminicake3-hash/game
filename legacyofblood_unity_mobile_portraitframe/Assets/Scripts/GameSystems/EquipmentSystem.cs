@@ -19,16 +19,50 @@ namespace LegendOfBlood
             int maxLevel = Mathf.Clamp(floorDifficulty + 2, 1, 40);
             int dropLevel = UnityEngine.Random.Range(minLevel, maxLevel + 1);
 
-            EquipmentSlot dropSlot = (UnityEngine.Random.value > 0.5f) ? EquipmentSlot.Weapon : EquipmentSlot.Armor;
-            string dropName = dropSlot == EquipmentSlot.Weapon ? "Vũ Khí Cổ Đại" : "Giáp Cổ Đại";
+            // Random 1 trong 6 slot
+            Array slots = Enum.GetValues(typeof(EquipmentSlot));
+            EquipmentSlot dropSlot = (EquipmentSlot)slots.GetValue(UnityEngine.Random.Range(0, slots.Length));
+            
+            string dropName = "Trang Bị Cổ Đại";
+            switch (dropSlot)
+            {
+                case EquipmentSlot.Weapon: dropName = "Vũ Khí Cổ Đại"; break;
+                case EquipmentSlot.Armor: dropName = "Giáp Cổ Đại"; break;
+                case EquipmentSlot.Helm: dropName = "Mũ Cổ Đại"; break;
+                case EquipmentSlot.Boots: dropName = "Giày Cổ Đại"; break;
+                case EquipmentSlot.Ring1: 
+                case EquipmentSlot.Ring2: dropName = "Nhẫn Cổ Đại"; break;
+            }
             string id = Guid.NewGuid().ToString();
 
-            EquipmentData newEquip = new EquipmentData(id, dropName, dropSlot, dropLevel);
+            // Random Profession restriction. (Warrior, Archer, Mage, Healer)
+            // Index 1 to 4 because 0 is None
+            Profession dropClass = Profession.None;
+            if (dropSlot != EquipmentSlot.Ring1 && dropSlot != EquipmentSlot.Ring2)
+            {
+                Array classes = Enum.GetValues(typeof(Profession));
+                // We assume enum is: None=0, Warrior=1, Archer=2, Mage=3, Healer=4
+                dropClass = (Profession)classes.GetValue(UnityEngine.Random.Range(1, classes.Length));
+            }
+
+            EquipmentData newEquip = new EquipmentData(id, dropName, dropSlot, dropLevel, EquipmentTier.D, dropClass);
             
             // Random độ hiếm (quyết định sức mạnh cơ bản)
-            newEquip.rarity = UnityEngine.Random.Range(1, 4); 
+            // Sinh ngẫu nhiên phẩm chất từ D đến SSS
+            Array tiers = Enum.GetValues(typeof(EquipmentTier));
+            // Tạo trọng số để đổ mỡ: D dễ ra nhất, SSS khó ra nhất.
+            float roll = UnityEngine.Random.value;
+            EquipmentTier droppedTier = EquipmentTier.D;
+            if (roll > 0.99f) droppedTier = EquipmentTier.SSS;
+            else if (roll > 0.95f) droppedTier = EquipmentTier.SS;
+            else if (roll > 0.85f) droppedTier = EquipmentTier.S;
+            else if (roll > 0.70f) droppedTier = EquipmentTier.A;
+            else if (roll > 0.40f) droppedTier = EquipmentTier.B;
+            else if (roll > 0.15f) droppedTier = EquipmentTier.C;
+            
+            newEquip.tier = droppedTier;
 
-            // Scale Base Stats theo Level
+            // Scale Base Stats theo Level và Tier
             ScaleBaseStats(newEquip);
 
             // Sinh 2 dòng Bonus Stats
@@ -39,16 +73,44 @@ namespace LegendOfBlood
 
         private static void ScaleBaseStats(EquipmentData equip)
         {
-            float levelMultiplier = 1f + (equip.level * 0.1f * equip.rarity);
-            
-            if (equip.slot == EquipmentSlot.Weapon)
-            {
-                equip.atkBonus = Mathf.Round(10f * levelMultiplier);
+            // Map Tier to a multiplier factor: D=1, C=1.5, B=2, A=3, S=4, SS=5, SSS=7 
+            float tierMultiplier = 1f;
+            switch(equip.tier) {
+                case EquipmentTier.D: tierMultiplier = 1.0f; break;
+                case EquipmentTier.C: tierMultiplier = 1.5f; break;
+                case EquipmentTier.B: tierMultiplier = 2.0f; break;
+                case EquipmentTier.A: tierMultiplier = 3.0f; break;
+                case EquipmentTier.S: tierMultiplier = 4.0f; break;
+                case EquipmentTier.SS: tierMultiplier = 5.0f; break;
+                case EquipmentTier.SSS: tierMultiplier = 7.0f; break;
             }
-            else if (equip.slot == EquipmentSlot.Armor)
+
+            float levelMultiplier = 1f + (equip.level * 0.1f * tierMultiplier);
+            
+            switch (equip.slot)
             {
-                equip.hpBonus = Mathf.Round(50f * levelMultiplier);
-                equip.defBonus = Mathf.Round(5f * levelMultiplier);
+                case EquipmentSlot.Weapon:
+                    equip.atkBonus = Mathf.Round(10f * levelMultiplier);
+                    break;
+                case EquipmentSlot.Armor:
+                    equip.hpBonus = Mathf.Round(25f * levelMultiplier);
+                    equip.defBonus = Mathf.Round(5f * levelMultiplier);
+                    break;
+                case EquipmentSlot.Helm:
+                    equip.hpBonus = Mathf.Round(50f * levelMultiplier);
+                    break;
+                case EquipmentSlot.Boots:
+                    equip.spdBonus = Mathf.Round(2f * levelMultiplier);
+                    break;
+                case EquipmentSlot.Ring1:
+                case EquipmentSlot.Ring2:
+                    // Main stat random for Ring: %ATK, %Crit Chance, or %Crit Damage
+                    int randomRingStat = UnityEngine.Random.Range(0, 3);
+                    float ringValue = 0.05f * levelMultiplier; // Base 5%
+                    if (randomRingStat == 0) equip.atkMultiplier += ringValue;
+                    else if (randomRingStat == 1) equip.critChanceBonus += (ringValue / 2f); // Crit chance scales slower
+                    else equip.critDamageBonus += ringValue;
+                    break;
             }
         }
 
@@ -57,13 +119,15 @@ namespace LegendOfBlood
             // Reset modifiers
             equip.hpMultiplier = 0; equip.atkMultiplier = 0; equip.defMultiplier = 0; equip.spdMultiplier = 0;
             equip.critChanceBonus = 0; equip.critDamageBonus = 0;
+            equip.evasionBonus = 0; equip.damageReductionBonus = 0; equip.damageIncreaseBonus = 0;
 
             string[] possibleBonusDesc = new string[2];
 
             for (int i = 0; i < 2; i++)
             {
-                int roll = UnityEngine.Random.Range(0, 4);
+                int roll = GetRandomSubstatRollForSlot(equip.slot);
                 float value = 0;
+                
                 switch (roll)
                 {
                     case 0: // +% ATK
@@ -82,15 +146,71 @@ namespace LegendOfBlood
                         possibleBonusDesc[i] = $"+{Mathf.Round(value * 100)}% Tỉ lệ Chí Mạng";
                         break;
                     case 3: // Speed Flat
+                        // Since boots has main speed, we might want flat speed as substat for others.
                         value = UnityEngine.Random.Range(2f, 10f);
                         equip.spdBonus += value;
                         possibleBonusDesc[i] = $"+{Mathf.Round(value)} Tốc độ";
+                        break;
+                    case 4: // +% DEF
+                        value = UnityEngine.Random.Range(0.05f, 0.15f);
+                        equip.defMultiplier += value;
+                        possibleBonusDesc[i] = $"+{Mathf.Round(value * 100)}% DEF";
+                        break;
+                    case 5: // +% Damage Reduction (Áo, Nhẫn)
+                        value = UnityEngine.Random.Range(0.02f, 0.08f);
+                        equip.damageReductionBonus += value;
+                        possibleBonusDesc[i] = $"+{value * 100:F1}% Giảm Sát Thương";
+                        break;
+                    case 6: // +% Evasion (Mũ, Giày, Nhẫn)
+                        value = UnityEngine.Random.Range(0.02f, 0.08f);
+                        equip.evasionBonus += value;
+                        possibleBonusDesc[i] = $"+{value * 100:F1}% Né Tránh";
+                        break;
+                    case 7: // +% Damage Increase (Vũ khí, Nhẫn)
+                        value = UnityEngine.Random.Range(0.02f, 0.08f);
+                        equip.damageIncreaseBonus += value;
+                        possibleBonusDesc[i] = $"+{value * 100:F1}% Sát Thương Gây Ra";
                         break;
                 }
             }
 
             equip.bonusStat1Description = possibleBonusDesc[0];
             equip.bonusStat2Description = possibleBonusDesc[1];
+        }
+
+        private static int GetRandomSubstatRollForSlot(EquipmentSlot slot)
+        {
+            // Pool:
+            // 0: ATK%, 1: HP%, 2: Crit%, 3: Speed, 4: DEF%
+            // 5: DMG Reduc, 6: Evasion, 7: DMG Increase
+            switch (slot)
+            {
+                case EquipmentSlot.Weapon:
+                    {
+                        int[] pool = { 0, 2, 7 }; // ATK%, Crit%, DMG Increase
+                        return pool[UnityEngine.Random.Range(0, pool.Length)];
+                    }
+                case EquipmentSlot.Armor:
+                    {
+                        int[] pool = { 1, 4, 5 }; // HP%, DEF%, DMG Reduction
+                        return pool[UnityEngine.Random.Range(0, pool.Length)];
+                    }
+                case EquipmentSlot.Helm:
+                    {
+                        int[] pool = { 1, 4, 6 }; // HP%, DEF%, Evasion
+                        return pool[UnityEngine.Random.Range(0, pool.Length)];
+                    }
+                case EquipmentSlot.Boots:
+                    {
+                        int[] pool = { 0, 1, 4, 6 }; // ATK%, HP%, DEF%, Evasion
+                        return pool[UnityEngine.Random.Range(0, pool.Length)];
+                    }
+                case EquipmentSlot.Ring1:
+                case EquipmentSlot.Ring2:
+                    return UnityEngine.Random.Range(0, 8); // All substats possible
+                default:
+                    return 0;
+            }
         }
 
         /// <summary>

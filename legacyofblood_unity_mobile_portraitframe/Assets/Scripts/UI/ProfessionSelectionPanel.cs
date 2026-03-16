@@ -28,8 +28,9 @@ namespace LegendOfBlood
             this.gameObject.SetActive(true);
         }
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             warriorButton.onClick.AddListener(() => SelectProfession(Profession.Warrior));
             archerButton.onClick.AddListener(() => SelectProfession(Profession.Archer));
             mageButton.onClick.AddListener(() => SelectProfession(Profession.Mage));

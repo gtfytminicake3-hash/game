@@ -209,7 +209,7 @@ namespace LegendOfBlood
             
             // Update: Since EquipmentDetailPanel has .Setup(data), we can find it in UIManager if it is an overlay,
             // or we might need to rely on GameEventManager or UIManager direct call. Let's just lookup by type.
-            var equipmentDetailPanel = FindObjectOfType<EquipmentDetailPanel>(true);
+            var equipmentDetailPanel = FindFirstObjectByType<EquipmentDetailPanel>(FindObjectsInactive.Include);
             if (equipmentDetailPanel != null)
             {
                 equipmentDetailPanel.Setup(equip);

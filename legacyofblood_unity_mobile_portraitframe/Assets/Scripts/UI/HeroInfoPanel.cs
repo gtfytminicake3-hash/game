@@ -29,6 +29,9 @@ namespace LegendOfBlood
         [SerializeField] private Transform traitsContainer;
         [SerializeField] private Transform skillsContainer;
         
+        [Header("Equipment Slots")]
+        [SerializeField] private HeroEquipmentSlot[] equipmentSlots;
+        
         [Header("Actions")]
         [SerializeField] private Button closeButton;
         [SerializeField] private Button statAllocationButton;
@@ -132,6 +135,15 @@ namespace LegendOfBlood
                 // Only active if hero is mature and not max level
                 bool canUseExp = _currentHero.isMature && _currentHero.level < 100;
                 useExpItemButton.gameObject.SetActive(canUseExp);
+            }
+            
+            // --- CẬP NHẬT GIAO DIỆN TRANG BỊ ---
+            if (equipmentSlots != null)
+            {
+                foreach (var slot in equipmentSlots)
+                {
+                    if (slot != null) slot.Setup(_currentHero);
+                }
             }
 
             ClearInfoItems();

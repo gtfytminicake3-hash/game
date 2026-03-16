@@ -13,7 +13,7 @@ public class HeroInfoLayoutGenerator
     [MenuItem("Tools/Generate Hero Info Layout Perfected")]
     public static void GenerateLayoutPerfected()
     {
-        Canvas canvas = GameObject.FindObjectOfType<Canvas>();
+        Canvas canvas = GameObject.FindFirstObjectByType<Canvas>();
         if (canvas == null)
         {
             GameObject canvasGO = new GameObject("Canvas");
@@ -174,7 +174,7 @@ public class HeroInfoLayoutGenerator
         tmp.alignment = align;
         tmp.fontStyle = fontStyle;
         tmp.color = textColor;
-        tmp.enableWordWrapping = false;
+        tmp.textWrappingMode = TextWrappingModes.NoWrap;
 
         if (preferredHeight > 0)
         {
