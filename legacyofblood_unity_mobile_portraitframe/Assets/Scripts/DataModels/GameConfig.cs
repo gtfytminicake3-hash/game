@@ -82,6 +82,32 @@ namespace LegendOfBlood.GameConfigs
         public int customMonsterCount = 0; 
     }
 
+    [System.Serializable]
+    public class ArenaShopPoolItem
+    {
+        public ShopGoodType type;
+        public string refId; // Ví dụ: "IT_EXP_BOOK_S", "Knight's Helm", "GOLD"
+        public string displayName;
+        
+        [Tooltip("Giá cố định hoặc giá tối thiểu. Nếu có min/max thì sẽ random.")]
+        public int priceMin;
+        public int priceMax; 
+        
+        public int amountMin = 1;
+        public int amountMax = 1;
+
+        // Dành riêng cho trang bị
+        public EquipmentTier equipTier = EquipmentTier.D;
+        public EquipmentSlot equipSlot = EquipmentSlot.Weapon;
+        public Profession equipRestriction = Profession.None;
+
+        [Tooltip("Trọng số xuất hiện (Weight). Số càng cao tỷ lệ được bốc trúng càng lớn.")]
+        public int weight = 100;
+        
+        [Tooltip("Cho phép mua nhiều lần không? Thường shop Arena chỉ mua 1 lần mỗi slot.")]
+        public bool isInfinite = false;
+    }
+
     /// <summary>
     /// ScriptableObject trung tâm chứa tất cả dữ liệu cấu hình của game.
     /// Kéo file asset GameConfig vào DataManager trong Inspector.
@@ -135,6 +161,13 @@ namespace LegendOfBlood.GameConfigs
 
         [Tooltip("Cấu hình danh sách quái cho các tầng tháp thử thách.")]
         public List<TowerFloorConfig> TowerConfigs;
+
+        [Tooltip("Cấu hình hệ thống phần thưởng Battle Pass (King God Pass).")]
+        public KingGodPassConfig KingGodPassConfig;
+
+        [Header("Shop Systems")]
+        [Tooltip("Danh sách toàn bộ các món đồ có thể xuất hiện ngẫu nhiên trong Arena Shop mỗi ngày.")]
+        public List<ArenaShopPoolItem> ArenaShopPool;
     }
 }
 // --- END OF FILE GameConfig.cs (FIXED AGAIN) ---

@@ -9,7 +9,7 @@ namespace LegendOfBlood
     /// <summary>
     /// Điều khiển màn hình Lai tạo, quản lý việc chọn cha, mẹ và bắt đầu quá trình lai tạo.
     /// </summary>
-    public class BreedingUIController : MonoBehaviour
+    public class BreedingUIController : UIPanel
     {
         [Header("Panel Titles")]
         [SerializeField] private TextMeshProUGUI panelTitleText;
@@ -48,13 +48,18 @@ namespace LegendOfBlood
         [SerializeField] private TextMeshProUGUI spdText_Result;
         [SerializeField] private TextMeshProUGUI potentialText_Result;
 
+        [Header("Progress Tube UI")]
+        [SerializeField] private GameObject progressGroup;
+        [SerializeField] private Image progressFill;
+        [SerializeField] private TextMeshProUGUI progressText;
+
         // Tham chiếu đến HeroPickerPanel trong scene để gọi nó
         public HeroPickerPanel heroPickerPanel;
-
 
         // Lưu trữ dữ liệu của cha và mẹ đã chọn
         private HeroData _selectedFather;
         private HeroData _selectedMother;
+        private bool _isBreeding = false;
 
         // Cờ để biết HeroPickerPanel được mở để chọn ai
         private bool _isPickingFather = false;
@@ -62,10 +67,26 @@ namespace LegendOfBlood
         // Enum để định nghĩa các trạng thái
         private enum BreedingState { Selection, Result }
         
+        private int CalculateSuccessRate()
+        {
+            if (_selectedFather == null || _selectedMother == null) return 0;
+
+            int baseChance = 50;
+            int levelBonus = (int)((_selectedFather.level + _selectedMother.level) * 0.5f); // Thưởng cấp độ
+            int cpBonus = (_selectedFather.GetCombatPower() + _selectedMother.GetCombatPower()) / 200; // Thưởng lực chiến
+            int levelDiff = Mathf.Abs(_selectedFather.level - _selectedMother.level);
+            int penalty = levelDiff * 2; // Phạt nếu chênh lệch cấp độ quá lớn
+
+            int successRate = Mathf.Clamp(baseChance + levelBonus + cpBonus - penalty, 10, 100);
+            return successRate;
+        }
+        
         #region Unity Lifecycle & Event Subscription
 
         private void Awake()
         {
+            PanelType = UIPanelType.Breeding;
+            
             if (selectFatherButton != null)
             {
                 selectFatherButton.onClick.AddListener(OnSelectFatherClicked);
@@ -234,34 +255,53 @@ namespace LegendOfBlood
         /// </summary>
         private void UpdateUI()
         {
+            // Luôn đảm bảo Card hiện
+            if (fatherCard != null) fatherCard.gameObject.SetActive(true);
+            if (motherCard != null) motherCard.gameObject.SetActive(true);
+
             // Cập nhật ô Cha
             if (_selectedFather != null)
             {
-                fatherCard.gameObject.SetActive(true);
                 fatherCard.Setup(_selectedFather);
                 selectFatherButton.GetComponentInChildren<TextMeshProUGUI>().text = global::LocalizationSystem.GetText("breeding_change_father");
             }
             else
             {
-                fatherCard.gameObject.SetActive(false);
+                if (fatherCard != null) fatherCard.Clear();
                 selectFatherButton.GetComponentInChildren<TextMeshProUGUI>().text = global::LocalizationSystem.GetText("breeding_select_father");
             }
             
             // Cập nhật ô Mẹ
             if (_selectedMother != null)
             {
-                motherCard.gameObject.SetActive(true);
                 motherCard.Setup(_selectedMother);
                 selectMotherButton.GetComponentInChildren<TextMeshProUGUI>().text = global::LocalizationSystem.GetText("breeding_change_mother");
             }
             else
             {
-                motherCard.gameObject.SetActive(false);
+                if (motherCard != null) motherCard.Clear();
                 selectMotherButton.GetComponentInChildren<TextMeshProUGUI>().text = global::LocalizationSystem.GetText("breeding_select_mother");
             }
 
             // Kích hoạt nút Lai tạo chỉ khi đã chọn đủ cả hai
-            breedButton.interactable = (_selectedFather != null && _selectedMother != null);
+            breedButton.interactable = (_selectedFather != null && _selectedMother != null && !_isBreeding);
+
+            // Logic trang trí cho Center Tube
+            if (progressText != null && !_isBreeding)
+            {
+                if (_selectedFather != null && _selectedMother != null)
+                {
+                    int successRate = CalculateSuccessRate();
+                    string colorHex = successRate >= 80 ? "#00FF00" : (successRate >= 50 ? "#FFFF00" : "#FF0000");
+                    progressText.text = $"Tỷ lệ thành công: <color={colorHex}>{successRate}%</color>\nSẵn sàng!";
+                    if (progressFill != null) progressFill.fillAmount = successRate / 100f;
+                }
+                else
+                {
+                    progressText.text = "Đang chờ Tướng...";
+                    if (progressFill != null) progressFill.fillAmount = 0f;
+                }
+            }
         }
 
         private void ResetSelection()
@@ -277,6 +317,7 @@ namespace LegendOfBlood
 
         private void OnBreedClicked()
         {
+            if (_isBreeding) return;
             if (_selectedFather == null || _selectedMother == null)
             {
                 Debug.LogError("Nút Lai tạo được nhấn khi chưa chọn đủ cha mẹ!");
@@ -289,11 +330,6 @@ namespace LegendOfBlood
                 Debug.LogError("LỖI NGHIÊM TRỌNG: GameManager.Instance đang bị null! Hãy kiểm tra xem có GameObject GameManager trong scene không.");
                 return;
             }
-            if (GameManager.Instance == null)
-            {
-                Debug.LogError("LỖI NGHIÊM TRỌNG: GameManager.Instance đang bị null! Hãy kiểm tra xem có GameObject GameManager trong scene không.");
-                return;
-            }
             if (GameManager.Instance.BreedingSystem == null)
             {
                 Debug.LogError("LỖI NGHIÊM TRỌNG: GameManager.Instance.BreedingSystem đang bị null! Hãy kiểm tra xem component BreedingSystem đã được gán/thêm vào GameManager chưa.");
@@ -301,7 +337,7 @@ namespace LegendOfBlood
             }
             // --- KẾT THÚC KIỂM TRA ---
 
-            PerformBreeding(OptionsFromPotion());
+            StartCoroutine(BreedingProcessRoutine(OptionsFromPotion()));
         }
         
         private BreedingOptions OptionsFromPotion()
@@ -335,35 +371,74 @@ namespace LegendOfBlood
             {
                 LegendOfBlood.Managers.AdRewardGateway.Instance.RequestAd(LegendOfBlood.Managers.RewardType.BreedingMutation, () => {
                     BreedingOptions adOptions = new BreedingOptions { UseMutationPotion = true };
-                    PerformBreeding(adOptions);
+                    StartCoroutine(BreedingProcessRoutine(adOptions));
                 });
             }
         }
 
-        private void PerformBreeding(BreedingOptions options)
+        private System.Collections.IEnumerator BreedingProcessRoutine(BreedingOptions options)
         {
-            if (options == null) return; // Bị lỗi không đủ đồ
+            if (options == null) yield break; // Bị lỗi không đủ đồ
 
-            // Gọi hệ thống logic để thực hiện lai tạo
-            BreedingSystem breedingSystem = GameManager.Instance.BreedingSystem;
-            List<HeroData> offspringList = breedingSystem.Breed(_selectedFather, _selectedMother, options);
+            _isBreeding = true;
+            UpdateUI(); // Khóa nút bấm
 
-            if (offspringList.Count > 0)
-            {                
-                // Thêm các hero con vào DataManager
-                foreach (var offspring in offspringList)
-                {
-                    DataManager.Instance.AddHero(offspring);
+            if (progressGroup != null) progressGroup.SetActive(true);
+
+            float t = 0f;
+            float duration = 2.0f; // Nhá máy chờ 2 giây
+
+            while (t < duration)
+            {
+                t += Time.deltaTime;
+                float pct = t / duration;
+                
+                if (progressFill != null) progressFill.fillAmount = pct;
+                if (progressText != null) progressText.text = $"Đang phân tích Gen... {(int)(pct * 100)}%";
+                
+                yield return null;
+            }
+
+            // Tính tỷ lệ thành công
+            int successRate = CalculateSuccessRate();
+            int roll = Random.Range(1, 101); // 1-100
+
+            if (roll <= successRate)
+            {
+                // Gọi hệ thống logic để thực hiện lai tạo
+                BreedingSystem breedingSystem = GameManager.Instance.BreedingSystem;
+                List<HeroData> offspringList = breedingSystem.Breed(_selectedFather, _selectedMother, options);
+
+                if (offspringList.Count > 0)
+                {                
+                    // Thêm các hero con vào DataManager
+                    foreach (var offspring in offspringList)
+                    {
+                        DataManager.Instance.AddHero(offspring);
+                    }
+
+                    GameManager.Instance.UINotificationManager.ShowNotification($"<color=#00FF00>Lai tạo thành công!</color>\nChào mừng {offspringList[0].heroName}");
+
+                    // Chuyển sang trạng thái kết quả và hiển thị thông tin
+                    SwitchToState(BreedingState.Result);
+                    DisplayResult(offspringList[0]); // Hiển thị đứa con đầu tiên
                 }
-
-                // Chuyển sang trạng thái kết quả và hiển thị thông tin
-                SwitchToState(BreedingState.Result);
-                DisplayResult(offspringList[0]); // Hiển thị đứa con đầu tiên
+                else
+                {
+                    GameManager.Instance.UINotificationManager.ShowNotification("<color=#FF0000>Lỗi Hệ Thống:</color> Không thể sinh ra Tướng mới!");
+                }
             }
             else
             {
-                GameManager.Instance.UINotificationManager.ShowNotification(global::LocalizationSystem.GetText("breeding_failed"));
+                GameManager.Instance.UINotificationManager.ShowNotification("<color=#FF0000>Lai tạo thất bại!</color> Các đoạn Gen không tương thích.");
             }
+
+            _isBreeding = false;
+            
+            // Reset Progress bar
+            if (progressFill != null) progressFill.fillAmount = 0;
+            if (progressText != null) progressText.text = "Sẵn sàng lai tạo";
+            UpdateUI();
         }
 
         /// <summary>

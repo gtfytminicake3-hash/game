@@ -248,6 +248,7 @@ namespace LegendOfBlood
 
             // Không chạy update nếu game đang không ở trạng thái Playing
             if (CurrentState != GameState.Playing) return;
+            if (DataManager.Instance == null) return;
 
             // Cung cấp một "tick" cho các hệ thống cần nó
             // Điều này giúp tập trung logic cập nhật vào một nơi thay vì có nhiều

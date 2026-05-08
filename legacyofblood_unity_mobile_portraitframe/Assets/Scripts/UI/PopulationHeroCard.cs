@@ -27,6 +27,12 @@ namespace LegendOfBlood
             int cp = heroData.GetCombatPower();
             if (cpText != null) cpText.text = $"CP: {cp}";
 
+            if (avatarImage != null) 
+            {
+                avatarImage.sprite = heroData.GetAvatarSprite();
+                avatarImage.color = Color.white; // Ensure it's not tinted gray
+            }
+
             if (dismissButton != null)
             {
                 dismissButton.onClick.RemoveAllListeners();

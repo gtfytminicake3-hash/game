@@ -136,11 +136,20 @@ namespace LegendOfBlood
             {
                 benefitText.gameObject.SetActive(true);
                 string benefitStr = "";
-                if (building.id == "TownHall" || building.id == "Barrack" || building.type == BuildingType.TownHall || building.type == BuildingType.Barracks)
+                if (building.id == "TownHall" || building.type == BuildingType.TownHall)
                 {
                     int currentPop = 50 + ((building.level > 0 ? building.level - 1 : 0) * 5);
                     int nextPop = 50 + (((building.level + 1) > 0 ? (building.level + 1) - 1 : 0) * 5);
                     benefitStr = $"Sức chứa Dân Số: {currentPop} -> {nextPop}";
+                }
+                else if (building.id == "Barracks" || building.id == "Barrack" || building.type == BuildingType.Barracks)
+                {
+                    int currentSlots = 1 + (building.level / 5);
+                    int nextSlots = 1 + ((building.level + 1) / 5);
+                    if (nextSlots > currentSlots)
+                        benefitStr = $"Số Đội Viễn Chinh: {currentSlots} -> {nextSlots}";
+                    else
+                        benefitStr = $"Số Đội Viễn Chinh: {currentSlots} (Tăng ở cấp {((building.level/5)+1)*5})";
                 }
                 else if (building.id == "Hospital" || building.type == BuildingType.Hospital)
                 {

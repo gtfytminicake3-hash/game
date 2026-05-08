@@ -274,5 +274,68 @@ namespace LegendOfBlood
 
             return true; // Có EXP thêm vào
         }
+
+        /// <summary>
+        /// Gỡ trang bị từ Hero vào Inventory
+        /// </summary>
+        public static bool UnequipItem(HeroData hero, EquipmentSlot slot)
+        {
+            if (hero == null) return false;
+            
+            EquipmentData eq = hero.GetEquipment(slot);
+            if (eq != null)
+            {
+                hero.UnequipItem(slot);
+                hero.currentHp = Mathf.Min(hero.currentHp, hero.GetFinalStats().hp); // Cap HP
+                
+                if (GameManager.Instance != null && GameManager.Instance.InventoryManager != null)
+                {
+                    GameManager.Instance.InventoryManager.AddEquipment(eq);
+                }
+                DataManager.TriggerHeroStatsChanged(hero);
+                // DataManager.Instance?.SavePlayerData(); // AddEquipment already saves
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Mặc trang bị từ Inventory cho Hero. Tự động tháo đồ cũ nếu có.
+        /// </summary>
+        public static bool EquipItem(HeroData hero, EquipmentData item)
+        {
+            if (hero == null || item == null) return false;
+            
+            // Validate Profession
+            if (item.classRestriction != Profession.None && item.classRestriction != hero.profession)
+            {
+                GameManager.Instance?.UINotificationManager?.ShowNotification(LocalizationSystem.GetText("equip_error_profession"));
+                return false;
+            }
+
+            // Remove from inventory
+            if (GameManager.Instance != null && GameManager.Instance.InventoryManager != null)
+            {
+                bool removed = GameManager.Instance.InventoryManager.RemoveEquipment(item);
+                if (!removed) return false; // Not in inventory?
+            }
+
+            // Unequip current if any
+            EquipmentData currentEq = hero.GetEquipment(item.slot);
+            if (currentEq != null)
+            {
+                hero.UnequipItem(item.slot);
+                if (GameManager.Instance != null && GameManager.Instance.InventoryManager != null)
+                {
+                    GameManager.Instance.InventoryManager.AddEquipment(currentEq);
+                }
+            }
+
+            hero.EquipItem(item);
+            hero.currentHp = Mathf.Min(hero.currentHp, hero.GetFinalStats().hp);
+            DataManager.TriggerHeroStatsChanged(hero);
+            DataManager.Instance?.SavePlayerData();
+            return true;
+        }
     }
 }

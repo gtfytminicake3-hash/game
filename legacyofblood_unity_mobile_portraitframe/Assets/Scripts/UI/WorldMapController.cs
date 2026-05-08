@@ -121,6 +121,7 @@ namespace LegendOfBlood
         private void OnEnable()
         {
             ExpeditionManager.OnExpeditionStarted += HandleExpeditionStarted;
+            ExpeditionManager.OnExpeditionStateChanged += HandleExpeditionStateChanged;
             ExpeditionManager.OnExpeditionFinished += HandleExpeditionFinished;
             ExpeditionManager.OnPOICleared += HandlePOICleared;
             ExpeditionManager.OnTowerConquered += HandleTowerConquered;
@@ -134,6 +135,7 @@ namespace LegendOfBlood
         private void OnDisable()
         {
             ExpeditionManager.OnExpeditionStarted -= HandleExpeditionStarted;
+            ExpeditionManager.OnExpeditionStateChanged -= HandleExpeditionStateChanged;
             ExpeditionManager.OnExpeditionFinished -= HandleExpeditionFinished;
             ExpeditionManager.OnPOICleared -= HandlePOICleared;
             ExpeditionManager.OnTowerConquered -= HandleTowerConquered;
@@ -338,6 +340,15 @@ namespace LegendOfBlood
 
             // Luôn đảm bảo có đủ 4 tháp nghề nghiệp
             GenerateProfessionTowers();
+
+            // Khôi phục các chuyến thám hiểm đang chạy nếu có (để render lại xe ngựa)
+            if (DataManager.Instance.Player.ActiveExpeditions != null)
+            {
+                foreach (var exp in DataManager.Instance.Player.ActiveExpeditions)
+                {
+                    HandleExpeditionStateChanged(exp);
+                }
+            }
         }
 
         private void GenerateAndRegisterNewPOI(POIType type, string specificName, int targetDifficulty = -1)
@@ -682,7 +693,6 @@ namespace LegendOfBlood
 
         private void OpenSquadSelectionForPOI(POIData poiData)
         {
-            // Lấy trực tiếp từ UIManager thay vì dùng cache squadSelectionPanel dễ bị nhầm Prefab
             var currentSquadPanel = GameManager.Instance.UIManager.GetPanel<SquadSelectionPanel>(UIPanelType.SquadSelection);
             if (currentSquadPanel == null) 
             {
@@ -692,17 +702,22 @@ namespace LegendOfBlood
 
             var availableHeroes = DataManager.Instance.AllHeroes.Where(h => h.isMature && !h.IsBusy()).ToList();
             currentSquadPanel.Show(
-                string.Format(global::LocalizationSystem.GetText("worldmap_select_squad_title_format"), poiData.poiName),
-                availableHeroes, 5,
-                (selectedHeroIDs) => {
-                    currentSquadPanel.gameObject.SetActive(false);
-                    // Dùng UIManager để Hide Panel cho chuẩn (thay vì gameObject.SetActive)
+                title: string.Format(global::LocalizationSystem.GetText("worldmap_select_squad_title_format"), poiData.poiName),
+                availableHeroes: availableHeroes, 
+                squadSize: 5,
+                onConfirm: (selectedHeroIDs, diff) => 
+                {
+                    // Dùng UIManager để Hide Panel cho chuẩn
                     GameManager.Instance.UIManager.HidePanel(UIPanelType.SquadSelection);
-                    GameManager.Instance.UIManager.HidePanel(UIPanelType.Tower);   // Ẩn Tower Info Panel (dùng chung poiInfoPanel script bên dưới)
+                    GameManager.Instance.UIManager.HidePanel(UIPanelType.Tower);
                     if (poiInfoPanel != null) poiInfoPanel.gameObject.SetActive(false);
+                    
+                    Debug.Log($"[WorldMap] Tham số chọn đội hình: {string.Join(", ", selectedHeroIDs)} - Độ khó: {diff}");
+                    poiData.difficultyLevel = diff;
                     GameManager.Instance.ExpeditionManager.StartExpedition(selectedHeroIDs, poiData);
                 },
-                poiData.requiredProfession
+                requiredProfession: poiData.requiredProfession,
+                initialDifficulty: poiData.difficultyLevel
             );
         }
 
@@ -749,57 +764,75 @@ namespace LegendOfBlood
         
         private void HandleExpeditionStarted(ExpeditionDisplayData displayData)
         {
+            // Just wait for HandleExpeditionStateChanged
+        }
+
+        private void HandleExpeditionStateChanged(ActiveExpedition expedition)
+        {
             if (travelCartPrefab == null) return;
 
-            // Đã trả lại travelLayer (Vui lòng không xài POI Container nữa)
-            // Vì ở hàm Start(), TravelLayer đã tự động được nhét vào trong MapContainer.
-            GameObject cartInstance = Instantiate(travelCartPrefab, travelLayer);
-            _activeTravelCarts[displayData.expeditionId] = cartInstance;
+            GameObject cartInstance;
+            RectTransform cartRect;
 
-            RectTransform cartRect = cartInstance.GetComponent<RectTransform>();
-            cartRect.anchoredPosition = Vector2.zero; // Start from village (center map)
-
-            // --- Thêm hiệu ứng Highlight (Viền sáng nhấp nháy) cho xe ---
-            UnityEngine.UI.Image cartImage = cartInstance.GetComponentInChildren<UnityEngine.UI.Image>();
-            if (cartImage != null)
+            if (!_activeTravelCarts.TryGetValue(expedition.expeditionId, out cartInstance))
             {
-                var outline = cartImage.gameObject.AddComponent<UnityEngine.UI.Outline>();
-                outline.effectColor = new Color(1f, 0.85f, 0.0f, 1f); // Màu Vàng Sáng nổi bật
-                outline.effectDistance = new Vector2(4f, -4f);
-                
-                // Hiệu ứng nhấp nháy sáng tối viền để dễ chú ý trên map
-                DOTween.To(() => outline.effectColor, x => outline.effectColor = x, new Color(1f, 0.85f, 0.0f, 0.2f), 0.6f)
-                    .SetLoops(-1, LoopType.Yoyo)
-                    .SetTarget(cartRect); // Target để tự tắt tween khi xe hủy
+                cartInstance = Instantiate(travelCartPrefab, travelLayer);
+                _activeTravelCarts[expedition.expeditionId] = cartInstance;
+
+                // Thêm hiệu ứng Highlight (Viền sáng nhấp nháy) cho xe mới
+                UnityEngine.UI.Image cartImage = cartInstance.GetComponentInChildren<UnityEngine.UI.Image>();
+                if (cartImage != null)
+                {
+                    var outline = cartImage.gameObject.AddComponent<UnityEngine.UI.Outline>();
+                    outline.effectColor = new Color(1f, 0.85f, 0.0f, 1f); // Màu Vàng Sáng nổi bật
+                    outline.effectDistance = new Vector2(4f, -4f);
+                    
+                    DOTween.To(() => outline.effectColor, x => outline.effectColor = x, new Color(1f, 0.85f, 0.0f, 0.2f), 0.6f)
+                        .SetLoops(-1, LoopType.Yoyo)
+                        .SetTarget(cartInstance.GetComponent<RectTransform>()); 
+                }
             }
 
-            // Kiểm tra hướng đi ban đầu (Từ Làng -> POI)
+            cartRect = cartInstance.GetComponent<RectTransform>();
+            DOTween.Kill(cartRect); // Hủy các lệnh tween cũ trước khi set state mới
+
+            var poi = DataManager.Instance.GetPOIByID(expedition.poiId);
+            if (poi == null) return;
+
             Vector2 villagePos = Vector2.zero;
-            Vector2 destinationPos = displayData.destination.position;
-            
-            // Xác định xem xe đang đi sang phải hay trái. Làng nằm ở (0,0).
+            Vector2 destinationPos = poi.position;
             bool isMovingRight = destinationPos.x > villagePos.x;
 
-            // Hình ảnh gốc của xe ngựa đang hướng mặt sang trái.
-            // Do đó:
-            // - Để đi sang phải: x = -1
-            // - Để đi sang trái: x = 1
-            cartRect.localScale = new Vector3(isMovingRight ? -1f : 1f, 1f, 1f);
+            long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            float timeRemaining = Mathf.Max(0, (expedition.stateEndTimestamp - currentTime) / 1000f);
 
-            // Animate travel to destination, wait for combat, and travel back
-            cartRect.DOAnchorPos(destinationPos, displayData.travelDuration)
-                .SetEase(Ease.Linear)
-                .OnComplete(() => {
-                    DOVirtual.DelayedCall(displayData.combatDuration, () => {
-                        if (cartRect != null) {
-                            // Khi quay về làng, đổi hướng quay đầu xe lại
-                            cartRect.localScale = new Vector3(isMovingRight ? 1f : -1f, 1f, 1f);
+            switch (expedition.currentState)
+            {
+                case ExpeditionState.Traveling:
+                    cartRect.localScale = new Vector3(isMovingRight ? -1f : 1f, 1f, 1f);
+                    // Bắt đầu từ làng
+                    if (timeRemaining >= expedition.travelDurationMs / 1000f) 
+                    {
+                        cartRect.anchoredPosition = villagePos;
+                    }
+                    cartRect.DOAnchorPos(destinationPos, timeRemaining).SetEase(Ease.Linear);
+                    break;
 
-                            cartRect.DOAnchorPos(villagePos, displayData.travelDuration)
-                                .SetEase(Ease.Linear);
-                        }
-                    });
-                });
+                case ExpeditionState.Exploring:
+                    cartRect.localScale = new Vector3(isMovingRight ? -1f : 1f, 1f, 1f);
+                    cartRect.anchoredPosition = destinationPos;
+                    // Có thể thêm hiệu ứng bụi mờ, kiếm chém ở đây nếu muốn
+                    break;
+
+                case ExpeditionState.Returning:
+                    cartRect.localScale = new Vector3(isMovingRight ? 1f : -1f, 1f, 1f);
+                    if (timeRemaining >= expedition.travelDurationMs / 1000f)
+                    {
+                        cartRect.anchoredPosition = destinationPos;
+                    }
+                    cartRect.DOAnchorPos(villagePos, timeRemaining).SetEase(Ease.Linear);
+                    break;
+            }
         }
 
         private void HandleExpeditionFinished(string expeditionId)

@@ -32,6 +32,20 @@ namespace LegendOfBlood
 
         private void Start()
         {
+            // Tự động tìm kiếm nếu tham chiếu bị thiếu trong Inspector
+            if (goldText == null || woodText == null || stoneText == null || diamondText == null)
+            {
+                var texts = GetComponentsInChildren<TextMeshProUGUI>(true);
+                foreach (var t in texts)
+                {
+                    string parentName = t.transform.parent != null ? t.transform.parent.name.ToLower() : "";
+                    if (parentName.Contains("gold")) goldText = t;
+                    else if (parentName.Contains("wood")) woodText = t;
+                    else if (parentName.Contains("stone")) stoneText = t;
+                    else if (parentName.Contains("diamond") || parentName.Contains("crystal")) diamondText = t;
+                }
+            }
+
             // Cập nhật ngay khi bắt đầu phòng trường hợp dữ liệu đã có sẵn.
             UpdateAllResources();
         }

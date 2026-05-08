@@ -23,6 +23,7 @@ namespace LegendOfBlood
         private List<ActiveExpedition> _activeExpeditions;
 
         public static event Action<ExpeditionDisplayData> OnExpeditionStarted;
+        public static event Action<ActiveExpedition> OnExpeditionStateChanged;
         public static event Action<string> OnExpeditionFinished;
         public static event Action OnNewReportReceived;
         public static event Action<POIData> OnTowerConquered;
@@ -47,65 +48,94 @@ namespace LegendOfBlood
             if (_activeExpeditions == null || !_activeExpeditions.Any()) return;
 
             long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            bool hasChanges = false;
+
             foreach (var expedition in _activeExpeditions.ToList())
             {
-                if (currentTime >= expedition.completionTimestamp)
+                // Fallback for old save data without stateEndTimestamp
+                if (expedition.stateEndTimestamp == 0)
                 {
-                    DataManager.Instance.Player.UnclaimedReports.Add(expedition.preCalculatedReport);
-                    _activeExpeditions.Remove(expedition);
+                    expedition.stateEndTimestamp = expedition.completionTimestamp;
+                    expedition.currentState = ExpeditionState.Returning;
+                }
 
-                    OnExpeditionFinished?.Invoke(expedition.expeditionId);
-                    OnNewReportReceived?.Invoke();
-
-                    // If the report indicates a POI was cleared, invoke that event
-                    if (expedition.preCalculatedReport.combatResult.DidPlayerWin && expedition.preCalculatedReport.poiId != null)
+                if (currentTime >= expedition.stateEndTimestamp)
+                {
+                    if (expedition.currentState == ExpeditionState.Traveling)
                     {
-                        var poi = DataManager.Instance.GetPOIByID(expedition.preCalculatedReport.poiId);
-                        if (poi != null && poi.type != POIType.TowerOfTrials)
-                        {
-                            OnPOICleared?.Invoke(poi);
-                        }
+                        expedition.currentState = ExpeditionState.Exploring;
+                        expedition.stateEndTimestamp += expedition.combatDurationMs;
+                        OnExpeditionStateChanged?.Invoke(expedition);
+                        hasChanges = true;
                     }
-
-                    // --- HOSPITAL LOGIC ---
-                    // Process injuries immediately when the expedition returns
-                    if (GameManager.Instance != null && GameManager.Instance.HospitalSystem != null)
+                    else if (expedition.currentState == ExpeditionState.Exploring)
                     {
-                        var result = expedition.preCalculatedReport.combatResult;
-                        if (result != null)
-                        {
-                            // 1. Severe Injury for Casualties
-                            if (result.PlayerCasualties != null)
-                            {
-                                foreach (var casualty in result.PlayerCasualties)
-                                {
-                                    GameManager.Instance.HospitalSystem.AdmitHero(casualty.id);
-                                }
-                            }
+                        expedition.currentState = ExpeditionState.Returning;
+                        expedition.stateEndTimestamp += expedition.travelDurationMs;
+                        OnExpeditionStateChanged?.Invoke(expedition);
+                        hasChanges = true;
+                    }
+                    else if (expedition.currentState == ExpeditionState.Returning)
+                    {
+                        // Expedition Finished
+                        DataManager.Instance.Player.UnclaimedReports.Add(expedition.preCalculatedReport);
+                        _activeExpeditions.Remove(expedition);
 
-                            // 2. Light Injury for Survivors with HP < MaxHP
-                            if (result.PlayerSurvivors != null)
+                        OnExpeditionFinished?.Invoke(expedition.expeditionId);
+                        OnNewReportReceived?.Invoke();
+
+                        // If the report indicates a POI was cleared, invoke that event
+                        if (expedition.preCalculatedReport.combatResult.DidPlayerWin && expedition.preCalculatedReport.poiId != null)
+                        {
+                            var poi = DataManager.Instance.GetPOIByID(expedition.preCalculatedReport.poiId);
+                            if (poi != null && poi.type != POIType.TowerOfTrials)
                             {
-                                foreach (var survivor in result.PlayerSurvivors)
+                                OnPOICleared?.Invoke(poi);
+                            }
+                        }
+
+                        // --- HOSPITAL LOGIC ---
+                        if (GameManager.Instance != null && GameManager.Instance.HospitalSystem != null)
+                        {
+                            var result = expedition.preCalculatedReport.combatResult;
+                            if (result != null)
+                            {
+                                if (result.PlayerCasualties != null)
                                 {
-                                    // Fetch the actual hero object from DataManager to get true MaxHP and apply injury
-                                    var realHero = DataManager.Instance.GetHeroByID(survivor.id);
-                                    if (realHero != null)
+                                    foreach (var casualty in result.PlayerCasualties)
                                     {
-                                        float maxHp = realHero.GetFinalStats().hp;
-                                        if (realHero.currentHp < maxHp)
+                                        GameManager.Instance.HospitalSystem.AdmitHero(casualty.id);
+                                    }
+                                }
+
+                                if (result.PlayerSurvivors != null)
+                                {
+                                    foreach (var survivor in result.PlayerSurvivors)
+                                    {
+                                        var realHero = DataManager.Instance.GetHeroByID(survivor.id);
+                                        if (realHero != null)
                                         {
-                                            GameManager.Instance.HospitalSystem.InflictLightInjury(realHero);
+                                            float maxHp = realHero.GetFinalStats().hp;
+                                            if (realHero.currentHp < maxHp)
+                                            {
+                                                GameManager.Instance.HospitalSystem.InflictLightInjury(realHero);
+                                            }
                                         }
                                     }
                                 }
                             }
                         }
+                        // ----------------------
+                        
+                        Debug.Log($"Expedition {expedition.expeditionId} finished. Report moved to mailbox and injuries applied.");
+                        hasChanges = true;
                     }
-                    // ----------------------
-                    
-                    Debug.Log($"Expedition {expedition.expeditionId} finished. Report moved to mailbox and injuries applied.");
                 }
+            }
+
+            if (hasChanges && DataManager.Instance != null)
+            {
+                DataManager.Instance.SavePlayerData();
             }
         }
 
@@ -302,11 +332,16 @@ namespace LegendOfBlood
                 expeditionId = Guid.NewGuid().ToString(),
                 heroIds = heroIds,
                 poiId = destination.poiId,
-                completionTimestamp = currentTime + totalDurationMs,
+                currentState = ExpeditionState.Traveling,
+                stateEndTimestamp = currentTime + travelTimeMs,
+                travelDurationMs = travelTimeMs,
+                combatDurationMs = combatTimeMs,
+                completionTimestamp = currentTime + totalDurationMs, // Keep for backward compat
                 preCalculatedReport = report
             };
 
             _activeExpeditions.Add(newExpedition);
+            DataManager.Instance.SavePlayerData();
 
             var displayData = new ExpeditionDisplayData
             {
@@ -316,7 +351,8 @@ namespace LegendOfBlood
                 combatDuration = combatTimeMs / 1000f
             };
             OnExpeditionStarted?.Invoke(displayData);
-            Debug.Log($"Expedition {newExpedition.expeditionId} started. Completion in {totalDurationMs / 1000f}s.");
+            OnExpeditionStateChanged?.Invoke(newExpedition);
+            Debug.Log($"Expedition {newExpedition.expeditionId} started. Current State: Traveling. Next state in {travelTimeMs / 1000f}s.");
         }
 
         public bool IsHeroOnExpedition(string heroId)
@@ -474,6 +510,70 @@ namespace LegendOfBlood
         private int CalculateTowerExperience(int floorsCleared)
         {
             return floorsCleared * 100;
+        }
+
+        public void ClaimReport(ExpeditionReport report, bool isX2)
+        {
+            if (report == null) return;
+            if (DataManager.Instance == null || DataManager.Instance.Player == null) return;
+
+            // Check if the report is actually unclaimed to ensure idempotency
+            if (!DataManager.Instance.Player.UnclaimedReports.Contains(report))
+            {
+                Debug.LogWarning("Attempted to claim a report that is not in the unclaimed list.");
+                return;
+            }
+
+            int rMulti = isX2 ? 2 : 1;
+
+            // 1. Handle Loot
+            if (report.loot != null && GameManager.Instance != null && GameManager.Instance.InventoryManager != null)
+            {
+                GameManager.Instance.InventoryManager.AddGold(report.loot.gold * rMulti);
+                GameManager.Instance.InventoryManager.AddResource(ResourceType.Wood, report.loot.wood * rMulti);
+                GameManager.Instance.InventoryManager.AddResource(ResourceType.Stone, report.loot.stone * rMulti);
+                
+                foreach (var item in report.loot.items)
+                {
+                    GameManager.Instance.InventoryManager.AddItem(item.Key, item.Value * rMulti);
+                }
+                if (report.loot.equipments != null)
+                {
+                    foreach (var eq in report.loot.equipments)
+                    {
+                        GameManager.Instance.InventoryManager.AddEquipment(eq);
+                    }
+                }
+                if (report.loot.rescuedHeroes != null && report.loot.rescuedHeroes.Count > 0)
+                {
+                    foreach (var hero in report.loot.rescuedHeroes)
+                    {
+                        DataManager.Instance.AddHero(hero);
+                    }
+                }
+            }
+
+            // 2. Handle Experience
+            if (report.combatResult != null && report.combatResult.PlayerSurvivors != null)
+            {
+                foreach (var survivor in report.combatResult.PlayerSurvivors)
+                {
+                    var hero = DataManager.Instance.GetHeroByID(survivor.id);
+                    if (hero != null)
+                    { 
+                        hero.AddExperience(report.experienceGained * rMulti);
+                    }
+                }
+            }
+            if (report.experienceGained > 0 && GameManager.Instance != null && GameManager.Instance.InventoryManager != null)
+            {
+                GameManager.Instance.InventoryManager.AddPlayerExp(report.experienceGained * rMulti);
+            }
+
+            // 3. Remove report and save
+            DataManager.Instance.Player.UnclaimedReports.Remove(report);
+            DataManager.Instance.SavePlayerData();
+            DataManager.TriggerReportClaimed();
         }
         #endregion
     }

@@ -6,6 +6,19 @@ namespace LegendOfBlood
 
     public class RecruitmentSystem
     {
+        // Pity counter: tăng mỗi lần KHÔNG ra rank B trở lên
+        private int _pityCounter = 0;
+        private int _sPityCounter = 0; // Pity riêng cho S-Rank
+        private const int PITY_THRESHOLD_A = 50;  // Sau 50 lần quay sẽ guaranteed A
+        private const int PITY_THRESHOLD_B = 20;  // Sau 20 lần quay sẽ guaranteed B
+        private const int PITY_THRESHOLD_S = 9;   // Cứ 10 lần quay sẽ guaranteed S (lần thứ 10)
+
+        // Tổng số lần đã quay (tracking cho stat/achievement)
+        private int _totalRecruitments = 0;
+
+        public int PityCounter => _pityCounter;
+        public int TotalRecruitments => _totalRecruitments;
+
         public List<HeroData> PerformRecruitment(int amount = 1)
         {
             var newHeroes = new List<HeroData>();
@@ -14,11 +27,12 @@ namespace LegendOfBlood
                 if (DataManager.Instance.IsPopulationFull())
                 {
                     Debug.LogWarning("Population is full! Stopping recruitment.");
-                    GameManager.Instance.UINotificationManager.ShowNotification(LocalizationSystem.GetText("notification_population_full"));
-                    break; // Dừng tuyển mộ nếu dân số đã đầy
+                    break;
                 }
-                // 1. Roll for Rarity
-                Trait.RarityRank rarity = RollForRarity();
+
+                // 1. Roll for Rarity (with Pity)
+                Trait.RarityRank rarity = RollForRarityWithPity();
+                _totalRecruitments++;
 
                 // 2. Determine POT based on Rarity
                 int pot = GetPotentialFromRarity(rarity);
@@ -26,8 +40,7 @@ namespace LegendOfBlood
                 // 3. Create Hero
                 Gender gender = (Random.value < 0.5f) ? Gender.Male : Gender.Female;
                 string name = GetRandomName(gender);
-                
-                // Gacha heroes start at level 10 and are mature.
+
                 var newHero = new HeroData(System.Guid.NewGuid().ToString(), name, gender)
                 {
                     level = 10,
@@ -35,34 +48,38 @@ namespace LegendOfBlood
                     isMature = true
                 };
 
-                // Assign random Profession
+                // 4. Assign random Profession
                 var professions = System.Enum.GetValues(typeof(Profession)).Cast<Profession>().ToList();
                 professions.Remove(Profession.None);
                 newHero.SetProfession(professions[Random.Range(0, professions.Count)]);
 
-                // Assign starting skill
+                // 5. Assign starting skill
                 var startingSkills = DataManager.Instance.GetStartingSkills(newHero.profession);
-                if(startingSkills != null && startingSkills.Count > 0)
+                if (startingSkills != null && startingSkills.Count > 0)
                 {
                     string randomSkillID = startingSkills[Random.Range(0, startingSkills.Count)];
-                    newHero.skillIDs.Add(randomSkillID);
+                    if (!newHero.skillIDs.Contains(randomSkillID))
+                    {
+                        newHero.skillIDs.Add(randomSkillID);
+                    }
                 }
 
-                // 4. Calculate Base Stats
+                // 6. Calculate Base Stats
                 CalculateBaseStats(newHero);
-                
+
                 // Give free stat points for level 1 to 10 (9 levels worth of potential)
                 newHero.freeStatPoints = newHero.potential * 9;
 
-                // 5. Assign Traits
-                newHero.traitIDs = AssignRandomTraits();
-                
+                // 7. Assign Traits (quality scales with rarity)
+                newHero.traitIDs = AssignRandomTraits(rarity);
+
                 newHero.currentHp = newHero.GetFinalStats().hp;
 
-                // 6. Add to Player's Hero List
-                DataManager.Instance.AddHero(newHero); // Sẽ được xử lý bởi UI sau này, tạm thời vẫn thêm trực tiếp
+                // 8. Add to Player's Hero List
+                DataManager.Instance.AddHero(newHero);
                 newHeroes.Add(newHero);
-                Debug.Log($"<color=green>Recruited!</color> A new {rarity}-rank hero named {name} with POT {pot} has joined at Level 10.");
+
+                Debug.Log($"<color=green>Recruited!</color> [{rarity}] {name} | POT {pot} | {newHero.profession} | S-Pity: {_sPityCounter}");
             }
             return newHeroes;
         }
@@ -72,26 +89,60 @@ namespace LegendOfBlood
             newHero.CalculateBaseStats();
         }
 
-        private List<string> AssignRandomTraits()
+        #region Rarity with Pity
+
+        private Trait.RarityRank RollForRarityWithPity()
         {
-            var childTraits = new HashSet<string>();
-            // SỬA LỖI: Lấy Trait từ DataManager, không dùng TraitDatabase
-            var allTraits = DataManager.Instance.AllTraits.Values.ToList();
-
-            if (!allTraits.Any())
+            // S-Rank Pity Guarantee
+            if (_sPityCounter >= PITY_THRESHOLD_S)
             {
-                Debug.LogError("DataManager.AllTraits is empty! Cannot assign random traits.");
-                return new List<string>();
+                _sPityCounter = 0;
+                _pityCounter = 0;
+                Debug.Log("<color=yellow>[PITY] Guaranteed S-rank!</color>");
+                return Trait.RarityRank.S;
+            }
+            if (_pityCounter >= PITY_THRESHOLD_A)
+            {
+                _pityCounter = 0;
+                _sPityCounter++;
+                Debug.Log("<color=yellow>[PITY] Guaranteed A-rank!</color>");
+                return Trait.RarityRank.A;
+            }
+            if (_pityCounter >= PITY_THRESHOLD_B)
+            {
+                // Soft pity: tăng tỉ lệ B+ lên
+                float bonusChance = (_pityCounter - PITY_THRESHOLD_B) * 2f; // +2% mỗi lần
+                if (Random.Range(0f, 100f) < bonusChance)
+                {
+                    _pityCounter = 0;
+                    _sPityCounter++;
+                    Debug.Log("<color=cyan>[SOFT PITY] B-rank triggered!</color>");
+                    return Trait.RarityRank.B;
+                }
             }
 
-            var availableTraits = allTraits.ToList(); // Copy to manipulate
-            while (childTraits.Count < 3 && availableTraits.Count > 0)
+            Trait.RarityRank result = RollForRarity();
+
+            // Update pity counters
+            if (result == Trait.RarityRank.S)
             {
-                var randomTrait = availableTraits[Random.Range(0, availableTraits.Count)];
-                childTraits.Add(randomTrait.id);
-                availableTraits.Remove(randomTrait);
+                _sPityCounter = 0;
+                _pityCounter = 0;
             }
-            return childTraits.ToList();
+            else
+            {
+                _sPityCounter++;
+                if (result >= Trait.RarityRank.B)
+                {
+                    _pityCounter = 0; // Reset khi ra B trở lên
+                }
+                else
+                {
+                    _pityCounter++;
+                }
+            }
+
+            return result;
         }
 
         private Trait.RarityRank RollForRarity()
@@ -99,26 +150,34 @@ namespace LegendOfBlood
             var raritySettings = DataManager.Instance?.GameConfig?.RaritySettings;
             if (raritySettings != null && raritySettings.Count > 0)
             {
-                float roll = Random.Range(0f, 100f);
+                // Chỉ lấy các rank từ S trở xuống (không cho phép summon ra SS và SSS)
+                var validSettings = raritySettings.Where(r => r.rank <= Trait.RarityRank.S).OrderBy(r => r.dropChance).ToList();
+                
+                // Tính lại tổng tỷ lệ (do đã loại bỏ SS, SSS)
+                float totalChance = validSettings.Sum(r => r.dropChance);
+                float roll = Random.Range(0f, totalChance);
+                
                 float cumulative = 0f;
-                // Sắp xếp tăng dần theo drop chance để chắc chắn việc check là hợp lý nhất, hoặc duyệt theo thứ tự khai báo.
-                foreach (var setting in raritySettings.OrderBy(r => r.dropChance))
+                foreach (var setting in validSettings)
                 {
                     cumulative += setting.dropChance;
                     if (roll <= cumulative) return setting.rank;
                 }
-                // Fallback nếu tổng < 100
-                return raritySettings.Last().rank;
+                return Trait.RarityRank.D;
             }
 
-            // Fallback nếu chưa config
+            // Fallback
             float simpleRoll = Random.Range(0f, 100f);
-            if (simpleRoll < 0.5f) return Trait.RarityRank.S;     // 0.5%
-            if (simpleRoll < 3.5f) return Trait.RarityRank.A;     // 3%
-            if (simpleRoll < 10f) return Trait.RarityRank.B;      // 6.5%
-            if (simpleRoll < 40f) return Trait.RarityRank.C;      // 30%
-            return Trait.RarityRank.D;                      // 60%
+            if (simpleRoll < 2.0f) return Trait.RarityRank.S;     // 2%
+            if (simpleRoll < 10.0f) return Trait.RarityRank.A;    // 8% (2 + 8 = 10)
+            if (simpleRoll < 30.0f) return Trait.RarityRank.B;    // 20% (10 + 20 = 30)
+            if (simpleRoll < 70.0f) return Trait.RarityRank.C;    // 40% (30 + 40 = 70)
+            return Trait.RarityRank.D;                            // 30%
         }
+
+        #endregion
+
+        #region Potential & Traits
 
         private int GetPotentialFromRarity(Trait.RarityRank rarity)
         {
@@ -128,12 +187,10 @@ namespace LegendOfBlood
                 var setting = raritySettings.FirstOrDefault(r => r.rank == rarity);
                 if (setting != null)
                 {
-                    // Lấy random trong khoảng min, max config
                     return Random.Range(setting.minPotential, setting.maxPotential + 1);
                 }
             }
 
-            // Fallback
             return rarity switch
             {
                 Trait.RarityRank.S => Random.Range(17, 21),
@@ -144,7 +201,51 @@ namespace LegendOfBlood
             };
         }
 
-        // The NameGenerator class now handles name generation.
+        private List<string> AssignRandomTraits(Trait.RarityRank heroRarity = Trait.RarityRank.D)
+        {
+            var childTraits = new HashSet<string>();
+            var allTraits = DataManager.Instance.AllTraits.Values.ToList();
+
+            if (!allTraits.Any())
+            {
+                Debug.LogError("DataManager.AllTraits is empty! Cannot assign random traits.");
+                return new List<string>();
+            }
+
+            // Số lượng trait dựa trên rarity
+            int traitCount = heroRarity switch
+            {
+                Trait.RarityRank.S => 4,
+                Trait.RarityRank.A => 3,
+                _ => 3
+            };
+
+            // Ưu tiên trait rank cao cho hero rank cao
+            List<Trait> pool;
+            if (heroRarity >= Trait.RarityRank.A)
+            {
+                // Hero rank A+ có cơ hội nhận trait rank cao
+                pool = allTraits
+                    .OrderByDescending(t => t.rank)
+                    .ThenBy(_ => Random.value)
+                    .ToList();
+            }
+            else
+            {
+                pool = allTraits.OrderBy(_ => Random.value).ToList();
+            }
+
+            foreach (var trait in pool)
+            {
+                if (childTraits.Count >= traitCount) break;
+                childTraits.Add(trait.id);
+            }
+
+            return childTraits.ToList();
+        }
+
+        #endregion
+
         private string GetRandomName(Gender gender)
         {
             return NameGenerator.GetRandomName(gender);

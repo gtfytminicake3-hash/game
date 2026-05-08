@@ -326,6 +326,29 @@ namespace LegendOfBlood
                 if (!expTable.ContainsKey(level)) break;
             }
         }
+
+        public bool AllocateStats(float addHp, float addAtk, float addDef, float addSpd, int totalSpentPoints)
+        {
+            if (totalSpentPoints <= 0 || freeStatPoints < totalSpentPoints) return false;
+
+            addedStats.hp += addHp;
+            addedStats.atk += addAtk;
+            addedStats.def += addDef;
+            addedStats.spd += addSpd;
+
+            freeStatPoints -= totalSpentPoints;
+            
+            currentHp += addHp;
+            if (currentHp > GetFinalStats().hp) currentHp = GetFinalStats().hp;
+
+            DataManager.TriggerHeroStatsChanged(this);
+            if (DataManager.Instance != null)
+            {
+                DataManager.Instance.SavePlayerData();
+            }
+            
+            return true;
+        }
         #endregion
 
         #region Serialization Callbacks

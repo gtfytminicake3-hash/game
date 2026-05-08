@@ -1,196 +1,252 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using LegendOfBlood;
+
 namespace LegendOfBlood
 {
-    using System.Collections.Generic;
-    using UnityEngine;
-    using System.Linq;
-
-    public class BreedingOptions
+    public class BreedingOptions 
     {
         public bool UseMutationPotion { get; set; } = false;
         public string GuaranteedTraitID { get; set; } = null;
-        public LegendOfBlood.Profession? GuaranteedProfession { get; set; } = null;
     }
 
     public class BreedingSystem
     {
-        private const string TRAIT_TWINS = "S_04";
-        private const string TRAIT_GENE_SELECTOR = "SSS_04";
-        private const string TRAIT_ELITE_BLOODLINE = "SS_07";
-
-        private const int MALE_NAME_COUNT = 27;
-        private const int FEMALE_NAME_COUNT = 27;
+        [Header("Breeding Configuration")]
+        [Tooltip("Cost base in Gold for breeding")]
+        public int baseBreedingCost = 500;
         
-        public List<HeroData> Breed(HeroData father, HeroData mother, BreedingOptions options = null)
+        [Tooltip("Extra gold cost per existing breeding count of parents")]
+        public int costPerBreedingCount = 200;
+
+        [Tooltip("Time in minutes for a newborn hero to mature")]
+        public float maturationTimeMinutes = 1f;
+
+        [Tooltip("Chance to mutate potential to a higher rarity (0.0 to 1.0)")]
+        public float mutationChance = 0.15f;
+
+        public event Action<HeroData> OnHeroBred;
+
+        public bool CanBreed(HeroData parent1, HeroData parent2, out string errorMessage)
         {
-            if (father.gender == mother.gender)
+            if (parent1 == null || parent2 == null)
             {
-                Debug.LogError(global::LocalizationSystem.GetText("breeding_error_same_gender"));
+                errorMessage = "Chưa chọn đủ 2 Anh Hùng để lai tạo.";
+                return false;
+            }
+
+            if (parent1.id == parent2.id)
+            {
+                errorMessage = "Không thể lai tạo cùng một Anh Hùng.";
+                return false;
+            }
+
+            if (parent1.gender == parent2.gender)
+            {
+                errorMessage = "Cần 1 Nam và 1 Nữ để tiến hành lai tạo!";
+                return false;
+            }
+
+            // --- BẮT BUỘC: Kiểm tra Trưởng thành (isMature) ---
+            if (!parent1.isMature || !parent2.isMature)
+            {
+                errorMessage = "Cả 2 Anh Hùng phải trưởng thành mới có thể lai tạo.";
+                return false;
+            }
+
+            // --- BẮT BUỘC: Kiểm tra Giới hạn Lai tạo ---
+            if (parent1.breedingCount >= parent1.maxBreedingCount)
+            {
+                errorMessage = $"{parent1.heroName} đã đạt giới hạn lai tạo tối đa ({parent1.maxBreedingCount}).";
+                return false;
+            }
+            if (parent2.breedingCount >= parent2.maxBreedingCount)
+            {
+                errorMessage = $"{parent2.heroName} đã đạt giới hạn lai tạo tối đa ({parent2.maxBreedingCount}).";
+                return false;
+            }
+
+            int cost = CalculateBreedingCost(parent1, parent2);
+            if (GameManager.Instance != null && GameManager.Instance.InventoryManager != null)
+            {
+                if (GameManager.Instance.InventoryManager.GetResourceAmount(ResourceType.Gold) < cost)
+                {
+                    errorMessage = $"Không đủ Vàng! Cần {cost} Vàng.";
+                    return false;
+                }
+            }
+
+            errorMessage = "";
+            return true;
+        }
+
+        public int CalculateBreedingCost(HeroData parent1, HeroData parent2)
+        {
+            int extraCounts = (parent1 != null ? parent1.breedingCount : 0) + (parent2 != null ? parent2.breedingCount : 0);
+            return baseBreedingCost + (extraCounts * costPerBreedingCount);
+        }
+
+        public List<HeroData> Breed(HeroData parent1, HeroData parent2, BreedingOptions options = null)
+        {
+            float cacheMutation = mutationChance;
+            if (options != null && options.UseMutationPotion)
+            {
+                mutationChance += 0.5f; // Bonus 50% mutation chance with potion
+            }
+
+            string error;
+            if (!CanBreed(parent1, parent2, out error))
+            {
+                Debug.LogWarning($"[Breeding] Breeding failed: {error}");
+                ToastNotificationManager.Show(error, 2f);
+                mutationChance = cacheMutation;
                 return new List<HeroData>();
             }
 
-            if (father.breedingCount >= father.maxBreedingCount || mother.breedingCount >= mother.maxBreedingCount)
+            // Deduct cost
+            int cost = CalculateBreedingCost(parent1, parent2);
+            GameManager.Instance.InventoryManager.SpendResource(ResourceType.Gold, cost);
+
+            // Increment breeding counts
+            parent1.breedingCount++;
+            parent2.breedingCount++;
+
+            // Create baby
+            HeroData child = GenerateOffspring(parent1, parent2);
+            
+            // Note: Don't add to inventory here! BreedingUIController does it for us via DataManager.Instance.AddHero()!
+            // Wait, Inventory vs DataManager? Usually DataManager.AddHero adds to AllHeroes, and then Inventory fetches it.
+            // I will not manually insert it into Inventory, as BreedingUIController explicitly says:
+            // "foreach (var offspring in offspringList) { DataManager.Instance.AddHero(offspring); }"
+            
+            OnHeroBred?.Invoke(child);
+            GameManager.Instance.SaveGame();
+            
+            mutationChance = cacheMutation;
+            return new List<HeroData> { child };
+        }
+
+        private HeroData GenerateOffspring(HeroData parent1, HeroData parent2)
+        {
+            // 1. Gender Random
+            Gender childGender = UnityEngine.Random.value > 0.5f ? Gender.Male : Gender.Female;
+            HeroData child = new HeroData(Guid.NewGuid().ToString(), GenerateChildName(parent1, parent2), childGender);
+
+            // 2. Potential (Rarity)
+            int basePot;
+            if (parent1.potential == parent2.potential)
             {
-                Debug.LogWarning("Một trong hai Hero đã hết lượt sinh sản!");
-                return new List<HeroData>(); // Hoặc trả về null tùy logic UI
+                basePot = parent1.potential;
+            }
+            else
+            {
+                basePot = (parent1.potential + parent2.potential) / 2;
             }
 
-            father.breedingCount++;
-            mother.breedingCount++;
-
-            options ??= new BreedingOptions();
-
-            int numberOfOffspring = 1;
-            if (father.traitIDs.Contains(TRAIT_TWINS) || mother.traitIDs.Contains(TRAIT_TWINS))
+            if (UnityEngine.Random.value < mutationChance)
             {
-                if (Random.value < 0.02f)
+                float jumpRoll = UnityEngine.Random.value;
+                if (jumpRoll < 0.05f) // 5% of mutation chance -> Massive jump (can reach SSS)
                 {
-                    numberOfOffspring = 2;
+                    basePot += UnityEngine.Random.Range(7, 10);
+                }
+                else if (jumpRoll < 0.2f) // 15% of mutation chance -> Rare jump (can reach SS)
+                {
+                    basePot += UnityEngine.Random.Range(4, 7);
+                }
+                else
+                {
+                    basePot += UnityEngine.Random.Range(1, 4); // +1 to +3 potential
+                }
+            }
+            child.potential = Mathf.Clamp(basePot, 1, 100);
+
+            // 3. Profession Inheritance
+            float profRoll = UnityEngine.Random.value;
+            Profession childProf = Profession.None;
+            if (profRoll < 0.45f) childProf = parent1.profession;
+            else if (profRoll < 0.90f) childProf = parent2.profession;
+            else 
+            {
+                // 10% chance to mutate into a random profession
+                Array profs = Enum.GetValues(typeof(Profession));
+                childProf = (Profession)profs.GetValue(UnityEngine.Random.Range(1, profs.Length)); // Skip 0 (None)
+            }
+            child.SetProfession(childProf);
+
+            // 4. Traits Inheritance
+            child.traitIDs = InheritTraits(parent1, parent2);
+
+            // 5. Maturation (Children are born as babies!)
+            child.isMature = false;
+            child.maturationEndTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() + (long)(maturationTimeMinutes * 60 * 1000);
+            
+            // Generate stats based on new Potential
+            child.CalculateBaseStats();
+
+            // Set a slightly lower breeding capacity to prevent infinite generation
+            int p1Max = parent1.maxBreedingCount;
+            int p2Max = parent2.maxBreedingCount;
+            child.maxBreedingCount = Mathf.Max(0, Mathf.Min(p1Max, p2Max) - 1);
+            if (child.maxBreedingCount < 3) child.maxBreedingCount = 3; // Guaranteed minimum 3
+
+            return child;
+        }
+
+        private List<string> InheritTraits(HeroData p1, HeroData p2)
+        {
+            var inherited = new HashSet<string>();
+            
+            // Mix traits from both parents
+            if (p1.traitIDs != null)
+            {
+                foreach (var t in p1.traitIDs)
+                {
+                    if (UnityEngine.Random.value < 0.5f) inherited.Add(t);
+                }
+            }
+            
+            if (p2.traitIDs != null)
+            {
+                foreach (var t in p2.traitIDs)
+                {
+                    if (UnityEngine.Random.value < 0.5f) inherited.Add(t);
                 }
             }
 
-            List<HeroData> offspringList = new List<HeroData>();
-            for (int i = 0; i < numberOfOffspring; i++)
+            // Small chance for a new completely random trait (mutation)
+            if (UnityEngine.Random.value < 0.2f && DataManager.Instance != null && DataManager.Instance.AllTraits != null)
             {
-                HeroData offspring = CreateSingleOffspring(father, mother, options);
-                offspringList.Add(offspring);
-            }
-
-            return offspringList;
-        }
-        
-        private HeroData CreateSingleOffspring(HeroData father, HeroData mother, BreedingOptions options)
-        {
-            Gender offspringGender = (Random.value < 0.5f) ? Gender.Male : Gender.Female;
-            string offspringName = GetRandomName(offspringGender);
-
-            var offspring = new HeroData(System.Guid.NewGuid().ToString(), offspringName, offspringGender)
-            {
-                level = 1,
-                potential = (father.potential + mother.potential) / 2
-            };
-
-            CalculateBaseStats(offspring);
-            offspring.traitIDs = InheritTraits(father.traitIDs, mother.traitIDs, options);
-            
-            // Pass the guaranteed profession from the Wish Amulet to the newborn
-            if (options.GuaranteedProfession.HasValue)
-            {
-                offspring.guaranteedProfession = options.GuaranteedProfession.Value;
-            }
-            
-            if (father.traitIDs.Contains(TRAIT_ELITE_BLOODLINE) || mother.traitIDs.Contains(TRAIT_ELITE_BLOODLINE))
-            {
-                if (Random.value < 0.10f)
+                var keys = new List<string>(DataManager.Instance.AllTraits.Keys);
+                if (keys.Count > 0)
                 {
-                    offspring.baseStats.hp *= 1.05f;
-                    offspring.baseStats.atk *= 1.05f;
-                    offspring.baseStats.def *= 1.05f;
-                    offspring.baseStats.spd *= 1.05f;
-                }
-            }
-            
-            offspring.currentHp = offspring.GetFinalStats().hp;
-
-            offspring.isMature = false;
-            long maturationDuration = 60000;
-            
-            // Xử lý Trait: Lớn Nhanh (Fast Grower - D_08)
-            if (offspring.traitIDs.Contains("D_08"))
-            {
-                maturationDuration = (long)(maturationDuration * 0.7f); // Giảm 30% thời gian trưởng thành
-                Debug.Log($"Hero {offspring.heroName} có trait Lớn Nhanh (D_08), giảm thời gian trưởng thành còn {maturationDuration}ms.");
-            }
-
-            offspring.maturationEndTime = new System.DateTimeOffset(System.DateTime.UtcNow).ToUnixTimeMilliseconds() + maturationDuration;
-
-            return offspring;
-        }
-
-        private void CalculateBaseStats(HeroData newHero)
-        {
-            if (newHero.baseStats == null) newHero.baseStats = new HeroStats();
-            newHero.baseStats.hp = (int)(newHero.potential * Random.Range(8f, 11f));
-            newHero.baseStats.atk = (int)(newHero.potential * Random.Range(8f, 11f));
-            newHero.baseStats.def = (int)(newHero.potential * Random.Range(8f, 11f));
-            newHero.baseStats.spd = (int)(newHero.potential * Random.Range(8f, 11f));
-
-            if (newHero.addedStats == null) newHero.addedStats = new HeroStats();
-            newHero.freeStatPoints = 0;
-        }
-
-        private List<string> InheritTraits(List<string> fatherTraits, List<string> motherTraits, BreedingOptions options)
-        {
-            var inheritedTraits = new HashSet<string>();
-
-            // 1. Guaranteed Trait (if any)
-            if (!string.IsNullOrEmpty(options.GuaranteedTraitID))
-            {
-                inheritedTraits.Add(options.GuaranteedTraitID);
-            }
-
-            // 2. Get trait from father
-            var traitFromFather = GetTraitFromParent(fatherTraits, inheritedTraits);
-            if (traitFromFather != null)
-            {
-                inheritedTraits.Add(traitFromFather);
-            }
-
-            // 3. Get trait from mother
-            var traitFromMother = GetTraitFromParent(motherTraits, inheritedTraits);
-            if (traitFromMother != null)
-            {
-                inheritedTraits.Add(traitFromMother);
-            }
-
-            // 4. Get random traits until we have 3, respecting uniqueness
-            // SỬA LỖI: Lấy Trait từ DataManager và lọc những trait chưa có để tránh vòng lặp vô hạn
-            var availableTraits = DataManager.Instance.AllTraits.Values
-                                    .Where(t => t != null && !inheritedTraits.Contains(t.id))
-                                    .ToList(); 
-                                    
-            // 3.5 Use Mutation Potion Logic
-            if (options.UseMutationPotion)
-            {
-                var highRankTraits = availableTraits.Where(t => t.rank == Trait.RarityRank.A || t.rank == Trait.RarityRank.S || t.rank == Trait.RarityRank.SS || t.rank == Trait.RarityRank.SSS).ToList();
-                if (highRankTraits.Count > 0)
-                {
-                    var randomHighTrait = highRankTraits[Random.Range(0, highRankTraits.Count)];
-                    inheritedTraits.Add(randomHighTrait.id);
-                    availableTraits.Remove(randomHighTrait);
-                    Debug.Log("Mutation Potion triggered! Guaranteed a high-rank trait.");
+                    string randomTrait = keys[UnityEngine.Random.Range(0, keys.Count)];
+                    inherited.Add(randomTrait);
                 }
             }
 
-            while (inheritedTraits.Count < 3 && availableTraits.Count > 0)
-            {
-                var randomTrait = availableTraits[Random.Range(0, availableTraits.Count)];
-                inheritedTraits.Add(randomTrait.id);
-                availableTraits.Remove(randomTrait);
-            }
-
-            return inheritedTraits.ToList();
+            return new List<string>(inherited);
         }
 
-        private string GetTraitFromParent(List<string> parentTraits, HashSet<string> existingTraits)
+        private string GenerateChildName(HeroData p1, HeroData p2)
         {
-            if (parentTraits == null || parentTraits.Count == 0)
-            {
-                return null;
-            }
+            // Simple name combination logic (e.g. "Jon" + "Anna" -> "Jonna" or "Anon")
+            string n1 = p1.heroName != null && p1.heroName.Length > 2 ? p1.heroName : "Hero";
+            string n2 = p2.heroName != null && p2.heroName.Length > 2 ? p2.heroName : "Hero";
 
-            var validTraits = parentTraits.Where(t => !existingTraits.Contains(t)).ToList();
-            if (validTraits.Count == 0)
-            {
-                return null;
-            }
+            // Grab first half of Parent 1, second half of Parent 2
+            int half1 = Mathf.Max(1, n1.Length / 2);
+            int half2 = Mathf.Max(1, n2.Length / 2);
 
-            return validTraits[Random.Range(0, validTraits.Count)];
-        }
+            string part1 = n1.Substring(0, half1);
+            string part2 = n2.Substring(n2.Length - half2);
 
-        // The NameGenerator class now handles name generation.
-        private string GetRandomName(Gender gender)
-        {
-            return NameGenerator.GetRandomName(gender);
+            string newName = part1 + part2;
+            newName = newName.ToLower();
+            newName = char.ToUpper(newName[0]) + newName.Substring(1);
+
+            return newName;
         }
     }
 }

@@ -41,6 +41,11 @@ namespace LegendOfBlood
         private List<ItemSlot> _activeItemSlots = new List<ItemSlot>();
         private List<InventoryEquipmentCard> _activeEquipmentSlots = new List<InventoryEquipmentCard>();
         private ItemData _selectedItem;
+        private EquipmentData _selectedEquip;
+
+        private bool _isPickMode = false;
+        private HeroData _pickModeHero;
+        private EquipmentSlot _pickModeSlot;
 
         private void Awake()
         {
@@ -61,12 +66,28 @@ namespace LegendOfBlood
             
             InventoryManager.OnItemChanged += HandleItemChanged;
             InventoryManager.OnEquipmentChanged += HandleEquipmentChanged;
+            EventManager.StartListening<EquipSlotClickData>(GameEvents.OnEquipSlotClicked, HandleEquipSlotClicked);
         }
 
         private void OnDisable()
         {
             InventoryManager.OnItemChanged -= HandleItemChanged;
             InventoryManager.OnEquipmentChanged -= HandleEquipmentChanged;
+            EventManager.StopListening<EquipSlotClickData>(GameEvents.OnEquipSlotClicked, HandleEquipSlotClicked);
+            _isPickMode = false;
+        }
+
+        private void HandleEquipSlotClicked(EquipSlotClickData data)
+        {
+            if (!gameObject.activeInHierarchy)
+            {
+                GameManager.Instance.UIManager.ShowPanel(UIPanelType.Inventory, false);
+            }
+            _isPickMode = true;
+            _pickModeHero = data.hero;
+            _pickModeSlot = data.slot;
+
+            SwitchTab(InventoryTabType.Equipment);
         }
 
         private void SwitchTab(InventoryTabType tabType)
@@ -135,8 +156,11 @@ namespace LegendOfBlood
             }
             _activeItemSlots.Clear();
 
+            if (DataManager.Instance == null || DataManager.Instance.Player == null) 
+                return;
+
             var allItemsConfigs = DataManager.Instance.AllItems;
-            if (allItemsConfigs == null || allItemsConfigs.Count == 0 || DataManager.Instance.Player == null) 
+            if (allItemsConfigs == null || allItemsConfigs.Count == 0) 
                 return;
 
             foreach (var kvp in DataManager.Instance.Player.items)
@@ -167,11 +191,19 @@ namespace LegendOfBlood
             }
             _activeEquipmentSlots.Clear();
 
+            if (InventoryManager.Instance == null || equipmentCardPrefab == null) return;
+
             var equipments = InventoryManager.Instance.GetEquipments();
-            if (equipments == null || equipments.Count == 0 || equipmentCardPrefab == null) return;
+            if (equipments == null || equipments.Count == 0) return;
 
             foreach (var equip in equipments)
             {
+                if (_isPickMode)
+                {
+                    if (equip.slot != _pickModeSlot) continue;
+                    if (equip.classRestriction != Profession.None && equip.classRestriction != _pickModeHero.profession) continue;
+                }
+
                 GameObject cardObj = Instantiate(equipmentCardPrefab, equipmentGridParent);
                 InventoryEquipmentCard card = cardObj.GetComponent<InventoryEquipmentCard>();
                 if (card != null)
@@ -185,6 +217,7 @@ namespace LegendOfBlood
         private void HandleItemSlotClicked(ItemData item, int amount)
         {
             _selectedItem = item;
+            _selectedEquip = null;
             
             detailView.SetActive(true);
             detailIcon.sprite = item.icon;
@@ -193,36 +226,51 @@ namespace LegendOfBlood
             detailCountText.text = $"Số lượng: {amount}";
             
             useButton.gameObject.SetActive(item.type == ItemType.Consumable);
+            var btnText = useButton.GetComponentInChildren<TextMeshProUGUI>();
+            if (btnText != null) btnText.text = "Sử dụng";
         }
 
         private void HandleEquipmentClicked(EquipmentData equip)
         {
-            // If the user clicks an equipment, we should show the detail panel popup!
-            // First we need to instantiate or toggle it. Since EquipmentDetailPanel was built as a UIPanel...
+            _selectedEquip = equip;
+            _selectedItem = null;
+
+            detailView.SetActive(true);
+            detailIcon.sprite = equip.GetIcon();
+            detailNameText.text = equip.equipmentName;
             
-            // To be precise, our UI Manager handles popups, or we might need it manually.
-            // But we have Panel_EquipmentDetail in prefab. So UIManager or dynamic instance:
+            string desc = $"<color=#FFD700>Bậc: {equip.tier} | Cấp: {equip.level}</color>\n\n";
+            if (equip.atkBonus > 0) desc += $"Sát Thương: +{equip.atkBonus}\n";
+            if (equip.defBonus > 0) desc += $"Phòng Thủ: +{equip.defBonus}\n";
+            if (equip.hpBonus > 0) desc += $"Sinh Lực: +{equip.hpBonus}\n";
+            if (equip.spdBonus > 0) desc += $"Tốc Độ: +{equip.spdBonus}\n";
+            if (equip.critChanceBonus > 0) desc += $"Tỉ Lệ Chí Mạng: +{equip.critChanceBonus * 100}%\n";
             
-            // Wait, let's just find if UIManager has EquipmentDetail as popup, 
-            // if not, we can find it in the scene since it was requested in BuildPanels.
-            // For now let's just use UINotification for a quick fallback message if not fully hooked.
+            detailDescText.text = desc;
             
-            // Update: Since EquipmentDetailPanel has .Setup(data), we can find it in UIManager if it is an overlay,
-            // or we might need to rely on GameEventManager or UIManager direct call. Let's just lookup by type.
-            var equipmentDetailPanel = FindFirstObjectByType<EquipmentDetailPanel>(FindObjectsInactive.Include);
-            if (equipmentDetailPanel != null)
+            detailCountText.text = ""; // Trang bị thì không cần đếm số lượng
+            if (useButton != null)
             {
-                equipmentDetailPanel.Setup(equip);
-            }
-            else
-            {
-                Debug.LogWarning("EquipmentDetailPanel not found in the scene to show details.");
+                useButton.gameObject.SetActive(true);
+                var btnText = useButton.GetComponentInChildren<TextMeshProUGUI>();
+                if (btnText != null) btnText.text = _isPickMode ? "Mặc" : "Nâng cấp"; // Trong Pick mode là Mặc, bình thường có thể chuyển qua nâng cấp
             }
         }
 
         private void OnUseButtonClicked()
         {
-            if (_selectedItem != null)
+            if (_isPickMode && _selectedEquip != null)
+            {
+                bool success = EquipmentSystem.EquipItem(_pickModeHero, _selectedEquip);
+                if (success)
+                {
+                    GameManager.Instance.UINotificationManager?.ShowNotification($"Đã trang bị {_selectedEquip.equipmentName}");
+                    _isPickMode = false;
+                    _selectedEquip = null;
+                    ClosePanel(); // Quay lại HeroInfo
+                }
+            }
+            else if (_selectedItem != null && _selectedItem.type == ItemType.Consumable)
             {
                 bool success = InventoryManager.Instance.UseItem(_selectedItem.id, 1);
                 if (success)
@@ -230,10 +278,20 @@ namespace LegendOfBlood
                     GameManager.Instance.UINotificationManager.ShowNotification($"Sử dụng {_selectedItem.itemName} thành công");
                 }
             }
+            else if (!_isPickMode && _selectedEquip != null)
+            {
+                // Mở EquipmentDetailPanel cho phép upgrade/lock
+                EquipmentDetailPanel detailPanel = FindFirstObjectByType<EquipmentDetailPanel>(FindObjectsInactive.Include);
+                if (detailPanel != null)
+                {
+                    detailPanel.Setup(_selectedEquip);
+                }
+            }
         }
 
         private void ClosePanel()
         {
+            _isPickMode = false;
             GameManager.Instance.UIManager.GoBack();
         }
     }

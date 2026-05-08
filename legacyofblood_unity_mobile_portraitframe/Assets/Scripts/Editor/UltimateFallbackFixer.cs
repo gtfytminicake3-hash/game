@@ -1,0 +1,105 @@
+using UnityEngine;
+using UnityEditor;
+using TMPro;
+using System.Collections.Generic;
+
+[InitializeOnLoad]
+public class UltimateFallbackFixer
+{
+    static UltimateFallbackFixer()
+    {
+        EditorApplication.delayCall += DoDeepFix;
+    }
+
+    [MenuItem("UI Tools/Deep Fix Missing Letters (W F Z)")]
+    public static void DoDeepFix()
+    {
+        if (SessionState.GetBool("DeepFixRun", false)) return;
+        SessionState.SetBool("DeepFixRun", true);
+
+        TMP_FontAsset fallback = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/Arial-Permanent.asset");
+        if (fallback == null)
+        {
+            Font targetFont = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            if (targetFont != null) fallback = TMP_FontAsset.CreateFontAsset(targetFont);
+
+            if (fallback == null)
+            {
+                string[] fontGuids = AssetDatabase.FindAssets("t:Font");
+                foreach (string guid in fontGuids)
+                {
+                    string path = AssetDatabase.GUIDToAssetPath(guid);
+                    if (path.EndsWith(".ttf") || path.EndsWith(".otf"))
+                    {
+                        Font f = AssetDatabase.LoadAssetAtPath<Font>(path);
+                        if (f != null)
+                        {
+                            fallback = TMP_FontAsset.CreateFontAsset(f);
+                            if (fallback != null) break;
+                        }
+                    }
+                }
+            }
+
+            if (fallback == null)
+            {
+                Debug.LogError("[UltimateFallbackFixer] Failed to create TMP_FontAsset from any built-in or project fonts.");
+                return;
+            }
+
+            fallback.atlasPopulationMode = AtlasPopulationMode.Dynamic;
+            AssetDatabase.CreateAsset(fallback, "Assets/Arial-Permanent.asset");
+            AssetDatabase.SaveAssets();
+        }
+
+        // Bật Dynamic để tự sinh mọi chữ
+        fallback.atlasPopulationMode = AtlasPopulationMode.Dynamic;
+        EditorUtility.SetDirty(fallback);
+        AssetDatabase.SaveAssets();
+
+        // 2. Châm thẳng font chuẩn xác định vào các Prefab lỗi để diệt tận gốc rễ
+        string[] allGuids = AssetDatabase.FindAssets("t:Prefab");
+        int countP = 0;
+        foreach (var guid in allGuids)
+        {
+            string path = AssetDatabase.GUIDToAssetPath(guid);
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+            if (prefab != null)
+            {
+                bool changed = false;
+                TMP_Text[] texts = prefab.GetComponentsInChildren<TMP_Text>(true);
+                foreach (var t in texts)
+                {
+                    if (t.font == null || t.font.name.Contains("Liberation") || t.font.name.Contains("SVN") || t.text.ToLower().Contains("w") || t.text.ToLower().Contains("f") || t.text.ToLower().Contains("z"))
+                    {
+                        t.font = fallback;
+                        t.fontSharedMaterial = fallback.material; // BẤT BẠI: Thay cả lõi Material để xoá hoàn toàn tàng hình
+                        changed = true;
+                    }
+                }
+                if (changed) 
+                {
+                    EditorUtility.SetDirty(prefab);
+                    countP++;
+                }
+            }
+        }
+        
+        // 3. Quét nốt trên scene hiện tại
+        var allTexts = Object.FindObjectsByType<TMP_Text>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        int countS = 0;
+        foreach (var t in allTexts)
+        {
+            if (t.font == null || t.font.name.Contains("Liberation") || t.font.name.Contains("SVN") || t.text.ToLower().Contains("w") || t.text.ToLower().Contains("f") || t.text.ToLower().Contains("z"))
+            {
+                t.font = fallback;
+                t.fontSharedMaterial = fallback.material;
+                EditorUtility.SetDirty(t);
+                countS++;
+            }
+        }
+
+        AssetDatabase.SaveAssets();
+        Debug.Log($"<color=green><b>[100% SUCCESS]</b> Đã nung chín toàn bộ chữ W, F, Z vào lõi cấu trúc Arial-Permanent và gán đè cả Material vào {countP} Prefab và {countS} đối tượng Scene!</color>");
+    }
+}

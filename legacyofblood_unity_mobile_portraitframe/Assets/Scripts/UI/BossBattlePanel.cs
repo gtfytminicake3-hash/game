@@ -1,117 +1,125 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
-using System.Collections.Generic;
 
 namespace LegendOfBlood
 {
     public class BossBattlePanel : UIPanel
     {
-        [Header("Header")]
-        [SerializeField] private TextMeshProUGUI bossNameText;
-        [SerializeField] private TextMeshProUGUI bossLevelText;
-
-        [Header("Body Left - Visuals & Stats")]
-        [SerializeField] private Image bossImage;
-        [SerializeField] private TextMeshProUGUI hpText;
-        [SerializeField] private TextMeshProUGUI atkText;
-        [SerializeField] private TextMeshProUGUI defText;
-        [SerializeField] private TextMeshProUGUI spdText;
-
-        [Header("Body Right - Skills & Mechanics")]
-        [SerializeField] private TextMeshProUGUI normalSkillOutlineText;
-        [SerializeField] private TextMeshProUGUI aoeSkillOutlineText;
+        [Header("Top Bar")]
+        public TMPro.TextMeshProUGUI labelBossBattle;
         
-        [Header("Mechanic Frame")]
-        [SerializeField] private TextMeshProUGUI mechanicNameText;
-        [SerializeField] private TextMeshProUGUI mechanicDescText;
+        [Header("Boss HP")]
+        public Image imgHpFill;
+        public TMPro.TextMeshProUGUI txtHpValue;
 
-        [Header("Footer")]
-        [SerializeField] private Button challengeButton;
-        [SerializeField] private Button closeButton;
+        [Header("Boss Info")]
+        public TMPro.TextMeshProUGUI txtBossName;
+        public TMPro.TextMeshProUGUI txtDifficulty;
+        public TMPro.TextMeshProUGUI txtDescription;
 
-        private POIData _bossPoi;
-        private BossData _currentBossInfo;
+        [Header("Action Buttons")]
+        public Button btnAllySupport;
+        public Button btnBeginRaid;
+        public Button btnPrepGear;
+
+        [Header("Nav Tabs")]
+        public Button tabShop;
+        public Button tabBarracks;
+        public Button tabLobby;
+        public Button tabAlliance;
+        public Button tabBattlefield;
+        
+        private POIData _currentPoiData;
 
         private void Awake()
         {
             PanelType = UIPanelType.BossBattle;
-            if (challengeButton != null) challengeButton.onClick.AddListener(OnChallengeClicked);
-            if (closeButton != null) closeButton.onClick.AddListener(ClosePanel);
+
+            if (btnBeginRaid != null)
+                btnBeginRaid.onClick.AddListener(OnBeginRaidClicked);
+                
+            if (btnAllySupport != null)
+                btnAllySupport.onClick.AddListener(OnAllySupportClicked);
+                
+            if (btnPrepGear != null)
+                btnPrepGear.onClick.AddListener(OnPrepGearClicked);
+        }
+
+        private void OnEnable()
+        {
+            // Placeholder init logic in case it's opened without data
+            if (txtBossName != null && string.IsNullOrEmpty(txtBossName.text))
+                RefreshBossInfo(null);
         }
 
         public void Show(POIData poiData)
         {
-            _bossPoi = poiData;
-            gameObject.SetActive(true);
-
-            if (poiData.monsterIDs != null && poiData.monsterIDs.Count > 0)
-            {
-                string bossId = poiData.monsterIDs[0];
-                if (DataManager.Instance.AllBosses.TryGetValue(bossId, out BossData bData))
-                {
-                    _currentBossInfo = bData;
-                    UpdateUI();
-                }
-                else
-                {
-                    Debug.LogError($"[BossBattlePanel] Cannot find BossData for ID: {bossId}");
-                }
-            }
+            RefreshBossInfo(poiData);
         }
 
-        private void UpdateUI()
+        private void RefreshBossInfo(POIData poiData)
         {
-            if (_currentBossInfo == null) return;
-
-            if (bossNameText != null) bossNameText.text = _currentBossInfo.bossName;
-            if (bossLevelText != null) bossLevelText.text = $"Lv. {_currentBossInfo.level}";
-
-            if (hpText != null) hpText.text = $"HP: {_currentBossInfo.baseHp}";
-            if (atkText != null) atkText.text = $"ATK: {_currentBossInfo.baseAtk}";
-            if (defText != null) defText.text = $"DEF: {_currentBossInfo.baseDef}";
-            if (spdText != null) spdText.text = $"SPD: {_currentBossInfo.baseSpd}";
-
-            if (_currentBossInfo.skills != null)
+            _currentPoiData = poiData; // Keep track for starting raid
+            
+            if (poiData != null)
             {
-                if (normalSkillOutlineText != null) 
-                    normalSkillOutlineText.text = string.Format(LocalizationSystem.GetText("ui_boss_normal_atk"), _currentBossInfo.skills.normalAttackName, _currentBossInfo.skills.normalAttackMultiplier);
-                if (aoeSkillOutlineText != null) 
-                    aoeSkillOutlineText.text = string.Format(LocalizationSystem.GetText("ui_boss_aoe_atk"), _currentBossInfo.skills.aoeAttackName, _currentBossInfo.skills.aoeAttackMultiplier);
+                if (txtBossName != null) txtBossName.text = $"BOSS: {poiData.poiName.ToUpper()}";
+                if (txtDifficulty != null) txtDifficulty.text = $"Difficulty: {poiData.difficultyLevel}";
+                
+                int bossHp = poiData.difficultyLevel * 10000;
+                if (txtHpValue != null) txtHpValue.text = $"{bossHp:N0} / {bossHp:N0}"; 
+                if (txtDescription != null) txtDescription.text = "Prepare your best heroes to overcome the guardian of this region.";
             }
-
-            if (_currentBossInfo.mechanic != null)
+            else
             {
-                if (mechanicNameText != null) mechanicNameText.text = _currentBossInfo.mechanic.name;
-                if (mechanicDescText != null) mechanicDescText.text = _currentBossInfo.mechanic.description;
+                if (txtBossName != null) txtBossName.text = "BOSS: UNKNOWN";
+                if (txtDifficulty != null) txtDifficulty.text = "Difficulty: 1";
+                if (txtHpValue != null) txtHpValue.text = "10,000 / 10,000";
+                if (txtDescription != null) txtDescription.text = "Prepare your best heroes.";
             }
+            
+            if (imgHpFill != null) imgHpFill.fillAmount = 1.0f;
         }
 
-        private void OnChallengeClicked()
+        private void OnBeginRaidClicked()
         {
+            Debug.Log("[BossBattlePanel] Bắt đầu đánh Boss!");
+            if (_currentPoiData == null) return;
+            
             var UIMgr = GameManager.Instance.UIManager;
             UIMgr.ShowPanel(UIPanelType.SquadSelection, true);
             var squadPanel = UIMgr.GetPanel<SquadSelectionPanel>(UIPanelType.SquadSelection);
-            
             if (squadPanel != null)
             {
                 var availableHeroes = DataManager.Instance.AllHeroes.FindAll(h => h.isMature && !h.IsBusy());
                 squadPanel.Show(
-                    string.Format(LocalizationSystem.GetText("title_challenge_boss"), _currentBossInfo.bossName),
-                    availableHeroes, 15, // Allow up to 3 squads (15 heroes)
-                    (selectedHeroIDs) => {
+                    $"RAID BOSS: {_currentPoiData.poiName}",
+                    availableHeroes, 5,
+                    (selectedHeroIDs, diff) => {
                         squadPanel.gameObject.SetActive(false);
                         this.gameObject.SetActive(false);
-                        GameManager.Instance.ExpeditionManager.StartExpedition(selectedHeroIDs, _bossPoi);
+                        _currentPoiData.difficultyLevel = diff;
+                        GameManager.Instance.ExpeditionManager.StartExpedition(selectedHeroIDs, _currentPoiData);
                     },
-                    Profession.None
+                    _currentPoiData.requiredProfession
                 );
             }
         }
 
-        private void ClosePanel()
+        private void OnAllySupportClicked()
         {
-            GameManager.Instance.UIManager.HidePanel(UIPanelType.BossBattle);
+            Debug.Log("[BossBattlePanel] Yêu cầu hỗ trợ từ liên minh!");
+            if (GameManager.Instance != null && GameManager.Instance.UINotificationManager != null) {
+                GameManager.Instance.UINotificationManager.ShowNotification("Đã gửi yêu cầu hỗ trợ Liên Minh!");
+            }
+        }
+
+        private void OnPrepGearClicked()
+        {
+            Debug.Log("[BossBattlePanel] Mở kho đồ chuẩn bị vũ khí!");
+            if (GameManager.Instance != null && GameManager.Instance.UIManager != null) {
+                GameManager.Instance.UIManager.ShowPanel(UIPanelType.Inventory, false);
+            }
         }
     }
 }

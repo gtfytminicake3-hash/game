@@ -73,11 +73,21 @@ namespace LegendOfBlood
         private void OnEnable()
         {
             EventManager.StartListening<HeroData>(GameEvents.OnHeroCardClicked, OnHeroSelected);
+            DataManager.OnHeroStatsChanged += OnHeroStatsChangedEvent;
         }
 
         private void OnDisable()
         {
             EventManager.StopListening<HeroData>(GameEvents.OnHeroCardClicked, OnHeroSelected);
+            DataManager.OnHeroStatsChanged -= OnHeroStatsChangedEvent;
+        }
+
+        private void OnHeroStatsChangedEvent(HeroData hero)
+        {
+            if (gameObject.activeInHierarchy && _currentHero != null && hero != null && hero.id == _currentHero.id)
+            {
+                PopulateData(_currentHero);
+            }
         }
         
         private void OnHeroSelected(HeroData heroData)

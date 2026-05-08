@@ -1,0 +1,23 @@
+# ninja log v5
+0	2281	7998511382085071	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	c23f69cd15919336
+168	655	7998511365856372	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	7c941f9960fa830e
+656	831	7998511367513959	D:/game/legendofblood/legacyofblood_unity_mobile_portraitframe/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/m5n17514/obj/arm64-v8a/libswappywrapper.so	d091c2fec710cb56
+140	1971	7998511378707004	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	4faf6f2e39f23b2a
+74	1987	7998511379144188	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	65e2bd67d355a391
+99	2203	7998511381345550	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	247c9e7ed1f04d7
+37	1995	7998511379231593	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	27523f27fd3386e3
+14	2063	7998511379777254	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	2ea3b939aea4aa41
+109	2016	7998511379454933	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	d9557d6eabe75a90
+52	2246	7998511381761736	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	47c6739d4d11f2a1
+2281	2375	7998511383047420	D:/game/legendofblood/legacyofblood_unity_mobile_portraitframe/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/m5n17514/obj/arm64-v8a/libgame.so	75ab3d745d0cba0b
+26	178	7998517290111550	FramePacing/CMakeFiles/swappywrapper.dir/UnitySwappyWrapper.cpp.o	7c941f9960fa830e
+178	331	7998517291532097	D:/game/legendofblood/legacyofblood_unity_mobile_portraitframe/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/m5n17514/obj/arm64-v8a/libswappywrapper.so	d091c2fec710cb56
+40	834	7998517296662013	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	65e2bd67d355a391
+68	839	7998517296737333	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	4faf6f2e39f23b2a
+5	869	7998517297012238	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	27523f27fd3386e3
+57	905	7998517297410259	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	d9557d6eabe75a90
+13	934	7998517297705974	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	2ea3b939aea4aa41
+48	963	7998517297985770	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	247c9e7ed1f04d7
+33	1070	7998517299047715	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	47c6739d4d11f2a1
+19	1119	7998517299515292	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	c23f69cd15919336
+1119	1196	7998517300315595	D:/game/legendofblood/legacyofblood_unity_mobile_portraitframe/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/m5n17514/obj/arm64-v8a/libgame.so	75ab3d745d0cba0b

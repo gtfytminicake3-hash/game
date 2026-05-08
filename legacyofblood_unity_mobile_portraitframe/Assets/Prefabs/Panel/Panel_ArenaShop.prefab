@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Free Gift
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 319cb99bbda91bb439f81273a9efe931, type: 2}
-  m_sharedMaterial: {fileID: 1761099092698597142, guid: 319cb99bbda91bb439f81273a9efe931, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
+  m_sharedMaterial: {fileID: -2257151428975496358, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -458,6 +458,10 @@ MonoBehaviour:
   adFreebieButton: {fileID: 3990453897759863288}
   itemContainer: {fileID: 700349403875788133}
   shopItemPrefab: {fileID: 8829572244263219601, guid: c281a9cb9ac26a1479fd667efe23a064, type: 3}
+  dailyGoods: []
+  goldBanner: {fileID: 0}
+  stoneBanner: {fileID: 0}
+  gemBanner: {fileID: 0}
 --- !u!1 &4987238840495238675
 GameObject:
   m_ObjectHideFlags: 0
@@ -812,8 +816,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: X
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
+  m_sharedMaterial: {fileID: -2257151428975496358, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

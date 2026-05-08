@@ -39,6 +39,8 @@ namespace LegendOfBlood
         /// </summary>
         public void Tick(float deltaTime)
         {
+            if (DataManager.Instance == null) return;
+            
             var allHeroes = DataManager.Instance.AllHeroes;
             if (allHeroes == null || allHeroes.Count == 0) return;
 

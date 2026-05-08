@@ -25,7 +25,11 @@ namespace LegendOfBlood
         [SerializeField] private GameObject heroCardPrefab;  // Prefab cho một hero trong danh sách có sẵn
 
         // --- State Variables ---
-        private Action<List<string>> _onConfirmCallback; // Hàm callback để trả kết quả về cho người gọi
+        private Action<List<string>, int> _onConfirmCallback; // Hàm callback để trả kết quả về cho người gọi
+        private int _currentDifficulty = 1;
+        private GameObject _difficultyPanel;
+        private TextMeshProUGUI _difficultyLabel;
+
         private List<HeroData> _availableHeroes;
         private Profession _requiredProfession = Profession.None;
         private HeroData[] _selectedHeroes; // Dùng mảng vì kích thước cố định
@@ -58,14 +62,16 @@ namespace LegendOfBlood
         /// <param name="squadSize">Số lượng hero cần chọn.</param>
         /// <param name="onConfirm">Hàm callback sẽ được gọi khi người chơi xác nhận.</param>
         /// <param name="requiredProfession">Nghề nghiệp yêu cầu (tùy chọn). Nếu khác None, chỉ hero có nghề này mới được chọn.</param>
-        public void Show(string title, List<HeroData> availableHeroes, int squadSize, Action<List<string>> onConfirm, Profession requiredProfession = Profession.None)
+        public void Show(string title, List<HeroData> availableHeroes, int squadSize, Action<List<string>, int> onConfirm, Profession requiredProfession = Profession.None, int initialDifficulty = 1)
         {
             GameManager.Instance.UIManager.ShowPanel(UIPanelType.SquadSelection, false);
+            transform.SetAsLastSibling();
             
             titleText.text = title;
             _availableHeroes = availableHeroes;
             _onConfirmCallback = onConfirm;
             _requiredProfession = requiredProfession;
+            _currentDifficulty = initialDifficulty;
 
             _selectedHeroes = new HeroData[squadSize]; // Khởi tạo mảng với kích thước yêu cầu
 
@@ -109,22 +115,16 @@ namespace LegendOfBlood
         
         private void RefreshAvailableList()
         {
-            // Dọn dẹp danh sách cũ
-            if (_availableHeroCards != null)
+            // Dọn dẹp danh sách cũ (bao gồm cả các slot dummy có sẵn trong Prefab)
+            if (availableListContainer != null)
             {
-                foreach (var card in _availableHeroCards)
+                foreach (Transform child in availableListContainer)
                 {
-                    if (card != null)
-                    {
-                        Destroy(card);
-                    }
+                    Destroy(child.gameObject);
                 }
-                _availableHeroCards.Clear();
             }
-            else
-            {
-                _availableHeroCards = new List<GameObject>();
-            }
+
+            _availableHeroCards = new List<GameObject>();
 
             // Lọc ra những hero chưa được chọn và hợp lệ
             var heroesToShow = _availableHeroes.Where(h =>
@@ -231,7 +231,7 @@ namespace LegendOfBlood
                                                  .ToList();
             
             // Gọi callback để trả kết quả về cho người đã mở panel này
-            _onConfirmCallback?.Invoke(selectedHeroIDs);
+            _onConfirmCallback?.Invoke(selectedHeroIDs, _currentDifficulty);
             ClosePanel();
         }
 

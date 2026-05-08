@@ -92,10 +92,12 @@ namespace LegendOfBlood
         /// </summary>
         private void RefreshLists()
         {
-            // Dọn dẹp
-            foreach (var card in _instantiatedCards)
-            {
-                Destroy(card);
+            // Dọn dẹp Mock Data từ Layout Generator
+            foreach (Transform child in severeInjuryListContainer) {
+                Destroy(child.gameObject);
+            }
+            foreach (Transform child in lightInjuryListContainer) {
+                Destroy(child.gameObject);
             }
             _instantiatedCards.Clear();
 

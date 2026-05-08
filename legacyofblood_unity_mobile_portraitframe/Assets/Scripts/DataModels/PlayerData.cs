@@ -9,6 +9,13 @@ namespace LegendOfBlood
     // NEW DATA STRUCTURES FOR "FIRE-AND-FORGET" EXPEDITION SYSTEM
     // =====================================================================================
 
+    public enum ExpeditionState
+    {
+        Traveling,
+        Exploring,
+        Returning
+    }
+
     [Serializable]
     public class LootData
     {
@@ -48,6 +55,13 @@ namespace LegendOfBlood
         public string expeditionId;
         public List<string> heroIds;
         public string poiId;
+        
+        public ExpeditionState currentState;
+        public long stateEndTimestamp; // Thời điểm kết thúc trạng thái hiện tại
+        public long travelDurationMs;
+        public long combatDurationMs;
+
+        // Backward compatibility
         public long completionTimestamp;
 
         // The most important field: the pre-calculated result
@@ -112,8 +126,23 @@ namespace LegendOfBlood
         public int dailyMysticChestAdsWatched;
         public bool useDynamicUI;
 
+        // --- NEW: Arena Shop State ---
+        public long lastArenaShopRefreshTimestamp;
+        public List<ArenaShopGood> currentArenaShopGoods;
+
         // --- NEW: Offline Progression ---
         public long lastOfflineTimestamp;
+
+        // --- NEW: Player Progression ---
+        public int playerLevel;
+        public int playerExp;
+
+        // --- NEW: King God Pass Progression ---
+        public int passLevel;
+        public int passExp;
+        public bool isPremiumPassUnlocked;
+        public List<int> claimedFreePassLevels;
+        public List<int> claimedPremiumPassLevels;
 
         // --- EXISTING: For serialization ---
         public Dictionary<BuildingType, int> BuildingLevels;
@@ -143,6 +172,18 @@ namespace LegendOfBlood
             dailyDoubleGoldAdsWatched = 0;
             lastOfflineTimestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             useDynamicUI = false;
+            
+            playerLevel = 1;
+            playerExp = 0;
+
+            passLevel = 1;
+            passExp = 0;
+            isPremiumPassUnlocked = false;
+            claimedFreePassLevels = new List<int>();
+            claimedPremiumPassLevels = new List<int>();
+
+            lastArenaShopRefreshTimestamp = 0;
+            currentArenaShopGoods = new List<ArenaShopGood>();
 
             // --- QUÀ TÂN THỦ: 10 VÉ CHIÊU MỘ ---
             var welcomeLoot = new LootData();
@@ -192,6 +233,7 @@ namespace LegendOfBlood
             UnclaimedReports ??= new List<ExpeditionReport>(); // Ensure list is not null after deserialization
             Heroes ??= new List<HeroData>(); // Đảm bảo không null sau khi tải
             QuestStatuses ??= new List<PlayerQuestStatus>(); // Đảm bảo không null sau khi tải
+            currentArenaShopGoods ??= new List<ArenaShopGood>();
 
             if (_serializedItemIDs.Count != _serializedItemCounts.Count)
             {

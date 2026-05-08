@@ -20,6 +20,7 @@ namespace LegendOfBlood
         [SerializeField] private Button lockButton; // Khóa trang bị
 
         private EquipmentData _currentEquip;
+        private HeroData _ownerHero;
 
         protected override void Start()
         {
@@ -34,12 +35,17 @@ namespace LegendOfBlood
                 
             if (lockButton != null)
                 lockButton.onClick.AddListener(ToggleLockStatus);
+
+            if (equipButton != null)
+                equipButton.onClick.AddListener(OnEquipButtonClicked);
         }
 
-        public void Setup(EquipmentData data)
+        public void Setup(EquipmentData data, HeroData owner = null)
         {
             _currentEquip = data;
+            _ownerHero = owner;
             gameObject.SetActive(true);
+            transform.SetAsLastSibling();
             RefreshUI();
         }
 
@@ -56,13 +62,22 @@ namespace LegendOfBlood
             if (equipLevelText != null)
                 equipLevelText.text = _currentEquip.level >= EquipmentSystem.MAX_LEVEL ? LocalizationSystem.GetText("equip_level_max") : string.Format(LocalizationSystem.GetText("equip_level"), _currentEquip.level);
 
-            // Update lock button text/icon if possible (assuming there's a child TextMeshProUGUI)
+            // Update lock button text/icon if possible
             if (lockButton != null)
             {
                 var lockText = lockButton.GetComponentInChildren<TextMeshProUGUI>();
                 if (lockText != null)
                 {
                     lockText.text = _currentEquip.isLocked ? "Mở Khóa" : "Khóa Đồ";
+                }
+            }
+
+            if (equipButton != null)
+            {
+                var equipText = equipButton.GetComponentInChildren<TextMeshProUGUI>();
+                if (equipText != null)
+                {
+                    equipText.text = _ownerHero != null ? "Tháo ra" : "Tùy chọn"; // Cần 1 picker cho Tùy chọn nếu muốn
                 }
             }
 
@@ -118,6 +133,27 @@ namespace LegendOfBlood
             else
             {
                 UnityEngine.Debug.LogError("Không tìm thấy EquipmentUpgradePanel trong scene!");
+            }
+        }
+
+        private void OnEquipButtonClicked()
+        {
+            if (_currentEquip == null) return;
+            
+            if (_ownerHero != null)
+            {
+                // Unequip
+                bool success = EquipmentSystem.UnequipItem(_ownerHero, _currentEquip.slot);
+                if (success)
+                {
+                    GameManager.Instance.UINotificationManager?.ShowNotification($"Đã tháo {_currentEquip.equipmentName}");
+                    ClosePanel();
+                }
+            }
+            else
+            {
+                // TODO: Show HeroPickerPanel to choose a hero to equip this item to
+                // Currently handled from InventoryPanel via _isPickMode
             }
         }
 

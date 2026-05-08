@@ -101,6 +101,7 @@ namespace LegendOfBlood
 
         public void Tick(float deltaTime)
         {
+            if (DataManager.Instance == null) return;
             var buildings = DataManager.Instance.AllBuildings;
             if (buildings == null || buildings.Count == 0) return;
 

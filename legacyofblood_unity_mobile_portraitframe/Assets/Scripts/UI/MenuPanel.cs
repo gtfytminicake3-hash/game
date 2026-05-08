@@ -15,6 +15,9 @@ namespace LegendOfBlood
         [SerializeField] private Button shopButton;
         [SerializeField] private Button recruitmentButton;
         [SerializeField] private Button settingButton;
+        [SerializeField] private Button breedingButton;
+        [SerializeField] private Button barrackButton;
+        [SerializeField] private Button arenaButton;
 
         private void Awake()
         {
@@ -46,6 +49,15 @@ namespace LegendOfBlood
 
             if (settingButton != null)
                 settingButton.onClick.AddListener(() => OpenPanel(UIPanelType.Settings));
+
+            if (breedingButton != null)
+                breedingButton.onClick.AddListener(() => OpenPanel(UIPanelType.Breeding));
+
+            if (barrackButton != null)
+                barrackButton.onClick.AddListener(() => OpenPanel(UIPanelType.Barrack));
+
+            if (arenaButton != null)
+                arenaButton.onClick.AddListener(() => OpenPanel(UIPanelType.Arena));
         }
 
         private void OpenPanel(UIPanelType type)

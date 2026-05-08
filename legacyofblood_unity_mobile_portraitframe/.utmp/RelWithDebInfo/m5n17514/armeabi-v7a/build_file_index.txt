@@ -1,0 +1,3 @@
+D:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+D:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\FramePacing\CMakeLists.txt
+D:\game\legendofblood\legacyofblood_unity_mobile_portraitframe\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt

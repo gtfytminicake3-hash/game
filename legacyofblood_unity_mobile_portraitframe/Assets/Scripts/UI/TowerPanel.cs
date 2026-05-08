@@ -126,9 +126,10 @@ namespace LegendOfBlood
                 squadPanel.Show(
                     string.Format(LocalizationSystem.GetText("title_tower_challenge"), _currentTowerData.currentFloor),
                     availableHeroes, 5,
-                    (selectedHeroIDs) => {
+                    (selectedHeroIDs, diff) => {
                         squadPanel.gameObject.SetActive(false);
                         this.gameObject.SetActive(false);
+                        _currentTowerData.difficultyLevel = diff;
                         GameManager.Instance.ExpeditionManager.StartExpedition(selectedHeroIDs, _currentTowerData);
                     },
                     _currentTowerData.requiredProfession

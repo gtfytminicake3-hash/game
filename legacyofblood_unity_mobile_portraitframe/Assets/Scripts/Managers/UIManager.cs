@@ -35,7 +35,8 @@ namespace LegendOfBlood
         BossBattle,
         Tower,
         POI_Info,
-        Menu   // DO NOT INSERT IN THE MIDDLE OF ENUMS!
+        Menu,
+        KingGodPass
     }
 
     /// <summary>
@@ -51,6 +52,9 @@ namespace LegendOfBlood
         private readonly Stack<UIPanelType> _history = new Stack<UIPanelType>();
         
         private UIPanelType _currentPanel = UIPanelType.None;
+        public UIPanelType CurrentPanel => _currentPanel;
+        
+        private int _topSortingOrder = 100;
 
         // --- Feature Lock ---
         private bool IsArenaUnlocked { get; set; } = false;
@@ -130,6 +134,7 @@ namespace LegendOfBlood
                     else if (fullClassName.Contains("TowerPanel")) panel.PanelType = UIPanelType.Tower;
                     else if (fullClassName.Contains("HeroInfoPanel")) panel.PanelType = UIPanelType.HeroInfo;
                     else if (fullClassName.Contains("HospitalPanel")) panel.PanelType = UIPanelType.Hospital;
+                    else if (fullClassName.Contains("BreedingUIController") || fullClassName.Contains("BreedingPanel")) panel.PanelType = UIPanelType.Breeding;
                     else if (fullClassName.Contains("ArenaPanel")) panel.PanelType = UIPanelType.Arena;
                     else if (fullClassName.Contains("POI_InfoPanel")) panel.PanelType = UIPanelType.POI_Info;
                     else if (fullClassName.Contains("MailboxPanel")) panel.PanelType = UIPanelType.Mailbox;
@@ -138,8 +143,8 @@ namespace LegendOfBlood
                     else if (fullClassName.Contains("ArenaShopPanel")) panel.PanelType = UIPanelType.ArenaShop;
                     else if (fullClassName.Contains("HeroPickerPanel")) panel.PanelType = UIPanelType.HeroPicker;
                     else if (fullClassName.Contains("CombatVisualizerPanel")) panel.PanelType = UIPanelType.Battle;
-                    else if (fullClassName.Contains("PopulationManagerPanel")) panel.PanelType = UIPanelType.PopulationManager;
                     else if (fullClassName.Contains("SettingsPanel")) panel.PanelType = UIPanelType.Settings;
+                    else if (fullClassName.Contains("KingGodPassPanel")) panel.PanelType = UIPanelType.KingGodPass;
                     else if (fullClassName.Contains("TutorialPanel")) panel.PanelType = UIPanelType.Tutorial;
                     
                     if (panel.PanelType == UIPanelType.None) 
@@ -243,6 +248,21 @@ namespace LegendOfBlood
                 else
                 {
                     panelToShow.transform.SetAsLastSibling();
+                    
+                    // NATIVE SORTING ENFORCEMENT
+                    var cv = panelToShow.GetComponent<Canvas>();
+                    if(!cv) { 
+                        cv = panelToShow.gameObject.AddComponent<Canvas>(); 
+                        panelToShow.gameObject.AddComponent<UnityEngine.UI.GraphicRaycaster>(); 
+                    }
+                    cv.overrideSorting = true;
+                    // Tăng _topSortingOrder để đảm bảo panel MỚI NHẤT luôn nằm trên
+                    _topSortingOrder += 10;
+                    cv.sortingOrder = _topSortingOrder;
+                    
+                    if (panelType == UIPanelType.Barrack) cv.sortingOrder = 50;
+                    else if (panelType == UIPanelType.HeroInfo) cv.sortingOrder = _topSortingOrder + 50; // Pop-up thông tin hero TUYỆT ĐỐI NẰM TRÊN
+                    else if (panelType == UIPanelType.MainScreen) cv.overrideSorting = false;
                 }
 
                 _currentPanel = panelType;
@@ -290,17 +310,13 @@ namespace LegendOfBlood
         /// </summary>
         public bool GoBack()
         {
-            if (_history.Count > 0)
+            if (_currentPanel != UIPanelType.None && _currentPanel != UIPanelType.MainScreen)
             {
-                // Ẩn panel hiện tại mà không cần kiểm tra
-                if (_currentPanel != UIPanelType.None)
-                {
-                    HidePanel(_currentPanel);
-                }
-
-                UIPanelType previousPanel = _history.Pop();
-                // Hiển thị lại panel trước đó, không ẩn gì cả vì panel hiện tại đã bị ẩn rồi
-                ShowPanel(previousPanel, false); 
+                // Thay vì lùi lại history, luôn luôn clear history và fallback về MainScreen
+                HidePanel(_currentPanel);
+                _history.Clear();
+                _topSortingOrder = 100; // Reset sorting order
+                ShowPanel(UIPanelType.MainScreen, false);
                 return true;
             }
             return false;
@@ -363,9 +379,6 @@ namespace LegendOfBlood
         {
             switch (panelType)
             {
-                case UIPanelType.Arena:
-                case UIPanelType.ArenaShop:
-                    return IsArenaUnlocked;
                 // case UIPanelType.Tower: // Example
                 //     return IsTowerUnlocked;
                 default:

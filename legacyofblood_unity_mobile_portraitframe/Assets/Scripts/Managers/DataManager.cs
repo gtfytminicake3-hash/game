@@ -81,6 +81,9 @@ namespace LegendOfBlood
         // Sự kiện để thông báo cho các hệ thống khác (ví dụ: UI) khi dữ liệu thay đổi
         public static event Action OnPlayerDataLoaded;
         public static event Action OnHeroListChanged;
+        public static event Action<HeroData> OnHeroStatsChanged;
+        public static event Action<HeroData> OnHeroAvailabilityChanged;
+        public static event Action OnReportClaimed;
 
         #endregion
 
@@ -121,6 +124,31 @@ namespace LegendOfBlood
             
             var itemsList = _gameConfig.AllItems ?? new List<ItemData>();
             AllItems = itemsList.ToDictionary(i => i.id, i => i);
+
+            // --- BƠM DATA ẢO TRỰC TIẾP VÀO RAM NẾU CHƯA CÓ TRONG CONFIG ---
+            string[] ids = { "item_mutation_potion", "item_wish_charm", "item_speed_hourglass" };
+            string[] names = { "Thuốc Biến Dị", "Bùa Ước Nguyện", "Đồng Hồ Cát" };
+            string[] descs = {
+                "Một loại huyết thanh kì bí sủi bọt xanh. Cung cấp exp Khổng khồ cho các Hero.",
+                "Tấm bùa rách nát cổ xưa, phát ra một thứ ánh sáng ma mị. Dùng để mở khóa Breeding.",
+                "Hạt cát bên trong chảy lướt qua thời không. Dùng để rút ngắn thời gian thám hiểm."
+            };
+            ItemType[] types = { ItemType.Consumable, ItemType.BreedingMaterial, ItemType.SpeedUp };
+
+            for (int i = 0; i < ids.Length; i++)
+            {
+                if (!AllItems.ContainsKey(ids[i]))
+                {
+                    ItemData generatedData = ScriptableObject.CreateInstance<ItemData>();
+                    generatedData.id = ids[i];
+                    generatedData.itemName = names[i];
+                    generatedData.description = descs[i];
+                    generatedData.type = types[i];
+                    generatedData.icon = UnityEngine.Resources.Load<Sprite>($"Items/{ids[i]}");
+                    AllItems.Add(ids[i], generatedData);
+                }
+            }
+            // -------------------------------------------------------------
             
             var expList = _gameConfig.ExperienceTable ?? new List<GameConfigs.ExperienceData>();
             ExpTable = expList.ToDictionary(e => e.level, e => e.experienceRequired);
@@ -154,6 +182,15 @@ namespace LegendOfBlood
                     {
                         BuildingUpgradeConfigs.Add(config.buildingId, config);
                     }
+                }
+            }
+            // Fallback load all building configs from Resources/GameData
+            var allBuildingConfigs = Resources.LoadAll<BuildingUpgradeData>("GameData");
+            foreach (var config in allBuildingConfigs)
+            {
+                if (config != null && !BuildingUpgradeConfigs.ContainsKey(config.buildingId))
+                {
+                    BuildingUpgradeConfigs.Add(config.buildingId, config);
                 }
             }
 
@@ -203,6 +240,39 @@ namespace LegendOfBlood
             if (!AllBuildings.Any(b => b.id == "Barracks")) AllBuildings.Add(new Building(BuildingType.Barracks, 1) { id = "Barracks" });
             if (!AllBuildings.Any(b => b.id == "Hospital")) AllBuildings.Add(new Building(BuildingType.Hospital, 1) { id = "Hospital" });
             if (!AllBuildings.Any(b => b.id == "BreedingPen")) AllBuildings.Add(new Building(BuildingType.BreedingPen, 1) { id = "BreedingPen" });
+            if (!AllBuildings.Any(b => b.id == "TownHall")) AllBuildings.Add(new Building(BuildingType.TownHall, 1) { id = "TownHall" });
+
+            // --- TEST INJECTION HÀNG XỊN (THẬT 100%) ---
+            if (!Player.items.ContainsKey("item_mutation_potion")) Player.items["item_mutation_potion"] = 5;
+            if (!Player.items.ContainsKey("item_wish_charm")) Player.items["item_wish_charm"] = 5;
+            if (!Player.items.ContainsKey("item_speed_hourglass")) Player.items["item_speed_hourglass"] = 5;
+
+            // Xóa rác "Legendary Sword" cũ do chạy sinh tự động từ trước
+            Player.equipments.RemoveAll(e => e.equipmentName == "Legendary Sword" || e.id.StartsWith("wpn_"));
+
+            // Bơm 2 món thiết bị xịn vào
+            if (!Player.equipments.Any(e => e.id == "equip_ancient_weapon"))
+            {
+                var wpn = new EquipmentData("equip_ancient_weapon", "Kiếm Cổ Thần", EquipmentSlot.Weapon, 1, EquipmentTier.SSS, Profession.Warrior);
+                wpn.atkBonus = 999;
+                wpn.critChanceBonus = 0.5f; // 50% crit
+                wpn.spdBonus = 20;
+                Player.equipments.Add(wpn);
+            }
+            if (!Player.equipments.Any(e => e.id == "equip_ancient_armor"))
+            {
+                var arm = new EquipmentData("equip_ancient_armor", "Giáp Rồng Xương", EquipmentSlot.Armor, 1, EquipmentTier.SSS, Profession.Warrior);
+                arm.hpBonus = 5000;
+                arm.defBonus = 800;
+                Player.equipments.Add(arm);
+            }
+            // -------------------------------------------------------------
+            // --- BƠM TIỀN ARENA CHO TESTER ---
+            if (Player.arenaCoins < 50000)
+            {
+                Player.arenaCoins = 100000; 
+                Debug.Log("[TESTING] Đã tự động bơm 100,000 Xu Khuyển (Arena Coins) để bạn mua đồ Shop thoải mái!");
+            }
 
             CalculateOfflineProgress();
 
@@ -222,6 +292,7 @@ namespace LegendOfBlood
             AllBuildings.Add(new Building(BuildingType.Barracks, 1) { id = "Barracks" });
             AllBuildings.Add(new Building(BuildingType.Hospital, 1) { id = "Hospital" });
             AllBuildings.Add(new Building(BuildingType.BreedingPen, 1) { id = "BreedingPen" });
+            AllBuildings.Add(new Building(BuildingType.TownHall, 1) { id = "TownHall" });
             
             HeroData startingMale = CreateStartingHero(Gender.Male, "Adam");
             HeroData startingFemale = CreateStartingHero(Gender.Female, "Eva");
@@ -316,6 +387,10 @@ namespace LegendOfBlood
         #endregion
 
         #region Public API (Helpers & Modifiers)
+
+        public static void TriggerHeroStatsChanged(HeroData hero) => OnHeroStatsChanged?.Invoke(hero);
+        public static void TriggerHeroAvailabilityChanged(HeroData hero) => OnHeroAvailabilityChanged?.Invoke(hero);
+        public static void TriggerReportClaimed() => OnReportClaimed?.Invoke();
 
         public int GetPopulationCapacity()
         {

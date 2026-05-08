@@ -165,6 +165,8 @@ namespace LegendOfBlood
         /// </summary>
         public void Tick(float deltaTime)
         {
+            if (DataManager.Instance == null || DataManager.Instance.Player == null) return;
+
             var allHeroes = DataManager.Instance.AllHeroes;
             if (allHeroes == null || allHeroes.Count == 0) return;
 
@@ -200,6 +202,9 @@ namespace LegendOfBlood
             hero.isLightlyInjured = false;
             hero.currentHp = hero.GetFinalStats().hp; // Hồi đầy máu
             OnHeroHealed?.Invoke(hero);
+            DataManager.TriggerHeroAvailabilityChanged(hero);
+            DataManager.TriggerHeroStatsChanged(hero);
+            DataManager.Instance?.SavePlayerData();
         }
 
         // Xóa trạng thái bị thương nặng và hồi đầy máu
@@ -208,6 +213,9 @@ namespace LegendOfBlood
             hero.isSeverelyInjured = false;
             hero.currentHp = hero.GetFinalStats().hp; // Hồi đầy máu
             OnHeroHealed?.Invoke(hero);
+            DataManager.TriggerHeroAvailabilityChanged(hero);
+            DataManager.TriggerHeroStatsChanged(hero);
+            DataManager.Instance?.SavePlayerData();
         }
         
         // Công thức tính chi phí hồi phục vết thương nhẹ từ GDD_02

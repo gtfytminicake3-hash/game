@@ -57,9 +57,26 @@ namespace LegendOfBlood
             
             while (_notificationQueue.Count > 0)
             {
-                string message = _notificationQueue.Dequeue();
+                // Đề phòng Canvas bị Destroy trong lúc chờ (ví dụ chuyển scene)
+                if (mainCanvas == null)
+                {
+                    mainCanvas = FindFirstObjectByType<Canvas>();
+                    if (mainCanvas == null)
+                    {
+                        Debug.LogWarning("UINotificationManager: Canvas bị hủy, dừng hàng đợi thông báo.");
+                        _isDisplaying = false;
+                        yield break;
+                    }
+                }
 
+                string message = _notificationQueue.Dequeue();
                 GameObject notificationInstance = Instantiate(notificationPrefab, mainCanvas.transform);
+
+                // FIX: Ép thông báo vẽ đè lên tất cả các panel khác (UI Panel có sortingOrder 100+)
+                Canvas notifCanvas = notificationInstance.GetComponent<Canvas>();
+                if (notifCanvas == null) notifCanvas = notificationInstance.AddComponent<Canvas>();
+                notifCanvas.overrideSorting = true;
+                notifCanvas.sortingOrder = 9999;
 
                 TextMeshProUGUI textComponent = notificationInstance.GetComponentInChildren<TextMeshProUGUI>();
                 if (textComponent != null)

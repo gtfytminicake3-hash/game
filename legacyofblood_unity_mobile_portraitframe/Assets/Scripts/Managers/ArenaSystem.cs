@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using LegendOfBlood.Combat;
 
 namespace LegendOfBlood
 {
@@ -39,9 +40,62 @@ namespace LegendOfBlood
 
         public void FindOpponent(int playerPoints)
         {
-            // Mock implementation for now
-            Debug.Log("Finding opponent for player with " + playerPoints + " points.");
-            // In the future, this will involve matchmaking logic.
+            // Trigger actual matchmaking flow
+            var UIMgr = GameManager.Instance.UIManager;
+            UIMgr.ShowPanel(UIPanelType.SquadSelection, true);
+            var squadPanel = UIMgr.GetPanel<SquadSelectionPanel>(UIPanelType.SquadSelection);
+            
+            if (squadPanel != null)
+            {
+                var availableHeroes = DataManager.Instance.AllHeroes.FindAll(h => h.isMature && !h.IsBusy());
+                squadPanel.Show(
+                    "ĐẤU TRƯỜNG: VƯỢT ẢI",
+                    availableHeroes, 5,
+                    (selectedHeroIDs, diff) => {
+                        squadPanel.gameObject.SetActive(false);
+                        UIMgr.HidePanel(UIPanelType.Arena); // Hide Arena Panel during battle
+                        
+                        // Execute Arena Battle
+                        ExecuteArenaBattle(selectedHeroIDs, playerPoints);
+                    },
+                    Profession.None
+                );
+            }
+        }
+
+        private void ExecuteArenaBattle(System.Collections.Generic.List<string> selectedHeroIDs, int playerPoints)
+        {
+            PlayerData playerData = DataManager.Instance.Player;
+            if (playerData == null) return;
+            
+            if (playerData.arenaTickets <= 0)
+            {
+                GameManager.Instance.UINotificationManager.ShowNotification("Không đủ vé Đấu Trường!");
+                return;
+            }
+
+            var playerHeroes = new System.Collections.Generic.List<HeroData>();
+            foreach(var id in selectedHeroIDs)
+            {
+                var h = DataManager.Instance.GetHeroByID(id);
+                if (h != null) playerHeroes.Add(h);
+            }
+
+            var opponents = FindOpponentSquad(playerPoints);
+            var result = GameManager.Instance.CombatSystem.Simulate(playerHeroes, opponents);
+            
+            ProcessMatchResult(result.DidPlayerWin, playerPoints, playerPoints + 50);
+
+            // Visualize combat
+            GameManager.Instance.UIManager.ShowPanel(UIPanelType.Battle, true);
+            var combatPanel = GameManager.Instance.UIManager.GetPanel<LegendOfBlood.Combat.CombatVisualizerPanel>(UIPanelType.Battle);
+            if (combatPanel != null)
+            {
+                combatPanel.PlayCombat(result, playerHeroes, opponents);
+            }
+            
+            // Re-heal heroes
+            foreach(var h in playerHeroes) h.currentHp = h.GetFinalStats().hp;
         }
 
         public System.Collections.Generic.List<HeroData> FindOpponentSquad(int playerPoints)

@@ -1,4 +1,4 @@
-﻿// Cáº§n using namespace nÆ¡i báº¡n Ä‘á»‹nh nghÄ©a Skill.cs vÃ  cÃ¡c enum
+// Cáº§n using namespace nÆ¡i báº¡n Ä‘á»‹nh nghÄ©a Skill.cs vÃ  cÃ¡c enum
 using LegendOfBlood;
 using System;
 using System.Collections.Generic;
@@ -179,6 +179,9 @@ namespace LegendOfBlood.Combat
         {
             _isHealingChallenge = isHealingChallenge;
             _playerTeam = playerHeroes.Select((h, i) => new Combatant(h, true, i)).ToList();
+            
+            enemyMonsterIDs = enemyMonsterIDs ?? new List<string>();
+            
             var enemyHeroes = enemyMonsterIDs.Select(id => DataManager.Instance.GetMonsterByID(id, difficultyLevel))
                                              .Where(h => h != null)
                                              .ToList();

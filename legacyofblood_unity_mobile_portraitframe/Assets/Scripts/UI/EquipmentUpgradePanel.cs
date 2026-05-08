@@ -45,6 +45,7 @@ namespace LegendOfBlood
             _targetEquip = targetEquip;
             _onUpgradeSuccess = onUpgradeSuccess;
             gameObject.SetActive(true);
+            transform.SetAsLastSibling();
         }
 
         private void OnConfirmUpgrade()

@@ -43,6 +43,12 @@ namespace LegendOfBlood
         /// </summary>
         public static event Action<string, int> OnItemChanged;
         public static event Action OnEquipmentChanged;
+        
+        // Sự kiện khi chỉ số King God Pass thay đổi (Level, Exp hiện tại)
+        public static event Action<int, int> OnPassExpChanged;
+
+        // Sự kiện khi Player Level/Exp thay đổi
+        public static event Action<int, int> OnPlayerExpChanged;
 
         private void Awake()
         {
@@ -98,8 +104,141 @@ namespace LegendOfBlood
                 AddResource(ResourceType.Gold, 1000);
                 AddResource(ResourceType.Wood, 1000);
             }
+
+            // Đồng bộ UI ngay lúc đầu cho King God Pass
+            OnPassExpChanged?.Invoke(_playerData.passLevel, _playerData.passExp);
         }
 
+
+        #region Player Level Management
+        
+        public int GetMaxExpForPlayerLevel(int level)
+        {
+            return level * 1000;
+        }
+
+        public void AddPlayerExp(int amount)
+        {
+            if (_playerData == null) return;
+            if (_playerData.playerLevel >= 50) return; // Đã đạt cấp tối đa
+            
+            _playerData.playerExp += amount;
+            int maxExp = GetMaxExpForPlayerLevel(_playerData.playerLevel);
+            bool leveledUp = false;
+
+            while (_playerData.playerExp >= maxExp && _playerData.playerLevel < 50)
+            {
+                _playerData.playerExp -= maxExp;
+                _playerData.playerLevel++;
+                leveledUp = true;
+                
+                if (_playerData.playerLevel >= 50)
+                {
+                    _playerData.playerExp = 0; // Tràn EXP sẽ bị xóa khi đạt max cấp
+                    break;
+                }
+                
+                maxExp = GetMaxExpForPlayerLevel(_playerData.playerLevel);
+            }
+
+            if (leveledUp)
+            {
+                Debug.Log($"[InventoryManager] 💥 Player leveled up to {_playerData.playerLevel}!");
+            }
+            
+            OnPlayerExpChanged?.Invoke(_playerData.playerLevel, _playerData.playerExp);
+            GameManager.Instance.DataManager.SavePlayerData();
+        }
+
+        #endregion
+
+        #region King God Pass Management
+
+        public int GetMaxExpForPassLevel(int level)
+        {
+            var config = GameManager.Instance.DataManager.GameConfig?.KingGodPassConfig;
+            if (config != null)
+            {
+                return config.GetRequiredExpForLevel(level);
+            }
+            // Fallback
+            return 100 + level * 50; 
+        }
+
+        public void AddPassExp(int amount)
+        {
+            if (_playerData == null || amount <= 0) return;
+            
+            _playerData.passExp += amount;
+            
+            // Cập nhật lại max exp cho cấp tiếp theo
+            int maxExp = GetMaxExpForPassLevel(_playerData.passLevel);
+            while (_playerData.passExp >= maxExp)
+            {
+                _playerData.passExp -= maxExp;
+                _playerData.passLevel++;
+                maxExp = GetMaxExpForPassLevel(_playerData.passLevel);
+                Debug.Log($"King God Pass đã lên cấp: {_playerData.passLevel}");
+            }
+            
+            OnPassExpChanged?.Invoke(_playerData.passLevel, _playerData.passExp);
+            GameManager.Instance.DataManager.SavePlayerData();
+        }
+
+        public void ClaimPassReward(int level, bool isPremium)
+        {
+            if (_playerData == null) return;
+            var config = GameManager.Instance.DataManager.GameConfig?.KingGodPassConfig;
+            if (config == null) return;
+
+            var levelData = config.GetLevelData(level);
+            if (levelData == null) return;
+
+            // Kiểm tra điều kiện
+            if (_playerData.passLevel < level) return; // Chưa đạt cấp
+            
+            if (isPremium)
+            {
+                if (!_playerData.isPremiumPassUnlocked) return; // Chưa mua Pass
+                if (_playerData.claimedPremiumPassLevels.Contains(level)) return; // Đã nhận
+                
+                // Trao quà Premium
+                GivePassRewardItem(levelData.premiumReward);
+                _playerData.claimedPremiumPassLevels.Add(level);
+                Debug.Log($"Đã nhận quà Premium King God Pass mốc {level}");
+            }
+            else
+            {
+                if (_playerData.claimedFreePassLevels.Contains(level)) return; // Đã nhận
+                
+                // Trao quà Free
+                GivePassRewardItem(levelData.freeReward);
+                _playerData.claimedFreePassLevels.Add(level);
+                Debug.Log($"Đã nhận quà Free King God Pass mốc {level}");
+            }
+
+            // Lưu dữ liệu và báo UI cập nhật
+            GameManager.Instance.DataManager.SavePlayerData();
+            OnPassExpChanged?.Invoke(_playerData.passLevel, _playerData.passExp);
+        }
+
+        private void GivePassRewardItem(LegendOfBlood.GameConfigs.PassRewardItem reward)
+        {
+            if (reward == null || reward.amount <= 0) return;
+
+            if (string.IsNullOrEmpty(reward.itemID))
+            {
+                // Là Resource
+                AddResource(reward.resourceType, reward.amount);
+            }
+            else
+            {
+                // Là Item
+                AddItem(reward.itemID, reward.amount);
+            }
+        }
+
+        #endregion
 
         #region Resource Management
 

@@ -67,23 +67,23 @@ namespace LegendOfBlood
 
         private void OnSlotClicked()
         {
+            if (_currentHero == null) return;
+
             if (_currentEquip != null)
             {
-                // Show Equipment Detail (Unequip / Upgrade options)
+                // Has equipment -> show detail
                 EquipmentDetailPanel detailPanel = FindFirstObjectByType<EquipmentDetailPanel>(FindObjectsInactive.Include);
                 if (detailPanel != null)
                 {
-                    // Note: We might need a special setup for equipped items vs inventory items
-                    detailPanel.Setup(_currentEquip);
+                    detailPanel.Setup(_currentEquip, _currentHero);
                 }
             }
             else
             {
-                // Open Equipment Picker Panel to select an item from inventory to equip
-                // We'll need a UI for this or reuse InventoryPanel
-                Debug.Log($"Clicked empty slot {slotType} on hero {_currentHero.heroName}");
+                // Gọi UIManager để đảm bảo InventoryPanel được bật lên trước
+                GameManager.Instance.UIManager.ShowPanel(UIPanelType.Inventory, false);
                 
-                // Trigger event to open an item selector
+                // No equipment -> open inventory pick mode
                 EventManager.TriggerEvent(GameEvents.OnEquipSlotClicked, new EquipSlotClickData { hero = _currentHero, slot = slotType });
             }
         }

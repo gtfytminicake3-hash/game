@@ -154,8 +154,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "D\xE2n s\u1ED1: 34/50"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
+  m_sharedMaterial: {fileID: -2257151428975496358, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -478,10 +478,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.PopulationManagerPanel
   PanelType: 0
+  useDynamicBackground: 0
+  backgroundResourcePath: UI/Panel/panel_dong_frames
   closeButton: {fileID: 2149741417036286122}
   listContainer: {fileID: 6578057034961686575}
   heroCardPrefab: {fileID: 4891899510743089831, guid: 37ecc1b1ed7556b4f801f0f30aae64b9, type: 3}
   populationCountText: {fileID: 1946497291351649937}
+  sortButton: {fileID: 0}
+  filterButton: {fileID: 0}
 --- !u!114 &8498706707434908421
 MonoBehaviour:
   m_ObjectHideFlags: 0

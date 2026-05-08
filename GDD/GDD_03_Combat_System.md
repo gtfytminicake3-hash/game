@@ -55,7 +55,36 @@ Trận đấu là một vòng lặp theo lượt, tối đa 50 lượt để tr�
 
 ## 4. Kỹ năng & Hiệu ứng Trạng thái
 
-*   **Hệ thống Kỹ năng:** **ĐÃ HOÀN THIỆN VÀ TÍCH HỢP ĐẦY ĐỦ.**
+*   **Hệ thống Kỹ năng:** **ĐÃ HOÀN THIỆN VÀ TÍCH HỢP ĐẦY ĐỦ (20 KỸ NĂNG COMBO).**
+Hệ thống sử dụng cơ chế **Hiệu ứng Combo** đặc trưng để xâu chuỗi sát thương. Tổng cộng có 20 kỹ năng chia đều cho 4 Nghề nghiệp gốc:
+
+    **1. WARRIOR (Chiến Binh) - Cốt lõi: [Khiên Ngự] & [Khiên Ảo]**
+    - `Chùy Phá Giáp`: Sát thương vật lý đơn mục tiêu. (Combo: Mọc 1 Khiên Ngự).
+    - `Tiếng Rống Chế Ngự`: Taunt toàn địch & Giảm 15% Dmg địch. (Combo: Mọc 1 Khiên Ngự).
+    - `Thành Vách Sắt Đá`: Buff Khiên Ảo 15% Max HP. (Combo: Hấp thụ Khiên Ngự buff thêm 10% mỗi điểm).
+    - `Cú Nện Trấn Động`: Sát thương vật lý AOE. (Combo: Nếu có Khiên Ảo -> Choáng toàn tập địch).
+    - `Nhất Kích Càn Khôn`: Tối thượng vật lý. (Combo: Đốt Khiên Ngự tăng 30% Crit Damage / điểm).
+
+    **2. MAGE (Pháp Sư) - Cốt lõi: [Ấn Độc]**
+    - `Phi Tiêu Tà Thuật`: Sát thương phép ngẫu nhiên. (Combo: Gắn Ấn Độc rút máu).
+    - `Vòng Tròn Suy Vong`: AOE phép & Giảm 20% Tốc độ. (Combo: Gắn Ấn Độc diện rộng).
+    - `Xiềng Xích Băng Giá`: Stun 1 mục tiêu. (Combo: Nếu có Ấn Độc, Stun 2 lượt).
+    - `Thu Mạng`: Hút máu cực mạnh. (Combo: Nếu có Ấn Độc, lây lan Ấn sang mục tiêu bên cạnh).
+    - `Đại Lễ Kích Nổ`: Quét AOE Tối thượng. (Combo: Dọn sạch Ấn Độc trên sân, kích nổ sát thương chuẩn 5% x Số Ấn).
+
+    **3. ARCHER (Xạ Thủ) - Cốt lõi: [Điểm Yếu]**
+    - `Mũi Tên Dò Xét`: Tấn công hàng rào sau. (Combo: Gắn Điểm Yếu giảm 15% Né).
+    - `Nhãn Lực Của Cú`: Tự tăng 30% Dmg. (Combo: Đòn đánh tiếp theo chắc chắn 100% Chí mạng).
+    - `Mưa Tên Xé Xuyển`: Xả cung AOE 6 lần. (Combo: Đục 30% Giáp của những kẻ bị Điểm Yếu).
+    - `Bước Lùi Chiến Thuật`: Lùi vị trí, hồi máu nhẹ. (Combo: Xoá sạch mọi Hiệu ứng Xấu trên người).
+    - `Phát Bắn Đoạt Mệnh`: Tử thần tiễn. (Combo: Nuốt Điểm Yếu xuyên 100% Giáp. Nếu giết được địch, Archer lập tức hồi Turn đánh tiếp!).
+
+    **4. HEALER (Mục Sư) - Cốt lõi: [Hạt Giống Sinh Mệnh]**
+    - `Tia Sáng Nhỏ`: Hồi máu đơn. (Combo: Gieo 1 Hạt Giống lên người).
+    - `Lời Cầu Nguyện`: Buff 20% ATK toàn đội. (Combo: Tăng 15% Tỷ lệ Crit cho ai mang Hạt Giống).
+    - `Liên Kết Huyết Mạch`: Chia sẻ sát thương. (Combo: Tự động gieo Hạt Giống vào cả 2 đối tượng bị nối).
+    - `Hào Quang Thanh Trừng`: Giải Debuff toàn sàn. (Combo: Kích thích Hạt Giống nảy mầm hồi 10% Máu giới hạn).
+    - `Khai Hoa Nở Nhụy`: Bơm máu AOE Tối Thượng. (Combo: Nở rộ toàn bộ Hạt Giống thành Lớp Khiên Miễn Tử chặn chết chóc).
 
 *   **Chọn Mục tiêu (`GetTargets`):** Logic chọn mục tiêu rất đa dạng, dựa trên `TargetingType` của `Skill.cs` và đội hình. Ví dụ:
     *   `SingleFrontEnemy`: Tấn công một kẻ địch ngẫu nhiên ở hàng trước. Nếu hàng trước trống, chuyển sang hàng giữa, rồi đến hàng sau.

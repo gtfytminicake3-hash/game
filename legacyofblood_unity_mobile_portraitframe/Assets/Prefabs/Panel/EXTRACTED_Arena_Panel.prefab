@@ -308,8 +308,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u0110\u1EA4U TR\u01AF\u1EDCNG"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
+  m_sharedMaterial: {fileID: -2257151428975496358, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -465,8 +465,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Tickets
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 319cb99bbda91bb439f81273a9efe931, type: 2}
-  m_sharedMaterial: {fileID: 1761099092698597142, guid: 319cb99bbda91bb439f81273a9efe931, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
+  m_sharedMaterial: {fileID: -2257151428975496358, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -782,21 +782,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe690b765a1e99c4ca00fa90c15d6f44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.ArenaPanel
-  PanelType: 0
-  useDynamicBackground: 0
-  backgroundResourcePath: UI/Panel/panel_dong_frames
-  challengeButton: {fileID: 4513607275380113402}
-  addTicketAdButton: {fileID: 5437900817705333509}
-  closeButton: {fileID: 3610826740868272422}
-  squadSelectionPanel: {fileID: 0}
-  rankNameText: {fileID: 0}
-  rankPointsText: {fileID: 0}
-  ticketsText: {fileID: 0}
-  rankIconImage: {fileID: 768135654072730452}
-  leaderboardButton: {fileID: 3439720967728795707}
-  shopButton: {fileID: 3991326167841816404}
-  upgradeBuildingButton: {fileID: 6620034736769574895}
-  associatedBuildingId: B_ARENA
+  goldText: {fileID: 0}
+  cupsText: {fileID: 0}
+  crystalsText: {fileID: 0}
+  pedestalImage: {fileID: 0}
+  charactersContainer: {fileID: 0}
+  opponentButtons: []
+  findMatchButton: {fileID: 0}
+  settingsButton: {fileID: 0}
+  mailButton: {fileID: 0}
+  questsButton: {fileID: 0}
 --- !u!114 &1156844246478769170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -999,8 +994,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: RankName
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 319cb99bbda91bb439f81273a9efe931, type: 2}
-  m_sharedMaterial: {fileID: 1761099092698597142, guid: 319cb99bbda91bb439f81273a9efe931, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
+  m_sharedMaterial: {fileID: -2257151428975496358, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1474,8 +1469,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Th\xE1ch \u0110\u1EA5u"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
+  m_sharedMaterial: {fileID: -2257151428975496358, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1631,8 +1626,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: RankPoints
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 319cb99bbda91bb439f81273a9efe931, type: 2}
-  m_sharedMaterial: {fileID: 1761099092698597142, guid: 319cb99bbda91bb439f81273a9efe931, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
+  m_sharedMaterial: {fileID: -2257151428975496358, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

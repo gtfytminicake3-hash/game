@@ -1,50 +1,186 @@
-# GDD - Hệ thống Trang bị (Equipment System)
+# GDD 07 — Hệ thống Trang bị (Equipment System)
+*(Cập nhật lần cuối: 2026-05-07 — Đồng bộ với code EquipmentData.cs thực tế)*
 
-Tài liệu này mô tả chi tiết hệ thống trang bị được triển khai trong `EquipmentSystem.cs`.
+---
 
-## 1. Cấu trúc Trang bị (`EquipmentData`)
+## ⚠️ Thay đổi Lớn so với GDD Cũ
 
-Trang bị trong game có các đặc tính sau:
-*   **Loại (Slot):** Vũ khí (`Weapon`) hoặc Giáp (`Armor`).
-*   **Cấp độ (Level):** Từ 1 đến giới hạn tối đa `MAX_LEVEL` (100).
-*   **Độ hiếm (Rarity):** Từ 1 đến 3. Ảnh hưởng trực tiếp đến sức mạnh cơ bản.
-*   **Chỉ số Cơ bản (Base Stats):** Tăng trưởng theo Level.
-    *   *Vũ khí:* Cung cấp `ATK`.
-    *   *Giáp:* Cung cấp `HP` và `DEF`.
-*   **Chỉ số Thêm (Bonus Stats):** Mỗi trang bị có 2 dòng chỉ số ngẫu nhiên.
+| Hạng mục | GDD Cũ | Code Thực Tế |
+|---|---|---|
+| Số slot trang bị | **2** (Weapon, Armor) | **6** (Weapon, Armor, Helm, Boots, Ring1, Ring2) |
+| Số bậc hiếm (Tier) | **3** (Rarity 1-3) | **7** (D, C, B, A, S, SS, SSS) |
+| Chỉ số phụ | 4 loại cơ bản | 9 loại bao gồm multiplier |
+| Class restriction | Không có | Có (`classRestriction: Profession`) |
+| Lock item | Không có | Có (`isLocked: bool`) |
+| Icon path | Không xác định | `Resources/Icons/Equipments/{Profession}_{Slot}_{Tier}` |
 
-## 2. Sinh Trang bị Ngẫu nhiên (`GenerateRandomEquipment`)
+---
 
-Trang bị được sinh ra như một phần thưởng rơi ra từ tháp trong lúc thám hiểm.
-*   **Cấp độ rơi (Drop Level):** Dựa vào độ khó của tầng tháp (`floorDifficulty`). Nằm trong khoảng `[floorDifficulty - 5]` đến `[floorDifficulty + 2]` (giới hạn min 1, max 40).
-*   **Tỉ lệ Loại:** 50% Vũ khí ("Vũ Khí Cổ Đại"), 50% Giáp ("Giáp Cổ Đại").
-*   **Công thức Chỉ số Cơ bản:**
-    *   Hệ số Level (`levelMultiplier`) = `1 + (level * 0.1 * rarity)`.
-    *   `ATK` vũ khí = `10 * levelMultiplier`.
-    *   `HP` giáp = `50 * levelMultiplier`.
-    *   `DEF` giáp = `5 * levelMultiplier`.
+## 1. Enum `EquipmentSlot`
 
-## 3. Chỉ số Thêm (Bonus Stats)
+```csharp
+enum EquipmentSlot {
+    Weapon,  // Vũ khí
+    Armor,   // Giáp thân
+    Helm,    // Mũ giáp
+    Boots,   // Giày
+    Ring1,   // Nhẫn 1
+    Ring2    // Nhẫn 2
+}
+```
 
-Khi sinh trang bị, hệ thống tự động quay ngẫu nhiên 2 dòng chỉ số phụ (có thể trùng loại):
-1.  **+% ATK:** `5% - 15%`
-2.  **+% HP:** `5% - 15%`
-3.  **Tỉ lệ Chí Mạng:** `2% - 8%`
-4.  **Tốc độ (Cộng thẳng):** `2 - 10`
+Mỗi hero có thể trang bị tối đa 6 món (`Dictionary<EquipmentSlot, EquipmentData>`).
 
-## 4. Hệ thống Cường hóa (Nâng cấp Level)
+---
 
-Trang bị có thể được cường hóa bằng cách vứt các trang bị khác làm "vật liệu" (food) để tăng Cấp độ. Cấp độ tối đa là 100.
+## 2. Enum `EquipmentTier` (7 bậc)
 
-### 4.1. Kinh nghiệm từ Vật liệu (`GetExpYield`)
+| Tier | Tên | Màu gợi ý |
+|---|---|---|
+| D | Thường | Xám |
+| C | Không phổ biến | Xanh lá |
+| B | Hiếm | Xanh dương |
+| A | Sử thi | Tím |
+| S | Huyền thoại | Cam |
+| SS | Thần thánh | Vàng |
+| SSS | Vô thượng | Đỏ |
 
-Số EXP thu được khi "ăn" một trang bị vật liệu:
-*   `Cơ bản (5) + (Level vật liệu * 2) + (EXP hiện có của vật liệu / 2)`
+---
 
-### 4.2. Đường cong Kinh nghiệm Lên cấp (`GetExpRequiredForLevel`)
+## 3. Cấu trúc `EquipmentData`
 
-Hệ thống sử dụng cơ chế _Soft Cap_ (Giới hạn mềm) ở cấp 40 để làm chậm tiến độ ở giai đoạn lategame:
-*   **Từ Cấp 1 đến 39:** Tăng trưởng tuyến tính. EXP cần = `Level * 10`. (Ví dụ: Level 10 cần 100 EXP).
-*   **Từ Cấp 40 trở đi:** Tăng trưởng hàm mũ siêu khó. EXP cần = `500 * (1.2 ^ Số cấp vượt 40)`.
+### 3.1. Định danh
 
-Khi cường hóa vượt đủ EXP cần thiết, trang bị sẽ thăng cấp, tự động tính lại `Base Stats` dựa trên Level mới.
+| Trường | Kiểu | Mô tả |
+|---|---|---|
+| `id` | `string` | ID duy nhất (GUID khi sinh ngẫu nhiên) |
+| `equipmentName` | `string` | Tên hiển thị |
+| `slot` | `EquipmentSlot` | Slot được trang bị vào |
+| `tier` | `EquipmentTier` | Bậc hiếm |
+| `level` | `int` | Cấp độ hiện tại (1–100) |
+| `experience` | `int` | EXP tích lũy để lên cấp |
+| `classRestriction` | `Profession` | Nghề yêu cầu (`None` = mọi nghề đều dùng được) |
+| `isLocked` | `bool` | Khóa — không cho phép dùng làm vật liệu cường hóa |
+
+### 3.2. Chỉ số Cộng Thẳng (Flat Bonus)
+
+| Trường | Mô tả |
+|---|---|
+| `hpBonus` | Cộng thẳng vào HP |
+| `atkBonus` | Cộng thẳng vào ATK |
+| `defBonus` | Cộng thẳng vào DEF |
+| `spdBonus` | Cộng thẳng vào SPD |
+| `evasionBonus` | Tỉ lệ né tránh (%) |
+| `damageReductionBonus` | Giảm sát thương nhận (%) |
+| `damageIncreaseBonus` | Tăng sát thương gây ra (%) |
+| `critChanceBonus` | Cộng thêm tỉ lệ chí mạng (%) |
+| `critDamageBonus` | Cộng thêm hệ số chí mạng (%) |
+
+### 3.3. Chỉ số Nhân Hệ Số (Multiplier)
+
+| Trường | Mô tả | Áp dụng |
+|---|---|---|
+| `hpMultiplier` | Nhân HP cuối (1.0 = không đổi) | Sau khi cộng flat |
+| `atkMultiplier` | Nhân ATK cuối | Sau khi cộng flat |
+| `defMultiplier` | Nhân DEF cuối | Sau khi cộng flat |
+| `spdMultiplier` | Nhân SPD cuối | Sau khi cộng flat |
+
+---
+
+## 4. Sinh Trang bị Ngẫu nhiên (`EquipmentSystem.GenerateRandomEquipment`)
+
+### 4.1. Đầu vào
+
+```
+GenerateRandomEquipment(int floorEquivalent)
+```
+
+`floorEquivalent` thường là độ khó của tháp hoặc boss (ví dụ: 30 cho Boss).
+
+### 4.2. Công thức Level Rơi
+
+```
+dropLevel = Random(floorEquivalent - 5, floorEquivalent + 2)
+dropLevel = Clamp(dropLevel, 1, 40)
+```
+
+Hiện tại soft cap ở level 40 từ drop.
+
+### 4.3. Phân bổ Slot và Tier
+
+*(Chưa document đầy đủ trong code — cần xác nhận implementation `EquipmentSystem.cs`)*
+
+Dự kiến: Slot ngẫu nhiên trong 6 slot, Tier tính theo `floorEquivalent` hoặc ngẫu nhiên có trọng số.
+
+---
+
+## 5. Hệ thống Cường hóa (Nâng cấp Level)
+
+### 5.1. EXP từ Vật liệu
+
+```
+GetExpYield(equipment) = 5 + (equipment.level * 2) + (equipment.experience / 2)
+```
+
+### 5.2. EXP Cần để Lên Cấp (Soft Cap tại 40)
+
+```
+Level 1–39: EXP cần = level * 10   (tuyến tính)
+Level 40+ : EXP cần = 500 * (1.2 ^ (level - 40))   (hàm mũ)
+```
+
+### 5.3. Lưu ý
+
+- `isLocked = true` → không thể dùng làm vật liệu
+- Khi cường hóa qua ngưỡng EXP, tự động lên cấp và tính lại base stats
+
+---
+
+## 6. Icon và Hiển thị
+
+**Path icon:** `Resources/Icons/Equipments/{Profession}_{Slot}_{Tier}`
+
+Ví dụ:
+- `Warrior_Weapon_S` — Vũ khí S-tier cho Chiến binh
+- `None_Armor_A` — Giáp A-tier không giới hạn nghề
+- `Mage_Ring1_SS` — Nhẫn 1 SS-tier cho Pháp sư
+
+---
+
+## 7. Tích hợp vào HeroData
+
+```csharp
+// Trang bị vào hero
+hero.Equipments[EquipmentSlot.Weapon] = weaponData;
+
+// GetFinalStats() tự động áp dụng:
+// stats += Σ(equipment.flatBonuses)
+// stats *= Π(equipment.multipliers)
+```
+
+---
+
+## 8. Serialization
+
+`Dictionary<EquipmentSlot, EquipmentData>` không serialize được native trong Unity. HeroData xử lý bằng 2 List song song:
+
+```csharp
+[SerializeField] List<EquipmentSlot> _equipSlotKeys
+[SerializeField] List<EquipmentData> _equipSlotValues
+```
+
+Phương thức `Clone()` trong EquipmentData sao chép deep copy đầy đủ (cần cho combat simulation).
+
+---
+
+## 9. Trạng thái Triển khai
+
+| Tính năng | Trạng thái |
+|---|---|
+| EquipmentData model (6 slot, 7 tier) | ✅ Hoàn chỉnh |
+| GetFinalStats() áp dụng equipment | ✅ Hoàn chỉnh |
+| GenerateRandomEquipment (drop) | ✅ Hoạt động |
+| ExpeditionManager drop equipment | ✅ Hoạt động |
+| InventoryPanel hiển thị equipment | ⚠️ Script có, bindings chưa xác nhận |
+| UI trang bị vào hero slot | ❓ Cần kiểm tra |
+| UI cường hóa (feed equipment) | ❓ Cần kiểm tra |

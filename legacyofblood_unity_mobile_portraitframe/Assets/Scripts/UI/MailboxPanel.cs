@@ -229,58 +229,15 @@ namespace LegendOfBlood
 
             Debug.Log($"Processing report for POI: {report.poiName} (X2: {isX2})");
 
-            int rMulti = isX2 ? 2 : 1; // Chỉ nhân đôi Tài Nguyên, không nhân đôi Trang Phục/Tướng để giữ cân bằng
-
-            // 1. Handle Loot
-            if (report.loot != null)
+            var expMgr = FindFirstObjectByType<ExpeditionManager>(FindObjectsInactive.Include);
+            if (expMgr != null)
             {
-                if (GameManager.Instance != null && GameManager.Instance.InventoryManager != null)
-                {
-                    // Multiply resources
-                    GameManager.Instance.InventoryManager.AddGold(report.loot.gold * rMulti);
-                    GameManager.Instance.InventoryManager.AddResource(ResourceType.Wood, report.loot.wood * rMulti);
-                    GameManager.Instance.InventoryManager.AddResource(ResourceType.Stone, report.loot.stone * rMulti);
-                    
-                    // Multiply basic items
-                    foreach (var item in report.loot.items)
-                    {
-                        GameManager.Instance.InventoryManager.AddItem(item.Key, item.Value * rMulti);
-                    }
-                    if (report.loot.equipments != null)
-                    {
-                        foreach (var eq in report.loot.equipments)
-                        {
-                            GameManager.Instance.InventoryManager.AddEquipment(eq);
-                        }
-                    }
-                    if (report.loot.rescuedHeroes != null && report.loot.rescuedHeroes.Count > 0)
-                    {
-                        foreach (var hero in report.loot.rescuedHeroes)
-                        {
-                            DataManager.Instance.AddHero(hero);
-                        }
-                    }
-                }
+                expMgr.ClaimReport(report, isX2);
             }
 
-            // 2. Handle Experience
-            if (report.combatResult != null && report.combatResult.PlayerSurvivors != null)
-            {
-                foreach (var survivor in report.combatResult.PlayerSurvivors)
-                {
-                    var hero = DataManager.Instance.GetHeroByID(survivor.id);
-                    if (hero != null)
-                    { 
-                        hero.AddExperience(report.experienceGained * rMulti);
-                    }
-                }
-            }
+            int rMulti = isX2 ? 2 : 1;
 
-            // 3. (REMOVED) Handle Casualties (send to Hospital)
-            // Lógica của bước này đã được chuyển sang hàm Tick() của ExpeditionManager 
-            // để đảm bảo Hero chấn thương ngay lập tức khi đoàn về đến nhà.
-
-            // 4. Show Notification to Player
+            // Show Notification to Player
             if (GameManager.Instance != null && GameManager.Instance.UINotificationManager != null)
             {
                 string x2Prefix = isX2 ? "[X2] " : "";
@@ -310,9 +267,6 @@ namespace LegendOfBlood
                 }
                 GameManager.Instance.UINotificationManager.ShowNotification(lootMsg);
             }
-
-            // 5. Remove the report from the list
-            DataManager.Instance.Player.UnclaimedReports.Remove(report);
         }
     }
 }

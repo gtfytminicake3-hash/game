@@ -137,15 +137,17 @@ namespace LegendOfBlood
 
         private void ConfirmAllocation()
         {
-            _currentHero.freeStatPoints = _tempFreePoints;
-            _currentHero.addedStats.hp = _tempHp;
-            _currentHero.addedStats.atk = _tempAtk;
-            _currentHero.addedStats.def = _tempDef;
-            _currentHero.addedStats.spd = _tempSpd;
+            int spentPoints = _currentHero.freeStatPoints - _tempFreePoints;
+            if (spentPoints > 0)
+            {
+                float addHp = _tempHp - _currentHero.addedStats.hp;
+                float addAtk = _tempAtk - _currentHero.addedStats.atk;
+                float addDef = _tempDef - _currentHero.addedStats.def;
+                float addSpd = _tempSpd - _currentHero.addedStats.spd;
 
-            // Update UI ngầm
-            EventManager.TriggerEvent(GameEvents.OnHeroListChanged);
-            EventManager.TriggerEvent(GameEvents.OnHeroCardClicked, _currentHero);
+                _currentHero.AllocateStats(addHp, addAtk, addDef, addSpd, spentPoints);
+            }
+
             ClosePanel();
         }
 

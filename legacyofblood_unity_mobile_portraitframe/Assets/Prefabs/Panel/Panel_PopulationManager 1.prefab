@@ -68,8 +68,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "D\xE2n s\u1ED1: 34/50"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
+  m_sharedMaterial: {fileID: -2257151428975496358, guid: 351f4efce2fd05c41a7870e2d3973644, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -257,6 +257,8 @@ MonoBehaviour:
   listContainer: {fileID: 5643224206832626699}
   heroCardPrefab: {fileID: 4891899510743089831, guid: 37ecc1b1ed7556b4f801f0f30aae64b9, type: 3}
   populationCountText: {fileID: 7818736178203344828}
+  sortButton: {fileID: 0}
+  filterButton: {fileID: 0}
 --- !u!114 &8804246767107950165
 MonoBehaviour:
   m_ObjectHideFlags: 0

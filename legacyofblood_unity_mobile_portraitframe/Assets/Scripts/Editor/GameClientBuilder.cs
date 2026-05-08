@@ -61,7 +61,7 @@ namespace LegendOfBlood.Editor
             scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1080, 1920);
             scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
-            scaler.matchWidthOrHeight = 0.5f;
+            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.Expand;
             
             canvasObj.AddComponent<GraphicRaycaster>();
             UIManager uiManager = canvasObj.AddComponent<UIManager>();
@@ -206,3 +206,4 @@ namespace LegendOfBlood.Editor
     }
 }
 #endif
+

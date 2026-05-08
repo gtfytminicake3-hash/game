@@ -235,29 +235,30 @@ namespace LegendOfBlood.Combat
                 switch (ev.EventType)
                 {
                     case CombatEventType.Attack:
-                        if (!string.IsNullOrEmpty(ev.SourceID) && _unitMap.ContainsKey(ev.SourceID))
+                        if (!string.IsNullOrEmpty(ev.SourceID) && _unitMap.ContainsKey(ev.SourceID) && _unitMap[ev.SourceID] != null)
                         {
                             Vector3 targetPos = _unitMap[ev.SourceID].transform.position + Vector3.right * 1f; // Nhích lên 1 chút nếu không có target
-                            if (ev.TargetID != null && _unitMap.ContainsKey(ev.TargetID)) targetPos = _unitMap[ev.TargetID].transform.position;
+                            if (ev.TargetID != null && _unitMap.ContainsKey(ev.TargetID) && _unitMap[ev.TargetID] != null) 
+                                targetPos = _unitMap[ev.TargetID].transform.position;
                             
                             yield return StartCoroutine(_unitMap[ev.SourceID].PlayAttackAnim(targetPos));
                         }
                         
-                        if (!string.IsNullOrEmpty(ev.TargetID) && _unitMap.ContainsKey(ev.TargetID))
+                        if (!string.IsNullOrEmpty(ev.TargetID) && _unitMap.ContainsKey(ev.TargetID) && _unitMap[ev.TargetID] != null)
                         {
                             _unitMap[ev.TargetID].TakeDamage(ev.Value, ev.IsCrit);
                         }
                         break;
                         
                     case CombatEventType.Heal:
-                        if (!string.IsNullOrEmpty(ev.TargetID) && _unitMap.ContainsKey(ev.TargetID))
+                        if (!string.IsNullOrEmpty(ev.TargetID) && _unitMap.ContainsKey(ev.TargetID) && _unitMap[ev.TargetID] != null)
                         {
                             _unitMap[ev.TargetID].Heal(ev.Value);
                         }
                         break;
 
                     case CombatEventType.TakeDamage:
-                        if (!string.IsNullOrEmpty(ev.TargetID) && _unitMap.ContainsKey(ev.TargetID))
+                        if (!string.IsNullOrEmpty(ev.TargetID) && _unitMap.ContainsKey(ev.TargetID) && _unitMap[ev.TargetID] != null)
                         {
                             _unitMap[ev.TargetID].TakeDamage(ev.Value, false);
                         }

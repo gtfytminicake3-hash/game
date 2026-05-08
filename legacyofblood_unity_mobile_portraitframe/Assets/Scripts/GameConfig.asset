@@ -491,3 +491,185 @@ MonoBehaviour:
     - Fire Elemental
     - Golem
     customMonsterCount: 1
+  KingGodPassConfig: {fileID: 11400000, guid: 3c76ef06c8d806944b90ce8f578435af, type: 2}
+  ArenaShopPool:
+  - type: 0
+    refId: ITEM_FERTILITY_POTION
+    displayName: "Thu\u1ED1c Sinh S\u1EA3n"
+    priceMin: 4800
+    priceMax: 5200
+    amountMin: 1
+    amountMax: 2
+    equipTier: 0
+    equipSlot: 0
+    equipRestriction: 0
+    weight: 100
+    isInfinite: 0
+  - type: 0
+    refId: ITEM_EXP_BOOK_S
+    displayName: "S\xE1ch Kinh Nghi\u1EC7m"
+    priceMin: 800
+    priceMax: 1200
+    amountMin: 3
+    amountMax: 10
+    equipTier: 0
+    equipSlot: 0
+    equipRestriction: 0
+    weight: 200
+    isInfinite: 0
+  - type: 0
+    refId: ITEM_EXP_BOOK_M
+    displayName: "S\xE1ch Kinh Nghi\u1EC7m V\u1EEBa"
+    priceMin: 2500
+    priceMax: 3000
+    amountMin: 1
+    amountMax: 5
+    equipTier: 0
+    equipSlot: 0
+    equipRestriction: 0
+    weight: 150
+    isInfinite: 0
+  - type: 0
+    refId: ITEM_EXP_BOOK_L
+    displayName: "S\xE1ch Kinh Nghi\u1EC7m L\u1EDBn"
+    priceMin: 8000
+    priceMax: 10000
+    amountMin: 1
+    amountMax: 2
+    equipTier: 0
+    equipSlot: 0
+    equipRestriction: 0
+    weight: 50
+    isInfinite: 0
+  - type: 0
+    refId: ITEM_SPEEDUP_1H
+    displayName: Tua Nhanh 1H
+    priceMin: 150
+    priceMax: 250
+    amountMin: 1
+    amountMax: 3
+    equipTier: 0
+    equipSlot: 0
+    equipRestriction: 0
+    weight: 150
+    isInfinite: 0
+  - type: 0
+    refId: ITEM_SPEEDUP_4H
+    displayName: Tua Nhanh 4H
+    priceMin: 500
+    priceMax: 800
+    amountMin: 1
+    amountMax: 2
+    equipTier: 0
+    equipSlot: 0
+    equipRestriction: 0
+    weight: 80
+    isInfinite: 0
+  - type: 0
+    refId: ITEM_SUMMON_SCROLL
+    displayName: "Cu\u1ED9n Tri\u1EC7u H\u1ED3i"
+    priceMin: 3000
+    priceMax: 3000
+    amountMin: 1
+    amountMax: 1
+    equipTier: 0
+    equipSlot: 0
+    equipRestriction: 0
+    weight: 50
+    isInfinite: 0
+  - type: 0
+    refId: ITEM_SUMMON_SCROLL_PREMIUM
+    displayName: "Tri\u1EC7u H\u1ED3i Cao C\u1EA5p"
+    priceMin: 15000
+    priceMax: 15000
+    amountMin: 1
+    amountMax: 1
+    equipTier: 0
+    equipSlot: 0
+    equipRestriction: 0
+    weight: 10
+    isInfinite: 0
+  - type: 1
+    refId: EQ_KNIGHT_HELM
+    displayName: "M\u0169 Hi\u1EC7p S\u0129"
+    priceMin: 1000
+    priceMax: 1500
+    amountMin: 1
+    amountMax: 1
+    equipTier: 2
+    equipSlot: 2
+    equipRestriction: 1
+    weight: 100
+    isInfinite: 0
+  - type: 1
+    refId: EQ_ROGUE_DAGGER
+    displayName: "Dao G\u0103m"
+    priceMin: 1000
+    priceMax: 1500
+    amountMin: 1
+    amountMax: 1
+    equipTier: 2
+    equipSlot: 0
+    equipRestriction: 1
+    weight: 100
+    isInfinite: 0
+  - type: 1
+    refId: EQ_CLERIC_STAFF
+    displayName: "Tr\u01B0\u1EE3ng H\u1ED3i M\xE1u"
+    priceMin: 1000
+    priceMax: 1500
+    amountMin: 1
+    amountMax: 1
+    equipTier: 2
+    equipSlot: 0
+    equipRestriction: 4
+    weight: 100
+    isInfinite: 0
+  - type: 1
+    refId: EQ_WARRIOR_ARMOR
+    displayName: "Gi\xE1p Th\xE9p"
+    priceMin: 3000
+    priceMax: 4000
+    amountMin: 1
+    amountMax: 1
+    equipTier: 3
+    equipSlot: 1
+    equipRestriction: 1
+    weight: 50
+    isInfinite: 0
+  - type: 2
+    refId: GOLD
+    displayName: "V\xE0ng"
+    priceMin: 500
+    priceMax: 1000
+    amountMin: 5000
+    amountMax: 20000
+    equipTier: 0
+    equipSlot: 0
+    equipRestriction: 0
+    weight: 300
+    isInfinite: 1
+  - type: 2
+    refId: WOOD
+    displayName: "G\u1ED7"
+    priceMin: 300
+    priceMax: 600
+    amountMin: 500
+    amountMax: 2000
+    equipTier: 0
+    equipSlot: 0
+    equipRestriction: 0
+    weight: 200
+    isInfinite: 0
+  - type: 2
+    refId: STONE
+    displayName: "\u0110\xE1"
+    priceMin: 300
+    priceMax: 600
+    amountMin: 500
+    amountMax: 2000
+    equipTier: 0
+    equipSlot: 0
+    equipRestriction: 0
+    weight: 200
+    isInfinite: 0

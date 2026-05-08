@@ -68,14 +68,18 @@ namespace LegendOfBlood
             long endTime = _heroData.isSeverelyInjured ? _heroData.injuryEndTime : _heroData.lightInjuryEndTime;
             long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             
-            if (currentTime >= endTime)
+            if (timerText != null)
             {
-                timerText.text = global::LocalizationSystem.GetText("ready");
-                return;
+                if (currentTime >= endTime)
+                {
+                    timerText.text = global::LocalizationSystem.GetText("ready");
+                }
+                else
+                {
+                    TimeSpan timeLeft = TimeSpan.FromMilliseconds(endTime - currentTime);
+                    timerText.text = string.Format(LocalizationSystem.GetText("time_left_format"), string.Format("{0:D2}:{1:D2}:{2:D2}", timeLeft.Hours, timeLeft.Minutes, timeLeft.Seconds));
+                }
             }
-
-            TimeSpan timeLeft = TimeSpan.FromMilliseconds(endTime - currentTime);
-            timerText.text = string.Format(LocalizationSystem.GetText("time_left_format"), timeLeft);
         }
 
         private void OnHealButtonClicked()
@@ -100,7 +104,10 @@ namespace LegendOfBlood
             if (_heroData.isSeverelyInjured)
             {
                 cost = Mathf.FloorToInt(_heroData.GetCombatPower() / 10f) + 50;
-                if (healButton != null) healButton.GetComponentInChildren<TextMeshProUGUI>().text = global::LocalizationSystem.GetText("heal_severe");
+                if (healButton != null) 
+                {
+                    healButton.GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0} <color=#FFD700>{1}G</color>", global::LocalizationSystem.GetText("heal_severe"), cost);
+                }
                 
                 // Show free ad button if limit not reached
                 if (healAdButton != null) 
@@ -112,7 +119,11 @@ namespace LegendOfBlood
             else if (_heroData.isLightlyInjured)
             {
                 cost = Mathf.FloorToInt(_heroData.GetCombatPower() / 50f) + 10;
-                if (healButton != null) healButton.GetComponentInChildren<TextMeshProUGUI>().text = global::LocalizationSystem.GetText("heal_light");
+                if (healButton != null) 
+                {
+                    // Vì nút của Light Panel hiện tại diện tích chưa lớn, hiển thị Text ngắn gọn
+                    healButton.GetComponentInChildren<TextMeshProUGUI>().text = string.Format("{0} <color=#FFD700>{1}G</color>", global::LocalizationSystem.GetText("heal_light"), cost);
+                }
                 
                 // Light injuries do not get free heals
                 if (healAdButton != null) healAdButton.gameObject.SetActive(false);
