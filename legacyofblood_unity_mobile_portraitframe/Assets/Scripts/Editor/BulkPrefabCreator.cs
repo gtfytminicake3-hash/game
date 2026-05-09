@@ -1,0 +1,64 @@
+using UnityEngine;
+using UnityEditor;
+using System.IO;
+using System.Linq;
+
+public class BulkPrefabCreator
+{
+    [InitializeOnLoadMethod]
+    [MenuItem("LegendOfBlood/Fix/Bulk Create And Connect Prefabs")]
+    public static void BulkCreatePrefabs()
+    {
+        EditorApplication.delayCall += () =>
+        {
+            AssetDatabase.ImportAsset("Assets/Scripts/UI/RegionDetailPopupController.cs", ImportAssetOptions.ForceUpdate);
+            
+        Canvas mainCanvas = Object.FindObjectsByType<Canvas>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault(c => c.name == "MainCanvas");
+        if (mainCanvas == null)
+        {
+            Debug.LogError("MainCanvas not found!");
+            return;
+        }
+
+        string prefabDirectory = "Assets/Prefabs/Panel";
+        if (!Directory.Exists(prefabDirectory))
+        {
+            Directory.CreateDirectory(prefabDirectory);
+        }
+
+        int successCount = 0;
+
+        foreach (Transform child in mainCanvas.transform)
+        {
+            string panelName = child.name;
+            // Only process game objects that look like panels
+            if (panelName.Contains("Panel") || panelName.Contains("EXTRACTED_") || panelName.EndsWith("Panel"))
+            {
+                string prefabPath = $"{prefabDirectory}/{panelName}.prefab";
+                
+                // If it's already a prefab instance, just apply it
+                if (PrefabUtility.IsPartOfPrefabInstance(child.gameObject))
+                {
+                    PrefabUtility.ApplyPrefabInstance(child.gameObject, InteractionMode.AutomatedAction);
+                    Debug.Log($"Applied changes to existing prefab: {prefabPath}");
+                    successCount++;
+                }
+                else
+                {
+                    // Create new prefab and connect it
+                    GameObject prefab = PrefabUtility.SaveAsPrefabAssetAndConnect(child.gameObject, prefabPath, InteractionMode.AutomatedAction);
+                    if (prefab != null)
+                    {
+                        Debug.Log($"Created new prefab: {prefabPath}");
+                        successCount++;
+                    }
+                }
+            }
+        }
+
+        AssetDatabase.SaveAssets();
+        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene());
+        Debug.Log($"<color=green>Bulk Prefab Creation Complete! Processed {successCount} panels.</color>");
+        };
+    }
+}
