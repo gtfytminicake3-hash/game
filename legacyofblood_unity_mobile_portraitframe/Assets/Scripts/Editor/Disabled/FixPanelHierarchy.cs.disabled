@@ -1,0 +1,45 @@
+using UnityEngine;
+using UnityEditor;
+using System.Linq;
+
+public class FixPanelHierarchy
+{
+    [InitializeOnLoadMethod]
+    [MenuItem("LegendOfBlood/Fix/Fix Panel Hierarchy")]
+    public static void FixHierarchy()
+    {
+        EditorApplication.delayCall += () =>
+        {
+        Canvas mainCanvas = Object.FindObjectsOfType<Canvas>(true).FirstOrDefault(c => c.name == "MainCanvas");
+        if (mainCanvas == null)
+        {
+            Debug.LogError("MainCanvas not found!");
+            return;
+        }
+
+        GameObject[] allObjects = Resources.FindObjectsOfTypeAll<GameObject>();
+        
+        GameObject hospital = allObjects.FirstOrDefault(g => g.name == "Panel_Hospital" && !EditorUtility.IsPersistent(g));
+        if (hospital != null)
+        {
+            hospital.transform.SetParent(mainCanvas.transform, false);
+            Debug.Log("Successfully moved Panel_Hospital to MainCanvas");
+        }
+
+        GameObject shop = allObjects.FirstOrDefault(g => g.name == "Panel_ArenaShop" && !EditorUtility.IsPersistent(g));
+        if (shop != null)
+        {
+            shop.transform.SetParent(mainCanvas.transform, false);
+            Debug.Log("Successfully moved Panel_ArenaShop to MainCanvas");
+        }
+
+        // Apply overrides to their prefabs
+        if (hospital != null)
+            PrefabUtility.ApplyPrefabInstance(hospital, InteractionMode.AutomatedAction);
+        if (shop != null)
+            PrefabUtility.ApplyPrefabInstance(shop, InteractionMode.AutomatedAction);
+
+        UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene());
+        };
+    }
+}

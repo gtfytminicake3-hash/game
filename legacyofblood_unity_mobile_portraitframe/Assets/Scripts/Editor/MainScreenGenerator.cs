@@ -219,6 +219,12 @@ public class MainScreenGenerator : EditorWindow
         bottomBar.GetComponent<RectTransform>().offsetMin = new Vector2(0, 0);     // Bottom offset
         bottomBar.GetComponent<RectTransform>().offsetMax = new Vector2(0, 250);   // Top offset (Height)
         bottomBar.AddComponent<Image>().color = new Color(0.1f, 0.1f, 0.1f, 0.85f);
+        
+        // Luôn luôn hiển thị BottomBar trên cùng bất kể sibling index
+        Canvas bbCanvas = bottomBar.AddComponent<Canvas>();
+        bbCanvas.overrideSorting = true;
+        bbCanvas.sortingOrder = 100;
+        bottomBar.AddComponent<GraphicRaycaster>();
 
         // 7. Sidebars (Middle Left / Right)
         GameObject leftMenu = CreateUIElement("LeftMenu", safeAreaObj.transform);
@@ -278,7 +284,7 @@ public class MainScreenGenerator : EditorWindow
         SetOffsets(bottomNav, 0, 0, 0, 0);
         bottomNav.AddComponent<LegendOfBlood.UIBottomNavHighlighter>();
         
-        string[] navNames = {"Shop", "Barracks", "Lobby", "Hospital", "Battlefield"};
+        string[] navNames = {"Shop", "Barrack", "MainScreen", "Hospital", "Arena"};
         float[] navAnchorsX = {0.1f, 0.3f, 0.5f, 0.7f, 0.9f};
         
         for (int i = 0; i < navNames.Length; i++) {
@@ -293,10 +299,10 @@ public class MainScreenGenerator : EditorWindow
             LegendOfBlood.UIPanelNavButton navBtn = tabObj.AddComponent<LegendOfBlood.UIPanelNavButton>();
             string tab = navNames[i];
             if (tab == "Shop") navBtn.targetPanel = LegendOfBlood.UIPanelType.ArenaShop;
-            else if (tab == "Barracks") navBtn.targetPanel = LegendOfBlood.UIPanelType.Barrack;
-            else if (tab == "Lobby") navBtn.targetPanel = LegendOfBlood.UIPanelType.MainScreen;
+            else if (tab == "Barrack") navBtn.targetPanel = LegendOfBlood.UIPanelType.Barrack;
+            else if (tab == "MainScreen") navBtn.targetPanel = LegendOfBlood.UIPanelType.MainScreen;
             else if (tab == "Hospital") navBtn.targetPanel = LegendOfBlood.UIPanelType.Hospital;
-            else if (tab == "Battlefield") navBtn.targetPanel = LegendOfBlood.UIPanelType.Arena;
+            else if (tab == "Arena") navBtn.targetPanel = LegendOfBlood.UIPanelType.Arena;
             
             GameObject iconObj = CreateUIElement("Icon", tabObj.transform);
             SetAnchorCenter(iconObj, new Vector2(0, 20), new Vector2(100, 100)); // Nhỉnh lên so với giữa 1 tí

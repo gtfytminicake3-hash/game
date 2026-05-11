@@ -54,17 +54,27 @@ namespace LegendOfBlood
         {
             if (parent == null)
             {
-                // Fallback 
-                GameObject fbObj = new GameObject("RuntimeMapContainer");
-                fbObj.transform.SetParent(this.transform, false);
-                fbObj.transform.SetAsFirstSibling(); 
-                RectTransform fbRt = fbObj.AddComponent<RectTransform>();
-                fbRt.anchorMin = Vector2.zero; fbRt.anchorMax = Vector2.one; 
-                fbRt.sizeDelta = Vector2.zero; fbRt.anchoredPosition = Vector2.zero;
+                // Tìm ScrollFrame trước
+                Transform scrollFrame = this.transform.Find("ScrollFrame");
+                if (scrollFrame == null) scrollFrame = this.transform;
+
+                // Tìm InnerMap (nền đỏ có sẵn)
+                Transform innerMap = scrollFrame.Find("InnerMap");
+                if (innerMap == null)
+                {
+                    GameObject fbObj = new GameObject("InnerMap");
+                    fbObj.transform.SetParent(scrollFrame, false);
+                    fbObj.transform.SetAsFirstSibling(); 
+                    innerMap = fbObj.transform;
+                    Image bg = innerMap.gameObject.AddComponent<Image>();
+                    bg.color = new Color(0.1f, 0.1f, 0.15f, 1f); 
+                }
                 
-                Image bg = fbObj.AddComponent<Image>();
-                bg.color = new Color(0.1f, 0.1f, 0.15f, 1f); 
-                mapContentContainer = fbObj.transform;
+                // Tắt raycast của nền đỏ để khỏi đè click vào Node
+                Image innerBg = innerMap.GetComponent<Image>();
+                if (innerBg != null) innerBg.raycastTarget = false;
+
+                mapContentContainer = innerMap;
                 parent = mapContentContainer;
             }
 
@@ -80,34 +90,33 @@ namespace LegendOfBlood
             float mapHeight = (15 * floorStepY) + 300f; 
             
             RectTransform contentRt = parent.GetComponent<RectTransform>();
-            if (contentRt != null) 
-            {
-                contentRt.anchorMin = new Vector2(0.5f, 0f);
-                contentRt.anchorMax = new Vector2(0.5f, 0f);
-                contentRt.pivot = new Vector2(0.5f, 0f); 
-                contentRt.sizeDelta = new Vector2(1000f, mapHeight); 
-                contentRt.anchoredPosition = Vector2.zero;
+            if (contentRt == null) contentRt = parent.gameObject.AddComponent<RectTransform>();
 
-                if (contentRt.parent != null)
-                {
-                    var viewport = contentRt.parent.gameObject;
-                    if (viewport.GetComponent<UnityEngine.UI.RectMask2D>() == null)
-                        viewport.AddComponent<UnityEngine.UI.RectMask2D>();
-                    
-                    if (contentRt.parent.parent != null)
-                    {
-                        var scrollFrame = contentRt.parent.parent.gameObject;
-                        var scrollRect = scrollFrame.GetComponent<ScrollRect>();
-                        if (scrollRect == null) scrollRect = scrollFrame.AddComponent<ScrollRect>();
-                        
-                        scrollRect.content = contentRt;
-                        scrollRect.viewport = viewport.GetComponent<RectTransform>();
-                        scrollRect.horizontal = false;
-                        scrollRect.vertical = true;
-                        scrollRect.movementType = ScrollRect.MovementType.Elastic;
-                        scrollRect.scrollSensitivity = 50f;
-                    }
-                }
+            contentRt.anchorMin = new Vector2(0.5f, 0f);
+            contentRt.anchorMax = new Vector2(0.5f, 0f);
+            contentRt.pivot = new Vector2(0.5f, 0f); 
+            contentRt.sizeDelta = new Vector2(1000f, mapHeight); 
+            contentRt.anchoredPosition = Vector2.zero;
+
+            // Xử lý ScrollRect chuẩn
+            if (contentRt.parent != null)
+            {
+                var scrollFrame = contentRt.parent.gameObject; // contentRt.parent chính là ScrollFrame
+
+                // Gắn Mask trực tiếp lên ScrollFrame
+                if (scrollFrame.GetComponent<UnityEngine.UI.RectMask2D>() == null)
+                    scrollFrame.AddComponent<UnityEngine.UI.RectMask2D>();
+                
+                // Gắn ScrollRect trực tiếp lên ScrollFrame
+                var scrollRect = scrollFrame.GetComponent<ScrollRect>();
+                if (scrollRect == null) scrollRect = scrollFrame.AddComponent<ScrollRect>();
+                
+                scrollRect.content = contentRt;
+                scrollRect.viewport = scrollFrame.GetComponent<RectTransform>();
+                scrollRect.horizontal = false;
+                scrollRect.vertical = true;
+                scrollRect.movementType = ScrollRect.MovementType.Elastic;
+                scrollRect.scrollSensitivity = 50f;
             }
 
             foreach(var seg in segments)
@@ -340,6 +349,25 @@ namespace LegendOfBlood
             {
                 _activeMaps.Remove(_currentPoiData.poiId);
                 LegendOfBlood.ToastNotificationManager.Show($"Chúc mừng! Ải đã hoàn thành!", 5f);
+                
+                // Track highest cleared difficulty
+                if (LegendOfBlood.DataManager.Instance != null && LegendOfBlood.DataManager.Instance.Player != null)
+                {
+                    int currentDiffLevel = (int)_currentDifficulty;
+                    if (LegendOfBlood.DataManager.Instance.Player.ClearedDifficulties.TryGetValue(_currentPoiData.poiId, out int maxCleared))
+                    {
+                        if (currentDiffLevel > maxCleared)
+                        {
+                            LegendOfBlood.DataManager.Instance.Player.ClearedDifficulties[_currentPoiData.poiId] = currentDiffLevel;
+                        }
+                    }
+                    else
+                    {
+                        LegendOfBlood.DataManager.Instance.Player.ClearedDifficulties[_currentPoiData.poiId] = currentDiffLevel;
+                    }
+                    LegendOfBlood.DataManager.Instance.SavePlayerData();
+                }
+
                 ClosePopup();
                 return;
             }

@@ -147,7 +147,7 @@ namespace LegendOfBlood
                 CreateDifficultyPopupFallback();
             }
             
-            difficultyPopup.Show(_currentPoiData.poiName, ProceedToMap);
+            difficultyPopup.Show(_currentPoiData.poiName, ProceedToMap, _currentPoiData.poiId);
         }
 
         private void CreateDifficultyPopupFallback()

@@ -146,11 +146,14 @@ namespace LegendOfBlood
 
         // --- EXISTING: For serialization ---
         public Dictionary<BuildingType, int> BuildingLevels;
+        public Dictionary<string, int> ClearedDifficulties;
 
         [SerializeField] private List<string> _serializedItemIDs = new List<string>();
         [SerializeField] private List<int> _serializedItemCounts = new List<int>();
         [SerializeField] private List<BuildingType> _serializedBuildingTypes = new List<BuildingType>();
         [SerializeField] private List<int> _serializedBuildingLevels = new List<int>();
+        [SerializeField] private List<string> _serializedClearedPoiIds = new List<string>();
+        [SerializeField] private List<int> _serializedClearedDifficulties = new List<int>();
         
         public PlayerData()
         {
@@ -164,6 +167,7 @@ namespace LegendOfBlood
             Heroes = new List<HeroData>(); // Khởi tạo danh sách Heroes
             QuestStatuses = new List<PlayerQuestStatus>(); // Khởi tạo danh sách QuestStatuses
             BuildingLevels = new Dictionary<BuildingType, int>();
+            ClearedDifficulties = new Dictionary<string, int>();
             arenaPoints = 0;
             arenaTickets = 5;
             lastTicketRefreshTimestamp = 0;
@@ -205,6 +209,8 @@ namespace LegendOfBlood
             _serializedItemCounts.Clear();
             _serializedBuildingTypes.Clear();
             _serializedBuildingLevels.Clear();
+            _serializedClearedPoiIds.Clear();
+            _serializedClearedDifficulties.Clear();
 
             foreach (var kvp in items)
             {
@@ -220,6 +226,15 @@ namespace LegendOfBlood
                     _serializedBuildingLevels.Add(kvp.Value);
                 }
             }
+
+            if (ClearedDifficulties != null)
+            {
+                foreach (var kvp in ClearedDifficulties)
+                {
+                    _serializedClearedPoiIds.Add(kvp.Key);
+                    _serializedClearedDifficulties.Add(kvp.Value);
+                }
+            }
         }
         
         public void OnAfterDeserialize()
@@ -227,6 +242,7 @@ namespace LegendOfBlood
             items = new Dictionary<string, int>();
             equipments ??= new List<EquipmentData>();
             BuildingLevels = new Dictionary<BuildingType, int>();
+            ClearedDifficulties = new Dictionary<string, int>();
             
             WorldPois ??= new List<POIData>();
             ActiveExpeditions ??= new List<ActiveExpedition>();
@@ -255,6 +271,14 @@ namespace LegendOfBlood
             for (int i = 0; i < _serializedBuildingTypes.Count; i++)
             {
                 BuildingLevels.Add(_serializedBuildingTypes[i], _serializedBuildingLevels[i]);
+            }
+
+            if (_serializedClearedPoiIds != null && _serializedClearedDifficulties != null && _serializedClearedPoiIds.Count == _serializedClearedDifficulties.Count)
+            {
+                for (int i = 0; i < _serializedClearedPoiIds.Count; i++)
+                {
+                    ClearedDifficulties.Add(_serializedClearedPoiIds[i], _serializedClearedDifficulties[i]);
+                }
             }
         }
     }

@@ -187,33 +187,27 @@ namespace LegendOfBlood
 
         private void OnEnable()
         {
-            RefreshHeroList();
-            
-            // Ép cập nhật lại số lượng dân số mỗi khi bật panel
-            if (_populationCountText == null)
+            // Reset mỗi lần enable để đảm bảo tìm lại đúng sau hot-reload
+            _populationCountText = null;
+
+            var allTexts = GetComponentsInChildren<TMPro.TextMeshProUGUI>(true);
+            foreach (var t in allTexts)
             {
-                var allTexts = GetComponentsInChildren<TMPro.TextMeshProUGUI>(true);
-                foreach (var t in allTexts)
+                if (t.gameObject.name == "PopulationText_Auto")
                 {
-                    if (t.gameObject.name == "PopulationText_Auto")
-                    {
-                        _populationCountText = t;
-                        break;
-                    }
+                    _populationCountText = t;
+                    break;
                 }
             }
 
-            if (_populationCountText != null)
-            {
-                int maxCapacity = DataManager.Instance.GetPopulationCapacity();
-                var allHeroes = DataManager.Instance.AllHeroes;
-                _populationCountText.text = $"Heroes: {allHeroes.Count} / {maxCapacity}";
-            }
+            // Fallback: lấy TMP đầu tiên từ populationManagerButton
+            if (_populationCountText == null && populationManagerButton != null)
+                _populationCountText = populationManagerButton.GetComponentInChildren<TMPro.TextMeshProUGUI>(true);
 
             EventManager.StartListening(GameEvents.OnPlayerDataLoaded, RefreshHeroList);
             EventManager.StartListening(GameEvents.OnHeroListChanged, RefreshHeroList);
-            DataManager.OnHeroListChanged += RefreshHeroList; // Cả Event C# gốc để an toàn
-            RefreshHeroList();
+            DataManager.OnHeroListChanged += RefreshHeroList;
+            RefreshHeroList(); // RefreshHeroList cũng gọi UpdatePopulationText bên trong
         }
 
         private void OnDisable()
