@@ -128,11 +128,35 @@ namespace LegendOfBlood
 
         private void OnEnable()
         {
+<<<<<<< HEAD
             EnsureDismissControls();
             UpdatePopulationDisplay();
             EventManager.StartListening(GameEvents.OnPlayerDataLoaded, RefreshHeroList);
             EventManager.StartListening(GameEvents.OnHeroListChanged, RefreshHeroList);
             RefreshHeroList();
+=======
+            // Reset mỗi lần enable để đảm bảo tìm lại đúng sau hot-reload
+            _populationCountText = null;
+
+            var allTexts = GetComponentsInChildren<TMPro.TextMeshProUGUI>(true);
+            foreach (var t in allTexts)
+            {
+                if (t.gameObject.name == "PopulationText_Auto")
+                {
+                    _populationCountText = t;
+                    break;
+                }
+            }
+
+            // Fallback: lấy TMP đầu tiên từ populationManagerButton
+            if (_populationCountText == null && populationManagerButton != null)
+                _populationCountText = populationManagerButton.GetComponentInChildren<TMPro.TextMeshProUGUI>(true);
+
+            EventManager.StartListening(GameEvents.OnPlayerDataLoaded, RefreshHeroList);
+            EventManager.StartListening(GameEvents.OnHeroListChanged, RefreshHeroList);
+            DataManager.OnHeroListChanged += RefreshHeroList;
+            RefreshHeroList(); // RefreshHeroList cũng gọi UpdatePopulationText bên trong
+>>>>>>> e0220ebd678bac299fea0eb241af71c2d31c9051
         }
 
         private void OnDisable()

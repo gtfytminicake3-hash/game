@@ -87,9 +87,14 @@ namespace LegendOfBlood
                         return; // Ngừng, chỉ tắt POI_Info, không tắt WorldMap
                     }
 
+<<<<<<< HEAD
                     // Trả lại State cho UIManager nhưng KHÔNG ĐƯỢC dùng ShowPanel(MainScreen) 
                     // vì UIManager sẽ đẩy MainScreen xuống index 1, khiến nó bị chìm dưới các panel rác sinh ra lỗi chặn ngót (Raycast block).
                     // Chỉ cần gọi HidePanel cho WorldMap, nó sẽ dập Active + xóa currentPanel an toàn tuyệt đối.
+=======
+                    // Theo kế hoạch HANDOFF: sử dụng GoBack() thay vì HidePanel
+                    // để đảm bảo history stack được clear và quay về MainScreen.
+>>>>>>> e0220ebd678bac299fea0eb241af71c2d31c9051
                     uim.GoBack();
                 });
             }
@@ -153,9 +158,23 @@ namespace LegendOfBlood
                             fakePOI.difficultyLevel = difficulty;
                             selectedSquadIDs = selectedIDs;
                             
+<<<<<<< HEAD
                             // Yêu cầu POI_InfoPanel render lại cái bản đồ rẽ nhánh và truyền đội hình vào để đánh trận Live
                             infoPanel.GenerateAndShowProceduralMap(selectedSquadIDs);
                             GameManager.Instance.UIManager.ShowPanel(UIPanelType.POI_Info, false);
+=======
+                            // Ẩn POI_InfoPanel và Mở RegionDetailPopup
+                            GameManager.Instance.UIManager.HidePanel(UIPanelType.SquadSelection);
+                            GameManager.Instance.UIManager.HidePanel(UIPanelType.POI_Info); // Thay vì ClosePanel
+                            
+                            if (regionDetailPopup != null)
+                            {
+                                var detailController = regionDetailPopup.GetComponent<LegendOfBlood.RegionDetailPopupController>();
+                                if (detailController == null) detailController = regionDetailPopup.AddComponent<LegendOfBlood.RegionDetailPopupController>();
+                                
+                                detailController.SetupAndShow(fakePOI, (ProceduralDifficulty)difficulty, selectedSquadIDs);
+                            }
+>>>>>>> e0220ebd678bac299fea0eb241af71c2d31c9051
                         }, Profession.None, fakePOI.difficultyLevel);
                     }
                 });

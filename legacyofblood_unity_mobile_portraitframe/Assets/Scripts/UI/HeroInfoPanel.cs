@@ -64,6 +64,11 @@ namespace LegendOfBlood
                 }
             }
 
+            if (equipmentSlots == null || equipmentSlots.Length == 0)
+            {
+                equipmentSlots = GetComponentsInChildren<HeroEquipmentSlot>(true);
+            }
+
             if (closeButton != null) closeButton.onClick.AddListener(ClosePanel);
             if (statAllocationButton != null) statAllocationButton.onClick.AddListener(OpenStatAllocationPanel);
             if (traitUpgradeButton != null) traitUpgradeButton.onClick.AddListener(OpenTraitUpgradePanel);

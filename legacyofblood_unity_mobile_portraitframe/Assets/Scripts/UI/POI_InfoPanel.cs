@@ -16,12 +16,11 @@ namespace LegendOfBlood
 
         [Header("Popups")]
         [SerializeField] private LegendOfBlood.DifficultySelectionPopup difficultyPopup;
-        [SerializeField] private LegendOfBlood.NodeDetailPopup nodeDetailPopup;
 
         private POIData _currentPoiData;
         private Action _onExploreCallback;
-        private List<string> _currentSquadIDs;
         private ProceduralDifficulty _currentDifficulty;
+<<<<<<< HEAD
         
         private SubStageNode _currentlySelectedNode;
         private Dictionary<SubStageNode, GameObject> _nodeUIObjects = new Dictionary<SubStageNode, GameObject>();
@@ -29,6 +28,8 @@ namespace LegendOfBlood
         private static Dictionary<string, ShapeDrivenMapData> _activeMaps = new Dictionary<string, ShapeDrivenMapData>();
         private static Dictionary<string, List<string>> _activeSquads = new Dictionary<string, List<string>>();
         private ShapeDrivenMapData _currentMapData;
+=======
+>>>>>>> e0220ebd678bac299fea0eb241af71c2d31c9051
 
         private void Awake()
         {
@@ -96,6 +97,7 @@ namespace LegendOfBlood
                 }
             }
 
+<<<<<<< HEAD
             if (_activeMaps.ContainsKey(_currentPoiData.poiId))
             {
                 _currentMapData = _activeMaps[_currentPoiData.poiId];
@@ -114,6 +116,9 @@ namespace LegendOfBlood
             {
                 ShowDifficultySelector();
             }
+=======
+            ShowDifficultySelector();
+>>>>>>> e0220ebd678bac299fea0eb241af71c2d31c9051
 
             EnsureCloseButtonIsVisible();
         }
@@ -179,7 +184,7 @@ namespace LegendOfBlood
                 CreateDifficultyPopupFallback();
             }
             
-            difficultyPopup.Show(_currentPoiData.poiName, ProceedToMap);
+            difficultyPopup.Show(_currentPoiData.poiName, ProceedToMap, _currentPoiData.poiId);
         }
 
         private void CreateDifficultyPopupFallback()
@@ -259,6 +264,7 @@ namespace LegendOfBlood
             if (difficultyPopup != null) difficultyPopup.gameObject.SetActive(false);
             _onDifficultySelectedCallback?.Invoke();
         }
+<<<<<<< HEAD
 
         public void GenerateAndShowProceduralMap(System.Collections.Generic.List<string> squadIDs = null)
         {
@@ -559,5 +565,14 @@ namespace LegendOfBlood
         #endregion
 
         private void ClosePanel() { if (difficultyPopup != null) difficultyPopup.gameObject.SetActive(false); if (nodeDetailPopup != null) nodeDetailPopup.gameObject.SetActive(false); GameManager.Instance.UIManager.GoBack(); }
+=======
+        #endregion
+
+        private void ClosePanel()
+        {
+            if (difficultyPopup != null) difficultyPopup.gameObject.SetActive(false);
+            GameManager.Instance.UIManager.GoBack();
+        }
+>>>>>>> e0220ebd678bac299fea0eb241af71c2d31c9051
     }
 }

@@ -19,65 +19,70 @@ namespace LegendOfBlood
         public Button btnNightmare;
 
         private Action<ProceduralDifficulty> _onDifficultySelected;
-        private int _currentCP;
+        private int _maxUnlockedDifficulty = 1;
+        private string _currentPoiId;
 
         private void Start()
         {
-            if (btnNormal != null) btnNormal.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Normal, 0));
-            if (btnHard != null) btnHard.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Hard, 5000));
-            if (btnHell != null) btnHell.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Hell, 15000));
-            if (btnNightmare != null) btnNightmare.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Nightmare, 30000));
+            if (btnNormal != null) btnNormal.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Normal, 1));
+            if (btnHard != null) btnHard.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Hard, 2));
+            if (btnHell != null) btnHell.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Hell, 3));
+            if (btnNightmare != null) btnNightmare.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Nightmare, 4));
         }
 
-        public void Show(string poiName, Action<ProceduralDifficulty> onDifficultySelected)
+        public void Show(string poiName, Action<ProceduralDifficulty> onDifficultySelected, string poiId = null)
         {
             this.gameObject.SetActive(true);
             _onDifficultySelected = onDifficultySelected;
+            _currentPoiId = poiId ?? poiName; // Fallback to poiName if poiId is not provided
 
             if (titleText != null) 
                 titleText.text = $"CHỌN ĐỘ KHÓ\n<color=#D4AF37>{poiName.ToUpper()}</color>";
 
-            CalculateCurrentCP();
+            CalculateUnlockedDifficulty();
 
             if (currentCPText != null)
-                currentCPText.text = $"Lực chiến đội hình: <color=#00ff00>{_currentCP}</color>";
+                currentCPText.text = $"Mở khóa theo tiến độ chinh phục";
 
-            // Update button states visual if needed (optional custom logic)
-            UpdateButtonState(btnNormal, 0);
-            UpdateButtonState(btnHard, 5000);
-            UpdateButtonState(btnHell, 15000);
-            UpdateButtonState(btnNightmare, 30000);
+            // Update button states visual
+            UpdateButtonState(btnNormal, 1);
+            UpdateButtonState(btnHard, 2);
+            UpdateButtonState(btnHell, 3);
+            UpdateButtonState(btnNightmare, 4);
         }
 
-        private void CalculateCurrentCP()
+        private void CalculateUnlockedDifficulty()
         {
-            _currentCP = 0;
-            if (DataManager.Instance != null && DataManager.Instance.Player != null && DataManager.Instance.Player.Heroes != null)
+            _maxUnlockedDifficulty = 1; // Luôn mở Normal
+
+            if (DataManager.Instance != null && DataManager.Instance.Player != null)
             {
-                var list = new List<HeroData>(DataManager.Instance.Player.Heroes);
-                list.Sort((a,b) => b.GetCombatPower().CompareTo(a.GetCombatPower()));
-                int limit = Mathf.Min(5, list.Count);
-                for(int j = 0; j < limit; j++)
+                if (DataManager.Instance.Player.ClearedDifficulties.TryGetValue(_currentPoiId, out int maxCleared))
                 {
-                    _currentCP += list[j].GetCombatPower();
+                    // Được chơi độ khó tiếp theo của độ khó cao nhất đã vượt qua
+                    _maxUnlockedDifficulty = maxCleared + 1;
                 }
             }
-            if (_currentCP == 0) _currentCP = 4500; // Fallback
         }
 
-        private void UpdateButtonState(Button btn, int requiredCP)
+        private void UpdateButtonState(Button btn, int difficultyLevel)
         {
             if (btn == null) return;
-            bool unlocked = _currentCP >= requiredCP;
+            bool unlocked = difficultyLevel <= _maxUnlockedDifficulty;
             
-            // Tìm text bên trong button để update (vd: "Hard (CP: 5000)")
             var txt = btn.GetComponentInChildren<TextMeshProUGUI>();
-            if (txt != null && !unlocked)
+            if (txt != null)
             {
-                txt.text += $"\n<size=70%><color=red>Yêu cầu {_currentCP}/{requiredCP} CP</color></size>";
+                // Xoá warning cũ nếu có (bằng cách cắt bớt chuỗi ở ký tự \n)
+                int idx = txt.text.IndexOf('\n');
+                if (idx > 0) txt.text = txt.text.Substring(0, idx);
+
+                if (!unlocked)
+                {
+                    txt.text += $"\n<size=70%><color=red>Cần hoàn thành chế độ trước</color></size>";
+                }
             }
 
-            // Có thể làm mờ nút nhưng vẫn cho click để báo lỗi
             var img = btn.GetComponent<Image>();
             if (img != null)
             {
@@ -85,11 +90,11 @@ namespace LegendOfBlood
             }
         }
 
-        private void OnSelect(ProceduralDifficulty difficulty, int requiredCP)
+        private void OnSelect(ProceduralDifficulty difficulty, int difficultyLevel)
         {
-            if (_currentCP < requiredCP)
+            if (difficultyLevel > _maxUnlockedDifficulty)
             {
-                ToastNotificationManager.Show($"Lực chiến quá thấp cho chế độ {difficulty}!");
+                ToastNotificationManager.Show($"Chưa mở khoá! Hãy hoàn thành độ khó trước đó.");
                 return;
             }
 

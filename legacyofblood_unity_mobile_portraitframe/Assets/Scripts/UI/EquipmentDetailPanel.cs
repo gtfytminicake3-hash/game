@@ -46,6 +46,17 @@ namespace LegendOfBlood
             _ownerHero = owner;
             gameObject.SetActive(true);
             transform.SetAsLastSibling();
+
+            // Đảm bảo panel luôn nằm trên cùng qua Canvas override
+            Canvas cv = GetComponent<Canvas>();
+            if (cv == null)
+            {
+                cv = gameObject.AddComponent<Canvas>();
+                gameObject.AddComponent<GraphicRaycaster>();
+            }
+            cv.overrideSorting = true;
+            cv.sortingOrder = 500;
+
             RefreshUI();
         }
 
