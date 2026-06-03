@@ -39,6 +39,11 @@ namespace LegendOfBlood
             RefreshUI();
         }
 
+        public void Setup(Building building)
+        {
+            Setup(building != null ? building.id : null);
+        }
+
         private void Update()
         {
             if (string.IsNullOrEmpty(currentBuildingId)) return;

@@ -27,6 +27,7 @@ namespace LegendOfBlood
 
         public void Setup(ItemData item, int amount)
         {
+            OnClicked = null; // Reset event to avoid double subscription when pooled
             _currentItem = item;
             _currentAmount = amount;
 

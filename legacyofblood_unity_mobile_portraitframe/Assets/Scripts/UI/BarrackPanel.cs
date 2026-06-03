@@ -4,13 +4,14 @@ namespace LegendOfBlood
     using UnityEngine;
     using UnityEngine.UI;
     using TMPro;
+    using LegendOfBlood.Utils;
 
     public class BarrackPanel : UIPanel
     {
         [Header("UI References")]
         [SerializeField] private TMPro.TextMeshProUGUI panelTitleText;
         [SerializeField] private Button closeButton;
-        [SerializeField] private Button populationManagerButton; // Sẽ được tái sử dụng để hiển thị số lượng
+        [SerializeField] private Button populationManagerButton;
         [SerializeField] private Transform heroListContainer;
 
         [Header("Upgrade Feature")]
@@ -20,22 +21,30 @@ namespace LegendOfBlood
         [Header("Prefabs")]
         [SerializeField] private GameObject heroCardPrefab;
 
-        private List<GameObject> _instantiatedHeroCards = new List<GameObject>();
+        private UIListPooler<HeroData, HeroCard> _heroPooler;
+        private readonly HashSet<string> _selectedDismissHeroIds = new HashSet<string>();
+        private Button _dismissSelectedButton;
+        private TextMeshProUGUI _dismissSelectedButtonText;
 
         private enum SortType { LevelDesc, LevelAsc, CPDesc, CPAsc }
         private LegendOfBlood.Profession? _currentFilter = null;
-
         private SortType _currentSort = SortType.LevelDesc;
 
-        private Button _sortButton;
-        private TMPro.TextMeshProUGUI _sortButtonText;
-        private Button _filterButton;
-        private TMPro.TextMeshProUGUI _filterButtonText;
-        private TMPro.TextMeshProUGUI _populationCountText;
+        [Header("Filters & Status")]
+        [SerializeField] private Button sortButton;
+        [SerializeField] private TMPro.TextMeshProUGUI sortButtonText;
+        [SerializeField] private Button filterButton;
+        [SerializeField] private TMPro.TextMeshProUGUI filterButtonText;
+        [SerializeField] private TMPro.TextMeshProUGUI populationCountText;
 
         private void Awake()
         {
             PanelType = UIPanelType.Barrack;
+            _heroPooler = new UIListPooler<HeroData, HeroCard>(heroCardPrefab, heroListContainer, (card, data) => {
+                card.Setup(data);
+                SetupDismissToggle(card, data);
+            });
+            EnsureDismissControls();
         }
 
         protected override void Start()
@@ -47,83 +56,29 @@ namespace LegendOfBlood
             {
                 closeButton.onClick.AddListener(Hide);
             }
-            if (populationManagerButton != null)
+
+            if (sortButton != null)
             {
-                // Xóa bỏ các listener cũ mở panel PopulationManager
-                populationManagerButton.onClick.RemoveAllListeners();
-            }
-
-            // Luôn cố gắng tìm PopulationText_Auto đệ quy
-            if (_populationCountText == null)
-            {
-                var allTexts = GetComponentsInChildren<TMPro.TextMeshProUGUI>(true);
-                foreach(var t in allTexts)
-                {
-                    if (t.gameObject.name == "PopulationText_Auto")
-                    {
-                        _populationCountText = t;
-                        break;
-                    }
-                }
-
-                if (_populationCountText == null && populationManagerButton != null)
-                    _populationCountText = populationManagerButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-            }
-
-            if (upgradeBuildingButton != null) 
-            {
-                upgradeBuildingButton.onClick.AddListener(OnUpgradeBuildingClicked);
-                var upgTxt = upgradeBuildingButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-                if (upgTxt != null) upgTxt.text = global::LocalizationSystem.GetText("btn_upgrade");
-            }
-
-            // Hook Sort and Filter buttons dynamically
-            Transform sortBtnTr = transform.Find("SafeArea/ActionButtonsRow/SortButton");
-            if (sortBtnTr != null)
-            {
-                _sortButton = sortBtnTr.GetComponent<Button>();
-                if (_sortButton == null) _sortButton = sortBtnTr.gameObject.AddComponent<Button>();
-                
-                _sortButtonText = sortBtnTr.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-                if (_sortButtonText == null)
-                {
-                    GameObject txtObj = new GameObject("Text");
-                    txtObj.transform.SetParent(sortBtnTr, false);
-                    _sortButtonText = txtObj.AddComponent<TMPro.TextMeshProUGUI>();
-                    _sortButtonText.fontSize = 36;
-                    _sortButtonText.alignment = TMPro.TextAlignmentOptions.Center;
-                    _sortButtonText.color = Color.white;
-                    RectTransform rt = txtObj.GetComponent<RectTransform>();
-                    rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one;
-                    rt.offsetMin = Vector2.zero; rt.offsetMax = Vector2.zero;
-                }
-
-                _sortButton.onClick.AddListener(OnSortClicked);
+                sortButton.onClick.AddListener(OnSortClicked);
                 UpdateSortText();
             }
 
-            Transform filterBtnTr = transform.Find("SafeArea/ActionButtonsRow/FilterButton");
-            if (filterBtnTr != null)
+            if (filterButton != null)
             {
-                _filterButton = filterBtnTr.GetComponent<Button>();
-                if (_filterButton == null) _filterButton = filterBtnTr.gameObject.AddComponent<Button>();
-                
-                _filterButtonText = filterBtnTr.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-                if (_filterButtonText == null)
-                {
-                    GameObject txtObj = new GameObject("Text");
-                    txtObj.transform.SetParent(filterBtnTr, false);
-                    _filterButtonText = txtObj.AddComponent<TMPro.TextMeshProUGUI>();
-                    _filterButtonText.fontSize = 36;
-                    _filterButtonText.alignment = TMPro.TextAlignmentOptions.Center;
-                    _filterButtonText.color = Color.white;
-                    RectTransform rt = txtObj.GetComponent<RectTransform>();
-                    rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one;
-                    rt.offsetMin = Vector2.zero; rt.offsetMax = Vector2.zero;
-                }
-
-                _filterButton.onClick.AddListener(OnFilterClicked);
+                filterButton.onClick.AddListener(OnFilterClicked);
                 UpdateFilterText();
+            }
+
+            if (upgradeBuildingButton != null)
+            {
+                upgradeBuildingButton.onClick.RemoveAllListeners();
+                upgradeBuildingButton.onClick.AddListener(OpenBarracksUpgradePanel);
+            }
+
+            if (populationManagerButton != null)
+            {
+                populationManagerButton.onClick.RemoveAllListeners();
+                populationManagerButton.onClick.AddListener(() => GameManager.Instance.UIManager.ShowPanel(UIPanelType.PopulationManager, false));
             }
         }
 
@@ -148,71 +103,35 @@ namespace LegendOfBlood
 
         private void UpdateSortText()
         {
-            if (_sortButtonText != null)
+            if (sortButtonText != null)
             {
                 string sortName = _currentSort switch
                 {
-                    SortType.LevelDesc => "Lv \u25BC", // Level Down
-                    SortType.LevelAsc => "Lv \u25B2",  // Level Up
-                    SortType.CPDesc => "CP \u25BC",    // CP Down
-                    SortType.CPAsc => "CP \u25B2",     // CP Up
+                    SortType.LevelDesc => "Lv \u25BC",
+                    SortType.LevelAsc => "Lv \u25B2",
+                    SortType.CPDesc => "CP \u25BC",
+                    SortType.CPAsc => "CP \u25B2",
                     _ => "Sort"
                 };
-                _sortButtonText.text = $"Lọc:\n{sortName}";
+                sortButtonText.text = $"Lọc:\n{sortName}";
             }
         }
         
         private void UpdateFilterText()
         {
-            if (_filterButtonText != null)
+            if (filterButtonText != null)
             {
                 string filterName = _currentFilter.HasValue ? _currentFilter.Value.ToString() : "Tất cả";
-                _filterButtonText.text = $"Hệ:\n{filterName}";
-            }
-        }
-
-        private void OnUpgradeBuildingClicked()
-        {
-            GameManager.Instance.UIManager.ShowPanel(UIPanelType.BuildingUpgrade, true);
-            var upgradePanel = GameManager.Instance.UIManager.GetPanel<BuildingUpgradePanel>(UIPanelType.BuildingUpgrade);
-            if (upgradePanel != null && !string.IsNullOrEmpty(associatedBuildingId))
-            {
-                upgradePanel.Setup(associatedBuildingId);
-            }
-            else
-            {
-                Debug.LogWarning($"[BarrackPanel] Cannot open BuildingUpgradePanel! upgradePanel null? {upgradePanel == null}, associatedBuildingId empty? {string.IsNullOrEmpty(associatedBuildingId)}");
+                filterButtonText.text = $"Hệ:\n{filterName}";
             }
         }
 
         private void OnEnable()
         {
-            RefreshHeroList();
-            
-            // Ép cập nhật lại số lượng dân số mỗi khi bật panel
-            if (_populationCountText == null)
-            {
-                var allTexts = GetComponentsInChildren<TMPro.TextMeshProUGUI>(true);
-                foreach (var t in allTexts)
-                {
-                    if (t.gameObject.name == "PopulationText_Auto")
-                    {
-                        _populationCountText = t;
-                        break;
-                    }
-                }
-            }
-
-            if (_populationCountText != null)
-            {
-                int maxCapacity = DataManager.Instance.GetPopulationCapacity();
-                var allHeroes = DataManager.Instance.AllHeroes;
-                _populationCountText.text = $"Heroes: {allHeroes.Count} / {maxCapacity}";
-            }
-
+            EnsureDismissControls();
+            UpdatePopulationDisplay();
             EventManager.StartListening(GameEvents.OnPlayerDataLoaded, RefreshHeroList);
             EventManager.StartListening(GameEvents.OnHeroListChanged, RefreshHeroList);
-            DataManager.OnHeroListChanged += RefreshHeroList; // Cả Event C# gốc để an toàn
             RefreshHeroList();
         }
 
@@ -220,7 +139,16 @@ namespace LegendOfBlood
         {
             EventManager.StopListening(GameEvents.OnPlayerDataLoaded, RefreshHeroList);
             EventManager.StopListening(GameEvents.OnHeroListChanged, RefreshHeroList);
-            DataManager.OnHeroListChanged -= RefreshHeroList;
+        }
+
+        private void UpdatePopulationDisplay()
+        {
+            if (populationCountText != null && DataManager.Instance != null)
+            {
+                int maxCapacity = DataManager.Instance.GetPopulationCapacity();
+                int currentCount = DataManager.Instance.AllHeroes?.Count ?? 0;
+                populationCountText.text = $"Heroes: {currentCount} / {maxCapacity}";
+            }
         }
 
         public void Hide()
@@ -228,28 +156,181 @@ namespace LegendOfBlood
             GameManager.Instance.UIManager.GoBack();
         }
 
-        private void RefreshHeroList()
+        private void OpenBarracksUpgradePanel()
         {
-            if (DataManager.Instance == null || DataManager.Instance.AllHeroes == null)
+            if (GameManager.Instance == null || GameManager.Instance.BuildingSystem == null)
             {
+                GameManager.Instance.UINotificationManager?.ShowNotification("BuildingSystem chua san sang.");
                 return;
             }
 
-            foreach (GameObject card in _instantiatedHeroCards)
+            Building target = null;
+            if (DataManager.Instance != null && DataManager.Instance.AllBuildings != null)
             {
-                Destroy(card);
+                target = DataManager.Instance.AllBuildings.Find(b => b != null && (b.id == associatedBuildingId || b.type == BuildingType.Barracks));
             }
-            _instantiatedHeroCards.Clear();
+
+            if (target == null)
+            {
+                GameManager.Instance.UINotificationManager?.ShowNotification("Khong tim thay nha Barracks.");
+                return;
+            }
+
+            GameManager.Instance.UIManager.ShowPanel(UIPanelType.BuildingUpgrade, false);
+            var panel = GameManager.Instance.UIManager.GetPanel<BuildingUpgradePanel>(UIPanelType.BuildingUpgrade);
+            if (panel != null) panel.Setup(target.id);
+        }
+
+        private void EnsureDismissControls()
+        {
+            if (_dismissSelectedButton != null) return;
+
+            Transform parent = panelTitleText != null ? panelTitleText.transform.parent : transform;
+            GameObject buttonObj = new GameObject("Btn_DismissSelected_Runtime");
+            buttonObj.transform.SetParent(parent, false);
+            buttonObj.transform.SetAsLastSibling();
+
+            RectTransform rt = buttonObj.AddComponent<RectTransform>();
+            rt.anchorMin = new Vector2(1f, 1f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot = new Vector2(1f, 1f);
+            rt.sizeDelta = new Vector2(300f, 86f);
+            rt.anchoredPosition = new Vector2(-32f, -32f);
+
+            Image image = buttonObj.AddComponent<Image>();
+            image.color = new Color(0.65f, 0.12f, 0.12f, 0.95f);
+
+            _dismissSelectedButton = buttonObj.AddComponent<Button>();
+            _dismissSelectedButton.onClick.AddListener(DismissSelectedHeroes);
+
+            GameObject textObj = new GameObject("Text");
+            textObj.transform.SetParent(buttonObj.transform, false);
+            _dismissSelectedButtonText = textObj.AddComponent<TextMeshProUGUI>();
+            _dismissSelectedButtonText.alignment = TextAlignmentOptions.Center;
+            _dismissSelectedButtonText.color = Color.white;
+            _dismissSelectedButtonText.fontSize = 30f;
+            _dismissSelectedButtonText.fontStyle = FontStyles.Bold;
+
+            RectTransform textRt = _dismissSelectedButtonText.rectTransform;
+            textRt.anchorMin = Vector2.zero;
+            textRt.anchorMax = Vector2.one;
+            textRt.offsetMin = Vector2.zero;
+            textRt.offsetMax = Vector2.zero;
+
+            UpdateDismissButtonState();
+        }
+
+        private void SetupDismissToggle(HeroCard card, HeroData hero)
+        {
+            if (card == null || hero == null) return;
+
+            Toggle toggle = null;
+            Toggle[] toggles = card.GetComponentsInChildren<Toggle>(true);
+            for (int i = 0; i < toggles.Length; i++)
+            {
+                if (toggles[i] != null && toggles[i].gameObject.name == "DismissToggle_Runtime")
+                {
+                    toggle = toggles[i];
+                    break;
+                }
+            }
+
+            if (toggle == null)
+            {
+                toggle = CreateDismissToggle(card.transform);
+            }
+
+            bool canDismiss = !hero.IsBusy();
+            toggle.interactable = canDismiss;
+            toggle.onValueChanged.RemoveAllListeners();
+            toggle.SetIsOnWithoutNotify(canDismiss && _selectedDismissHeroIds.Contains(hero.id));
+            toggle.onValueChanged.AddListener(isOn => {
+                if (isOn) _selectedDismissHeroIds.Add(hero.id);
+                else _selectedDismissHeroIds.Remove(hero.id);
+                UpdateDismissButtonState();
+            });
+        }
+
+        private Toggle CreateDismissToggle(Transform parent)
+        {
+            GameObject toggleObj = new GameObject("DismissToggle_Runtime");
+            toggleObj.transform.SetParent(parent, false);
+            toggleObj.transform.SetAsLastSibling();
+
+            RectTransform rt = toggleObj.AddComponent<RectTransform>();
+            rt.anchorMin = new Vector2(0f, 1f);
+            rt.anchorMax = new Vector2(0f, 1f);
+            rt.pivot = new Vector2(0f, 1f);
+            rt.sizeDelta = new Vector2(64f, 64f);
+            rt.anchoredPosition = new Vector2(12f, -12f);
+
+            Image background = toggleObj.AddComponent<Image>();
+            background.color = new Color(0f, 0f, 0f, 0.72f);
+
+            Toggle toggle = toggleObj.AddComponent<Toggle>();
+            toggle.targetGraphic = background;
+
+            GameObject checkObj = new GameObject("Checkmark");
+            checkObj.transform.SetParent(toggleObj.transform, false);
+            TextMeshProUGUI check = checkObj.AddComponent<TextMeshProUGUI>();
+            check.text = "X";
+            check.alignment = TextAlignmentOptions.Center;
+            check.fontSize = 42f;
+            check.fontStyle = FontStyles.Bold;
+            check.color = Color.white;
+
+            RectTransform checkRt = check.rectTransform;
+            checkRt.anchorMin = Vector2.zero;
+            checkRt.anchorMax = Vector2.one;
+            checkRt.offsetMin = Vector2.zero;
+            checkRt.offsetMax = Vector2.zero;
+
+            toggle.graphic = check;
+            return toggle;
+        }
+
+        private void DismissSelectedHeroes()
+        {
+            if (_selectedDismissHeroIds.Count == 0 || DataManager.Instance == null) return;
+
+            List<string> ids = new List<string>(_selectedDismissHeroIds);
+            int removedCount = DataManager.Instance.RemoveHeroes(ids);
+            _selectedDismissHeroIds.Clear();
+
+            if (removedCount > 0)
+            {
+                DataManager.Instance.SavePlayerData();
+                GameManager.Instance.UINotificationManager?.ShowNotification($"Dismissed {removedCount} heroes.");
+            }
+            else
+            {
+                GameManager.Instance.UINotificationManager?.ShowNotification("No selectable heroes were dismissed.");
+            }
+
+            RefreshHeroList();
+        }
+
+        private void UpdateDismissButtonState()
+        {
+            if (_dismissSelectedButtonText != null)
+            {
+                _dismissSelectedButtonText.text = $"Dismiss ({_selectedDismissHeroIds.Count})";
+            }
+
+            if (_dismissSelectedButton != null)
+            {
+                _dismissSelectedButton.interactable = _selectedDismissHeroIds.Count > 0;
+            }
+        }
+
+        private void RefreshHeroList()
+        {
+            if (DataManager.Instance == null || DataManager.Instance.AllHeroes == null) return;
 
             List<HeroData> allHeroes = DataManager.Instance.AllHeroes;
             List<HeroData> filteredHeroes = new List<HeroData>();
             
-            // Cập nhật số lượng hero (Population count)
-            if (_populationCountText != null)
-            {
-                int maxCapacity = DataManager.Instance.GetPopulationCapacity();
-                _populationCountText.text = $"Heroes: {allHeroes.Count} / {maxCapacity}";
-            }
+            UpdatePopulationDisplay();
 
             // Filter
             foreach(var h in allHeroes) 
@@ -275,22 +356,8 @@ namespace LegendOfBlood
                     break;
             }
 
-            foreach (HeroData hero in filteredHeroes)
-            {
-                GameObject cardInstance = Instantiate(heroCardPrefab, heroListContainer);
-                cardInstance.SetActive(true); // Đảm bảo thẻ Tướng hiển thị
-                HeroCard heroCardScript = cardInstance.GetComponent<HeroCard>();
-                if (heroCardScript != null)
-                {
-                    heroCardScript.Setup(hero);
-                    _instantiatedHeroCards.Add(cardInstance);
-                }
-                else
-                {
-                    Debug.LogError("Hero Card Prefab không chứa script HeroCard!", this);
-                }
-            }
-            Debug.Log($"[BarrackPanel] Đã làm mới danh sách, hiển thị {filteredHeroes.Count} heroes.");
+            _heroPooler.Refresh(filteredHeroes);
+            Debug.Log($"[BarrackPanel] Refreshed list with {_heroPooler.ActiveComponents.Count} pooled objects.");
         }
     }
 }

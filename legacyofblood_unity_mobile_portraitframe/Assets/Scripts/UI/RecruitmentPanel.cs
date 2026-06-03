@@ -48,65 +48,11 @@ namespace LegendOfBlood
         private void Awake()
         {
             PanelType = UIPanelType.Recruitment;
-            AutoBindRuntime();
+            // Xóa bỏ AutoBindRuntime. Tất cả các nút bấm (recruitOneButton, recruitTenButton, resultOverlay...)
+            // BẮT BUỘC phải được kéo thả trong Unity Inspector.
         }
 
-        private void AutoBindRuntime()
-        {
-            // Tự động tìm và gán nếu trên UI chưa kéo thả (Tránh lỗi do Generator tạo ra mất reference)
-            if (recruitOneButton == null) recruitOneButton = FindChildComponent<Button>("SummonCard_Single") ?? FindChildComponent<Button>("Btn_Recruit1");
-            
-            // Summon x10: Xóa trắng cái cũ bị lỗi dính trong prefab, buộc đè lại cái mới nhất, bự nhất!
-            var portal = FindChild(gameObject, "SummonPortal_Center");
-            if (portal != null) 
-            {
-                recruitTenButton = portal.GetComponent<Button>();
-                if (recruitTenButton == null) recruitTenButton = portal.AddComponent<Button>();
-            }
-
-            if (recruitAdButton == null) recruitAdButton = FindChildComponent<Button>("FreeSummonCard_Right") ?? FindChildComponent<Button>("Btn_RecruitAd");
-            if (closeButton == null) closeButton = FindChildComponent<Button>("CloseButton") ?? FindChildComponent<Button>("Btn_Close");
-            
-            // Bắt buộc tất cả các nút phải nhận Click (fix lỗi Image bị tắt Raycast hoặc thiếu Image)
-            EnsureClickable(recruitOneButton);
-            EnsureClickable(recruitTenButton);
-            EnsureClickable(recruitAdButton);
-
-            // Result UI
-            var resultPanelObj = FindChild(gameObject, "ResultOverlay") ?? FindChild(gameObject, "Panel_RecruitmentResult");
-            if (resultPanelObj != null)
-            {
-                if (resultOverlay == null) resultOverlay = resultPanelObj;
-                if (resultCardContainer == null)
-                {
-                    var container = FindChild(resultPanelObj, "ResultCardContainer") ?? FindChild(resultPanelObj, "CardContainer");
-                    if (container != null) resultCardContainer = container.transform;
-                }
-                if (resultCloseButton == null) resultCloseButton = FindChildComponent<Button>(resultPanelObj, "CloseResultButton");
-                if (resultTitleText == null) resultTitleText = FindChildComponent<TextMeshProUGUI>(resultPanelObj, "ResultTitle");
-            }
-        }
-
-        private GameObject FindChild(GameObject parent, string name)
-        {
-            foreach (Transform t in parent.GetComponentsInChildren<Transform>(true))
-            {
-                if (t.name.Contains(name)) return t.gameObject;
-            }
-            return null;
-        }
-
-        private T FindChildComponent<T>(string name) where T : Component
-        {
-            var obj = FindChild(gameObject, name);
-            return obj != null ? obj.GetComponent<T>() : null;
-        }
-
-        private T FindChildComponent<T>(GameObject parent, string name) where T : Component
-        {
-            var obj = FindChild(parent, name);
-            return obj != null ? obj.GetComponent<T>() : null;
-        }
+        // Đã loại bỏ các hàm rò tìm string (FindChild, FindChildComponent) để tránh lỗi null khi thay đổi tên UI.
 
         protected override void Start()
         {
@@ -161,11 +107,10 @@ namespace LegendOfBlood
 
         private void SetupAnimatedBackground()
         {
-            Image bgImage = GetComponent<Image>();
+            // bgImage nên được gán qua SerializeField hoặc tự động lấy từ chính object này.
             if (bgImage == null)
             {
-                Transform bgTransform = transform.Find("Background");
-                if (bgTransform != null) bgImage = bgTransform.GetComponent<Image>();
+                bgImage = GetComponent<Image>();
             }
 
             if (bgImage != null)
@@ -779,14 +724,13 @@ namespace LegendOfBlood
 
         private TextMeshProUGUI FindChildTMP(GameObject parent, string childName)
         {
-            var t = parent.transform.Find(childName);
-            return t != null ? t.GetComponent<TextMeshProUGUI>() : null;
+            // Bỏ FindChild để tránh crash khi đổi hierarchy. Khuyến khích dùng HeroCard component.
+            return parent.GetComponentInChildren<TextMeshProUGUI>();
         }
 
         private Image FindChildImage(GameObject parent, string childName)
         {
-            var t = parent.transform.Find(childName);
-            return t != null ? t.GetComponent<Image>() : null;
+            return parent.GetComponentInChildren<Image>();
         }
 
         private Color GetRarityColor(int potential)

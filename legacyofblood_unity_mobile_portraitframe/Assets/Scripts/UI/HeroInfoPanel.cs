@@ -217,21 +217,32 @@ namespace LegendOfBlood
             
             // Simple logic: Use the largest EXP book available
             // In a full game, this would open an item selection panel
-            string[] expPotions = { "IT_EXP_BOOK_L", "IT_EXP_BOOK_M", "IT_EXP_BOOK_S" };
+            string[] expPotions = { "IT_EXP_BOOK_L", "ITEM_EXP_BOOK_L", "IT_EXP_BOOK_M", "ITEM_EXP_BOOK_M", "IT_EXP_BOOK_S", "ITEM_EXP_BOOK_S" };
             
             bool itemUsed = false;
             foreach(string itemId in expPotions)
             {
                 ItemData item = null;
-                if(DataManager.Instance.AllItems.TryGetValue(itemId, out item) && item.type == ItemType.ExpPotion)
+                DataManager.Instance.AllItems?.TryGetValue(itemId, out item);
+                if (item == null && itemId.StartsWith("ITEM_"))
+                {
+                    DataManager.Instance.AllItems?.TryGetValue("IT_" + itemId.Substring(5), out item);
+                }
+                if (GameManager.Instance.InventoryManager.GetItemCount(itemId) > 0)
                 {
                     if (GameManager.Instance.InventoryManager.UseItem(itemId, 1))
                     {
                         // Assume expValue is stored in speedUpValueInSeconds or similar field for generic items, 
                         // or we hardcode the values based on ID if the struct doesn't have an exp field.
-                        int expGained = itemId == "IT_EXP_BOOK_L" ? 1000 : (itemId == "IT_EXP_BOOK_M" ? 500 : 100);
+                        int expGained = itemId.Contains("_L") ? 1000 : (itemId.Contains("_M") ? 500 : 100);
                         _currentHero.AddExperience(expGained);
-                        Debug.Log($"Used {item.itemName} on {_currentHero.heroName}. Gained {expGained} EXP.");
+                        string itemName = item != null ? item.itemName : itemId;
+                        if (item == null)
+                        {
+                            item = ScriptableObject.CreateInstance<ItemData>();
+                            item.itemName = itemName;
+                        }
+                        Debug.Log($"Used {itemName} on {_currentHero.heroName}. Gained {expGained} EXP.");
                         
                         GameManager.Instance.UINotificationManager?.ShowNotification($"Sử dụng {item.itemName} thành công!");
                         PopulateData(_currentHero); // Refresh UI
@@ -267,9 +278,26 @@ namespace LegendOfBlood
 
         private void OpenTraitUpgradePanel()
         {
+            if (traitUpgradePanel != null && !traitUpgradePanel.gameObject.scene.IsValid())
+            {
+                Transform panelParent = transform.parent != null ? transform.parent : transform.root;
+                GameObject panelInstance = Instantiate(traitUpgradePanel.gameObject, panelParent, false);
+                panelInstance.name = traitUpgradePanel.gameObject.name.Replace("(Clone)", "");
+                traitUpgradePanel = panelInstance.GetComponent<TraitUpgradePanel>();
+            }
+
             if (traitUpgradePanel == null)
             {
-                traitUpgradePanel = FindFirstObjectByType<TraitUpgradePanel>(FindObjectsInactive.Include);
+                TraitUpgradePanel[] panels = FindObjectsByType<TraitUpgradePanel>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+                foreach (var panel in panels)
+                {
+                    if (panel != null && panel.gameObject.scene.IsValid())
+                    {
+                        traitUpgradePanel = panel;
+                        break;
+                    }
+                }
+
                 if (traitUpgradePanel == null) 
                 {
                     Debug.LogError("Chưa tạo Panel tên là `TraitUpgradePanel` trong Scene. Hãy tạo ra 1 Panel rỗng và dán script `TraitUpgradePanel` vào!");

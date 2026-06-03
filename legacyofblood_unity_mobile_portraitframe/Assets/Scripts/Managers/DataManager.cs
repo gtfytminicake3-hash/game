@@ -148,6 +148,24 @@ namespace LegendOfBlood
                     AllItems.Add(ids[i], generatedData);
                 }
             }
+
+            string[] expBookIds = { "IT_EXP_BOOK_S", "IT_EXP_BOOK_M", "IT_EXP_BOOK_L", "ITEM_EXP_BOOK_S", "ITEM_EXP_BOOK_M", "ITEM_EXP_BOOK_L" };
+            foreach (string expBookId in expBookIds)
+            {
+                if (AllItems.TryGetValue(expBookId, out ItemData existingExpBook))
+                {
+                    existingExpBook.type = ItemType.ExpPotion;
+                    continue;
+                }
+
+                ItemData expBookData = ScriptableObject.CreateInstance<ItemData>();
+                expBookData.id = expBookId;
+                expBookData.itemName = $"item_{expBookId}_name";
+                expBookData.description = $"item_{expBookId}_desc";
+                expBookData.type = ItemType.ExpPotion;
+                expBookData.icon = UnityEngine.Resources.Load<Sprite>($"Icons/Items/ITEM_EXP_BOOK_S");
+                AllItems.Add(expBookId, expBookData);
+            }
             // -------------------------------------------------------------
             
             var expList = _gameConfig.ExperienceTable ?? new List<GameConfigs.ExperienceData>();
@@ -246,6 +264,7 @@ namespace LegendOfBlood
             if (!Player.items.ContainsKey("item_mutation_potion")) Player.items["item_mutation_potion"] = 5;
             if (!Player.items.ContainsKey("item_wish_charm")) Player.items["item_wish_charm"] = 5;
             if (!Player.items.ContainsKey("item_speed_hourglass")) Player.items["item_speed_hourglass"] = 5;
+            if (!Player.items.ContainsKey("IT_EXP_BOOK_S")) Player.items["IT_EXP_BOOK_S"] = 20;
 
             // Xóa rác "Legendary Sword" cũ do chạy sinh tự động từ trước
             Player.equipments.RemoveAll(e => e.equipmentName == "Legendary Sword" || e.id.StartsWith("wpn_"));
@@ -430,17 +449,47 @@ namespace LegendOfBlood
 
         public void RemoveHero(string heroId)
         {
-            HeroData heroToRemove = GetHeroByID(heroId);
-            if (heroToRemove != null)
-            {
-                // Refund some resources based on level
-                int refundGold = heroToRemove.level * 50;
-                GameManager.Instance.InventoryManager.AddResource(ResourceType.Gold, refundGold);
-                Debug.Log($"Sa thải Hero {heroToRemove.heroName}, thu về {refundGold} Vàng.");
+            RemoveHeroes(new[] { heroId });
+        }
 
-                Player.Heroes.Remove(heroToRemove);
+        public int RemoveHeroes(IEnumerable<string> heroIds)
+        {
+            if (Player?.Heroes == null || heroIds == null) return 0;
+
+            var idsToRemove = new HashSet<string>(heroIds.Where(id => !string.IsNullOrEmpty(id)));
+            if (idsToRemove.Count == 0) return 0;
+
+            int removedCount = 0;
+            int refundGold = 0;
+
+            for (int i = Player.Heroes.Count - 1; i >= 0; i--)
+            {
+                HeroData heroToRemove = Player.Heroes[i];
+                if (heroToRemove == null || !idsToRemove.Contains(heroToRemove.id)) continue;
+                if (heroToRemove.IsBusy()) continue;
+
+                int heroRefund = heroToRemove.level * 50;
+                refundGold += heroRefund;
+                Debug.Log($"Dismissed hero {heroToRemove.heroName}, refund {heroRefund} Gold.");
+                Player.Heroes.RemoveAt(i);
+                removedCount++;
+            }
+
+            if (removedCount > 0)
+            {
+                if (GameManager.Instance != null && GameManager.Instance.InventoryManager != null)
+                {
+                    GameManager.Instance.InventoryManager.AddResource(ResourceType.Gold, refundGold);
+                }
+                else if (Player.resources != null)
+                {
+                    Player.resources.gold += refundGold;
+                }
+
                 OnHeroListChanged?.Invoke();
             }
+
+            return removedCount;
         }
 
         public HeroData GetHeroByID(string id)
@@ -608,3 +657,4 @@ namespace LegendOfBlood
     }
 }
 // --- END OF FILE DataManager.cs (FIXED AGAIN) ---
+

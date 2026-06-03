@@ -5,3 +5,9 @@ cwd = "D:\\game\\legendofblood\\legacyofblood_unity_mobile_portraitframe"
 startup_timeout_sec = 20
 tool_timeout_sec = 60
 enabled = true
+
+[mcp_servers.mcp-unity.tools.get_gameobject]
+approval_mode = "approve"
+
+[mcp_servers.mcp-unity.tools.execute_menu_item]
+approval_mode = "approve"

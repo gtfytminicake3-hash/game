@@ -23,8 +23,7 @@ namespace LegendOfBlood
         private List<GameObject> _instantiatedCards = new List<GameObject>();
 
         // Sự kiện được phát ra khi người dùng chọn một hero.
-        // Action<HeroData> là callback, mang theo hero đã được chọn.
-        public static event Action<HeroData> OnHeroPicked;
+        private Action<HeroData> _onHeroPickedCallback;
 
         #region Unity Lifecycle
 
@@ -48,8 +47,11 @@ namespace LegendOfBlood
         /// </summary>
         /// <param name="title">Tiêu đề của panel (ví dụ: "Chọn Cha", "Chọn Mẹ")</param>
         /// <param name="heroesToShow">Danh sách hero hợp lệ để hiển thị</param>
-        public void Show(string title, List<HeroData> heroesToShow)
-        {Debug.Log($"--- HeroPickerPanel.Show() được gọi với {heroesToShow.Count} hero. ---"); // Log 6
+        /// <param name="onHeroPicked">Callback khi chọn tướng xong</param>
+        public void Show(string title, List<HeroData> heroesToShow, Action<HeroData> onHeroPicked)
+        {
+            _onHeroPickedCallback = onHeroPicked;
+            Debug.Log($"--- HeroPickerPanel.Show() được gọi với {heroesToShow.Count} hero. ---"); // Log 6
             // Yêu cầu UIManager hiển thị panel này đè lên panel hiện tại
             GameManager.Instance.UIManager.ShowPanel(UIPanelType.HeroPicker, false);
 
@@ -64,42 +66,48 @@ namespace LegendOfBlood
         private void PopulateList(List<HeroData> heroes)
         {Debug.Log($"--- PopulateList() bắt đầu với {heroes.Count} hero. ---"); // Log 7
           if (listContainer == null)
-    {
-        Debug.LogError("LỖI NGHIÊM TRỌNG: Tham chiếu 'listContainer' trong HeroPickerPanel đang bị NULL!", this.gameObject);
-        return; // Dừng hàm ngay lập tức
-    }
-            if (heroCardPrefab == null)
+          {
+              Debug.LogError("LỖI NGHIÊM TRỌNG: Tham chiếu 'listContainer' trong HeroPickerPanel đang bị NULL!", this.gameObject);
+              return; // Dừng hàm ngay lập tức
+          }
+          if (heroCardPrefab == null)
+          {
+              Debug.LogError("LỖI NGHIÊM TRỌNG: Tham chiếu 'heroCardPrefab' trong HeroPickerPanel đang bị NULL!", this.gameObject);
+              return; // Dừng hàm ngay lập tức 
+          }
+          
+            // Dọn dẹp danh sách cũ bằng Object Pooling
+            foreach (var card in _instantiatedCards)
             {
-                Debug.LogError("LỖI NGHIÊM TRỌNG: Tham chiếu 'heroCardPrefab' trong HeroPickerPanel đang bị NULL!", this.gameObject);
-                return; // Dừng hàm ngay lập tức 
+                card.SetActive(false);
             }
-            // Dọn dẹp danh sách cũ
-                foreach (var card in _instantiatedCards)
-                {
-                    Destroy(card);
-                }
-            _instantiatedCards.Clear();
 
             // Sắp xếp theo CP giảm dần (theo GDD)
             var sortedHeroes = heroes.OrderByDescending(h => h.GetCombatPower()).ToList();
 
-            // Tạo card mới
-            foreach (var hero in sortedHeroes)
-            {Debug.Log($"Đang tạo thẻ bài cho {hero.heroName}...");
-                GameObject cardInstance = Instantiate(heroCardPrefab, listContainer);
-                cardInstance.SetActive(true); // Đảm bảo thẻ Tướng hiển thị, chống tàng hình từ Prefab
-                HeroPickerCard cardScript = cardInstance.AddComponent<HeroPickerCard>(); // Thêm một script phụ để xử lý click
-                cardScript.Setup(hero, this); // Truyền tham chiếu của panel này vào card
-                _instantiatedCards.Add(cardInstance);
+            // Tạo card mới hoặc tái sử dụng
+            for (int i = 0; i < sortedHeroes.Count; i++)
+            {
+                var hero = sortedHeroes[i];
+                GameObject cardInstance;
                 
-                RectTransform rt = cardInstance.GetComponent<RectTransform>();
-                if (rt != null)
+                if (i < _instantiatedCards.Count)
                 {
-                    CanvasGroup cg = cardInstance.GetComponent<CanvasGroup>();
-                    float alpha = cg != null ? cg.alpha : 1f;
-                    Debug.Log($"Card {hero.heroName} rect: pos={rt.anchoredPosition}, Z={rt.position.z}, size={rt.sizeDelta}, scale={rt.localScale}, activeInHier={cardInstance.activeInHierarchy}, alpha={alpha}");
+                    cardInstance = _instantiatedCards[i];
                 }
-            }Debug.Log($"Đã tạo xong {_instantiatedCards.Count} thẻ bài.");
+                else
+                {
+                    cardInstance = Instantiate(heroCardPrefab, listContainer);
+                    HeroPickerCard cardScript = cardInstance.GetComponent<HeroPickerCard>();
+                    if (cardScript == null) cardScript = cardInstance.AddComponent<HeroPickerCard>(); // Thêm một script phụ để xử lý click
+                    _instantiatedCards.Add(cardInstance);
+                }
+
+                cardInstance.SetActive(true); // Đảm bảo thẻ Tướng hiển thị, chống tàng hình từ Prefab
+                HeroPickerCard script = cardInstance.GetComponent<HeroPickerCard>();
+                script.Setup(hero, this); // Truyền tham chiếu của panel này vào card
+            }
+            Debug.Log($"Đã tạo/tái sử dụng xong {sortedHeroes.Count} thẻ bài.");
         }
 
         /// <summary>
@@ -107,8 +115,8 @@ namespace LegendOfBlood
         /// </summary>
         public void HandleHeroSelection(HeroData selectedHero)
         {
-            // Phát sự kiện toàn cục
-            OnHeroPicked?.Invoke(selectedHero);
+            // Trả kết quả thông qua Callback an toàn
+            _onHeroPickedCallback?.Invoke(selectedHero);
 
             // Sau khi chọn xong, tự động đóng panel
             ClosePanel();

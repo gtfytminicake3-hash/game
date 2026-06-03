@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: item_IT_EXP_BOOK_S_name
   description: item_IT_EXP_BOOK_S_desc
   icon: {fileID: 0}
-  type: 0
+  type: 3
   isStackable: 1
   maxStackSize: 99
   sellPrice: 500

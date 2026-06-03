@@ -203,15 +203,27 @@ namespace LegendOfBlood
         /// </summary>
         /// <param name="panelType">Loại panel cần hiển thị</param>
         /// <param name="hideCurrent">True: Ẩn panel đang mở. False: Hiển thị panel mới đè lên (dùng cho popup)</param>
+        public void ShowPanel(UIPanelType panelType, bool hideCurrent, bool addToHistory)
+        {
+            ShowPanel(panelType, hideCurrent);
+        }
+
         public void ShowPanel(UIPanelType panelType, bool hideCurrent = true)
         {
-            if (panelType == UIPanelType.None || panelType == _currentPanel) return;
+            if (panelType == UIPanelType.None) return;
 
             // TỰ PHỤC HỒI: Nếu không tìm thấy trong dictionary, thử quét lại scene một lần nữa
             if (!_panelDictionary.ContainsKey(panelType))
             {
                 Debug.LogWarning($"[UIManager] ⚠️ Không tìm thấy {panelType} trong register. Đang tiến hành quét lại toàn bộ Scene (Re-scan)...");
                 RegisterAllPanelsInScene();
+            }
+
+            if (panelType == _currentPanel && _panelDictionary.TryGetValue(panelType, out GameObject existingPanel))
+            {
+                existingPanel.SetActive(true);
+                existingPanel.transform.SetAsLastSibling();
+                return;
             }
 
             // Check feature lock before showing panel
@@ -312,10 +324,24 @@ namespace LegendOfBlood
         {
             if (_currentPanel != UIPanelType.None && _currentPanel != UIPanelType.MainScreen)
             {
-                // Thay vì lùi lại history, luôn luôn clear history và fallback về MainScreen
-                HidePanel(_currentPanel);
-                _history.Clear();
-                _topSortingOrder = 100; // Reset sorting order
+                var closingPanel = _currentPanel;
+                HidePanel(closingPanel);
+
+                while (_history.Count > 0)
+                {
+                    var previous = _history.Pop();
+                    if (!_panelDictionary.TryGetValue(previous, out GameObject prevObj) || prevObj == null)
+                    {
+                        continue;
+                    }
+
+                    prevObj.SetActive(true);
+                    prevObj.transform.SetAsLastSibling();
+                    _currentPanel = previous;
+                    return true;
+                }
+
+                _topSortingOrder = 100;
                 ShowPanel(UIPanelType.MainScreen, false);
                 return true;
             }

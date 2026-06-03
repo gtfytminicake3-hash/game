@@ -17,6 +17,7 @@ namespace LegendOfBlood
 
         public void Setup(ArenaShopGood good, System.Action<ArenaShopGood> onBuyCallback)
         {
+            EnsureReferences();
             _shopGood = good;
             _onBuyAction = onBuyCallback;
 
@@ -71,6 +72,81 @@ namespace LegendOfBlood
         {
             if (itemNameText != null) itemNameText.text = itemName;
             if (priceText != null) priceText.text = price.ToString() + " Khuyển";
+        }
+
+        private void EnsureReferences()
+        {
+            RectTransform rootRt = GetComponent<RectTransform>();
+            if (rootRt == null) rootRt = gameObject.AddComponent<RectTransform>();
+            if (GetComponent<Image>() == null)
+            {
+                Image bg = gameObject.AddComponent<Image>();
+                bg.color = new Color(0.12f, 0.1f, 0.08f, 0.92f);
+            }
+
+            if (iconImage == null)
+            {
+                Transform icon = transform.Find("Icon_Runtime");
+                if (icon == null)
+                {
+                    GameObject iconObj = new GameObject("Icon_Runtime");
+                    iconObj.transform.SetParent(transform, false);
+                    RectTransform rt = iconObj.AddComponent<RectTransform>();
+                    rt.anchorMin = new Vector2(0.5f, 1f);
+                    rt.anchorMax = new Vector2(0.5f, 1f);
+                    rt.pivot = new Vector2(0.5f, 1f);
+                    rt.sizeDelta = new Vector2(110f, 110f);
+                    rt.anchoredPosition = new Vector2(0f, -24f);
+                    iconImage = iconObj.AddComponent<Image>();
+                    iconImage.preserveAspect = true;
+                }
+                else
+                {
+                    iconImage = icon.GetComponent<Image>();
+                }
+            }
+
+            if (itemNameText == null) itemNameText = CreateText("Name_Runtime", new Vector2(0.08f, 0.42f), new Vector2(0.92f, 0.66f), 24f);
+            if (priceText == null) priceText = CreateText("Price_Runtime", new Vector2(0.08f, 0.25f), new Vector2(0.92f, 0.4f), 22f);
+
+            if (buyButton == null)
+            {
+                Transform existing = transform.Find("BuyButton_Runtime");
+                GameObject btnObj = existing != null ? existing.gameObject : new GameObject("BuyButton_Runtime");
+                btnObj.transform.SetParent(transform, false);
+                RectTransform rt = btnObj.GetComponent<RectTransform>() ?? btnObj.AddComponent<RectTransform>();
+                rt.anchorMin = new Vector2(0.15f, 0.05f);
+                rt.anchorMax = new Vector2(0.85f, 0.2f);
+                rt.offsetMin = Vector2.zero;
+                rt.offsetMax = Vector2.zero;
+                Image image = btnObj.GetComponent<Image>() ?? btnObj.AddComponent<Image>();
+                image.color = new Color(0.65f, 0.18f, 0.08f, 0.95f);
+                buyButton = btnObj.GetComponent<Button>() ?? btnObj.AddComponent<Button>();
+
+                TextMeshProUGUI text = btnObj.GetComponentInChildren<TextMeshProUGUI>(true);
+                if (text == null)
+                {
+                    text = CreateText("Text", Vector2.zero, Vector2.one, 22f, btnObj.transform);
+                    text.text = "Mua";
+                    text.color = Color.white;
+                }
+            }
+        }
+
+        private TextMeshProUGUI CreateText(string objectName, Vector2 anchorMin, Vector2 anchorMax, float fontSize, Transform parentOverride = null)
+        {
+            GameObject textObj = new GameObject(objectName);
+            textObj.transform.SetParent(parentOverride != null ? parentOverride : transform, false);
+            TextMeshProUGUI text = textObj.AddComponent<TextMeshProUGUI>();
+            text.alignment = TextAlignmentOptions.Center;
+            text.fontSize = fontSize;
+            text.color = Color.white;
+            RectTransform rt = text.rectTransform;
+            rt.anchorMin = anchorMin;
+            rt.anchorMax = anchorMax;
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+            return text;
         }
 
         private void OnBuyClicked()

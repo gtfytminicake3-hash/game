@@ -115,6 +115,7 @@ namespace LegendOfBlood
             {
                 CreateCard(hero, severeInjuryListContainer);
             }
+            ConfigureHorizontalList(severeInjuryListContainer);
 
             // Lọc và hiển thị hero bị thương nhẹ
             var lightlyInjuredHeroes = allHeroes.Where(h => h.isLightlyInjured && h.lightInjuryEndTime > currentTime);
@@ -122,6 +123,7 @@ namespace LegendOfBlood
             {
                 CreateCard(hero, lightInjuryListContainer);
             }
+            ConfigureHorizontalList(lightInjuryListContainer);
         }
 
         private void CreateCard(HeroData heroData, Transform container)
@@ -172,5 +174,96 @@ namespace LegendOfBlood
         }
 
         #endregion
+
+        private void ConfigureHorizontalList(Transform container)
+        {
+            if (container == null) return;
+
+            RectTransform content = container as RectTransform;
+            if (content == null) return;
+
+            RectTransform viewport = EnsureHorizontalViewport(content);
+            if (viewport == null) return;
+
+            RectMask2D mask = viewport.GetComponent<RectMask2D>();
+            if (mask == null)
+            {
+                viewport.gameObject.AddComponent<RectMask2D>();
+            }
+
+            Image hitArea = viewport.GetComponent<Image>();
+            if (hitArea == null)
+            {
+                hitArea = viewport.gameObject.AddComponent<Image>();
+            }
+            hitArea.color = new Color(1f, 1f, 1f, 0f);
+            hitArea.raycastTarget = true;
+
+            ContentSizeFitter fitter = content.GetComponent<ContentSizeFitter>();
+            if (fitter == null)
+            {
+                fitter = content.gameObject.AddComponent<ContentSizeFitter>();
+            }
+            fitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
+            fitter.verticalFit = ContentSizeFitter.FitMode.Unconstrained;
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(content);
+
+            float preferredWidth = Mathf.Max(LayoutUtility.GetPreferredWidth(content), viewport.rect.width);
+            content.anchorMin = new Vector2(0f, 1f);
+            content.anchorMax = new Vector2(0f, 1f);
+            content.pivot = new Vector2(0f, 1f);
+            content.anchoredPosition = Vector2.zero;
+            content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, preferredWidth);
+            content.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, viewport.rect.height);
+
+            ScrollRect scrollRect = viewport.GetComponent<ScrollRect>();
+            if (scrollRect == null)
+            {
+                scrollRect = viewport.gameObject.AddComponent<ScrollRect>();
+            }
+            scrollRect.content = content;
+            scrollRect.viewport = viewport;
+            scrollRect.horizontal = true;
+            scrollRect.vertical = false;
+            scrollRect.movementType = ScrollRect.MovementType.Elastic;
+            scrollRect.inertia = true;
+            scrollRect.horizontalScrollbar = null;
+            scrollRect.verticalScrollbar = null;
+            scrollRect.scrollSensitivity = 35f;
+            scrollRect.normalizedPosition = new Vector2(0f, 1f);
+        }
+
+        private RectTransform EnsureHorizontalViewport(RectTransform content)
+        {
+            RectTransform currentParent = content.parent as RectTransform;
+            if (currentParent == null) return null;
+
+            if (currentParent.name == content.name + "Viewport")
+            {
+                return currentParent;
+            }
+
+            GameObject viewportObject = new GameObject(content.name + "Viewport", typeof(RectTransform));
+            RectTransform viewport = viewportObject.GetComponent<RectTransform>();
+            Transform wardParent = currentParent;
+            int originalSiblingIndex = content.GetSiblingIndex();
+
+            viewport.SetParent(wardParent, false);
+            viewport.SetSiblingIndex(originalSiblingIndex);
+            viewport.anchorMin = content.anchorMin;
+            viewport.anchorMax = content.anchorMax;
+            viewport.pivot = content.pivot;
+            viewport.anchoredPosition = content.anchoredPosition;
+            viewport.sizeDelta = content.sizeDelta;
+
+            content.SetParent(viewport, false);
+            content.anchorMin = new Vector2(0f, 1f);
+            content.anchorMax = new Vector2(0f, 1f);
+            content.pivot = new Vector2(0f, 1f);
+            content.anchoredPosition = Vector2.zero;
+
+            return viewport;
+        }
     }
 }

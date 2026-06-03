@@ -21,6 +21,22 @@ namespace LegendOfBlood
         private Action _onActionExecute;
         private Action _onLoseExecute;
 
+        private void Awake()
+        {
+            AutoHook();
+        }
+
+        private void AutoHook()
+        {
+            if (btnClose == null) btnClose = transform.Find("Btn_Close")?.GetComponent<Button>() ?? transform.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name.Contains("Close"));
+            if (btnAction == null) btnAction = transform.Find("Btn_Action")?.GetComponent<Button>() ?? transform.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name.Contains("Action") || b.name.Contains("Confirm"));
+            if (btnLose == null) btnLose = transform.Find("Btn_Lose")?.GetComponent<Button>() ?? transform.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name.Contains("Lose") || b.name.Contains("Thua"));
+            
+            if (titleText == null) titleText = transform.Find("Title")?.GetComponent<TextMeshProUGUI>();
+            if (monstersText == null) monstersText = transform.Find("Monsters")?.GetComponent<TextMeshProUGUI>();
+            if (lootText == null) lootText = transform.Find("LootText")?.GetComponent<TextMeshProUGUI>();
+        }
+
         private void Start()
         {
             if (btnClose != null) btnClose.onClick.AddListener(Close);

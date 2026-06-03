@@ -7,6 +7,8 @@ namespace LegendOfBlood
 
     public class BuildingSystem
     {
+        public static BuildingSystem Instance => GameManager.Instance != null ? GameManager.Instance.BuildingSystem : null;
+
         public static event Action<Building> OnBuildingUpgradeStarted;
         public static event Action<Building> OnBuildingUpgradeCompleted;
 

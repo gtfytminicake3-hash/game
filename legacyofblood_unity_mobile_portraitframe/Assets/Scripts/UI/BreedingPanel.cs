@@ -39,150 +39,22 @@ namespace LegendOfBlood
         {
             PanelType = UIPanelType.Breeding;
 
+            // Đăng ký Listener từ các biến [SerializeField] đã được kéo thả trong Inspector
             if (backButton != null) backButton.onClick.AddListener(ClosePanel);
             if (breedButton != null) breedButton.onClick.AddListener(OnBreedClicked);
             
             if (fatherButton != null) fatherButton.onClick.AddListener(() => OpenPicker(true));
             if (motherButton != null) motherButton.onClick.AddListener(() => OpenPicker(false));
-
-            AutoHookMissingReferences();
         }
 
         private void OnEnable()
         {
-            HeroPickerPanel.OnHeroPicked += OnHeroPicked;
             ResetUI();
         }
 
         private void OnDisable()
         {
-            HeroPickerPanel.OnHeroPicked -= OnHeroPicked;
-        }
-
-        private void AutoHookMissingReferences()
-        {
-            // TÌM CÁC NÚT BẰNG ĐƯỜNG DẪN HOẶC TÊN CHÍNH XÁC (Tránh lỗi nhảy UI lung tung)
-            var allTransforms = GetComponentsInChildren<Transform>(true);
-            
-            // Tìm Nút Back
-            if (backButton == null)
-            {
-                var back = allTransforms.FirstOrDefault(t => t.name == "CloseButton");
-                if (back != null) backButton = back.GetComponent<Button>();
-            }
-
-            // Tìm Nút Lai Tạo (Bây giờ lấy thẳng tên chuẩn của dự án)
-            if (breedButton == null)
-            {
-                var breedBtnObj = allTransforms.FirstOrDefault(t => t.name == "StartBreedingButton" || (t.name.Contains("Breeding") && t.name.Contains("Button")));
-                if (breedBtnObj != null) 
-                {
-                    breedButton = breedBtnObj.GetComponent<Button>();
-                    if (breedButton == null) breedButton = breedBtnObj.gameObject.AddComponent<Button>();
-                }
-
-                // Nếu vẫn chưa thấy thì fallback tìm theo text "LAI TẠO" hoặc "START"
-                if (breedButton == null)
-                {
-                    var breedText = GetComponentsInChildren<TextMeshProUGUI>(true).FirstOrDefault(t => (t.text.ToUpper().Contains("LAI TẠO") || t.text.ToUpper().Contains("START")) && t.transform.parent.name != "TopHeader" && t.transform.parent.name != "Panel_Breeding");
-                    if (breedText != null && breedText.transform.parent != null) 
-                    {
-                        breedButton = breedText.transform.parent.GetComponent<Button>();
-                        if (breedButton == null) breedButton = breedText.transform.parent.gameObject.AddComponent<Button>();
-                    }
-                }
-            }
-
-            // Tìm Ô Chọn Cha (LeftPedestalGroup hoặc nhánh chứa LeftCard)
-            if (fatherButton == null)
-            {
-                var leftGroup = allTransforms.FirstOrDefault(t => t.name == "LeftPedestalGroup");
-                if (leftGroup != null) 
-                {
-                    fatherButton = leftGroup.GetComponent<Button>();
-                    if (fatherButton == null) fatherButton = leftGroup.gameObject.AddComponent<Button>();
-
-                    // Cố gắng tìm Card bên trong để kích hoạt
-                    Transform card = leftGroup.Find("LeftCard_Knight");
-                    if (card != null) card.gameObject.SetActive(true);
-
-                    // Tìm chính xác NameText và Portrait bên trong nó
-                    fatherNameText = leftGroup.GetComponentsInChildren<TextMeshProUGUI>(true).FirstOrDefault(t => t.name == "NameText");
-                    fatherIcon = leftGroup.GetComponentsInChildren<Image>(true).FirstOrDefault(img => img.name == "Portrait");
-                }
-            }
-
-            // Tìm Ô Chọn Mẹ (Dự đoán tên là RightPedestalGroup)
-            if (motherButton == null)
-            {
-                var rightGroup = allTransforms.FirstOrDefault(t => t.name == "RightPedestalGroup" || t.name.Contains("RightPedestal"));
-                if (rightGroup != null) 
-                {
-                    motherButton = rightGroup.GetComponent<Button>();
-                    if (motherButton == null) motherButton = rightGroup.gameObject.AddComponent<Button>();
-
-                    // Cố gắng tìm Card bên trong để kích hoạt (có thể là RightCard_Mage)
-                    Transform card = null;
-                    foreach(Transform child in rightGroup)
-                    {
-                        if (child.name.Contains("Card")) card = child;   
-                    }
-                    if (card != null) card.gameObject.SetActive(true);
-
-                    motherNameText = rightGroup.GetComponentsInChildren<TextMeshProUGUI>(true).FirstOrDefault(t => t.name == "NameText");
-                    motherIcon = rightGroup.GetComponentsInChildren<Image>(true).FirstOrDefault(img => img.name == "Portrait");
-                }
-            }
-
-            // Fallback nếu không thấy theo tên thì dùng cái script cũ để vét
-            if (backButton == null || breedButton == null || fatherButton == null || motherButton == null)
-            {
-                Button[] allButtons = GetComponentsInChildren<Button>(true);
-                foreach (var btn in allButtons)
-                {
-                    var txt = btn.GetComponentInChildren<TextMeshProUGUI>(true);
-                    if (txt != null && !string.IsNullOrWhiteSpace(txt.text))
-                    {
-                        string upperText = txt.text.ToUpper();
-                        if (upperText == "<" && backButton == null) backButton = btn;
-                        else if ((upperText.Contains("LAI") || upperText.Contains("BREED")) && breedButton == null) breedButton = btn;
-                    }
-                }
-            }
-
-            // Tìm Progress Area (CenterTubeGroup hoặc ProgressGroup)
-            if (progressGroup == null)
-            {
-                var tube = allTransforms.FirstOrDefault(t => t.name.Contains("Tube") || t.name.Contains("Progress"));
-                if (tube != null)
-                {
-                    progressGroup = tube.gameObject;
-                    progressFill = tube.GetComponentsInChildren<Image>(true).FirstOrDefault(img => img.type == Image.Type.Filled || img.name.Contains("Fill"));
-                    progressText = tube.GetComponentsInChildren<TextMeshProUGUI>(true).FirstOrDefault(t => t.name.Contains("Text") || t.text.Contains("%"));
-                }
-            }
-
-            // Cắm dây sự kiện
-            if (backButton != null) 
-            {
-                backButton.onClick.RemoveAllListeners();
-                backButton.onClick.AddListener(ClosePanel);
-            }
-            if (breedButton != null) 
-            {
-                breedButton.onClick.RemoveAllListeners();
-                breedButton.onClick.AddListener(OnBreedClicked);
-            }
-            if (fatherButton != null)
-            {
-                fatherButton.onClick.RemoveAllListeners();
-                fatherButton.onClick.AddListener(() => OpenPicker(true));
-            }
-            if (motherButton != null)
-            {
-                motherButton.onClick.RemoveAllListeners();
-                motherButton.onClick.AddListener(() => OpenPicker(false));
-            }
+            // (Đã loại bỏ Static Event)
         }
 
         private void ClosePanel()
@@ -206,12 +78,12 @@ namespace LegendOfBlood
                 if (isFather)
                 {
                     validHeroes = allHeroes.Where(h => h.gender == Gender.Male && !h.IsBusy()).ToList();
-                    _heroPicker.Show(global::LocalizationSystem.GetText("breeding_select_father_title"), validHeroes);
+                    _heroPicker.Show(global::LocalizationSystem.GetText("breeding_select_father_title"), validHeroes, OnHeroPicked);
                 }
                 else
                 {
                     validHeroes = allHeroes.Where(h => h.gender == Gender.Female && !h.IsBusy()).ToList();
-                    _heroPicker.Show(global::LocalizationSystem.GetText("breeding_select_mother_title"), validHeroes);
+                    _heroPicker.Show(global::LocalizationSystem.GetText("breeding_select_mother_title"), validHeroes, OnHeroPicked);
                 }
             }
         }

@@ -138,15 +138,12 @@ namespace LegendOfBlood
 
         private void OnEnable()
         {
-            // Bắt đầu lắng nghe sự kiện từ HeroPickerPanel
-            HeroPickerPanel.OnHeroPicked += OnHeroPicked;
             SwitchToState(BreedingState.Selection); // Khi panel được mở, luôn đảm bảo nó ở trạng thái chọn lựa
         }
 
         private void OnDisable()
         {
-            // Ngừng lắng nghe để tránh lỗi
-            HeroPickerPanel.OnHeroPicked -= OnHeroPicked;
+            // (Đã loại bỏ Static Event)
         }
 
         #endregion
@@ -211,14 +208,14 @@ namespace LegendOfBlood
     if (heroPickerPanel != null)
     {
         Debug.Log("heroPickerPanel hợp lệ. Đang gọi hàm Show()..."); // Log 5
-        heroPickerPanel.Show(global::LocalizationSystem.GetText("breeding_select_father_title"), validFathers);
+        heroPickerPanel.Show(global::LocalizationSystem.GetText("breeding_select_father_title"), validFathers, OnHeroPicked);
     }
     else
     {
         heroPickerPanel = FindAnyObjectByType<HeroPickerPanel>(FindObjectsInactive.Include);
         if (heroPickerPanel != null)
         {
-            heroPickerPanel.Show(global::LocalizationSystem.GetText("breeding_select_father_title"), validFathers);
+            heroPickerPanel.Show(global::LocalizationSystem.GetText("breeding_select_father_title"), validFathers, OnHeroPicked);
         }
         else
         {
@@ -246,7 +243,7 @@ namespace LegendOfBlood
 
             if (heroPickerPanel != null)
             {
-                heroPickerPanel.Show(global::LocalizationSystem.GetText("breeding_select_mother_title"), validMothers);
+                heroPickerPanel.Show(global::LocalizationSystem.GetText("breeding_select_mother_title"), validMothers, OnHeroPicked);
             }
         }
 

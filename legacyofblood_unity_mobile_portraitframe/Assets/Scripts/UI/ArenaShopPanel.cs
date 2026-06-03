@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace LegendOfBlood
 {
@@ -43,70 +44,88 @@ namespace LegendOfBlood
         [SerializeField] private RectTransform goldBanner;
         [SerializeField] private RectTransform stoneBanner;
         [SerializeField] private RectTransform gemBanner;
+        private bool _missingLayoutWarned;
 
         private void Awake()
         {
             PanelType = UIPanelType.ArenaShop;
+            EnsureReferences();
             if (closeButton != null) closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.GoBack());
             if (adFreebieButton != null) adFreebieButton.onClick.AddListener(OnAdFreebieClicked);
             
-            // Auto-hack: Tự động trói buộc 3 cuộn giấy
-            if (goldBanner == null || stoneBanner == null || gemBanner == null)
-            {
-                Image[] allImages = GetComponentsInChildren<Image>(true);
-                System.Collections.Generic.List<RectTransform> banners = new System.Collections.Generic.List<RectTransform>();
-                foreach (var img in allImages)
-                {
-                    // Chỉ nã thẳng vào 3 cuộn giấy (to_giay)
-                    if (img.sprite != null && (img.sprite.name.Contains("to_giay") || img.sprite.name.Contains("Banner")))
-                    {
-                        if (img.rectTransform.rect.width > 100 && img.rectTransform.rect.width < 400 && img.rectTransform.rect.height < 150)
-                        {
-                            if (!banners.Contains(img.rectTransform)) banners.Add(img.rectTransform);
-                        }
-                    }
-                }
-                
-                // Tránh tình trạng nhận nhầm AD và nút X, huỷ bỏ cái fallback toạ độ cũ
-                // Sort X để chắc chắn trúng 3 cuộn giấy
-                if (banners.Count >= 3)
-                {
-                    banners.Sort((a, b) => a.position.x.CompareTo(b.position.x));
-                    goldBanner = banners[0];
-                    stoneBanner = banners[1];
-                    gemBanner = banners[2];
-                }
-            }
-
-            // Cleanup các đối tượng bị nặn nhầm (AD button / X Button)
-            CleanupBadObjects(GetComponentsInChildren<Image>(true));
-
-            CheckAndRefreshDailyGoods();
-        }
-
-        private void CleanupBadObjects(Image[] allImages)
-        {
-            foreach (var img in allImages)
-            {
-                foreach (Transform child in img.transform)
-                {
-                    if (child.name == "TextValue" || child.name == "Icon")
-                    {
-                        // Xoá các text/icon sai chổ trên nút AD/X
-                        if (img.rectTransform != goldBanner && img.rectTransform != stoneBanner && img.rectTransform != gemBanner)
-                        {
-                            Destroy(child.gameObject);
-                        }
-                    }
-                }
-            }
+            // Đã xóa bỏ thuật toán rò tìm Auto-hack dính tên chuỗi và tọa độ X.
+            // Bắt buộc phải kéo thả goldBanner, stoneBanner, gemBanner vào Inspector để tránh lỗi xóa nhầm Component (CleanupBadObjects).
         }
 
         private void OnEnable()
         {
-            RefreshShop();
+            EnsureReferences();
+            CheckAndRefreshDailyGoods();
             SetupTopBanners();
             UpdateCurrencies();
+            RefreshShop();
+        }
+
+        private void EnsureReferences()
+        {
+            if (itemContainer == null)
+            {
+                ScrollRect scrollRect = GetComponentInChildren<ScrollRect>(true);
+                if (scrollRect != null && scrollRect.content != null)
+                {
+                    itemContainer = scrollRect.content;
+                }
+            }
+
+            if (itemContainer == null)
+            {
+                ArenaShopItem firstItem = GetComponentInChildren<ArenaShopItem>(true);
+                if (firstItem != null && firstItem.transform.parent != null)
+                {
+                    itemContainer = firstItem.transform.parent;
+                }
+            }
+
+            if (itemContainer == null)
+            {
+                Transform content = FindChildByName(transform, "Content") ?? FindChildByName(transform, "ItemContainer");
+                if (content != null) itemContainer = content;
+            }
+
+            if (itemContainer == null)
+            {
+                GameObject containerObj = new GameObject("RuntimeItemContainer");
+                containerObj.transform.SetParent(transform, false);
+                RectTransform rt = containerObj.AddComponent<RectTransform>();
+                rt.anchorMin = new Vector2(0.06f, 0.12f);
+                rt.anchorMax = new Vector2(0.94f, 0.78f);
+                rt.offsetMin = Vector2.zero;
+                rt.offsetMax = Vector2.zero;
+
+                GridLayoutGroup grid = containerObj.AddComponent<GridLayoutGroup>();
+                grid.cellSize = new Vector2(290f, 360f);
+                grid.spacing = new Vector2(24f, 24f);
+                grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+                grid.constraintCount = 2;
+                itemContainer = containerObj.transform;
+            }
+
+            if (shopItemPrefab == null)
+            {
+                ArenaShopItem firstItem = itemContainer != null ? itemContainer.GetComponentInChildren<ArenaShopItem>(true) : GetComponentInChildren<ArenaShopItem>(true);
+                if (firstItem != null) shopItemPrefab = firstItem.gameObject;
+            }
+        }
+
+        private Transform FindChildByName(Transform root, string targetName)
+        {
+            foreach (Transform child in root)
+            {
+                if (child.name == targetName) return child;
+                Transform nested = FindChildByName(child, targetName);
+                if (nested != null) return nested;
+            }
+            return null;
         }
 
         private void UpdateCurrencies()
@@ -235,9 +254,13 @@ namespace LegendOfBlood
                 var pool = DataManager.Instance.GameConfig.ArenaShopPool;
                 int totalWeight = 0;
                 foreach(var p in pool) totalWeight += p.weight;
+                if (totalWeight <= 0)
+                {
+                    Debug.LogWarning("[ArenaShop] ArenaShopPool has no positive weights. Using fallback goods.", this);
+                }
 
                 int itemsToRoll = 6; // Số ô trong shop
-                for (int i = 0; i < itemsToRoll; i++)
+                for (int i = 0; totalWeight > 0 && i < itemsToRoll; i++)
                 {
                     int roll = Random.Range(0, totalWeight);
                     int currentWeight = 0;
@@ -298,6 +321,12 @@ namespace LegendOfBlood
                     });
                 }
             }
+
+            if (player.currentArenaShopGoods.Count == 0)
+            {
+                player.currentArenaShopGoods.Add(new ArenaShopGood { type = ShopGoodType.Item, refId = "ITEM_EXP_BOOK_S", displayName = "EXP Book", price = 1000, amount = 5 });
+                player.currentArenaShopGoods.Add(new ArenaShopGood { type = ShopGoodType.Resource, refId = "GOLD", displayName = "Gold Pack", price = 800, amount = 10000, isInfinite = true });
+            }
         }
 
         private string GetDefaultName(string refId)
@@ -351,11 +380,23 @@ namespace LegendOfBlood
 
         private void RefreshShop()
         {
+            EnsureReferences();
+            CheckAndRefreshDailyGoods();
             if (DataManager.Instance == null || DataManager.Instance.Player == null) return;
+            if (itemContainer == null)
+            {
+                if (!_missingLayoutWarned)
+                {
+                    Debug.LogError("[ArenaShop] itemContainer is missing and could not be rebuilt.", this);
+                    _missingLayoutWarned = true;
+                }
+                return;
+            }
+
             var currentGoods = DataManager.Instance.Player.currentArenaShopGoods;
             if (currentGoods == null) return;
 
-            ArenaShopItem[] staticItems = itemContainer.GetComponentsInChildren<ArenaShopItem>();
+            ArenaShopItem[] staticItems = itemContainer.GetComponentsInChildren<ArenaShopItem>(true);
 
             for (int i = 0; i < staticItems.Length; i++)
             {
@@ -379,7 +420,16 @@ namespace LegendOfBlood
 
         private void CreateShopItem(ArenaShopGood good)
         { 
-            if (shopItemPrefab == null) return;
+            if (shopItemPrefab == null)
+            {
+                GameObject fallback = new GameObject("ArenaShopItem_Runtime");
+                fallback.transform.SetParent(itemContainer, false);
+                RectTransform rt = fallback.AddComponent<RectTransform>();
+                rt.sizeDelta = new Vector2(290f, 360f);
+                ArenaShopItem fallbackItem = fallback.AddComponent<ArenaShopItem>();
+                fallbackItem.Setup(good, AttemptPurchase);
+                return;
+            }
             GameObject itemGO = Instantiate(shopItemPrefab, itemContainer);
             ArenaShopItem item = itemGO.GetComponent<ArenaShopItem>();
             if (item != null)

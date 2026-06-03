@@ -61,6 +61,12 @@ namespace LegendOfBlood
 
         public void Show(HeroData hero)
         {
+            if (!gameObject.scene.IsValid())
+            {
+                Debug.LogError("[TraitUpgradePanel] Dang goi Show tren prefab asset. Hay instantiate panel vao scene truoc khi Show.");
+                return;
+            }
+
             _currentHero = hero;
             RefreshUI();
             gameObject.SetActive(true);
@@ -71,11 +77,20 @@ namespace LegendOfBlood
             foreach (var item in _instantiatedItems) Destroy(item);
             _instantiatedItems.Clear();
 
+            Transform container = ResolveItemsContainer();
+            if (container == null)
+            {
+                Debug.LogError("[TraitUpgradePanel] Khong tim thay itemsContainer trong instance cua panel.");
+                return;
+            }
+
             if (traitUpgradeItemPrefab == null)
             {
                 Debug.LogError("[TraitUpgradePanel] Chưa gán Prefab 'traitUpgradeItemPrefab' lấy gì mà hiện danh sách?");
                 return;
             }
+
+            if (_currentHero == null || _currentHero.traitIDs == null) return;
 
             for (int i = 0; i < _currentHero.traitIDs.Count; i++)
             {
@@ -83,7 +98,8 @@ namespace LegendOfBlood
                 Trait trait = DataManager.Instance.GetTraitByID(traitId);
                 if (trait == null) continue;
 
-                GameObject itemObj = Instantiate(traitUpgradeItemPrefab, itemsContainer);
+                GameObject itemObj = Instantiate(traitUpgradeItemPrefab);
+                itemObj.transform.SetParent(container, false);
                 _instantiatedItems.Add(itemObj);
 
                 // Điển hình Prefab cần có 2 Text (Tên, Mô tả) và 1 Nút (Nâng Cấp)
@@ -130,6 +146,33 @@ namespace LegendOfBlood
                     }
                 }
             }
+        }
+
+        private Transform ResolveItemsContainer()
+        {
+            if (itemsContainer != null &&
+                itemsContainer.gameObject.scene.IsValid() &&
+                itemsContainer.IsChildOf(transform))
+            {
+                return itemsContainer;
+            }
+
+            Transform[] transforms = GetComponentsInChildren<Transform>(true);
+            foreach (var t in transforms)
+            {
+                if (t == transform) continue;
+
+                string lowerName = t.name.ToLowerInvariant();
+                if (t.gameObject.scene.IsValid() &&
+                    (lowerName.Contains("content") || lowerName.Contains("container")))
+                {
+                    itemsContainer = t;
+                    return itemsContainer;
+                }
+            }
+
+            itemsContainer = null;
+            return null;
         }
 
         private void OnUpgradeTrait(int index, string nextUpgradeId)

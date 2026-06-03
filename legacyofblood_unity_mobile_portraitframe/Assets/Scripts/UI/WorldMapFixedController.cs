@@ -90,7 +90,7 @@ namespace LegendOfBlood
                     // Trả lại State cho UIManager nhưng KHÔNG ĐƯỢC dùng ShowPanel(MainScreen) 
                     // vì UIManager sẽ đẩy MainScreen xuống index 1, khiến nó bị chìm dưới các panel rác sinh ra lỗi chặn ngót (Raycast block).
                     // Chỉ cần gọi HidePanel cho WorldMap, nó sẽ dập Active + xóa currentPanel an toàn tuyệt đối.
-                    uim.HidePanel(UIPanelType.WorldMap);
+                    uim.GoBack();
                 });
             }
             // Bind Close Popup Button
@@ -153,12 +153,9 @@ namespace LegendOfBlood
                             fakePOI.difficultyLevel = difficulty;
                             selectedSquadIDs = selectedIDs;
                             
-                            // Ẩn SquadSelection và Bật lại POI_InfoPanel
-                            GameManager.Instance.UIManager.HidePanel(UIPanelType.SquadSelection);
-                            GameManager.Instance.UIManager.ShowPanel(UIPanelType.POI_Info, false);
-                            
                             // Yêu cầu POI_InfoPanel render lại cái bản đồ rẽ nhánh và truyền đội hình vào để đánh trận Live
                             infoPanel.GenerateAndShowProceduralMap(selectedSquadIDs);
+                            GameManager.Instance.UIManager.ShowPanel(UIPanelType.POI_Info, false);
                         }, Profession.None, fakePOI.difficultyLevel);
                     }
                 });

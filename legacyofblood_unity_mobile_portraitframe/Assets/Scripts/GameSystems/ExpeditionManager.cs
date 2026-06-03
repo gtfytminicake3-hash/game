@@ -360,6 +360,15 @@ namespace LegendOfBlood
             return _activeExpeditions?.Any(exp => exp.heroIds.Contains(heroId)) ?? false;
         }
 
+        public void AddReportToMailbox(ExpeditionReport report)
+        {
+            if (report == null || DataManager.Instance?.Player == null) return;
+
+            DataManager.Instance.Player.UnclaimedReports.Add(report);
+            OnNewReportReceived?.Invoke();
+            DataManager.Instance.SavePlayerData();
+        }
+
         private long CalculateTravelTime(Vector2 destination)
         {
             return (long)(Vector2.Distance(Vector2.zero, destination) * 100);

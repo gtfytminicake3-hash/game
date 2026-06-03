@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using LegendOfBlood.Utils;
 
 namespace LegendOfBlood
 {
@@ -38,8 +39,9 @@ namespace LegendOfBlood
         [Header("Navigation")]
         [SerializeField] private Button closeButton;
 
-        private List<ItemSlot> _activeItemSlots = new List<ItemSlot>();
-        private List<InventoryEquipmentCard> _activeEquipmentSlots = new List<InventoryEquipmentCard>();
+        private UIListPooler<KeyValuePair<string, int>, ItemSlot> _itemPooler;
+        private UIListPooler<EquipmentData, InventoryEquipmentCard> _equipPooler;
+
         private ItemData _selectedItem;
         private EquipmentData _selectedEquip;
 
@@ -58,6 +60,19 @@ namespace LegendOfBlood
             if (equipmentTabButton != null) equipmentTabButton.onClick.AddListener(() => SwitchTab(InventoryTabType.Equipment));
             
             detailView.SetActive(false);
+
+            // Initialize Poolers
+            _itemPooler = new UIListPooler<KeyValuePair<string, int>, ItemSlot>(itemSlotPrefab, itemGridParent, (slot, kvp) => {
+                if (DataManager.Instance.AllItems.TryGetValue(kvp.Key, out ItemData itemData))
+                {
+                    slot.Setup(itemData, kvp.Value);
+                    slot.OnClicked += HandleItemSlotClicked;
+                }
+            });
+
+            _equipPooler = new UIListPooler<EquipmentData, InventoryEquipmentCard>(equipmentCardPrefab, equipmentGridParent, (card, data) => {
+                card.Setup(data, HandleEquipmentClicked);
+            });
         }
 
         private void OnEnable()
@@ -99,7 +114,6 @@ namespace LegendOfBlood
                 if (itemPage != null) itemPage.SetActive(true);
                 if (equipmentPage != null) equipmentPage.SetActive(false);
                 
-                // Highlight item tab
                 if (itemTabButton != null) itemTabButton.GetComponent<Image>().color = Color.white;
                 if (equipmentTabButton != null) equipmentTabButton.GetComponent<Image>().color = Color.gray;
                 
@@ -110,7 +124,6 @@ namespace LegendOfBlood
                 if (itemPage != null) itemPage.SetActive(false);
                 if (equipmentPage != null) equipmentPage.SetActive(true);
 
-                // Highlight equipment tab
                 if (itemTabButton != null) itemTabButton.GetComponent<Image>().color = Color.gray;
                 if (equipmentTabButton != null) equipmentTabButton.GetComponent<Image>().color = Color.white;
                 
@@ -120,10 +133,7 @@ namespace LegendOfBlood
 
         private void HandleItemChanged(string itemId, int newCount)
         {
-            if (itemPage != null && itemPage.activeSelf) 
-            {
-                RefreshItems();
-            }
+            if (itemPage != null && itemPage.activeSelf) RefreshItems();
             
             if (_selectedItem != null && _selectedItem.id == itemId)
             {
@@ -141,60 +151,28 @@ namespace LegendOfBlood
 
         private void HandleEquipmentChanged()
         {
-            if (equipmentPage != null && equipmentPage.activeSelf)
-            {
-                RefreshEquipments();
-            }
+            if (equipmentPage != null && equipmentPage.activeSelf) RefreshEquipments();
         }
 
         private void RefreshItems()
         {
-            // Clear old slots
-            foreach (var slot in _activeItemSlots)
-            {
-                Destroy(slot.gameObject);
-            }
-            _activeItemSlots.Clear();
+            if (DataManager.Instance == null || DataManager.Instance.Player == null) return;
 
-            if (DataManager.Instance == null || DataManager.Instance.Player == null) 
-                return;
-
-            var allItemsConfigs = DataManager.Instance.AllItems;
-            if (allItemsConfigs == null || allItemsConfigs.Count == 0) 
-                return;
-
+            var itemDataList = new List<KeyValuePair<string, int>>();
             foreach (var kvp in DataManager.Instance.Player.items)
             {
-                string itemId = kvp.Key;
-                int amount = kvp.Value;
-
-                if (amount > 0 && allItemsConfigs.TryGetValue(itemId, out ItemData itemData))
-                {
-                    GameObject slotObj = Instantiate(itemSlotPrefab, itemGridParent);
-                    ItemSlot slot = slotObj.GetComponent<ItemSlot>();
-                    if (slot != null)
-                    {
-                        slot.Setup(itemData, amount);
-                        slot.OnClicked += HandleItemSlotClicked;
-                        _activeItemSlots.Add(slot);
-                    }
-                }
+                if (kvp.Value > 0) itemDataList.Add(kvp);
             }
+
+            _itemPooler.Refresh(itemDataList);
         }
 
         private void RefreshEquipments()
         {
-            // Clear old equipments
-            foreach (var slot in _activeEquipmentSlots)
-            {
-                Destroy(slot.gameObject);
-            }
-            _activeEquipmentSlots.Clear();
-
             if (InventoryManager.Instance == null || equipmentCardPrefab == null) return;
 
             var equipments = InventoryManager.Instance.GetEquipments();
-            if (equipments == null || equipments.Count == 0) return;
+            var filteredEquips = new List<EquipmentData>();
 
             foreach (var equip in equipments)
             {
@@ -203,15 +181,10 @@ namespace LegendOfBlood
                     if (equip.slot != _pickModeSlot) continue;
                     if (equip.classRestriction != Profession.None && equip.classRestriction != _pickModeHero.profession) continue;
                 }
-
-                GameObject cardObj = Instantiate(equipmentCardPrefab, equipmentGridParent);
-                InventoryEquipmentCard card = cardObj.GetComponent<InventoryEquipmentCard>();
-                if (card != null)
-                {
-                    card.Setup(equip, HandleEquipmentClicked);
-                    _activeEquipmentSlots.Add(card);
-                }
+                filteredEquips.Add(equip);
             }
+
+            _equipPooler.Refresh(filteredEquips);
         }
 
         private void HandleItemSlotClicked(ItemData item, int amount)
@@ -247,13 +220,13 @@ namespace LegendOfBlood
             if (equip.critChanceBonus > 0) desc += $"Tỉ Lệ Chí Mạng: +{equip.critChanceBonus * 100}%\n";
             
             detailDescText.text = desc;
+            detailCountText.text = ""; 
             
-            detailCountText.text = ""; // Trang bị thì không cần đếm số lượng
             if (useButton != null)
             {
                 useButton.gameObject.SetActive(true);
                 var btnText = useButton.GetComponentInChildren<TextMeshProUGUI>();
-                if (btnText != null) btnText.text = _isPickMode ? "Mặc" : "Nâng cấp"; // Trong Pick mode là Mặc, bình thường có thể chuyển qua nâng cấp
+                if (btnText != null) btnText.text = _isPickMode ? "Mặc" : "Nâng cấp";
             }
         }
 
@@ -267,7 +240,7 @@ namespace LegendOfBlood
                     GameManager.Instance.UINotificationManager?.ShowNotification($"Đã trang bị {_selectedEquip.equipmentName}");
                     _isPickMode = false;
                     _selectedEquip = null;
-                    ClosePanel(); // Quay lại HeroInfo
+                    ClosePanel(); 
                 }
             }
             else if (_selectedItem != null && _selectedItem.type == ItemType.Consumable)
@@ -280,11 +253,15 @@ namespace LegendOfBlood
             }
             else if (!_isPickMode && _selectedEquip != null)
             {
-                // Mở EquipmentDetailPanel cho phép upgrade/lock
-                EquipmentDetailPanel detailPanel = FindFirstObjectByType<EquipmentDetailPanel>(FindObjectsInactive.Include);
-                if (detailPanel != null)
+                EquipmentUpgradePanel upgradePanel = FindFirstObjectByType<EquipmentUpgradePanel>(FindObjectsInactive.Include);
+                if (upgradePanel != null)
                 {
-                    detailPanel.Setup(_selectedEquip);
+                    upgradePanel.Setup(_selectedEquip, RefreshEquipments);
+                }
+                else
+                {
+                    EquipmentDetailPanel detailPanel = FindFirstObjectByType<EquipmentDetailPanel>(FindObjectsInactive.Include);
+                    if (detailPanel != null) detailPanel.Setup(_selectedEquip);
                 }
             }
         }
@@ -296,4 +273,3 @@ namespace LegendOfBlood
         }
     }
 }
-

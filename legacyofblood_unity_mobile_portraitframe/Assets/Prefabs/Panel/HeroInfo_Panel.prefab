@@ -10000,7 +10000,7 @@ MonoBehaviour:
   traitUpgradeButton: {fileID: 7454591503346337033}
   useExpItemButton: {fileID: 7247831090059799568}
   statAllocationPanel: {fileID: 1408232404297092612, guid: 2112a7b64eb79674d93afba99a8ddbf0, type: 3}
-  traitUpgradePanel: {fileID: 7246756784547849605, guid: 37a3ebd0bacdaf041829c2cee7fd5046, type: 3}
+  traitUpgradePanel: {fileID: 0}
 --- !u!114 &8710463634608134292
 MonoBehaviour:
   m_ObjectHideFlags: 0
