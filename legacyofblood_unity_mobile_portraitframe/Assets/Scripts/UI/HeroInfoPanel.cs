@@ -48,18 +48,45 @@ namespace LegendOfBlood
         private void Awake()
         {
             PanelType = UIPanelType.HeroInfo;
-            // AUTO-WIRE: Tự động đánh hơi tìm các Nút bị rớt (không được gắn trong Inspector)
+
+            // Auto-hook references based on Pane_HeroInfor structure
+            if (heroNameText == null) heroNameText = transform.Find("Text_Hero Name")?.GetComponent<TextMeshProUGUI>();
+            if (levelText == null) levelText = transform.Find("Text_Level")?.GetComponent<TextMeshProUGUI>();
+            if (professionText == null) professionText = transform.Find("Text_Profession (Warrior)")?.GetComponent<TextMeshProUGUI>();
+            if (genderText == null) genderText = transform.Find("Text_Gender")?.GetComponent<TextMeshProUGUI>();
+            if (heroAvatarImage == null) heroAvatarImage = transform.Find("Portrait")?.GetComponent<Image>();
+
+            // Stats
+            Transform statsGroup = transform.Find("StatsGroup") ?? transform; // Fallback to root if no group
+            if (hpText == null) hpText = statsGroup.Find("Text_HP")?.GetComponent<TextMeshProUGUI>();
+            if (atkText == null) atkText = statsGroup.Find("Text_ATK")?.GetComponent<TextMeshProUGUI>();
+            if (defText == null) defText = statsGroup.Find("Text_DEF")?.GetComponent<TextMeshProUGUI>();
+            if (spdText == null) spdText = statsGroup.Find("Text_SPD")?.GetComponent<TextMeshProUGUI>();
+            if (potentialText == null) potentialText = statsGroup.Find("Text_Potential")?.GetComponent<TextMeshProUGUI>();
+            if (evasionText == null) evasionText = statsGroup.Find("Text_Evasion Rate")?.GetComponent<TextMeshProUGUI>();
+            if (dmgReductionText == null) dmgReductionText = statsGroup.Find("Text_Dmg Reduction")?.GetComponent<TextMeshProUGUI>();
+            if (dmgIncreaseText == null) dmgIncreaseText = statsGroup.Find("Text_Dmg Increase")?.GetComponent<TextMeshProUGUI>();
+
+            if (traitsContainer == null) traitsContainer = transform.Find("TraitsGroup");
+            if (skillsContainer == null) skillsContainer = transform.Find("SkillsGroup");
+            if (closeButton == null) closeButton = transform.Find("close_btn")?.GetComponent<Button>();
+
+            // AUTO-WIRE buttons that might be missing or generic
             if (statAllocationButton == null || traitUpgradeButton == null || useExpItemButton == null)
             {
                 Button[] allButtons = GetComponentsInChildren<Button>(true);
                 foreach(var btn in allButtons)
                 {
                     string btnName = btn.gameObject.name.ToLower();
-                    if (statAllocationButton == null && (btnName.Contains("stat") || btnName.Contains("alloc")))
+                    string btnTextStr = "";
+                    var tmp = btn.GetComponentInChildren<TextMeshProUGUI>();
+                    if (tmp != null) btnTextStr = tmp.text.ToLower();
+
+                    if (statAllocationButton == null && (btnName.Contains("stat") || btnName.Contains("alloc") || btnTextStr.Contains("cộng điểm")))
                         statAllocationButton = btn;
-                    if (traitUpgradeButton == null && (btnName.Contains("trait") || btnName.Contains("upgrade")))
+                    if (traitUpgradeButton == null && (btnName.Contains("trait") || btnName.Contains("upgrade") || btnTextStr.Contains("nâng trait")))
                         traitUpgradeButton = btn;
-                    if (useExpItemButton == null && (btnName.Contains("exp") || btnName.Contains("item")))
+                    if (useExpItemButton == null && (btnName.Contains("exp") || btnName.Contains("item") || btnTextStr.Contains("dùng exp")))
                         useExpItemButton = btn;
                 }
             }
@@ -141,15 +168,22 @@ namespace LegendOfBlood
                 dmgIncreaseText.text = string.Format(global::LocalizationSystem.GetText("stats_dmg_increase_format"), _currentHero.damageIncrease);
 
             if (statAllocationButton != null)
-                statAllocationButton.gameObject.SetActive(_currentHero.freeStatPoints > 0);
+            {
+                statAllocationButton.gameObject.SetActive(true);
+                statAllocationButton.interactable = _currentHero.freeStatPoints > 0;
+            }
             if (traitUpgradeButton != null)
-                traitUpgradeButton.gameObject.SetActive(_currentHero.level == 60 || _currentHero.level == 100);
+            {
+                traitUpgradeButton.gameObject.SetActive(true);
+                traitUpgradeButton.interactable = true; // Luôn cho mở bảng để xem giá
+            }
             
             if (useExpItemButton != null)
             {
+                useExpItemButton.gameObject.SetActive(true);
                 // Only active if hero is mature and not max level
                 bool canUseExp = _currentHero.isMature && _currentHero.level < 100;
-                useExpItemButton.gameObject.SetActive(canUseExp);
+                useExpItemButton.interactable = canUseExp;
             }
             
             // --- CẬP NHẬT GIAO DIỆN TRANG BỊ ---
@@ -222,32 +256,21 @@ namespace LegendOfBlood
             
             // Simple logic: Use the largest EXP book available
             // In a full game, this would open an item selection panel
-            string[] expPotions = { "IT_EXP_BOOK_L", "ITEM_EXP_BOOK_L", "IT_EXP_BOOK_M", "ITEM_EXP_BOOK_M", "IT_EXP_BOOK_S", "ITEM_EXP_BOOK_S" };
+            string[] expPotions = { "IT_EXP_BOOK_L", "IT_EXP_BOOK_M", "IT_EXP_BOOK_S" };
             
             bool itemUsed = false;
             foreach(string itemId in expPotions)
             {
                 ItemData item = null;
-                DataManager.Instance.AllItems?.TryGetValue(itemId, out item);
-                if (item == null && itemId.StartsWith("ITEM_"))
-                {
-                    DataManager.Instance.AllItems?.TryGetValue("IT_" + itemId.Substring(5), out item);
-                }
-                if (GameManager.Instance.InventoryManager.GetItemCount(itemId) > 0)
+                if(DataManager.Instance.AllItems.TryGetValue(itemId, out item) && item.type == ItemType.ExpPotion)
                 {
                     if (GameManager.Instance.InventoryManager.UseItem(itemId, 1))
                     {
                         // Assume expValue is stored in speedUpValueInSeconds or similar field for generic items, 
                         // or we hardcode the values based on ID if the struct doesn't have an exp field.
-                        int expGained = itemId.Contains("_L") ? 1000 : (itemId.Contains("_M") ? 500 : 100);
+                        int expGained = itemId == "IT_EXP_BOOK_L" ? 1000 : (itemId == "IT_EXP_BOOK_M" ? 500 : 100);
                         _currentHero.AddExperience(expGained);
-                        string itemName = item != null ? item.itemName : itemId;
-                        if (item == null)
-                        {
-                            item = ScriptableObject.CreateInstance<ItemData>();
-                            item.itemName = itemName;
-                        }
-                        Debug.Log($"Used {itemName} on {_currentHero.heroName}. Gained {expGained} EXP.");
+                        Debug.Log($"Used {item.itemName} on {_currentHero.heroName}. Gained {expGained} EXP.");
                         
                         GameManager.Instance.UINotificationManager?.ShowNotification($"Sử dụng {item.itemName} thành công!");
                         PopulateData(_currentHero); // Refresh UI
@@ -283,26 +306,9 @@ namespace LegendOfBlood
 
         private void OpenTraitUpgradePanel()
         {
-            if (traitUpgradePanel != null && !traitUpgradePanel.gameObject.scene.IsValid())
-            {
-                Transform panelParent = transform.parent != null ? transform.parent : transform.root;
-                GameObject panelInstance = Instantiate(traitUpgradePanel.gameObject, panelParent, false);
-                panelInstance.name = traitUpgradePanel.gameObject.name.Replace("(Clone)", "");
-                traitUpgradePanel = panelInstance.GetComponent<TraitUpgradePanel>();
-            }
-
             if (traitUpgradePanel == null)
             {
-                TraitUpgradePanel[] panels = FindObjectsByType<TraitUpgradePanel>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-                foreach (var panel in panels)
-                {
-                    if (panel != null && panel.gameObject.scene.IsValid())
-                    {
-                        traitUpgradePanel = panel;
-                        break;
-                    }
-                }
-
+                traitUpgradePanel = FindFirstObjectByType<TraitUpgradePanel>(FindObjectsInactive.Include);
                 if (traitUpgradePanel == null) 
                 {
                     Debug.LogError("Chưa tạo Panel tên là `TraitUpgradePanel` trong Scene. Hãy tạo ra 1 Panel rỗng và dán script `TraitUpgradePanel` vào!");

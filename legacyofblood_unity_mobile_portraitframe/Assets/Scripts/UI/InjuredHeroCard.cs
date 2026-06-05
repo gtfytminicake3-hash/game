@@ -17,6 +17,7 @@ namespace LegendOfBlood
         [SerializeField] private TextMeshProUGUI costText;
         [SerializeField] private Button healButton;
         [SerializeField] private Button healAdButton; // NEW: Nút chữa bệnh miễn phí bằng Ads
+        [SerializeField] private Button useSpeedUpButton; // NEW: Nút dùng vật phẩm tăng tốc
 
         private HeroData _heroData;
         private HospitalPanel _hospitalPanel;
@@ -55,6 +56,10 @@ namespace LegendOfBlood
             if (healAdButton != null) {
                 healAdButton.onClick.RemoveAllListeners();
                 healAdButton.onClick.AddListener(OnHealAdButtonClicked);
+            }
+            if (useSpeedUpButton != null) {
+                useSpeedUpButton.onClick.RemoveAllListeners();
+                useSpeedUpButton.onClick.AddListener(OnUseSpeedUpButtonClicked);
             }
             
             UpdateCardState();
@@ -98,6 +103,23 @@ namespace LegendOfBlood
             }
         }
 
+        private void OnUseSpeedUpButtonClicked()
+        {
+            if (GameManager.Instance.InventoryManager.GetItemCount("item_speed_hourglass") > 0)
+            {
+                bool success = GameManager.Instance.HospitalSystem.SpeedUpHealing(_heroData, "item_speed_hourglass");
+                if (success)
+                {
+                    // Lực ép cập nhật lại hiển thị chữ số
+                    UpdateCardState();
+                }
+            }
+            else
+            {
+                GameManager.Instance.UINotificationManager.ShowNotification(global::LocalizationSystem.GetText("inventory_error_not_enough_item"));
+            }
+        }
+
         private void UpdateCardState()
         {
             int cost = 0;
@@ -130,6 +152,13 @@ namespace LegendOfBlood
             }
 
             if (costText != null) costText.text = string.Format(global::LocalizationSystem.GetText("gold_cost_format"), cost);
+            
+            if (useSpeedUpButton != null)
+            {
+                // Chỉ hiện nút tăng tốc nếu người chơi có đồ
+                bool hasSpeedUpItem = GameManager.Instance.InventoryManager.GetItemCount("item_speed_hourglass") > 0;
+                useSpeedUpButton.gameObject.SetActive(hasSpeedUpItem);
+            }
         }
     }
 }

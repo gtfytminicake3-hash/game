@@ -26,6 +26,41 @@ namespace LegendOfBlood.UI
         public Button mailButton;
         public Button questsButton;
 
+        private void Awake()
+        {
+            // Auto-hook missing references
+            if (goldText == null) goldText = transform.Find("TopBar/GoldDisplay/Text")?.GetComponent<TextMeshProUGUI>();
+            if (cupsText == null) cupsText = transform.Find("TopBar/CupDisplay/Text")?.GetComponent<TextMeshProUGUI>();
+            if (crystalsText == null) crystalsText = transform.Find("TopBar/DiamondDisplay/Text")?.GetComponent<TextMeshProUGUI>();
+
+            if (pedestalImage == null) pedestalImage = transform.Find("DefenseArea/Pedestal")?.GetComponent<Image>();
+            if (charactersContainer == null) charactersContainer = transform.Find("DefenseArea/CharactersContainer")?.GetComponent<RectTransform>();
+
+            if (findMatchButton == null) findMatchButton = transform.Find("BtnFindMatch")?.GetComponent<Button>();
+            if (settingsButton == null) settingsButton = transform.Find("BottomRightMenu/BtnSettings")?.GetComponent<Button>();
+            if (mailButton == null) mailButton = transform.Find("BottomRightMenu/BtnMail")?.GetComponent<Button>();
+            if (questsButton == null) questsButton = transform.Find("BottomRightMenu/BtnQuests")?.GetComponent<Button>();
+
+            if (opponentButtons == null || opponentButtons.Length == 0)
+            {
+                var buttons = new System.Collections.Generic.List<Button>();
+                for (int i = 0; i < 3; i++)
+                {
+                    var btn = transform.Find($"OpponentArea/OpponentSlot_{i}")?.GetComponent<Button>();
+                    if (btn != null) buttons.Add(btn);
+                }
+                opponentButtons = buttons.ToArray();
+            }
+
+            // Bind Listeners
+            if (findMatchButton != null)
+                findMatchButton.onClick.AddListener(OnFindMatchClicked);
+                
+            if (settingsButton != null) settingsButton.onClick.AddListener(() => GameManager.Instance.UIManager.ShowPanel(UIPanelType.Settings, false));
+            if (mailButton != null) mailButton.onClick.AddListener(() => GameManager.Instance.UIManager.ShowPanel(UIPanelType.Mailbox, false));
+            if (questsButton != null) questsButton.onClick.AddListener(() => GameManager.Instance.UIManager.ShowPanel(UIPanelType.Quest, false));
+        }
+
         private void OnEnable()
         {
             RefreshUI();
@@ -44,13 +79,6 @@ namespace LegendOfBlood.UI
 
         private void Start()
         {
-            if (findMatchButton != null)
-                findMatchButton.onClick.AddListener(OnFindMatchClicked);
-                
-            if (settingsButton != null) settingsButton.onClick.AddListener(() => GameManager.Instance.UIManager.ShowPanel(UIPanelType.Settings, false));
-            if (mailButton != null) mailButton.onClick.AddListener(() => GameManager.Instance.UIManager.ShowPanel(UIPanelType.Mailbox, false));
-            if (questsButton != null) questsButton.onClick.AddListener(() => GameManager.Instance.UIManager.ShowPanel(UIPanelType.Quest, false));
-            
             // Cleanup hardcoded opponent buttons
             if (opponentButtons != null)
             {

@@ -2485,7 +2485,7 @@ MonoBehaviour:
   useDynamicBackground: 0
   backgroundResourcePath: UI/Panel/panel_dong_frames
   recruitOneButton: {fileID: 4052825709110953601}
-  recruitTenButton: {fileID: 3299844129361117579}
+  recruitTenButton: {fileID: 1309544799519240317}
   recruitAdButton: {fileID: 1106161106286814553}
   closeButton: {fileID: 1560451402630542162}
   ticketCountText: {fileID: 0}

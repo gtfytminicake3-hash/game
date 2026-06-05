@@ -138,12 +138,15 @@ namespace LegendOfBlood
 
         private void OnEnable()
         {
+            // Bắt đầu lắng nghe sự kiện từ HeroPickerPanel
+            HeroPickerPanel.OnHeroPicked += OnHeroPicked;
             SwitchToState(BreedingState.Selection); // Khi panel được mở, luôn đảm bảo nó ở trạng thái chọn lựa
         }
 
         private void OnDisable()
         {
-            // (Đã loại bỏ Static Event)
+            // Ngừng lắng nghe để tránh lỗi
+            HeroPickerPanel.OnHeroPicked -= OnHeroPicked;
         }
 
         #endregion
@@ -208,14 +211,14 @@ namespace LegendOfBlood
     if (heroPickerPanel != null)
     {
         Debug.Log("heroPickerPanel hợp lệ. Đang gọi hàm Show()..."); // Log 5
-        heroPickerPanel.Show(global::LocalizationSystem.GetText("breeding_select_father_title"), validFathers, OnHeroPicked);
+        heroPickerPanel.Show(global::LocalizationSystem.GetText("breeding_select_father_title"), validFathers);
     }
     else
     {
         heroPickerPanel = FindAnyObjectByType<HeroPickerPanel>(FindObjectsInactive.Include);
         if (heroPickerPanel != null)
         {
-            heroPickerPanel.Show(global::LocalizationSystem.GetText("breeding_select_father_title"), validFathers, OnHeroPicked);
+            heroPickerPanel.Show(global::LocalizationSystem.GetText("breeding_select_father_title"), validFathers);
         }
         else
         {
@@ -243,7 +246,7 @@ namespace LegendOfBlood
 
             if (heroPickerPanel != null)
             {
-                heroPickerPanel.Show(global::LocalizationSystem.GetText("breeding_select_mother_title"), validMothers, OnHeroPicked);
+                heroPickerPanel.Show(global::LocalizationSystem.GetText("breeding_select_mother_title"), validMothers);
             }
         }
 
@@ -342,7 +345,7 @@ namespace LegendOfBlood
             BreedingOptions options = new BreedingOptions();
             if (useMutationPotionToggle != null && useMutationPotionToggle.isOn)
             {
-                if (GameManager.Instance.InventoryManager.UseItem("IT_MUTATION_POTION", 1))
+                if (GameManager.Instance.InventoryManager.UseItem("item_mutation_potion", 1))
                 {
                     options.UseMutationPotion = true;
                     Debug.Log("Đã sử dụng 1 Thuốc Đột Biến cho quá trình lai tạo.");

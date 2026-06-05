@@ -38,6 +38,34 @@ namespace LegendOfBlood
             LootData loot = didWin ? BuildLoot(poi, node, expeditionManager) : new LootData();
             int exp = didWin ? BuildExperience(poi, node, expeditionManager) : 0;
 
+            // --- LưU TRẠNG THÁI QUÁI VẬT VÀO NODE ---
+            if (node != null && IsCombatNode(node))
+            {
+                if (didWin)
+                {
+                    // Thắng: xóa dữ liệu quái cũ để node được coi là Cleared
+                    node.SurvivingEnemies = null;
+                }
+                else
+                {
+                    // Thua: lưu lại danh sách quái còn sống. Do POIBattleResolver dùng CP-based
+                    // chứ không simulate từng turn nên chúớng ta cần tính HP còn lại theo tỉ lệ.
+                    // Tỉ lệ thiệt hại của địch = sức mạnh đội quân / (sức mạnh địch + sức mạnh đội quân)
+                    float damageFraction = Mathf.Clamp01((float)playerCp / (playerCp + enemyCp));
+                    var survivingEnemyClones = new List<HeroData>();
+                    foreach (var enemy in enemies)
+                    {
+                        var clone = enemy.Clone();
+                        float maxHp = clone.GetFinalStats().hp;
+                        // Giảm HP của quái theo tỉ lệ damage, nhưng không xuống dưới 1
+                        clone.currentHp = Mathf.Max(1f, maxHp * (1f - damageFraction));
+                        survivingEnemyClones.Add(clone);
+                    }
+                    node.SurvivingEnemies = survivingEnemyClones;
+                }
+            }
+            // -------------------------------------------
+
             return new POIBattleResolution
             {
                 DidWin = didWin,
@@ -74,6 +102,18 @@ namespace LegendOfBlood
             var enemies = new List<HeroData>();
             if (node == null || DataManager.Instance == null) return enemies;
 
+            // Nếu node đã có danh sách quái còn sống từ lần thua trước -> dùng lại với HP đã bị cào
+            if (node.SurvivingEnemies != null && node.SurvivingEnemies.Count > 0)
+            {
+                // Clone lại để thống nhất: không sửa trực tiếp dữ liệu gốc
+                foreach (var enemy in node.SurvivingEnemies)
+                {
+                    enemies.Add(enemy.Clone());
+                }
+                return enemies;
+            }
+
+            // Không có dữ liệu cũ -> tạo mới từ định nghĩa node như bình thường
             int effectiveDifficulty = Mathf.Max(1, (int)difficulty + 1 + Mathf.Max(0, node.Floor / 3));
             foreach (string monsterId in ExpandMonsterIds(node.ExpectedMonsters))
             {

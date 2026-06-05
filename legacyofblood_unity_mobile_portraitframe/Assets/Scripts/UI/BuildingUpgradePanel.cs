@@ -22,6 +22,22 @@ namespace LegendOfBlood
         private void Awake()
         {
             PanelType = UIPanelType.BuildingUpgrade;
+
+            // Auto-hook missing references based on UpgradeModal structure
+            Transform modal = transform.Find("UpgradeBarracksRoot/UpgradeModal");
+            if (modal != null)
+            {
+                if (closeButton == null) closeButton = modal.Find("TitleBar/CloseButton")?.GetComponent<Button>();
+                if (upgradeButton == null) upgradeButton = modal.Find("UpgradeButton")?.GetComponent<Button>();
+                if (speedUpAdButton == null) speedUpAdButton = modal.Find("SpeedUpAdButton")?.GetComponent<Button>();
+
+                if (titleText == null) titleText = modal.Find("TitleBar/TitleText")?.GetComponent<TextMeshProUGUI>();
+                if (infoText == null) infoText = modal.Find("LevelInfoBlock/InfoText")?.GetComponent<TextMeshProUGUI>();
+                if (benefitText == null) benefitText = modal.Find("LevelInfoBlock/BenefitText")?.GetComponent<TextMeshProUGUI>();
+                if (costText == null) costText = modal.Find("CostParchment/CostText")?.GetComponent<TextMeshProUGUI>();
+                if (upgradeTimerText == null) upgradeTimerText = modal.Find("UpgradeTimerText")?.GetComponent<TextMeshProUGUI>();
+            }
+
             if (closeButton != null) 
             {
                 closeButton.onClick.AddListener(() => GameManager.Instance.UIManager.HidePanel(PanelType));
@@ -37,11 +53,6 @@ namespace LegendOfBlood
             Debug.Log($"[BuildingUpgradePanel] Setup called with ID: '{buildingId}'");
             currentBuildingId = buildingId;
             RefreshUI();
-        }
-
-        public void Setup(Building building)
-        {
-            Setup(building != null ? building.id : null);
         }
 
         private void Update()

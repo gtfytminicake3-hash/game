@@ -76,8 +76,18 @@ namespace LegendOfBlood
             if (levelText != null) levelText.text = string.Format(global::LocalizationSystem.GetText("level_format_short"), _heroData.level);
             if (combatPowerText != null) combatPowerText.text = string.Format(global::LocalizationSystem.GetText("cp_format_short"), _heroData.GetCombatPower());
             if (genderIcon != null) genderIcon.sprite = GetGenderSprite(_heroData.gender);
-            if (professionIcon != null) professionIcon.sprite = GetProfessionSprite(_heroData.profession);
-            if (avatarImage != null) avatarImage.sprite = _heroData.GetAvatarSprite();
+            if (professionIcon != null)
+            {
+                professionIcon.sprite = GetProfessionSprite(_heroData.profession);
+                professionIcon.color = professionIcon.sprite != null ? Color.white : Color.clear;
+                professionIcon.preserveAspect = true;
+            }
+            if (avatarImage != null)
+            {
+                avatarImage.sprite = _heroData.GetAvatarSprite();
+                avatarImage.color = Color.white;
+                avatarImage.preserveAspect = true;
+            }
             if (cardFrame != null) cardFrame.color = GetRarityColor(_heroData.potential);
             if (busyIndicator != null) busyIndicator.SetActive(_heroData.IsBusy());
         }
@@ -103,12 +113,19 @@ namespace LegendOfBlood
         {
             switch (profession)
             {
-                case Profession.Warrior: return warriorIcon;
-                case Profession.Archer: return archerIcon;
-                case Profession.Mage: return mageIcon;
-                case Profession.Healer: return healerIcon;
+                case Profession.Warrior: return warriorIcon != null ? warriorIcon : LoadProfessionSprite("warrior");
+                case Profession.Archer: return archerIcon != null ? archerIcon : LoadProfessionSprite("archer");
+                case Profession.Mage: return mageIcon != null ? mageIcon : LoadProfessionSprite("mage");
+                case Profession.Healer: return healerIcon != null ? healerIcon : LoadProfessionSprite("healer");
                 default: return null;
             }
+        }
+
+        private Sprite LoadProfessionSprite(string professionName)
+        {
+            Sprite sprite = Resources.Load<Sprite>($"UI/barrack/icon_{professionName}");
+            if (sprite == null) sprite = Resources.Load<Sprite>($"Icons/Gen/icon_skill_{professionName}");
+            return sprite;
         }
 
         private Color GetRarityColor(int potential)
@@ -140,11 +157,14 @@ namespace LegendOfBlood
             if (levelText == null) levelText = FindTMP("level");
             if (combatPowerText == null) combatPowerText = FindTMP("combat") ?? FindTMP("cp");
             if (professionIcon == null) professionIcon = FindImage("profession") ?? FindImage("class");
+            if (avatarImage == null) avatarImage = FindImage("avatar") ?? FindImage("portrait");
+            if (cardFrame == null) cardFrame = FindImage("frame");
 
             if (Application.isPlaying)
             {
                 if (combatPowerText == null) combatPowerText = CreateRuntimeText("CombatPowerText_Runtime", new Vector2(0.05f, 0.02f), new Vector2(0.95f, 0.16f), 22f);
                 if (professionIcon == null) professionIcon = CreateRuntimeImage("ProfessionIcon_Runtime", new Vector2(0.72f, 0.72f), new Vector2(0.95f, 0.95f));
+                if (avatarImage == null) avatarImage = CreateRuntimeImage("AvatarImage_Runtime", new Vector2(0.08f, 0.2f), new Vector2(0.92f, 0.88f));
             }
         }
 
@@ -171,6 +191,7 @@ namespace LegendOfBlood
         private void LogMissingReferencesOnce()
         {
             if (_missingRefWarningLogged) return;
+            if (avatarImage == null) Debug.LogWarning($"[HeroCard] avatarImage chua duoc gan tren {name}", this);
             if (combatPowerText == null) Debug.LogWarning($"[HeroCard] combatPowerText chua duoc gan tren {name}", this);
             if (professionIcon == null) Debug.LogWarning($"[HeroCard] professionIcon chua duoc gan tren {name}", this);
             _missingRefWarningLogged = true;

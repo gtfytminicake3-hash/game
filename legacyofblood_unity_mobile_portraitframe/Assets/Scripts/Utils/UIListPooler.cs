@@ -38,6 +38,9 @@ namespace LegendOfBlood.Utils
                 return;
             }
 
+            // Clean up any objects that were destroyed externally (e.g. by scene change or manual deletion)
+            _pooledComponents.RemoveAll(comp => comp == null);
+
             // Ensure we have enough instantiated objects
             while (_pooledComponents.Count < dataList.Count)
             {

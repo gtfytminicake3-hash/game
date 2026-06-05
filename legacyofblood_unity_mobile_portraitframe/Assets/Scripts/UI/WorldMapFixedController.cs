@@ -25,6 +25,10 @@ namespace LegendOfBlood
         [SerializeField] private float maxZoom = 2.0f;
         [SerializeField] private float zoomSpeed = 0.1f;
 
+        // Dynamic UI for Expedition Tracker
+        private GameObject _expeditionTrackerPanel;
+        private TMPro.TextMeshProUGUI _expeditionTrackerText;
+
         private void Awake()
         {
             PanelType = UIPanelType.WorldMap;
@@ -87,14 +91,9 @@ namespace LegendOfBlood
                         return; // Ngừng, chỉ tắt POI_Info, không tắt WorldMap
                     }
 
-<<<<<<< HEAD
                     // Trả lại State cho UIManager nhưng KHÔNG ĐƯỢC dùng ShowPanel(MainScreen) 
                     // vì UIManager sẽ đẩy MainScreen xuống index 1, khiến nó bị chìm dưới các panel rác sinh ra lỗi chặn ngót (Raycast block).
                     // Chỉ cần gọi HidePanel cho WorldMap, nó sẽ dập Active + xóa currentPanel an toàn tuyệt đối.
-=======
-                    // Theo kế hoạch HANDOFF: sử dụng GoBack() thay vì HidePanel
-                    // để đảm bảo history stack được clear và quay về MainScreen.
->>>>>>> e0220ebd678bac299fea0eb241af71c2d31c9051
                     uim.GoBack();
                 });
             }
@@ -112,8 +111,96 @@ namespace LegendOfBlood
                 // Hide popup by default on Awake
                 regionDetailPopup.SetActive(false);
             }
+
+            // --- Sinh động UI Tracker Đội Viễn Chinh ---
+            GenerateExpeditionTrackerUI();
         }
 
+        private void GenerateExpeditionTrackerUI()
+        {
+            _expeditionTrackerPanel = new GameObject("Runtime_ExpeditionTracker");
+            _expeditionTrackerPanel.transform.SetParent(this.transform, false);
+            _expeditionTrackerPanel.transform.SetAsLastSibling();
+            
+            RectTransform rt = _expeditionTrackerPanel.AddComponent<RectTransform>();
+            rt.anchorMin = new Vector2(1, 1); rt.anchorMax = new Vector2(1, 1); // Góc trên bên phải
+            rt.pivot = new Vector2(1, 1);
+            rt.sizeDelta = new Vector2(400, 150);
+            rt.anchoredPosition = new Vector2(-20, -20); // Cách lề phải và trên 20 unit
+
+            Image img = _expeditionTrackerPanel.AddComponent<Image>();
+            img.color = new Color(0.1f, 0.1f, 0.15f, 0.9f); // Nền xám đen mờ
+
+            GameObject txtObj = new GameObject("Text");
+            txtObj.transform.SetParent(_expeditionTrackerPanel.transform, false);
+            _expeditionTrackerText = txtObj.AddComponent<TMPro.TextMeshProUGUI>();
+            _expeditionTrackerText.text = "Không có đội viễn chinh";
+            
+            if (TMPro.TMP_Settings.defaultFontAsset != null)
+                _expeditionTrackerText.font = TMPro.TMP_Settings.defaultFontAsset;
+                
+            _expeditionTrackerText.fontSize = 24;
+            _expeditionTrackerText.alignment = TMPro.TextAlignmentOptions.TopLeft;
+            _expeditionTrackerText.color = Color.white;
+            _expeditionTrackerText.enableWordWrapping = true;
+            
+            RectTransform txtRt = _expeditionTrackerText.rectTransform;
+            txtRt.anchorMin = Vector2.zero; txtRt.anchorMax = Vector2.one;
+            txtRt.sizeDelta = new Vector2(-20, -20); // Padding 10
+            txtRt.anchoredPosition = Vector2.zero;
+
+            _expeditionTrackerPanel.SetActive(false);
+        }
+
+        private void Update()
+        {
+            if (GameManager.Instance == null || GameManager.Instance.ExpeditionManager == null || DataManager.Instance == null || DataManager.Instance.Player == null) return;
+
+            var activeExpeditions = DataManager.Instance.Player.ActiveExpeditions;
+            if (activeExpeditions == null || activeExpeditions.Count == 0)
+            {
+                if (_expeditionTrackerPanel != null && _expeditionTrackerPanel.activeSelf)
+                    _expeditionTrackerPanel.SetActive(false);
+                return;
+            }
+
+            if (_expeditionTrackerPanel != null && !_expeditionTrackerPanel.activeSelf)
+                _expeditionTrackerPanel.SetActive(true);
+
+            if (_expeditionTrackerText != null)
+            {
+                long currentTime = System.DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                sb.AppendLine("<color=#FFD700>ĐỘI VIỄN CHINH</color>");
+
+                foreach (var exp in activeExpeditions)
+                {
+                    string stateStr = "";
+                    if (exp.currentState == ExpeditionState.Traveling) stateStr = "Đang đi";
+                    else if (exp.currentState == ExpeditionState.Exploring) stateStr = "Đang đánh";
+                    else if (exp.currentState == ExpeditionState.Returning) stateStr = "<color=#FF5555>Đang về</color>";
+
+                    long timeLeftMs = exp.stateEndTimestamp - currentTime;
+                    if (timeLeftMs < 0) timeLeftMs = 0;
+                    System.TimeSpan ts = System.TimeSpan.FromMilliseconds(timeLeftMs);
+                    string timeStr = string.Format("{0:D2}:{1:D2}", ts.Minutes, ts.Seconds);
+
+                    // POI Name (lấy từ POIData hoặc báo cáo)
+                    string poiName = "Khu vực";
+                    if (exp.preCalculatedReport != null && !string.IsNullOrEmpty(exp.preCalculatedReport.poiName))
+                        poiName = exp.preCalculatedReport.poiName;
+
+                    sb.AppendLine($"- {poiName}: {stateStr} ({timeStr})");
+                }
+
+                _expeditionTrackerText.text = sb.ToString();
+                
+                // Tự động điều chỉnh chiều cao panel theo số lượng dòng
+                RectTransform rt = _expeditionTrackerPanel.GetComponent<RectTransform>();
+                rt.sizeDelta = new Vector2(rt.sizeDelta.x, 50 + (activeExpeditions.Count * 35));
+            }
+        }
+        
         private void OnEnable()
         {
             // Ensure the popup is hidden every time the World Map is opened
@@ -158,30 +245,16 @@ namespace LegendOfBlood
                             fakePOI.difficultyLevel = difficulty;
                             selectedSquadIDs = selectedIDs;
                             
-<<<<<<< HEAD
                             // Yêu cầu POI_InfoPanel render lại cái bản đồ rẽ nhánh và truyền đội hình vào để đánh trận Live
+                            GameManager.Instance.UIManager.ShowPanel(UIPanelType.POI_Info, true);
                             infoPanel.GenerateAndShowProceduralMap(selectedSquadIDs);
-                            GameManager.Instance.UIManager.ShowPanel(UIPanelType.POI_Info, false);
-=======
-                            // Ẩn POI_InfoPanel và Mở RegionDetailPopup
-                            GameManager.Instance.UIManager.HidePanel(UIPanelType.SquadSelection);
-                            GameManager.Instance.UIManager.HidePanel(UIPanelType.POI_Info); // Thay vì ClosePanel
-                            
-                            if (regionDetailPopup != null)
-                            {
-                                var detailController = regionDetailPopup.GetComponent<LegendOfBlood.RegionDetailPopupController>();
-                                if (detailController == null) detailController = regionDetailPopup.AddComponent<LegendOfBlood.RegionDetailPopupController>();
-                                
-                                detailController.SetupAndShow(fakePOI, (ProceduralDifficulty)difficulty, selectedSquadIDs);
-                            }
->>>>>>> e0220ebd678bac299fea0eb241af71c2d31c9051
                         }, Profession.None, fakePOI.difficultyLevel);
                     }
                 });
             }
             else
             {
-                Debug.LogError("Lỗi: Không tìm thấy Prefab SquadSelectionPanel trong danh sách UI Manager!");
+                Debug.LogError("Lỗi: Không tìm thấy Prefab POI_InfoPanel trong danh sách UI Manager!");
             }
         }
 

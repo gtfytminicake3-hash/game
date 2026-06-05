@@ -50,6 +50,8 @@ namespace LegendOfBlood
         protected override void Start()
         {
             base.Start();
+            EnsureUpgradeButtonReference();
+            EnsureSortFilterReferences();
             if (panelTitleText != null) panelTitleText.text = LocalizationSystem.GetText("panel_title_barrack");
             
             if (closeButton != null)
@@ -128,35 +130,11 @@ namespace LegendOfBlood
 
         private void OnEnable()
         {
-<<<<<<< HEAD
             EnsureDismissControls();
             UpdatePopulationDisplay();
             EventManager.StartListening(GameEvents.OnPlayerDataLoaded, RefreshHeroList);
             EventManager.StartListening(GameEvents.OnHeroListChanged, RefreshHeroList);
             RefreshHeroList();
-=======
-            // Reset mỗi lần enable để đảm bảo tìm lại đúng sau hot-reload
-            _populationCountText = null;
-
-            var allTexts = GetComponentsInChildren<TMPro.TextMeshProUGUI>(true);
-            foreach (var t in allTexts)
-            {
-                if (t.gameObject.name == "PopulationText_Auto")
-                {
-                    _populationCountText = t;
-                    break;
-                }
-            }
-
-            // Fallback: lấy TMP đầu tiên từ populationManagerButton
-            if (_populationCountText == null && populationManagerButton != null)
-                _populationCountText = populationManagerButton.GetComponentInChildren<TMPro.TextMeshProUGUI>(true);
-
-            EventManager.StartListening(GameEvents.OnPlayerDataLoaded, RefreshHeroList);
-            EventManager.StartListening(GameEvents.OnHeroListChanged, RefreshHeroList);
-            DataManager.OnHeroListChanged += RefreshHeroList;
-            RefreshHeroList(); // RefreshHeroList cũng gọi UpdatePopulationText bên trong
->>>>>>> e0220ebd678bac299fea0eb241af71c2d31c9051
         }
 
         private void OnDisable()
@@ -184,14 +162,18 @@ namespace LegendOfBlood
         {
             if (GameManager.Instance == null || GameManager.Instance.BuildingSystem == null)
             {
-                GameManager.Instance.UINotificationManager?.ShowNotification("BuildingSystem chua san sang.");
+                GameManager.Instance?.UINotificationManager?.ShowNotification("BuildingSystem chua san sang.");
                 return;
             }
 
             Building target = null;
             if (DataManager.Instance != null && DataManager.Instance.AllBuildings != null)
             {
-                target = DataManager.Instance.AllBuildings.Find(b => b != null && (b.id == associatedBuildingId || b.type == BuildingType.Barracks));
+                target = DataManager.Instance.AllBuildings.Find(b => b != null && (b.type == BuildingType.Barracks || b.id == "Barracks" || b.id == "Barrack"));
+                if (target == null)
+                {
+                    target = DataManager.Instance.AllBuildings.Find(b => b != null && b.id == associatedBuildingId);
+                }
             }
 
             if (target == null)
@@ -203,6 +185,104 @@ namespace LegendOfBlood
             GameManager.Instance.UIManager.ShowPanel(UIPanelType.BuildingUpgrade, false);
             var panel = GameManager.Instance.UIManager.GetPanel<BuildingUpgradePanel>(UIPanelType.BuildingUpgrade);
             if (panel != null) panel.Setup(target.id);
+        }
+
+        private void EnsureUpgradeButtonReference()
+        {
+            if (upgradeBuildingButton != null) return;
+
+            Button[] buttons = GetComponentsInChildren<Button>(true);
+            for (int i = 0; i < buttons.Length; i++)
+            {
+                Button button = buttons[i];
+                if (button == null) continue;
+
+                string buttonName = button.gameObject.name.ToLowerInvariant();
+                if (buttonName.Contains("upgrade"))
+                {
+                    upgradeBuildingButton = button;
+                    return;
+                }
+            }
+        }
+
+        private void EnsureSortFilterReferences()
+        {
+            if (sortButton == null) sortButton = FindOrCreateButton("SortButton", "Sort");
+            if (filterButton == null) filterButton = FindOrCreateButton("FilterButton", "Filter");
+            if (sortButtonText == null) sortButtonText = FindOrCreateButtonText(sortButton);
+            if (filterButtonText == null) filterButtonText = FindOrCreateButtonText(filterButton);
+        }
+
+        private Button FindOrCreateButton(params string[] names)
+        {
+            Button[] buttons = GetComponentsInChildren<Button>(true);
+            for (int n = 0; n < names.Length; n++)
+            {
+                string targetName = names[n].ToLowerInvariant();
+                for (int i = 0; i < buttons.Length; i++)
+                {
+                    Button button = buttons[i];
+                    if (button != null && button.gameObject.name.ToLowerInvariant().Contains(targetName))
+                    {
+                        return button;
+                    }
+                }
+            }
+
+            Transform target = FindTransformByName(names);
+            if (target != null)
+            {
+                Image image = target.GetComponent<Image>();
+                if (image == null) image = target.gameObject.AddComponent<Image>();
+                image.raycastTarget = true;
+                return target.gameObject.AddComponent<Button>();
+            }
+
+            return null;
+        }
+
+        private TextMeshProUGUI FindOrCreateButtonText(Button button)
+        {
+            if (button == null) return null;
+
+            TextMeshProUGUI text = button.GetComponentInChildren<TextMeshProUGUI>(true);
+            if (text != null) return text;
+
+            GameObject textObj = new GameObject("Text_Runtime");
+            textObj.transform.SetParent(button.transform, false);
+            text = textObj.AddComponent<TextMeshProUGUI>();
+            text.alignment = TextAlignmentOptions.Center;
+            text.fontSize = 28f;
+            text.fontStyle = FontStyles.Bold;
+            text.color = Color.white;
+            text.raycastTarget = false;
+
+            RectTransform rt = text.rectTransform;
+            rt.anchorMin = Vector2.zero;
+            rt.anchorMax = Vector2.one;
+            rt.offsetMin = Vector2.zero;
+            rt.offsetMax = Vector2.zero;
+            return text;
+        }
+
+        private Transform FindTransformByName(params string[] names)
+        {
+            Transform[] children = GetComponentsInChildren<Transform>(true);
+            for (int n = 0; n < names.Length; n++)
+            {
+                string targetName = names[n].ToLowerInvariant();
+                for (int i = 0; i < children.Length; i++)
+                {
+                    Transform child = children[i];
+                    if (child != null && child.gameObject.name.ToLowerInvariant().Contains(targetName))
+                    {
+                        return child;
+                    }
+                }
+            }
+
+            return null;
         }
 
         private void EnsureDismissControls()
@@ -264,7 +344,10 @@ namespace LegendOfBlood
                 toggle = CreateDismissToggle(card.transform);
             }
 
+            ConfigureDismissToggle(toggle);
             bool canDismiss = !hero.IsBusy();
+            toggle.gameObject.SetActive(true);
+            toggle.transform.SetAsLastSibling();
             toggle.interactable = canDismiss;
             toggle.onValueChanged.RemoveAllListeners();
             toggle.SetIsOnWithoutNotify(canDismiss && _selectedDismissHeroIds.Contains(hero.id));
@@ -282,14 +365,15 @@ namespace LegendOfBlood
             toggleObj.transform.SetAsLastSibling();
 
             RectTransform rt = toggleObj.AddComponent<RectTransform>();
-            rt.anchorMin = new Vector2(0f, 1f);
-            rt.anchorMax = new Vector2(0f, 1f);
-            rt.pivot = new Vector2(0f, 1f);
-            rt.sizeDelta = new Vector2(64f, 64f);
-            rt.anchoredPosition = new Vector2(12f, -12f);
+            rt.anchorMin = new Vector2(1f, 1f);
+            rt.anchorMax = new Vector2(1f, 1f);
+            rt.pivot = new Vector2(1f, 1f);
+            rt.sizeDelta = new Vector2(72f, 72f);
+            rt.anchoredPosition = new Vector2(-14f, -14f);
 
             Image background = toggleObj.AddComponent<Image>();
-            background.color = new Color(0f, 0f, 0f, 0.72f);
+            background.color = new Color(0.02f, 0.02f, 0.02f, 0.88f);
+            toggleObj.AddComponent<Outline>().effectColor = new Color(1f, 0.85f, 0.2f, 1f);
 
             Toggle toggle = toggleObj.AddComponent<Toggle>();
             toggle.targetGraphic = background;
@@ -297,11 +381,11 @@ namespace LegendOfBlood
             GameObject checkObj = new GameObject("Checkmark");
             checkObj.transform.SetParent(toggleObj.transform, false);
             TextMeshProUGUI check = checkObj.AddComponent<TextMeshProUGUI>();
-            check.text = "X";
+            check.text = "✓";
             check.alignment = TextAlignmentOptions.Center;
-            check.fontSize = 42f;
+            check.fontSize = 48f;
             check.fontStyle = FontStyles.Bold;
-            check.color = Color.white;
+            check.color = new Color(1f, 0.88f, 0.25f, 1f);
 
             RectTransform checkRt = check.rectTransform;
             checkRt.anchorMin = Vector2.zero;
@@ -311,6 +395,28 @@ namespace LegendOfBlood
 
             toggle.graphic = check;
             return toggle;
+        }
+
+        private void ConfigureDismissToggle(Toggle toggle)
+        {
+            if (toggle == null) return;
+
+            RectTransform rt = toggle.GetComponent<RectTransform>();
+            if (rt != null)
+            {
+                rt.anchorMin = new Vector2(1f, 1f);
+                rt.anchorMax = new Vector2(1f, 1f);
+                rt.pivot = new Vector2(1f, 1f);
+                rt.sizeDelta = new Vector2(72f, 72f);
+                rt.anchoredPosition = new Vector2(-14f, -14f);
+            }
+
+            Image background = toggle.GetComponent<Image>();
+            if (background != null)
+            {
+                background.raycastTarget = true;
+                background.color = new Color(0.02f, 0.02f, 0.02f, 0.88f);
+            }
         }
 
         private void DismissSelectedHeroes()

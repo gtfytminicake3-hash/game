@@ -45,6 +45,47 @@ public class Bootloader : MonoBehaviour
     private TextMeshProUGUI _dynamicPercentText;
     private TextMeshProUGUI _dynamicLoreText;
 
+    private void Awake()
+    {
+        ApplyResponsiveLayout();
+    }
+
+    private void OnRectTransformDimensionsChange()
+    {
+        ApplyResponsiveLayout();
+    }
+
+    private void ApplyResponsiveLayout()
+    {
+        StretchRect(GetComponent<RectTransform>());
+        StretchRect(tapToStartGroup != null ? tapToStartGroup.GetComponent<RectTransform>() : null);
+        StretchRect(loadingScreenGroup != null ? loadingScreenGroup.GetComponent<RectTransform>() : null);
+
+        Transform bg = transform.Find("BootloaderBackgroundImage");
+        if (bg != null) StretchRect(bg.GetComponent<RectTransform>());
+
+        Canvas canvas = GetComponentInParent<Canvas>();
+        CanvasScaler scaler = canvas != null ? canvas.GetComponent<CanvasScaler>() : null;
+        if (scaler != null)
+        {
+            scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+            scaler.referenceResolution = new Vector2(1080f, 1920f);
+            scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+            scaler.matchWidthOrHeight = 0.5f;
+        }
+    }
+
+    private void StretchRect(RectTransform rect)
+    {
+        if (rect == null) return;
+
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+        rect.pivot = new Vector2(0.5f, 0.5f);
+    }
+
     /// <summary>
     /// Coroutine để tải scene một cách bất đồng bộ và cập nhật thanh loading.
     /// </summary>
@@ -184,6 +225,7 @@ public class Bootloader : MonoBehaviour
 
     private void SetupDynamicProgressBar()
     {
+        ApplyResponsiveLayout();
         if (loadingSlider != null) loadingSlider.gameObject.SetActive(false);
         if (loadingText != null) loadingText.gameObject.SetActive(false);
 
@@ -226,14 +268,7 @@ public class Bootloader : MonoBehaviour
         bgImageObj.transform.SetAsFirstSibling();
         
         // Cố định RectTransform cho Background nếu là tạo mới
-        if (bgT == null)
-        {
-            var rect = bgImageObj.GetComponent<RectTransform>();
-            rect.anchorMin = Vector2.zero;
-            rect.anchorMax = Vector2.one;
-            rect.offsetMin = Vector2.zero;
-            rect.offsetMax = Vector2.zero;
-        }
+        StretchRect(bgImageObj.GetComponent<RectTransform>());
 
         // --- MASTER CONTAINER ---
         Transform containerParent = loadingScreenGroup != null ? loadingScreenGroup.transform : transform;
@@ -243,8 +278,8 @@ public class Bootloader : MonoBehaviour
         {
             _dynamicContainer.transform.SetParent(containerParent, false);
             var rect = _dynamicContainer.AddComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0f, 0f); 
-            rect.anchorMax = new Vector2(1f, 0.2f); 
+            rect.anchorMin = new Vector2(0.08f, 0.035f); 
+            rect.anchorMax = new Vector2(0.92f, 0.18f); 
             rect.offsetMin = Vector2.zero;
             rect.offsetMax = Vector2.zero;
         }
@@ -256,8 +291,8 @@ public class Bootloader : MonoBehaviour
         {
             barChassisObj.transform.SetParent(_dynamicContainer.transform, false);
             var rect = barChassisObj.AddComponent<RectTransform>();
-            rect.anchorMin = new Vector2(0.15f, 0.5f);
-            rect.anchorMax = new Vector2(0.85f, 0.5f);
+            rect.anchorMin = new Vector2(0f, 0.5f);
+            rect.anchorMax = new Vector2(1f, 0.5f);
             rect.sizeDelta = new Vector2(0, 50);
             rect.anchoredPosition = Vector2.zero;
         }

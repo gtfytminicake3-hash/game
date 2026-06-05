@@ -148,24 +148,6 @@ namespace LegendOfBlood
                     AllItems.Add(ids[i], generatedData);
                 }
             }
-
-            string[] expBookIds = { "IT_EXP_BOOK_S", "IT_EXP_BOOK_M", "IT_EXP_BOOK_L", "ITEM_EXP_BOOK_S", "ITEM_EXP_BOOK_M", "ITEM_EXP_BOOK_L" };
-            foreach (string expBookId in expBookIds)
-            {
-                if (AllItems.TryGetValue(expBookId, out ItemData existingExpBook))
-                {
-                    existingExpBook.type = ItemType.ExpPotion;
-                    continue;
-                }
-
-                ItemData expBookData = ScriptableObject.CreateInstance<ItemData>();
-                expBookData.id = expBookId;
-                expBookData.itemName = $"item_{expBookId}_name";
-                expBookData.description = $"item_{expBookId}_desc";
-                expBookData.type = ItemType.ExpPotion;
-                expBookData.icon = UnityEngine.Resources.Load<Sprite>($"Icons/Items/ITEM_EXP_BOOK_S");
-                AllItems.Add(expBookId, expBookData);
-            }
             // -------------------------------------------------------------
             
             var expList = _gameConfig.ExperienceTable ?? new List<GameConfigs.ExperienceData>();
@@ -264,7 +246,6 @@ namespace LegendOfBlood
             if (!Player.items.ContainsKey("item_mutation_potion")) Player.items["item_mutation_potion"] = 5;
             if (!Player.items.ContainsKey("item_wish_charm")) Player.items["item_wish_charm"] = 5;
             if (!Player.items.ContainsKey("item_speed_hourglass")) Player.items["item_speed_hourglass"] = 5;
-            if (!Player.items.ContainsKey("IT_EXP_BOOK_S")) Player.items["IT_EXP_BOOK_S"] = 20;
 
             // Xóa rác "Legendary Sword" cũ do chạy sinh tự động từ trước
             Player.equipments.RemoveAll(e => e.equipmentName == "Legendary Sword" || e.id.StartsWith("wpn_"));

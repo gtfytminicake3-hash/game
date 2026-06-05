@@ -69,6 +69,8 @@ namespace LegendOfBlood
         public RarityRank rank;
         public string familyId; // Ví dụ: "ATK_UP", "HP_ON_HIT"
         public string nextUpgradeTraitID; // ID của Trait kế tiếp trong cùng family
+        [Tooltip("Số lượng EXP của Tướng cần tiêu hao để nâng cấp lên Trait kế tiếp.")]
+        public int upgradeExpCost = 1000;
 
         [Header("Trait Effects")]
         [Tooltip("Danh sách tất cả các hiệu ứng mà Trait này gây ra.")]

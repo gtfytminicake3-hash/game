@@ -38,11 +38,13 @@ namespace LegendOfBlood
                 var texts = GetComponentsInChildren<TextMeshProUGUI>(true);
                 foreach (var t in texts)
                 {
-                    string parentName = t.transform.parent != null ? t.transform.parent.name.ToLower() : "";
-                    if (parentName.Contains("gold")) goldText = t;
-                    else if (parentName.Contains("wood")) woodText = t;
-                    else if (parentName.Contains("stone")) stoneText = t;
-                    else if (parentName.Contains("diamond") || parentName.Contains("crystal")) diamondText = t;
+                    string n = t.gameObject.name.ToLower();
+                    string p = t.transform.parent != null ? t.transform.parent.name.ToLower() : "";
+                    
+                    if (n.Contains("gold") || p.Contains("gold")) goldText = t;
+                    else if (n.Contains("wood") || p.Contains("wood")) woodText = t;
+                    else if (n.Contains("stone") || p.Contains("stone")) stoneText = t;
+                    else if (n.Contains("diamond") || p.Contains("diamond") || n.Contains("crystal") || p.Contains("crystal")) diamondText = t;
                 }
             }
 

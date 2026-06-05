@@ -6,6 +6,7 @@ namespace LegendOfBlood {
     public class UIPanelNavButton : MonoBehaviour {
         public UIPanelType targetPanel;
         public bool isBackButton = false;
+        public bool clearHistory = false;
         
         void Start() {
             GetComponent<Button>().onClick.AddListener(OnClick);

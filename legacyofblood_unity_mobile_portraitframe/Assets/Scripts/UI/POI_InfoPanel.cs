@@ -4,6 +4,7 @@ using TMPro;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LegendOfBlood
 {
@@ -12,15 +13,17 @@ namespace LegendOfBlood
         [Header("Procedural Map References")]
         [SerializeField] private TextMeshProUGUI poiNameText;
         [SerializeField] private Button closeButton;
+        [SerializeField] private Button exploreButton;
         [SerializeField] private Transform mapContentContainer;
 
         [Header("Popups")]
         [SerializeField] private LegendOfBlood.DifficultySelectionPopup difficultyPopup;
+        [SerializeField] private LegendOfBlood.NodeDetailPopup nodeDetailPopup;
 
         private POIData _currentPoiData;
         private Action _onExploreCallback;
+        private List<string> _currentSquadIDs;
         private ProceduralDifficulty _currentDifficulty;
-<<<<<<< HEAD
         
         private SubStageNode _currentlySelectedNode;
         private Dictionary<SubStageNode, GameObject> _nodeUIObjects = new Dictionary<SubStageNode, GameObject>();
@@ -28,8 +31,13 @@ namespace LegendOfBlood
         private static Dictionary<string, ShapeDrivenMapData> _activeMaps = new Dictionary<string, ShapeDrivenMapData>();
         private static Dictionary<string, List<string>> _activeSquads = new Dictionary<string, List<string>>();
         private ShapeDrivenMapData _currentMapData;
-=======
->>>>>>> e0220ebd678bac299fea0eb241af71c2d31c9051
+
+        public static void UnlockSquadAndMap(string poiId)
+        {
+            if (_activeMaps.ContainsKey(poiId)) _activeMaps.Remove(poiId);
+            if (_activeSquads.ContainsKey(poiId)) _activeSquads.Remove(poiId);
+            Debug.Log($"[POI_InfoPanel] Squad and Map unlocked for POI: {poiId}");
+        }
 
         private void Awake()
         {
@@ -48,6 +56,7 @@ namespace LegendOfBlood
         {
             if (poiNameText == null) poiNameText = transform.Find("poiNameText")?.GetComponent<TextMeshProUGUI>() ?? transform.GetComponentsInChildren<TextMeshProUGUI>(true).FirstOrDefault(t => t.name.Contains("Name") || t.name.Contains("Title"));
             if (closeButton == null) closeButton = transform.Find("button/close")?.GetComponent<Button>() ?? transform.Find("Btn_Close")?.GetComponent<Button>() ?? transform.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name.Contains("Close") || b.name.Contains("Back"));
+            if (exploreButton == null) exploreButton = transform.Find("button")?.GetComponent<Button>() ?? transform.Find("exploreButton")?.GetComponent<Button>() ?? transform.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name.Contains("Explore") || b.name.Contains("Action"));
             
             if (mapContentContainer == null) 
             {
@@ -64,6 +73,9 @@ namespace LegendOfBlood
         {
             base.Start();
             if (closeButton != null) closeButton.onClick.AddListener(ClosePanel);
+            
+            // Ẩn exploreButton đi vì ta sẽ tự động bỏ qua nó
+            if (exploreButton != null) exploreButton.gameObject.SetActive(false);
             
             Button bgBtn = GetComponent<Button>();
             if (bgBtn != null) bgBtn.onClick.AddListener(ClosePanel);
@@ -85,8 +97,30 @@ namespace LegendOfBlood
             UpdateLocalizedText();
             gameObject.SetActive(true);
 
+            // Đảm bảo các thành phần UI cốt lõi được kích hoạt (trường hợp Prefab bị tắt nhầm bên trong)
+            if (poiNameText != null)
+            {
+                poiNameText.gameObject.SetActive(true);
+                Transform p = poiNameText.transform.parent;
+                while (p != null && p != this.transform) { p.gameObject.SetActive(true); p = p.parent; }
+            }
+            if (closeButton != null)
+            {
+                closeButton.gameObject.SetActive(true);
+                Transform p = closeButton.transform.parent;
+                while (p != null && p != this.transform) { p.gameObject.SetActive(true); p = p.parent; }
+            }
+
             if (mapContentContainer != null)
             {
+                mapContentContainer.gameObject.SetActive(true);
+                Transform p = mapContentContainer.parent;
+                while (p != null && p != this.transform)
+                {
+                    p.gameObject.SetActive(true);
+                    p = p.parent;
+                }
+
                 foreach (Transform child in mapContentContainer) Destroy(child.gameObject);
                 
                 Button bgBtn = GetComponent<Button>();
@@ -97,13 +131,11 @@ namespace LegendOfBlood
                 }
             }
 
-<<<<<<< HEAD
             if (_activeMaps.ContainsKey(_currentPoiData.poiId))
             {
                 _currentMapData = _activeMaps[_currentPoiData.poiId];
                 _currentDifficulty = _currentMapData.Difficulty;
-                
-                // RESTORE SQUAD DATA: Fix for "Confirm" (Tiến Vào) button not working when re-opening map
+
                 if (_activeSquads.ContainsKey(_currentPoiData.poiId))
                 {
                     _currentSquadIDs = _activeSquads[_currentPoiData.poiId];
@@ -111,16 +143,21 @@ namespace LegendOfBlood
 
                 if (poiNameText != null) poiNameText.text = $"{_currentPoiData.poiName.ToUpper()} [{_currentDifficulty}]";
                 DrawProceduralMap(mapContentContainer, _currentMapData);
+                EnsureCloseButtonIsVisible();
             }
             else
             {
+                // VÀO THẲNG BẢNG CHỌN ĐỘ KHÓ (Bỏ qua exploreButton)
                 ShowDifficultySelector();
+                EnsureCloseButtonIsVisible();
             }
-=======
-            ShowDifficultySelector();
->>>>>>> e0220ebd678bac299fea0eb241af71c2d31c9051
+            
+            if (exploreButton != null) exploreButton.gameObject.SetActive(false);
+        }
 
-            EnsureCloseButtonIsVisible();
+        private void OnExploreClicked()
+        {
+            ShowDifficultySelector();
         }
 
         private void EnsureCloseButtonIsVisible()
@@ -179,19 +216,32 @@ namespace LegendOfBlood
         #region DIFFICULTY SELECTOR
         private void ShowDifficultySelector()
         {
-            if (difficultyPopup == null) 
+            if (difficultyPopup == null || difficultyPopup.btnNormal == null) 
             {
+                if (difficultyPopup != null)
+                {
+                    Destroy(difficultyPopup.gameObject);
+                    difficultyPopup = null;
+                }
                 CreateDifficultyPopupFallback();
             }
             
-            difficultyPopup.Show(_currentPoiData.poiName, ProceedToMap, _currentPoiData.poiId);
+            Transform dp = difficultyPopup.transform;
+            while (dp != null && dp != this.transform)
+            {
+                dp.gameObject.SetActive(true);
+                dp = dp.parent;
+            }
+            
+            difficultyPopup.Show(_currentPoiData.poiName, ProceedToMap);
         }
 
         private void CreateDifficultyPopupFallback()
         {
+            // Ẩn các thành phần thừa (như exploreButton) để không che mất màn hình
             foreach (Transform child in this.transform)
             {
-                if (child.name != "RuntimeMapContainer" && !child.name.Contains("Popup") && child.name != "MainWindow")
+                if (child.name != "RuntimeMapContainer" && !child.name.Contains("Popup") && child.name != "MainWindow" && child.name != "poiNameText" && !child.name.Contains("Close"))
                 {
                     child.gameObject.SetActive(false);
                 }
@@ -234,6 +284,9 @@ namespace LegendOfBlood
             difficultyPopup.btnHard = btnHard;
             difficultyPopup.btnHell = btnHell;
             difficultyPopup.btnNightmare = btnNight;
+            
+            // Fix: Add listeners directly because Start() might have run before these were assigned
+            difficultyPopup.RegisterListeners();
         }
 
         private Button CreateRuntimeButton(Transform p, string n, string t, Color c, float yPos)
@@ -264,14 +317,12 @@ namespace LegendOfBlood
             if (difficultyPopup != null) difficultyPopup.gameObject.SetActive(false);
             _onDifficultySelectedCallback?.Invoke();
         }
-<<<<<<< HEAD
 
         public void GenerateAndShowProceduralMap(System.Collections.Generic.List<string> squadIDs = null)
         {
             if (squadIDs != null) _currentSquadIDs = squadIDs;
             if (_currentPoiData == null) return;
-            
-            gameObject.SetActive(true);
+            if (!gameObject.activeSelf) gameObject.SetActive(true);
 
             // SAVE SQUAD DATA: Fix for "Confirm" (Tiến Vào) button not working when re-opening map
             if (_currentSquadIDs != null)
@@ -287,6 +338,8 @@ namespace LegendOfBlood
             if (poiNameText != null) poiNameText.text = $"{_currentPoiData.poiName.ToUpper()} [{_currentDifficulty}]";
             DrawProceduralMap(mapContentContainer, _currentMapData);
         }
+
+        // (Removed IsMergeNode and LockUnselectedBranchPath. Now handled by BranchRouteProgressionService)
         #endregion
 
         #region PROCEDURAL MAP GENERATION
@@ -354,10 +407,52 @@ namespace LegendOfBlood
                 Vector2 posTo = new Vector2((seg.To.x - 2) * columnSpacing, startY + seg.To.y * floorStepY);
                 var nFrom = nodes.Find(x => x.Floor == seg.From.y && x.Slot == seg.From.x);
                 var nTo = nodes.Find(x => x.Floor == seg.To.y && x.Slot == seg.To.x);
-                bool isActiveLine = nTo != null && nTo.Status != NodeStatus.Locked;
-                if (nFrom != null && nFrom.Status == NodeStatus.Locked) isActiveLine = false;
                 
-                DrawSegmentLine(parent, posFrom, posTo, isActiveLine);
+                EdgeState eState = EdgeState.Future;
+                bool isReversed = false;
+
+                if (nFrom != null && nTo != null)
+                {
+                    string edgeKey1 = LegendOfBlood.Map.BranchRouteProgressionService.GetEdgeKey(nFrom.Id, nTo.Id);
+                    string edgeKey2 = LegendOfBlood.Map.BranchRouteProgressionService.GetEdgeKey(nTo.Id, nFrom.Id);
+                    
+                    if (mapData.EdgeStates.TryGetValue(edgeKey1, out EdgeState st1))
+                    {
+                        eState = st1;
+                    }
+                    else if (mapData.EdgeStates.TryGetValue(edgeKey2, out EdgeState st2))
+                    {
+                        eState = st2;
+                        isReversed = true;
+                    }
+                }
+
+                // Default logic
+                Color edgeColor = new Color(0.3f, 0.3f, 0.3f, 0.5f); // Future / Dim
+                
+                if (eState == EdgeState.BlockedByChoice)
+                {
+                    edgeColor = new Color(0.1f, 0.1f, 0.1f, 0.3f);
+                }
+                else if (eState == EdgeState.Active)
+                {
+                    if (nFrom != null && nTo != null)
+                    {
+                        var parentNode = isReversed ? nTo : nFrom;
+                        var childNode = isReversed ? nFrom : nTo;
+
+                        if (parentNode.Status == NodeStatus.Cleared && childNode.Status == NodeStatus.Available)
+                        {
+                            edgeColor = new Color(0.8f, 0.6f, 0.2f, 1f); // Bright
+                        }
+                        else if (parentNode.Status == NodeStatus.Cleared && childNode.Status == NodeStatus.Cleared)
+                        {
+                            edgeColor = new Color(0.8f, 0.6f, 0.2f, 1f); // Bright for history
+                        }
+                    }
+                }
+
+                DrawSegmentLine(parent, posFrom, posTo, edgeColor);
             }
 
             foreach (var node in nodes)
@@ -404,7 +499,15 @@ namespace LegendOfBlood
                 _nodeUIObjects[node] = nObj;
             }
 
-            StartCoroutine(ScrollToBottom(parent));
+            if (isActiveAndEnabled && gameObject.activeInHierarchy)
+            {
+                StartCoroutine(ScrollToBottom(parent));
+            }
+            else
+            {
+                ScrollRect scrollRect = parent.GetComponentInParent<ScrollRect>();
+                if (scrollRect != null) scrollRect.verticalNormalizedPosition = 0f;
+            }
         }
 
         private void UpdateNodeVisual(SubStageNode node, Image img)
@@ -421,21 +524,30 @@ namespace LegendOfBlood
             }
             
             Button btn = img.GetComponent<Button>();
-            if (btn != null) btn.interactable = true;
-
-            if (node.Status == NodeStatus.Cleared) img.color = Color.gray;
-            else if (node.Status == NodeStatus.InProgress || node.Status == NodeStatus.Available)
+            if (node.Status == NodeStatus.Cleared)
             {
-                if (img.gameObject.GetComponent<PulseAnimation>() == null) img.gameObject.AddComponent<PulseAnimation>();
+                img.color = Color.gray;
+                if (btn != null) btn.interactable = false;
             }
-            else if (node.Status == NodeStatus.Locked)
+            else if (node.Status == NodeStatus.Available)
+            {
+                if (img.gameObject.GetComponent<PulseAnimation>() == null) 
+                    img.gameObject.AddComponent<PulseAnimation>();
+                if (btn != null) btn.interactable = true;
+            }
+            else if (node.Status == NodeStatus.Locked || node.Status == NodeStatus.FutureLocked)
             {
                 img.color = new Color(img.color.r * 0.3f, img.color.g * 0.3f, img.color.b * 0.3f, 1f);
-                if (btn != null) btn.interactable = true;
+                if (btn != null) btn.interactable = false;
+            }
+            else if (node.Status == NodeStatus.BlockedByChoice)
+            {
+                img.color = new Color(0.1f, 0.1f, 0.1f, 1f); // Rất mờ
+                if (btn != null) btn.interactable = false;
             }
         }
 
-        private void DrawSegmentLine(Transform parent, Vector2 from, Vector2 to, bool isActiveLine)
+        private void DrawSegmentLine(Transform parent, Vector2 from, Vector2 to, Color edgeColor)
         {
             GameObject lineObj = new GameObject("Line_Segment");
             lineObj.transform.SetParent(parent, false);
@@ -444,8 +556,8 @@ namespace LegendOfBlood
             RectTransform rt = lineObj.AddComponent<RectTransform>();
             Image img = lineObj.AddComponent<Image>();
             
-            img.color = isActiveLine ? new Color(0.8f, 0.6f, 0.2f, 1f) : new Color(0.3f, 0.3f, 0.3f, 0.5f); 
-            img.raycastTarget = false; 
+            img.color = edgeColor;
+            img.raycastTarget = false;
 
             Vector2 dir = (to - from);
             float distance = dir.magnitude;
@@ -476,66 +588,208 @@ namespace LegendOfBlood
         private void ShowNodeDetailPopup(SubStageNode node)
         {
             if (nodeDetailPopup == null) CreateNodeDetailPopupFallback();
-            nodeDetailPopup.Show(node, () => {
-                if (node.Status == NodeStatus.Available)
+            
+            Transform np = nodeDetailPopup.transform;
+            while (np != null && np != this.transform)
+            {
+                np.gameObject.SetActive(true);
+                np = np.parent;
+            }
+
+            nodeDetailPopup.Show(node, () =>
+            {
+                if (node.Status != NodeStatus.Available) return;
+                if (_currentSquadIDs == null || _currentSquadIDs.Count == 0) return;
+
+                // === BRANCH CHOICE LOCKING ===
+                LegendOfBlood.Map.BranchRouteProgressionService.CommitChoice(_currentMapData, node.Id);
+
+                // === DEBUG: Battle Start ===
+                int enemyHpBefore = node.SurvivingEnemies != null
+                    ? (int)node.SurvivingEnemies.Sum(e => e.currentHp)
+                    : -1; // -1 = chưa có dữ liệu (lần đầu)
+                Debug.Log($"[NodeBattle] START: NodeId={node.Id}, Type={node.Type}, Status={node.Status}, " +
+                          $"EnemyHpBefore={enemyHpBefore}, SquadCount={_currentSquadIDs.Count}");
+
+                var fakePOI = _currentPoiData;
+                fakePOI.difficultyLevel = Mathf.Max(1, (int)_currentDifficulty + 1);
+                POIBattleResolution resolution = POIBattleResolver.Resolve(
+                    fakePOI, node, _currentSquadIDs, _currentDifficulty,
+                    GameManager.Instance.ExpeditionManager);
+
+                bool isBossNode = (node.Type == SubStageNodeType.Boss);
+                int enemyHpAfter = node.SurvivingEnemies != null
+                    ? (int)node.SurvivingEnemies.Sum(e => e.currentHp)
+                    : 0;
+
+                // === DEBUG: Battle End ===
+                Debug.Log($"[NodeBattle] END: NodeId={node.Id}, IsBoss={isBossNode}, IsVictory={resolution.DidWin}, " +
+                          $"EnemyHpAfter={enemyHpAfter}, " +
+                          $"HeroOutcomes: Survivors={resolution.Report?.combatResult?.PlayerSurvivors?.Count ?? 0}, " +
+                          $"Casualties={resolution.Report?.combatResult?.PlayerCasualties?.Count ?? 0}");
+
+                if (resolution.DidWin)
                 {
-                    if (_currentSquadIDs == null || _currentSquadIDs.Count == 0) return;
-
-                    var fakePOI = _currentPoiData;
-                    fakePOI.difficultyLevel = Mathf.Max(1, (int)_currentDifficulty + 1);
-                    POIBattleResolution resolution = POIBattleResolver.Resolve(fakePOI, node, _currentSquadIDs, _currentDifficulty, GameManager.Instance.ExpeditionManager);
-
-                    if (resolution.DidWin)
+                    // === VICTORY PATH ===
+                    if (isBossNode)
                     {
-                        if (GameManager.Instance.ExpeditionManager != null)
+                        // Boss đã thắng: đặt flag, tạo report chuẩn
+                        resolution.Report.isBossVictory = true;
+                        resolution.Report.bossNodeId = node.Id.ToString();
+                        resolution.Report.squadIds = new System.Collections.Generic.List<string>(_currentSquadIDs);
+
+                        // === TẠO SNAPSHOT ===
+                        resolution.Report.heroOutcomeSnapshots = new System.Collections.Generic.List<HeroBattleOutcomeSnapshot>();
+                        if (resolution.Report.combatResult.PlayerSurvivors != null)
                         {
-                            GameManager.Instance.ExpeditionManager.AddReportToMailbox(resolution.Report);
+                            foreach (var survivor in resolution.Report.combatResult.PlayerSurvivors)
+                            {
+                                float maxHp = survivor.GetFinalStats().hp;
+                                int severity = survivor.currentHp < maxHp ? 1 : 0;
+                                resolution.Report.heroOutcomeSnapshots.Add(new HeroBattleOutcomeSnapshot
+                                {
+                                    heroId = survivor.id,
+                                    hpAfterBattle = survivor.currentHp,
+                                    maxHp = maxHp,
+                                    isDead = false,
+                                    injurySeverity = severity
+                                });
+                                Debug.Log($"[BossVictory] Snapshot Survivor: {survivor.id}, HP: {survivor.currentHp}/{maxHp}");
+                            }
                         }
-                        else if (DataManager.Instance?.Player?.UnclaimedReports != null)
+                        if (resolution.Report.combatResult.PlayerCasualties != null)
                         {
-                            DataManager.Instance.Player.UnclaimedReports.Add(resolution.Report);
-                            DataManager.Instance.SavePlayerData();
+                            foreach (var casualty in resolution.Report.combatResult.PlayerCasualties)
+                            {
+                                resolution.Report.heroOutcomeSnapshots.Add(new HeroBattleOutcomeSnapshot
+                                {
+                                    heroId = casualty.id,
+                                    hpAfterBattle = 0,
+                                    maxHp = casualty.GetFinalStats().hp,
+                                    isDead = true,
+                                    injurySeverity = 2
+                                });
+                                Debug.Log($"[BossVictory] Snapshot Casualty: {casualty.id}");
+                            }
                         }
-                        GameManager.Instance.UINotificationManager?.ShowNotification($"Victory chance {resolution.WinChance:P0}. Reward sent to mailbox.");
-                        ExecuteNodeAction(node);
+
+                        Debug.Log($"[NodeBattle] BOSS VICTORY report created. POI={resolution.Report.poiName}, " +
+                                  $"BossNodeId={node.Id}, SnapshotCount={resolution.Report.heroOutcomeSnapshots.Count}");
+
+                        var expMgr = GameManager.Instance.ExpeditionManager;
+                        if (expMgr != null)
+                        {
+                            // Khởi tạo chuyến đi trở về thay vì end trực tiếp.
+                            // Lưu ý: KHÔNG HỒI MÁU CHO SQUAD TẠI ĐÂY.
+                            expMgr.StartReturnTripFromBossVictory(resolution.Report, _currentSquadIDs, _currentPoiData);
+                            
+                            // Lưu ý: Không xoá _activeSquads ở đây nữa, 
+                            // Squad sẽ được xoá lock trong CompleteExpeditionAfterBossVictory của ExpeditionManager
+                            _activeMaps.Remove(_currentPoiData.poiId);
+                        }
+                        else
+                        {
+                            DataManager.Instance?.Player?.UnclaimedReports?.Add(resolution.Report);
+                            DataManager.Instance?.SavePlayerData();
+                            _activeMaps.Remove(_currentPoiData.poiId);
+                            _activeSquads.Remove(_currentPoiData.poiId);
+                        }
+
+                        LegendOfBlood.ToastNotificationManager.Show(
+                            $"Đã hạ gục Boss! Thoại thuở chấn động {_currentPoiData.poiName}!", 3f);
+                        ExecuteNodeAction(node); // Mark cleared + close panel
                     }
                     else
                     {
-                        GameManager.Instance.UINotificationManager?.ShowNotification($"Defeat. Win chance {resolution.WinChance:P0}; stage stays here.");
+                        // Node thường thắng: AddReport (không hospital), unlock node tiếp
+                        var expMgr = GameManager.Instance.ExpeditionManager;
+                        if (expMgr != null)
+                            expMgr.AddReportToMailbox(resolution.Report);
+                        else
+                        {
+                            DataManager.Instance?.Player?.UnclaimedReports?.Add(resolution.Report);
+                            DataManager.Instance?.SavePlayerData();
+                        }
+
+                        // Hồi full HP cho sang node tiếp theo
+                        RestoreSquadHp();
+
+                        LegendOfBlood.ToastNotificationManager.Show(
+                            $"Chiến thắng! ({resolution.WinChance:P0}). Tiến lên node tiếp theo!", 3f);
+                        ExecuteNodeAction(node);
+                    }
+                }
+                else
+                {
+                    // === DEFEAT PATH ===
+                    if (isBossNode)
+                    {
+                        // Boss thua: không thoát, không hospital, boss giữ máu, hero hồi lại
+                        Debug.Log($"[NodeBattle] BOSS LOSE: NodeId={node.Id}. Boss HP saved, squad revived. Expedition continues.");
+                        RestoreSquadHp(); // Hero hồi full để đánh lại boss
+                        LegendOfBlood.ToastNotificationManager.Show(
+                            $"Boss chưa đâu! ({resolution.WinChance:P0}). Quân đã được hồi phục, dám đánh lại không?", 3f);
+                        ExecuteNodeLose(node); // Giữ node available, không đóng panel
+                    }
+                    else
+                    {
+                        // Node thường thua: không hospital, hero hồi lại, quai giữ máu
+                        Debug.Log($"[NodeBattle] NODE LOSE: NodeId={node.Id}. Node remains available. Squad revived. Enemy HP saved in node.");
+                        RestoreSquadHp(); // Hero hồi full để đánh lại node
+                        LegendOfBlood.ToastNotificationManager.Show(
+                            $"Thất bại ({resolution.WinChance:P0}). Hùng quân đã hồi sinh! Quái vẫn giữ máu cũ!", 3f);
                         ExecuteNodeLose(node);
                     }
                 }
-            }, () => { ExecuteNodeLose(node); _onExploreCallback?.Invoke(); });
+            }, () =>
+            {
+                // Nút Rút Quân - chưa implement, chỉ đóng panel tạm
+                Debug.Log("[NodeBattle] Player manually retreated from node.");
+                GameManager.Instance.UIManager.GoBack();
+            });
+        }
+
+        /// <summary>Hồi full máu và xóa trạng thái thương cho toàn bộ squad hiện tại.</summary>
+        private void RestoreSquadHp()
+        {
+            if (_currentSquadIDs == null || DataManager.Instance == null) return;
+            foreach (string heroId in _currentSquadIDs)
+            {
+                HeroData hero = DataManager.Instance.GetHeroByID(heroId);
+                if (hero == null) continue;
+                hero.currentHp = hero.GetFinalStats().hp;
+                hero.isLightlyInjured = false;
+                hero.isSeverelyInjured = false;
+            }
+            DataManager.Instance.SavePlayerData();
+            Debug.Log($"[NodeBattle] Squad HP fully restored. Count={_currentSquadIDs.Count}");
         }
 
         private void ExecuteNodeAction(SubStageNode node)
         {
-            node.Status = NodeStatus.Cleared;
-            _currentMapData.CurrentNodeId = node.Id;
             if (node.Type == SubStageNodeType.Boss)
             {
-                _activeMaps.Remove(_currentPoiData.poiId);
-                _activeSquads.Remove(_currentPoiData.poiId);
+                Debug.Log($"[Branch Progression] Boss Node {node.Id} cleared. Initiating Return Trip.");
                 ClosePanel();
                 return;
             }
-            foreach (var n in _currentMapData.Nodes) if (n.Floor == node.Floor && n.Id != node.Id) n.Status = NodeStatus.Locked;
-            foreach (var nextId in node.OutgoingEdges) { var nNext = _currentMapData.Nodes.Find(x => x.Id == nextId); if (nNext != null && nNext.Status != NodeStatus.Cleared) nNext.Status = NodeStatus.Available; }
+
+            // Đánh dấu Node Cleared và cập nhật Progression qua Service
+            LegendOfBlood.Map.BranchRouteProgressionService.SetNodeCleared(_currentMapData, node.Id);
+
+            // Re-render
             DrawProceduralMap(mapContentContainer, _currentMapData);
         }
 
         private void ExecuteNodeLose(SubStageNode failedNode)
         {
+            // Giữ node trạng thái Available để đánh lại
             failedNode.Status = NodeStatus.Available;
             _currentMapData.CurrentNodeId = failedNode.Id;
+            Debug.Log($"[Branch Progression] DEFEAT at Node {failedNode.Id}. Node remains Available. Child nodes are NOT unlocked.");
 
-            foreach (var node in _currentMapData.Nodes)
-            {
-                if (node.Floor > failedNode.Floor && node.Status != NodeStatus.Cleared)
-                {
-                    node.Status = NodeStatus.Locked;
-                }
-            }
+            // Hồi phục (đã được gọi trong RestoreSquadHp ở trước đó)
+            // Không khóa lại các node ở tầng cao hơn theo yêu cầu (không dùng Floor logic nữa)
 
             DrawProceduralMap(mapContentContainer, _currentMapData);
         }
@@ -565,14 +819,5 @@ namespace LegendOfBlood
         #endregion
 
         private void ClosePanel() { if (difficultyPopup != null) difficultyPopup.gameObject.SetActive(false); if (nodeDetailPopup != null) nodeDetailPopup.gameObject.SetActive(false); GameManager.Instance.UIManager.GoBack(); }
-=======
-        #endregion
-
-        private void ClosePanel()
-        {
-            if (difficultyPopup != null) difficultyPopup.gameObject.SetActive(false);
-            GameManager.Instance.UIManager.GoBack();
-        }
->>>>>>> e0220ebd678bac299fea0eb241af71c2d31c9051
     }
 }

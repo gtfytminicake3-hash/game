@@ -19,6 +19,10 @@ namespace LegendOfBlood
 
         private void Awake()
         {
+            if (iconImage == null) iconImage = transform.Find("Icon")?.GetComponent<Image>() ?? GetComponentsInChildren<Image>(true)[1]; // Usually index 1 is the icon, 0 is background
+            if (amountText == null) amountText = transform.Find("CountText")?.GetComponent<TextMeshProUGUI>() ?? GetComponentInChildren<TextMeshProUGUI>(true);
+            if (clickButton == null) clickButton = GetComponent<Button>();
+
             if (clickButton != null)
             {
                 clickButton.onClick.AddListener(OnSlotClicked);
@@ -27,7 +31,6 @@ namespace LegendOfBlood
 
         public void Setup(ItemData item, int amount)
         {
-            OnClicked = null; // Reset event to avoid double subscription when pooled
             _currentItem = item;
             _currentAmount = amount;
 

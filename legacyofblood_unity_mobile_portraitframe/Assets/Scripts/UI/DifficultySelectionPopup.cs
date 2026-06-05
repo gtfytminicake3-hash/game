@@ -24,10 +24,16 @@ namespace LegendOfBlood
 
         private void Start()
         {
-            if (btnNormal != null) btnNormal.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Normal, 1));
-            if (btnHard != null) btnHard.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Hard, 2));
-            if (btnHell != null) btnHell.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Hell, 3));
-            if (btnNightmare != null) btnNightmare.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Nightmare, 4));
+            RegisterListeners();
+        }
+
+        public void RegisterListeners()
+        {
+            // Remove previous listeners to prevent duplicates
+            if (btnNormal != null) { btnNormal.onClick.RemoveAllListeners(); btnNormal.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Normal, 1)); }
+            if (btnHard != null) { btnHard.onClick.RemoveAllListeners(); btnHard.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Hard, 2)); }
+            if (btnHell != null) { btnHell.onClick.RemoveAllListeners(); btnHell.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Hell, 3)); }
+            if (btnNightmare != null) { btnNightmare.onClick.RemoveAllListeners(); btnNightmare.onClick.AddListener(() => OnSelect(ProceduralDifficulty.Nightmare, 4)); }
         }
 
         public void Show(string poiName, Action<ProceduralDifficulty> onDifficultySelected, string poiId = null)

@@ -135,7 +135,7 @@ namespace LegendOfBlood
                 return;
             }
 
-            // Tìm và mở Upgrade Panel (Giả định nằm trong scene chung với Detail Panel)
+            // Tạm thời vẫn dùng FindFirstObjectByType nhưng bổ sung thông báo lỗi rõ ràng lên UI
             EquipmentUpgradePanel upgradePanel = FindFirstObjectByType<EquipmentUpgradePanel>(FindObjectsInactive.Include);
             if (upgradePanel != null)
             {
@@ -143,7 +143,10 @@ namespace LegendOfBlood
             }
             else
             {
-                UnityEngine.Debug.LogError("Không tìm thấy EquipmentUpgradePanel trong scene!");
+                string errorMsg = "[Lỗi] Không tìm thấy EquipmentUpgradePanel trong Scene! Bạn vui lòng kéo Prefab này vào UI Canvas.";
+                UnityEngine.Debug.LogError(errorMsg);
+                if (GameManager.Instance != null && GameManager.Instance.UINotificationManager != null)
+                    GameManager.Instance.UINotificationManager.ShowNotification(errorMsg);
             }
         }
 

@@ -59,7 +59,11 @@ namespace LegendOfBlood
             if (itemTabButton != null) itemTabButton.onClick.AddListener(() => SwitchTab(InventoryTabType.Item));
             if (equipmentTabButton != null) equipmentTabButton.onClick.AddListener(() => SwitchTab(InventoryTabType.Equipment));
             
-            detailView.SetActive(false);
+            if (detailView != null)
+            {
+                if (detailIcon == null) detailIcon = detailView.transform.Find("Icon")?.GetComponent<Image>() ?? detailView.GetComponentInChildren<Image>(true);
+                detailView.SetActive(false);
+            }
 
             // Initialize Poolers
             _itemPooler = new UIListPooler<KeyValuePair<string, int>, ItemSlot>(itemSlotPrefab, itemGridParent, (slot, kvp) => {
@@ -193,7 +197,12 @@ namespace LegendOfBlood
             _selectedEquip = null;
             
             detailView.SetActive(true);
-            detailIcon.sprite = item.icon;
+            if (detailIcon != null) 
+            {
+                detailIcon.sprite = item.icon;
+                detailIcon.enabled = true;
+                detailIcon.color = Color.white;
+            }
             detailNameText.text = item.itemName;
             detailDescText.text = item.description;
             detailCountText.text = $"Số lượng: {amount}";
@@ -209,7 +218,12 @@ namespace LegendOfBlood
             _selectedItem = null;
 
             detailView.SetActive(true);
-            detailIcon.sprite = equip.GetIcon();
+            if (detailIcon != null)
+            {
+                detailIcon.sprite = equip.GetIcon();
+                detailIcon.enabled = true;
+                detailIcon.color = Color.white;
+            }
             detailNameText.text = equip.equipmentName;
             
             string desc = $"<color=#FFD700>Bậc: {equip.tier} | Cấp: {equip.level}</color>\n\n";

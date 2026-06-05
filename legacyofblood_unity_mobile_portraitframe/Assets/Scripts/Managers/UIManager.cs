@@ -203,11 +203,6 @@ namespace LegendOfBlood
         /// </summary>
         /// <param name="panelType">Loại panel cần hiển thị</param>
         /// <param name="hideCurrent">True: Ẩn panel đang mở. False: Hiển thị panel mới đè lên (dùng cho popup)</param>
-        public void ShowPanel(UIPanelType panelType, bool hideCurrent, bool addToHistory)
-        {
-            ShowPanel(panelType, hideCurrent);
-        }
-
         public void ShowPanel(UIPanelType panelType, bool hideCurrent = true)
         {
             if (panelType == UIPanelType.None) return;

@@ -1,11 +1,5 @@
-<<<<<<< HEAD
-[BreedingDump] FOUND: BreedingWorkshopRoot at MainCanvas/Panel_Breeding/BreedingWorkshopRoot, Active: True, InstanceID: 93188
-[BreedingDump] FOUND: Panel_Breeding at MainCanvas/Panel_Breeding, Active: False, InstanceID: 89604
-[BreedingDump] FOUND: StartBreedingButton at MainCanvas/Panel_Breeding/BreedingWorkshopRoot/SelectionArea/StartBreedingButton, Active: True, InstanceID: 93214
-[BreedingDump] FOUND: MenuItem_Breeding at MainCanvas/Panel_Menu/MenuOverlayRoot/RightMenuPanel/MenuListContainer/MenuItem_Breeding, Active: True, InstanceID: 90150
-=======
-[BreedingDump] FOUND: BreedingWorkshopRoot at MainCanvas/Panel_Breeding/BreedingWorkshopRoot, Active: True, InstanceID: 112270
-[BreedingDump] FOUND: MenuItem_Breeding at MainCanvas/Panel_Menu/MenuOverlayRoot/RightMenuPanel/MenuListContainer/MenuItem_Breeding, Active: True, InstanceID: 108954
-[BreedingDump] FOUND: Panel_Breeding at MainCanvas/Panel_Breeding, Active: False, InstanceID: 108360
-[BreedingDump] FOUND: StartBreedingButton at MainCanvas/Panel_Breeding/BreedingWorkshopRoot/SelectionArea/StartBreedingButton, Active: True, InstanceID: 112296
->>>>>>> e0220ebd678bac299fea0eb241af71c2d31c9051
+[BreedingDump] FOUND: StartBreedingButton at MainCanvas/Panel_Breeding/BreedingWorkshopRoot/SelectionArea/StartBreedingButton, Active: True, InstanceID: -152264
+[BreedingDump] FOUND: Tab_Breeding at MainCanvas/Panel_Lobby/SafeArea/BottomBar/BottomNavIcons/Tab_Breeding, Active: True, InstanceID: 107910
+[BreedingDump] FOUND: BreedingWorkshopRoot at MainCanvas/Panel_Breeding/BreedingWorkshopRoot, Active: True, InstanceID: -152010
+[BreedingDump] FOUND: Panel_Breeding at MainCanvas/Panel_Breeding, Active: False, InstanceID: -152000
+[BreedingDump] FOUND: MenuItem_Breeding at MainCanvas/Panel_Menu/MenuOverlayRoot/RightMenuPanel/MenuListContainer/MenuItem_Breeding, Active: True, InstanceID: -150740

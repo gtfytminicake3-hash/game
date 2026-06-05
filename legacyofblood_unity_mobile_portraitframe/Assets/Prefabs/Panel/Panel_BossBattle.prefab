@@ -610,6 +610,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.UIPanelNavButton
   targetPanel: 1
   isBackButton: 0
+  clearHistory: 0
 --- !u!1 &598252729888059803
 GameObject:
   m_ObjectHideFlags: 0
@@ -746,6 +747,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.UIPanelNavButton
   targetPanel: 22
   isBackButton: 0
+  clearHistory: 0
 --- !u!1 &727698059791224847
 GameObject:
   m_ObjectHideFlags: 0
@@ -882,6 +884,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.UIPanelNavButton
   targetPanel: 0
   isBackButton: 0
+  clearHistory: 0
 --- !u!1 &940785895697951741
 GameObject:
   m_ObjectHideFlags: 0
@@ -2621,6 +2624,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.UIPanelNavButton
   targetPanel: 18
   isBackButton: 0
+  clearHistory: 0
 --- !u!1 &4095732250353443245
 GameObject:
   m_ObjectHideFlags: 0
@@ -3029,6 +3033,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.UIPanelNavButton
   targetPanel: 10
   isBackButton: 0
+  clearHistory: 0
 --- !u!1 &5791944450401978829
 GameObject:
   m_ObjectHideFlags: 0

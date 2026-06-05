@@ -61,12 +61,6 @@ namespace LegendOfBlood
 
         public void Show(HeroData hero)
         {
-            if (!gameObject.scene.IsValid())
-            {
-                Debug.LogError("[TraitUpgradePanel] Dang goi Show tren prefab asset. Hay instantiate panel vao scene truoc khi Show.");
-                return;
-            }
-
             _currentHero = hero;
             RefreshUI();
             gameObject.SetActive(true);
@@ -77,20 +71,11 @@ namespace LegendOfBlood
             foreach (var item in _instantiatedItems) Destroy(item);
             _instantiatedItems.Clear();
 
-            Transform container = ResolveItemsContainer();
-            if (container == null)
-            {
-                Debug.LogError("[TraitUpgradePanel] Khong tim thay itemsContainer trong instance cua panel.");
-                return;
-            }
-
             if (traitUpgradeItemPrefab == null)
             {
                 Debug.LogError("[TraitUpgradePanel] Chưa gán Prefab 'traitUpgradeItemPrefab' lấy gì mà hiện danh sách?");
                 return;
             }
-
-            if (_currentHero == null || _currentHero.traitIDs == null) return;
 
             for (int i = 0; i < _currentHero.traitIDs.Count; i++)
             {
@@ -98,8 +83,7 @@ namespace LegendOfBlood
                 Trait trait = DataManager.Instance.GetTraitByID(traitId);
                 if (trait == null) continue;
 
-                GameObject itemObj = Instantiate(traitUpgradeItemPrefab);
-                itemObj.transform.SetParent(container, false);
+                GameObject itemObj = Instantiate(traitUpgradeItemPrefab, itemsContainer);
                 _instantiatedItems.Add(itemObj);
 
                 // Điển hình Prefab cần có 2 Text (Tên, Mô tả) và 1 Nút (Nâng Cấp)
@@ -128,13 +112,20 @@ namespace LegendOfBlood
                     {
                         upgradeBtn.gameObject.SetActive(true);
                         
-                        // Đổi text trong nút thành chữ "Nâng cấp"
+                        bool hasEnoughExp = _currentHero.experience >= trait.upgradeExpCost;
+                        upgradeBtn.interactable = hasEnoughExp;
+                        
                         TextMeshProUGUI btnText = upgradeBtn.GetComponentInChildren<TextMeshProUGUI>();
-                        if (btnText != null) btnText.text = "Upgrade";
+                        if (btnText != null) 
+                        {
+                            string colorTag = hasEnoughExp ? "<color=#FFFFFF>" : "<color=#FF0000>";
+                            btnText.text = $"Upgrade\n<size=70%>{colorTag}Cost: {trait.upgradeExpCost} EXP</color></size>";
+                        }
 
                         int indexToReplace = i; // Closure capture
                         string nextId = trait.nextUpgradeTraitID;
-                        upgradeBtn.onClick.AddListener(() => OnUpgradeTrait(indexToReplace, nextId));
+                        int expCost = trait.upgradeExpCost;
+                        upgradeBtn.onClick.AddListener(() => OnUpgradeTrait(indexToReplace, nextId, expCost));
                     }
                     else
                     {
@@ -148,39 +139,22 @@ namespace LegendOfBlood
             }
         }
 
-        private Transform ResolveItemsContainer()
+        private void OnUpgradeTrait(int index, string nextUpgradeId, int expCost)
         {
-            if (itemsContainer != null &&
-                itemsContainer.gameObject.scene.IsValid() &&
-                itemsContainer.IsChildOf(transform))
+            if (_currentHero.experience < expCost)
             {
-                return itemsContainer;
+                GameManager.Instance.UINotificationManager?.ShowNotification(LocalizationSystem.GetText("not_enough_exp"));
+                return;
             }
 
-            Transform[] transforms = GetComponentsInChildren<Transform>(true);
-            foreach (var t in transforms)
-            {
-                if (t == transform) continue;
+            _currentHero.experience -= expCost;
 
-                string lowerName = t.name.ToLowerInvariant();
-                if (t.gameObject.scene.IsValid() &&
-                    (lowerName.Contains("content") || lowerName.Contains("container")))
-                {
-                    itemsContainer = t;
-                    return itemsContainer;
-                }
-            }
-
-            itemsContainer = null;
-            return null;
-        }
-
-        private void OnUpgradeTrait(int index, string nextUpgradeId)
-        {
             // Trượt rank cũ, thay bằng Rank mới (đã thăng cấp)
             _currentHero.traitIDs[index] = nextUpgradeId;
             
-            // Theo thiết kế: Thăng cấp Trait chỉ dùng 1 lần vào Level 60 hoặc 100.
+            // Lưu dữ liệu sau khi trừ EXP và thay Trait
+            DataManager.Instance.SavePlayerData();
+
             // Cập nhật ngầm vào hệ thống
             EventManager.TriggerEvent(GameEvents.OnHeroListChanged);
             EventManager.TriggerEvent(GameEvents.OnHeroCardClicked, _currentHero);

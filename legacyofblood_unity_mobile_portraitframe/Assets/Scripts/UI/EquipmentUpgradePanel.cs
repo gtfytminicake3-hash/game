@@ -25,7 +25,17 @@ namespace LegendOfBlood
         {
             base.Start();
             PanelType = UIPanelType.None; // Popup
+
+            // Auto-hook if missing
+            if (closeButton == null) closeButton = transform.Find("Container/CloseButton")?.GetComponent<Button>();
+            if (confirmUpgradeButton == null) confirmUpgradeButton = transform.Find("Container/ConfirmUpgradeButton")?.GetComponent<Button>();
             
+            if (toggleTierD == null) toggleTierD = transform.Find("Container/ToggleGroup/Toggle_D")?.GetComponent<Toggle>();
+            if (toggleTierC == null) toggleTierC = transform.Find("Container/ToggleGroup/Toggle_C")?.GetComponent<Toggle>();
+            if (toggleTierB == null) toggleTierB = transform.Find("Container/ToggleGroup/Toggle_B")?.GetComponent<Toggle>();
+            if (toggleTierA == null) toggleTierA = transform.Find("Container/ToggleGroup/Toggle_A")?.GetComponent<Toggle>();
+            if (toggleTierS == null) toggleTierS = transform.Find("Container/ToggleGroup/Toggle_S")?.GetComponent<Toggle>();
+
             if (closeButton != null)
                 closeButton.onClick.AddListener(ClosePanel);
                 

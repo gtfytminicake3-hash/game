@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 563034e4fccb10c4a922e8258da32992, type: 3}
+  m_Name: item_wish_charm
+  m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.ItemData
+  id: item_wish_charm
+  itemName: "B\xF9a \u01AF\u1EDBc Nguy\u1EC7n"
+  description: "T\u1EA5m b\xF9a r\xE1ch n\xE1t c\u1ED5 x\u01B0a, ph\xE1t ra m\u1ED9t
+    th\u1EE9 \xE1nh s\xE1ng ma m\u1ECB. D\xF9ng \u0111\u1EC3 m\u1EDF kh\xF3a ch\u1EE9c
+    n\u0103ng Breeding tri\u1EC7u h\u1ED3i chi\u1EBFn binh."
+  icon: {fileID: -2861859666011770400, guid: 121ddb158c1f9d44cae8d0f193ed5ce1, type: 3}
+  type: 2
+  isStackable: 1
+  maxStackSize: 99
+  sellPrice: 0
+  speedUpValueInSeconds: 0

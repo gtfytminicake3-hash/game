@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 563034e4fccb10c4a922e8258da32992, type: 3}
+  m_Name: item_mutation_potion
+  m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.ItemData
+  id: item_mutation_potion
+  itemName: "Thu\u1ED1c Bi\u1EBFn D\u1ECB"
+  description: "M\u1ED9t lo\u1EA1i huy\u1EBFt thanh k\xEC b\xED s\u1EE7i b\u1ECDt
+    xanh. C\xF3 kh\u1EA3 n\u0103ng k\xEDch ph\xE1t \u0111\u1ED9t bi\u1EBFn gen, cung
+    c\u1EA5p exp Kh\u1ED5ng kh\u1ED3 cho c\xE1c Hero."
+  icon: {fileID: -8457213707100853734, guid: 48cf695fe53658541a183519ee30991e, type: 3}
+  type: 0
+  isStackable: 1
+  maxStackSize: 99
+  sellPrice: 0
+  speedUpValueInSeconds: 0

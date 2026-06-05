@@ -207,7 +207,7 @@ namespace LegendOfBlood
                 }
 
                 RefreshUI();
-                GameManager.Instance.UINotificationManager.ShowNotification(newResult.DidPlayerWin ? "Phục thù thành công! Bạn có thể nhận thưởng." : "Rất tiếc, vẫn chưa đủ sức mạnh để chiến thắng...");
+                LegendOfBlood.ToastNotificationManager.Show(newResult.DidPlayerWin ? "Phục thù thành công! Bạn có thể nhận thưởng." : "Rất tiếc, vẫn chưa đủ sức mạnh để chiến thắng...", 3f);
             }
         }
 

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using System.Linq;
 
 namespace LegendOfBlood
 {
@@ -28,13 +29,14 @@ namespace LegendOfBlood
 
         private void AutoHook()
         {
-            if (btnClose == null) btnClose = transform.Find("Btn_Close")?.GetComponent<Button>() ?? transform.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name.Contains("Close"));
-            if (btnAction == null) btnAction = transform.Find("Btn_Action")?.GetComponent<Button>() ?? transform.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name.Contains("Action") || b.name.Contains("Confirm"));
-            if (btnLose == null) btnLose = transform.Find("Btn_Lose")?.GetComponent<Button>() ?? transform.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name.Contains("Lose") || b.name.Contains("Thua"));
-            
-            if (titleText == null) titleText = transform.Find("Title")?.GetComponent<TextMeshProUGUI>();
-            if (monstersText == null) monstersText = transform.Find("Monsters")?.GetComponent<TextMeshProUGUI>();
-            if (lootText == null) lootText = transform.Find("LootText")?.GetComponent<TextMeshProUGUI>();
+            if (titleText == null) titleText = transform.Find("Title")?.GetComponent<TextMeshProUGUI>() ?? transform.GetComponentsInChildren<TextMeshProUGUI>(true).FirstOrDefault(t => t.name.Contains("Title"));
+            if (monstersText == null) monstersText = transform.Find("Description")?.GetComponent<TextMeshProUGUI>() ?? transform.GetComponentsInChildren<TextMeshProUGUI>(true).FirstOrDefault(t => t.name.Contains("Desc") || t.name.Contains("Monster"));
+            if (lootText == null) lootText = transform.Find("Drops")?.GetComponent<TextMeshProUGUI>() ?? transform.GetComponentsInChildren<TextMeshProUGUI>(true).FirstOrDefault(t => t.name.Contains("Loot") || t.name.Contains("Reward"));
+            if (btnClose == null) btnClose = transform.Find("Btn_Close")?.GetComponent<Button>() ?? transform.Find("CloseButton")?.GetComponent<Button>() ?? transform.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name.Contains("Close"));
+            if (btnAction == null) btnAction = transform.Find("Btn_Combat")?.GetComponent<Button>() ?? transform.Find("Btn_Action")?.GetComponent<Button>() ?? transform.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name.Contains("Action") || b.name.Contains("Combat") || b.name.Contains("Enter"));
+            if (btnActionText == null && btnAction != null) btnActionText = btnAction.GetComponentInChildren<TextMeshProUGUI>();
+            if (btnLose == null) btnLose = transform.Find("Btn_Lose")?.GetComponent<Button>() ?? transform.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name.Contains("Lose") || b.name.Contains("Surrender"));
+            if (btnLoseText == null && btnLose != null) btnLoseText = btnLose.GetComponentInChildren<TextMeshProUGUI>();
         }
 
         private void Start()
@@ -79,7 +81,7 @@ namespace LegendOfBlood
                     btnActionText.text = "Đã Dọn Dẹp";
                     btnAction.interactable = false;
                 }
-                else if (node.Status == NodeStatus.Available || node.Status == NodeStatus.InProgress)
+                else if (node.Status == NodeStatus.Available)
                 {
                     btnActionText.text = "Tiến Vào";
                     btnAction.interactable = true;

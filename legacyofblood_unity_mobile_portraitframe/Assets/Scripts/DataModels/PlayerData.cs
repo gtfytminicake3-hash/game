@@ -46,7 +46,23 @@ namespace LegendOfBlood
         public Combat.CombatResult combatResult;
         public LootData loot;
         public int experienceGained;
-        // Add any other data needed for the report
+
+        // === BOSS VICTORY TRACKING ===
+        // true = trận đánh Boss thắng → kích hoạt hospital + kết thúc expedition
+        public bool isBossVictory;
+        public string bossNodeId;       // ID của boss node đã bị đánh bại
+        public System.Collections.Generic.List<string> squadIds; // IDs của squad đi thám hiểm
+        public System.Collections.Generic.List<HeroBattleOutcomeSnapshot> heroOutcomeSnapshots; // Snapshot thương vong sau trận Boss
+    }
+
+    [Serializable]
+    public class HeroBattleOutcomeSnapshot
+    {
+        public string heroId;
+        public float hpAfterBattle;
+        public float maxHp;
+        public bool isDead;
+        public int injurySeverity; // 0 = None, 1 = Light, 2 = Severe
     }
 
     [Serializable]

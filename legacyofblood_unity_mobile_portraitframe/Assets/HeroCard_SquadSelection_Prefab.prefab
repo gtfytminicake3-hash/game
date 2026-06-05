@@ -317,15 +317,15 @@ MonoBehaviour:
   genderIcon: {fileID: 0}
   professionIcon: {fileID: 8672469641236549566}
   avatarImage: {fileID: 2839441992671349453}
-  cardFrame: {fileID: 0}
+  cardFrame: {fileID: 4533286220408029940}
   busyIndicator: {fileID: 0}
   cardButton: {fileID: 23166461291883899}
   maleIcon: {fileID: 0}
   femaleIcon: {fileID: 0}
-  warriorIcon: {fileID: 2119572679851325784, guid: c5778b273805fee42be3738f2cbe991c, type: 3}
-  archerIcon: {fileID: -5414287645184229653, guid: 86881b01f101f364ab201a4cb0a64d61, type: 3}
-  mageIcon: {fileID: 8039999832180073680, guid: 22d2c4598c52bbb4ba1c9514c075ee7e, type: 3}
-  healerIcon: {fileID: -54405366562832703, guid: 6f3fecaa5e3e2964fba55640a8948a7d, type: 3}
+  warriorIcon: {fileID: 0}
+  archerIcon: {fileID: 0}
+  mageIcon: {fileID: 0}
+  healerIcon: {fileID: 0}
 --- !u!1 &2952682395730373741
 GameObject:
   m_ObjectHideFlags: 0

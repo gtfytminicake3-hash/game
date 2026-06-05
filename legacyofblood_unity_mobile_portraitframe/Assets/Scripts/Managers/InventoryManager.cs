@@ -106,26 +106,7 @@ namespace LegendOfBlood
             }
 
             // Đồng bộ UI ngay lúc đầu cho King God Pass
-            EnsureStarterExpItems();
             OnPassExpChanged?.Invoke(_playerData.passLevel, _playerData.passExp);
-        }
-
-        private void EnsureStarterExpItems()
-        {
-            const string expBookId = "IT_EXP_BOOK_S";
-            const int starterAmount = 20;
-
-            if (_playerData.items == null)
-            {
-                _playerData.items = new Dictionary<string, int>();
-            }
-
-            if (_playerData.items.TryGetValue(expBookId, out int count) && count > 0) return;
-
-            _playerData.items[expBookId] = starterAmount;
-            OnItemChanged?.Invoke(expBookId, starterAmount);
-            Debug.Log($"[InventoryManager] Added starter EXP books: {expBookId} x{starterAmount}");
-            DataManager.Instance?.SavePlayerData();
         }
 
 
@@ -387,14 +368,7 @@ namespace LegendOfBlood
         {
             if (_playerData == null) return 0;
             
-            int count = 0;
-            foreach (string id in GetEquivalentItemIds(itemID))
-            {
-                if (_playerData.items.TryGetValue(id, out int itemCount))
-                {
-                    count += itemCount;
-                }
-            }
+            _playerData.items.TryGetValue(itemID, out int count);
             return count;
         }
 
@@ -405,7 +379,6 @@ namespace LegendOfBlood
         {
             if (_playerData == null || string.IsNullOrEmpty(itemID) || amount <= 0) return;
             
-            itemID = NormalizeItemId(itemID);
             int currentCount = GetItemCount(itemID);
             int newCount = currentCount + amount;
             _playerData.items[itemID] = newCount;
@@ -432,63 +405,22 @@ namespace LegendOfBlood
                 return false;
             }
 
-            string idToSpend = GetFirstAvailableItemId(itemID);
-            int idCurrentCount = _playerData.items.TryGetValue(idToSpend, out int existingCount) ? existingCount : 0;
-            int idNewCount = idCurrentCount - amount;
             int newCount = currentCount - amount;
             
-            if (idNewCount > 0)
+            if (newCount > 0)
             {
-                _playerData.items[idToSpend] = idNewCount;
+                _playerData.items[itemID] = newCount;
             }
             else
             {
                 // Xóa khỏi dictionary nếu hết sạch để giữ cho dictionary gọn gàng
-                _playerData.items.Remove(idToSpend);
+                _playerData.items.Remove(itemID);
             }
             
             // Phát sự kiện
-            OnItemChanged?.Invoke(idToSpend, Mathf.Max(0, idNewCount));
-            OnItemChanged?.Invoke(NormalizeItemId(itemID), newCount);
+            OnItemChanged?.Invoke(itemID, newCount);
             Debug.Log($"Used {amount} of item '{itemID}'. Remaining: {newCount}");
             return true;
-        }
-
-        private static string NormalizeItemId(string itemID)
-        {
-            if (string.IsNullOrEmpty(itemID)) return itemID;
-            if (itemID.StartsWith("ITEM_EXP_BOOK_"))
-            {
-                return "IT_" + itemID.Substring("ITEM_".Length);
-            }
-
-            return itemID;
-        }
-
-        private static IEnumerable<string> GetEquivalentItemIds(string itemID)
-        {
-            if (string.IsNullOrEmpty(itemID)) yield break;
-
-            string normalized = NormalizeItemId(itemID);
-            yield return normalized;
-
-            if (normalized.StartsWith("IT_EXP_BOOK_"))
-            {
-                yield return "ITEM_" + normalized.Substring("IT_".Length);
-            }
-        }
-
-        private string GetFirstAvailableItemId(string itemID)
-        {
-            foreach (string id in GetEquivalentItemIds(itemID))
-            {
-                if (_playerData.items.TryGetValue(id, out int count) && count > 0)
-                {
-                    return id;
-                }
-            }
-
-            return NormalizeItemId(itemID);
         }
 
         #endregion

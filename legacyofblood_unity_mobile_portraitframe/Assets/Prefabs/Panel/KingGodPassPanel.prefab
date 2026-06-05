@@ -1373,6 +1373,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.UIPanelNavButton
   targetPanel: 0
   isBackButton: 1
+  clearHistory: 0
 --- !u!1 &6198566631682421230
 GameObject:
   m_ObjectHideFlags: 0

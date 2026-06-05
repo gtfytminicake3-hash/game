@@ -44,15 +44,14 @@ namespace LegendOfBlood
 
         private void AutoHook()
         {
-            if (confirmButton == null) confirmButton = transform.Find("Btn_Confirm")?.GetComponent<Button>() ?? transform.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name.Contains("Confirm") || b.name.Contains("XacNhan"));
-            if (closeButton == null) closeButton = transform.Find("Btn_Close")?.GetComponent<Button>() ?? transform.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name.Contains("Close") || b.name.Contains("Back"));
-            if (titleText == null) titleText = transform.Find("TitleText")?.GetComponent<TextMeshProUGUI>() ?? transform.GetComponentsInChildren<TextMeshProUGUI>(true).FirstOrDefault(t => t.name.Contains("Title") || t.name.Contains("TieuDe"));
-            if (totalCpText == null) totalCpText = transform.Find("TotalCPText")?.GetComponent<TextMeshProUGUI>() ?? transform.GetComponentsInChildren<TextMeshProUGUI>(true).FirstOrDefault(t => t.name.Contains("CP") || t.name.Contains("CombatPower"));
+            if (titleText == null) titleText = transform.Find("Title")?.GetComponent<TextMeshProUGUI>() ?? transform.Find("TitleText")?.GetComponent<TextMeshProUGUI>() ?? transform.GetComponentsInChildren<TextMeshProUGUI>(true).FirstOrDefault(t => t.name.Contains("Title"));
             if (squadSlotsContainer == null) squadSlotsContainer = transform.Find("SquadSlotsContainer") ?? transform.Find("SquadSlots");
-            if (availableListContainer == null) availableListContainer = transform.Find("AvailableListContainer") ?? transform.Find("HeroList") ?? transform.Find("Scroll View/Viewport/Content");
+            if (availableListContainer == null) availableListContainer = transform.Find("AvailableListScrollView/Viewport/Content") ?? transform.Find("AvailableListContainer") ?? transform.Find("Scroll View/Viewport/Content");
+            if (totalCpText == null) totalCpText = transform.Find("T?ng Cp")?.GetComponent<TextMeshProUGUI>() ?? transform.Find("TotalCPText")?.GetComponent<TextMeshProUGUI>() ?? transform.GetComponentsInChildren<TextMeshProUGUI>(true).FirstOrDefault(t => t.name.Contains("CP"));
+            if (confirmButton == null) confirmButton = transform.Find("ActionsArea/confirm")?.GetComponent<Button>() ?? transform.Find("Btn_Confirm")?.GetComponent<Button>() ?? transform.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name.Contains("Confirm"));
+            if (closeButton == null) closeButton = transform.Find("ActionsArea/close")?.GetComponent<Button>() ?? transform.Find("Btn_Close")?.GetComponent<Button>() ?? transform.GetComponentsInChildren<Button>(true).FirstOrDefault(b => b.name.Contains("Close"));
 
             if (confirmButton != null) Debug.Log($"[SquadSelectionPanel] Auto-hooked confirmButton: {confirmButton.name}");
-            else Debug.LogWarning("[SquadSelectionPanel] Failed to auto-hook confirmButton!");
         }
 
         #region Unity Lifecycle
@@ -78,15 +77,6 @@ namespace LegendOfBlood
         /// <param name="requiredProfession">Nghề nghiệp yêu cầu (tùy chọn). Nếu khác None, chỉ hero có nghề này mới được chọn.</param>
         public void Show(string title, List<HeroData> availableHeroes, int squadSize, Action<List<string>, int> onConfirm, Profession requiredProfession = Profession.None, int initialDifficulty = 1)
         {
-            // Dọn dẹp các slot dummy có sẵn trong Prefab ở lần mở đầu tiên
-            if (_availableHeroCards.Count == 0 && availableListContainer != null && availableListContainer.childCount > 0)
-            {
-                foreach (Transform child in availableListContainer)
-                {
-                    Destroy(child.gameObject);
-                }
-            }
-
             GameManager.Instance.UIManager.ShowPanel(UIPanelType.SquadSelection, false);
             transform.SetAsLastSibling();
             
@@ -138,66 +128,50 @@ namespace LegendOfBlood
         
         private void RefreshAvailableList()
         {
-            // Object Pooling: Lọc danh sách hero hợp lệ (giữ cả hero đã chọn để làm mờ)
-            var heroesToShow = _availableHeroes.Where(h =>
+            // Dọn dẹp danh sách cũ (bao gồm cả các slot dummy có sẵn trong Prefab)
+            if (availableListContainer != null)
             {
-                bool meetsProfessionRequirement = (_requiredProfession == Profession.None) || (h.profession == _requiredProfession);
-                return h.isMature && meetsProfessionRequirement;
-            }).OrderByDescending(h => h.GetCombatPower()).ToList();
-
-            // Ẩn tất cả card hiện tại
-            foreach (var card in _availableHeroCards)
-            {
-                if (card != null) card.SetActive(false);
+                foreach (Transform child in availableListContainer)
+                {
+                    Destroy(child.gameObject);
+                }
             }
 
-            // Tái sử dụng hoặc tạo mới card
-            for (int i = 0; i < heroesToShow.Count; i++)
+            _availableHeroCards = new List<GameObject>();
+
+            // Lọc ra những hero chưa được chọn và hợp lệ
+            var heroesToShow = _availableHeroes.Where(h =>
             {
-                var hero = heroesToShow[i];
-                GameObject cardInstance;
+                bool isNotSelected = !_selectedHeroes.Contains(h);
+                bool meetsProfessionRequirement = (_requiredProfession == Profession.None) || (h.profession == _requiredProfession);
+                // Chỉ những hero đã trưởng thành (có nghề) mới được tham gia
+                return isNotSelected && h.isMature && meetsProfessionRequirement;
+            }).ToList();
 
-                if (i < _availableHeroCards.Count && _availableHeroCards[i] != null)
-                {
-                    cardInstance = _availableHeroCards[i];
-                }
-                else
-                {
-                    cardInstance = Instantiate(heroCardPrefab, availableListContainer);
-                    _availableHeroCards.Add(cardInstance);
-                }
-
-                cardInstance.SetActive(true);
-
-                bool isSelected = _selectedHeroes.Contains(hero);
-
+            heroesToShow = heroesToShow.OrderByDescending(h => h.GetCombatPower()).ToList();
+            
+            foreach (var hero in heroesToShow)
+            {
+                GameObject cardInstance = Instantiate(heroCardPrefab, availableListContainer);
                 SquadSelectionHeroCard selectionCardScript = cardInstance.GetComponent<SquadSelectionHeroCard>();
+                
                 if (selectionCardScript != null)
                 {
+                    // Ưu tiên dùng Script thẻ chọn quân đặc thù nếu Prefab đã được gắn
                     selectionCardScript.Setup(hero, this);
                 }
                 else
                 {
+                    // Fallback tương thích ngược: Dùng HeroCard thường và chèn Nút vào cả thẻ
                     HeroCard heroCardScript = cardInstance.GetComponent<HeroCard>();
-                    if (heroCardScript != null) heroCardScript.Setup(hero);
+                    heroCardScript.Setup(hero);
                     
                     Button button = cardInstance.GetComponent<Button>();
-                    if (button != null)
-                    {
-                        button.onClick.RemoveAllListeners();
-                        if (!isSelected)
-                        {
-                            button.onClick.AddListener(() => AddHeroToSquad(hero));
-                        }
-                    }
+                    button.onClick.RemoveAllListeners(); // Xóa listener cũ để click KHÔNG mở bảng InfoPanel nữa
+                    button.onClick.AddListener(() => AddHeroToSquad(hero));
                 }
-
-                // UX: Làm mờ hero đã chọn
-                CanvasGroup cg = cardInstance.GetComponent<CanvasGroup>();
-                if (cg == null) cg = cardInstance.AddComponent<CanvasGroup>();
-                cg.alpha = isSelected ? 0.4f : 1.0f;
-                cg.interactable = !isSelected;
-                cg.blocksRaycasts = !isSelected;
+                
+                _availableHeroCards.Add(cardInstance);
             }
         }
 
@@ -269,9 +243,12 @@ namespace LegendOfBlood
                                                  .Select(h => h.id)
                                                  .ToList();
             
+            // Đóng bảng hiện tại (SquadSelection) TRƯỚC khi gọi callback
+            // Điều này giúp UIManager.GoBack() chạy trước, tránh việc đè lên panel mà callback sắp mở
+            ClosePanel();
+
             // Gọi callback để trả kết quả về cho người đã mở panel này
             _onConfirmCallback?.Invoke(selectedHeroIDs, _currentDifficulty);
-            ClosePanel();
         }
 
         private void ClosePanel()

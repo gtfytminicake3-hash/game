@@ -17,7 +17,18 @@ public static class SetupBreedingFix
         var menuPanel = Object.FindAnyObjectByType<MenuPanel>(FindObjectsInactive.Include);
         if (menuPanel != null)
         {
-            var breedingBtn = GameObject.Find("MenuItem_Breeding")?.GetComponent<Button>();
+            // Tìm MenuItem_Breeding trong các con của menuPanel (bao gồm cả inactive)
+            Button breedingBtn = null;
+            Button[] allButtons = menuPanel.GetComponentsInChildren<Button>(true);
+            foreach (var btn in allButtons)
+            {
+                if (btn.gameObject.name == "MenuItem_Breeding")
+                {
+                    breedingBtn = btn;
+                    break;
+                }
+            }
+
             if (breedingBtn != null)
             {
                 var so = new SerializedObject(menuPanel);
@@ -25,7 +36,7 @@ public static class SetupBreedingFix
                 so.ApplyModifiedProperties();
                 Debug.Log("[Fix] Hooked MenuItem_Breeding to MenuPanel");
             }
-            else Debug.LogWarning("[Fix] MenuItem_Breeding not found!");
+            else Debug.LogWarning("[Fix] MenuItem_Breeding not found in MenuPanel children!");
         }
 
         // 2. Setup EXTRACTED_Breeding_Panel
