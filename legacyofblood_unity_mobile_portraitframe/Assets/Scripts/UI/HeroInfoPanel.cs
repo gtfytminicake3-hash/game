@@ -131,6 +131,14 @@ namespace LegendOfBlood
             PopulateData(heroData);
         }
         
+        public void SetupReadOnly(HeroData hero)
+        {
+            PopulateData(hero);
+            if (statAllocationButton != null) statAllocationButton.gameObject.SetActive(false);
+            if (traitUpgradeButton != null) traitUpgradeButton.gameObject.SetActive(false);
+            if (useExpItemButton != null) useExpItemButton.gameObject.SetActive(false);
+        }
+        
         private void PopulateData(HeroData hero)
         {
             _currentHero = hero;

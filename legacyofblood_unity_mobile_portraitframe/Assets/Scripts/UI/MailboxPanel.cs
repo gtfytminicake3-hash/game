@@ -100,13 +100,13 @@ namespace LegendOfBlood
                         if (report.combatResult.PlayerSurvivors != null) allies.AddRange(report.combatResult.PlayerSurvivors);
                         if (report.combatResult.PlayerCasualties != null) allies.AddRange(report.combatResult.PlayerCasualties);
                         
-                        // Lấy danh sách quái từ POI
-                        var poiData = DataManager.Instance.GetPOIByID(report.poiId);
-                        var monsterIds = poiData != null ? poiData.monsterIDs : new System.Collections.Generic.List<string>();
+                        List<HeroData> enemies = new List<HeroData>();
+                        if (report.combatResult.EnemySurvivors != null) enemies.AddRange(report.combatResult.EnemySurvivors);
+                        if (report.combatResult.EnemyCasualties != null) enemies.AddRange(report.combatResult.EnemyCasualties);
 
                         if (visualizer != null)
                         {
-                            visualizer.PlayCombat(report.combatResult, allies, null, monsterIds);
+                            visualizer.PlayCombat(report.combatResult, allies, enemies, null);
                         }
                     }, () => {
                         // X2 Thưởng
@@ -207,7 +207,7 @@ namespace LegendOfBlood
                 }
 
                 RefreshUI();
-                LegendOfBlood.ToastNotificationManager.Show(newResult.DidPlayerWin ? "Phục thù thành công! Bạn có thể nhận thưởng." : "Rất tiếc, vẫn chưa đủ sức mạnh để chiến thắng...", 3f);
+                GameManager.Instance.UINotificationManager.ShowNotification(newResult.DidPlayerWin ? "Phục thù thành công! Bạn có thể nhận thưởng." : "Rất tiếc, vẫn chưa đủ sức mạnh để chiến thắng...");
             }
         }
 

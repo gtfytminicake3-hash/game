@@ -81,7 +81,7 @@ namespace LegendOfBlood
                     btnActionText.text = "Đã Dọn Dẹp";
                     btnAction.interactable = false;
                 }
-                else if (node.Status == NodeStatus.Available)
+                else if (node.Status == NodeStatus.Available || node.Status == NodeStatus.InProgress)
                 {
                     btnActionText.text = "Tiến Vào";
                     btnAction.interactable = true;

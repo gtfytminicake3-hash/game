@@ -588,9 +588,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: LegendOfBlood.Gameplay::LegendOfBlood.BattleUnitUI
   avatarImage: {fileID: 1821493767253202547}
   hpSlider: {fileID: 1007973154944085054}
+  hpFill: {fileID: 0}
   hpText: {fileID: 8818243384508169582}
   damageTextCanvasGroup: {fileID: 8898591439210065267}
   damageText: {fileID: 3003082256010673539}
+  nameText: {fileID: 0}
+  cpText: {fileID: 0}
+  levelText: {fileID: 0}
 --- !u!1 &8189739756681375321
 GameObject:
   m_ObjectHideFlags: 0

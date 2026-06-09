@@ -11,13 +11,18 @@ namespace LegendOfBlood
         [Header("UI Component")]
         public Image avatarImage;
         public Slider hpSlider;
+        public Image hpFill;
         public TextMeshProUGUI hpText;
         public CanvasGroup damageTextCanvasGroup;
         public TextMeshProUGUI damageText;
+        public TextMeshProUGUI nameText;
+        public TextMeshProUGUI cpText;
+        public TextMeshProUGUI levelText;
 
         private int _maxHp;
         private int _currentHp;
         private Vector3 _originalPosition;
+        private Coroutine _flashRoutine;
 
         private void Awake()
         {
@@ -42,25 +47,63 @@ namespace LegendOfBlood
             UpdateHpBar(false);
         }
 
+        public void SetupReplayUnit(LegendOfBlood.Combat.CombatReplayUnitSnapshot snap, Sprite portrait)
+        {
+            if (nameText == null || cpText == null || levelText == null || hpText == null || (hpSlider == null && hpFill == null))
+            {
+                var texts = GetComponentsInChildren<TextMeshProUGUI>(true);
+                foreach (var t in texts)
+                {
+                    if (t.name == "NameText" && nameText == null) nameText = t;
+                    if (t.name == "CPText" && cpText == null) cpText = t;
+                    if (t.name == "LevelText" && levelText == null) levelText = t;
+                    if (t.name == "HpText" && hpText == null) hpText = t;
+                }
+
+                if (hpSlider == null) hpSlider = GetComponentInChildren<Slider>(true);
+                
+                if (hpSlider == null && hpFill == null) 
+                {
+                    var images = GetComponentsInChildren<Image>(true);
+                    foreach (var img in images)
+                    {
+                        if (img.name.Contains("Fill") && img != avatarImage)
+                        {
+                            hpFill = img;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (nameText != null) nameText.text = snap.displayName;
+            if (cpText != null) cpText.text = "CP: " + snap.combatPower;
+            if (levelText != null) levelText.text = "Cấp " + snap.level;
+
+            Setup(portrait, (int)snap.maxHp, (int)snap.startHp);
+        }
+
         private void UpdateHpBar(bool animate = true)
         {
+            _currentHp = Mathf.Clamp(_currentHp, 0, Mathf.Max(1, _maxHp));
+            float hpRatio = _maxHp > 0 ? (float)_currentHp / _maxHp : 0f;
+            hpRatio = Mathf.Clamp01(hpRatio);
+
             if (hpSlider != null)
             {
-                hpSlider.maxValue = _maxHp;
-                if (animate)
-                {
-                    // Tạm thời gán trực tiếp, nâng cấp bằng Lerp sau nếu cần
-                    hpSlider.value = _currentHp;
-                }
-                else
-                {
-                    hpSlider.value = _currentHp;
-                }
+                hpSlider.minValue = 0f;
+                hpSlider.maxValue = 1f;
+                hpSlider.value = hpRatio;
+            }
+
+            if (hpFill != null)
+            {
+                hpFill.fillAmount = hpRatio;
             }
 
             if (hpText != null)
             {
-                hpText.text = $"{_currentHp}/{_maxHp}";
+                hpText.text = $"{_currentHp}/{Mathf.Max(1, _maxHp)} HP";
             }
             
             // Xám ảnh nếu chết
@@ -75,7 +118,9 @@ namespace LegendOfBlood
             _currentHp = Mathf.Max(0, _currentHp - damage);
             UpdateHpBar(true);
             ShowFloatingText("-" + damage.ToString(), isCrit ? Color.yellow : Color.red, isCrit);
-            StartCoroutine(FlashRedRoutine());
+            
+            if (_flashRoutine != null) StopCoroutine(_flashRoutine);
+            _flashRoutine = StartCoroutine(FlashRedRoutine());
         }
 
         public void Heal(int amount)
@@ -127,11 +172,14 @@ namespace LegendOfBlood
         {
             if (avatarImage != null)
             {
-                Color originalColor = avatarImage.color;
                 avatarImage.color = Color.red;
                 yield return new WaitForSeconds(0.1f);
-                if (_currentHp > 0) avatarImage.color = originalColor; // Giữ xám nếu chết
+                if (_currentHp > 0) 
+                    avatarImage.color = Color.white; 
+                else 
+                    avatarImage.color = Color.gray;
             }
+            _flashRoutine = null;
         }
 
         private void ShowFloatingText(string msg, Color textColor, bool isCrit)

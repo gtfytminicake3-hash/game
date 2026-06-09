@@ -19,18 +19,10 @@ namespace LegendOfBlood
 
     public enum NodeStatus
     {
-        Locked,             // Chưa mở, trạng thái chưa xử lý
-        Available,          // Đang sáng, có thể click đánh
-        Cleared,            // Đã đánh thắng
-        BlockedByChoice,    // Bị khóa vì đã chọn nhánh khác
-        FutureLocked        // Nằm phía sau route hiện tại, chưa sáng
-    }
-
-    public enum EdgeState
-    {
-        Active,             // Đang dùng cho route hiện tại
-        BlockedByChoice,    // Bị khóa vì chọn nhánh khác
-        Future              // Đường đi trong tương lai, chưa đụng tới
+        Locked,
+        Available,
+        InProgress,
+        Cleared
     }
 
     // 1. BIỂU DIỄN PATH (SHAPE DRIVEN)
@@ -60,10 +52,6 @@ namespace LegendOfBlood
         public List<PathSegment> DrawnSegments { get; set; }
         public ProceduralDifficulty Difficulty { get; set; }
         public int CurrentNodeId { get; set; } = -1;
-
-        // --- Added for Route Progression ---
-        public List<int> CurrentFrontierNodeIds { get; set; } = new List<int>();
-        public Dictionary<string, EdgeState> EdgeStates { get; set; } = new Dictionary<string, EdgeState>();
     }
 
     public class SubStageNode
@@ -81,9 +69,7 @@ namespace LegendOfBlood
         // --- NEW FEATURES ---
         public List<string> ExpectedMonsters { get; set; }
         public List<string> ExpectedRewards { get; set; }
-        
-        // Lưu trạng thái quái vật còn sống sau khi đội quân thua.
-        public List<HeroData> SurvivingEnemies { get; set; } = null;
+        public List<LegendOfBlood.Combat.EnemyOutcome> EnemyHpSnapshot { get; set; }
         // --------------------
 
         public SubStageNode(int id, int floor, int slot)
@@ -97,7 +83,7 @@ namespace LegendOfBlood
             IncomingEdges = new List<int>();
             ExpectedMonsters = new List<string>();
             ExpectedRewards = new List<string>();
-            SurvivingEnemies = null;
+            EnemyHpSnapshot = new List<LegendOfBlood.Combat.EnemyOutcome>();
         }
     }
 
@@ -200,7 +186,18 @@ namespace LegendOfBlood
                 Difficulty = mode
             };
 
-            LegendOfBlood.Map.BranchRouteProgressionService.InitializeMap(mapData);
+            // Thiết lập logic xuất phát
+            var startNode = mapData.Nodes.FirstOrDefault(n => n.Type == SubStageNodeType.Start);
+            if (startNode != null)
+            {
+                mapData.CurrentNodeId = startNode.Id;
+                startNode.Status = NodeStatus.Cleared;
+                foreach (var nextId in startNode.OutgoingEdges)
+                {
+                    var nextNode = mapData.Nodes.FirstOrDefault(n => n.Id == nextId);
+                    if (nextNode != null) nextNode.Status = NodeStatus.Available;
+                }
+            }
 
             return mapData;
         }

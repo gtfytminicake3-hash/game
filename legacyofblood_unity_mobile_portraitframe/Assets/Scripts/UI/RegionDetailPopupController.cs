@@ -198,7 +198,7 @@ namespace LegendOfBlood
             {
                 img.color = Color.gray;
             }
-            else if (node.Status == NodeStatus.Available)
+            else if (node.Status == NodeStatus.InProgress || node.Status == NodeStatus.Available)
             {
                 if (img.gameObject.GetComponent<PulseAnimation>() == null)
                     img.gameObject.AddComponent<PulseAnimation>();

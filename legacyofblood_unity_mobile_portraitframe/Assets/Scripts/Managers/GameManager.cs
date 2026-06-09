@@ -258,6 +258,23 @@ namespace LegendOfBlood
             HospitalSystem.Tick(deltaTime);
             BuildingSystem.Tick(deltaTime);
             DataManager.Instance.Tick(deltaTime);
+
+#if UNITY_EDITOR
+            if (UnityEngine.Input.GetKeyDown(KeyCode.F9))
+            {
+                if (DataManager.Instance != null && DataManager.Instance.Player != null)
+                {
+                    if (DataManager.Instance.Player.items.ContainsKey("IT_GACHA_TICKET"))
+                        DataManager.Instance.Player.items["IT_GACHA_TICKET"] += 100;
+                    else
+                        DataManager.Instance.Player.items.Add("IT_GACHA_TICKET", 100);
+                        
+                    DataManager.Instance.SavePlayerData();
+                    if (ToastNotificationManager.Instance != null)
+                        ToastNotificationManager.Instance.ShowToast("Hack: +100 Bùa Ước Nguyện!");
+                }
+            }
+#endif
             ExpeditionManager.Tick();
         }
 

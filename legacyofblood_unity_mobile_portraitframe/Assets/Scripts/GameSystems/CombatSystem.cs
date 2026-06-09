@@ -9,6 +9,32 @@ namespace LegendOfBlood.Combat
 {
     #region 0. Lá»šP Dá»® LIá»†U Káº¾T QUáº¢ TRáº¬N Äáº¤U
     [System.Serializable]
+    public class EnemyOutcome
+    {
+        public string enemyInstanceId;
+        public string enemyTypeId;
+        public float hpAfterBattle;
+        public float maxHp;
+        public bool isDead;
+    }
+
+    [System.Serializable]
+    public struct CombatReplayUnitSnapshot
+    {
+        public string unitId;
+        public string displayName;
+        public string spriteId;
+        public float maxHp;
+        public float startHp;
+        public int slotIndex;
+        public bool isAlly;
+        public int combatPower;
+        public int level;
+        public int heroGender;
+        public int avatarIndex;
+    }
+
+    [System.Serializable]
     public class CombatResult
     {
         public bool DidPlayerWin;
@@ -19,7 +45,11 @@ namespace LegendOfBlood.Combat
         public List<HeroData> PlayerCasualties;
         public List<HeroData> EnemySurvivors;
         public List<HeroData> EnemyCasualties;
+        public List<EnemyOutcome> EnemyOutcomes;
         public List<CombatantPosition> InitialPositions;
+        
+        public List<CombatReplayUnitSnapshot> AllyReplayUnits;
+        public List<CombatReplayUnitSnapshot> EnemyReplayUnits;
     }
 
     [System.Serializable]
@@ -44,7 +74,7 @@ namespace LegendOfBlood.Combat
     }
     #endregion
 
-    #region 1. CÃC Lá»šP Dá»® LIá»†U PHá»¤ TRá»¢
+    #region 1. CÃ C Lá»šP Dá»® LIá»†U PHá»¤ TRá»¢
     public enum RowPosition { Front, Middle, Back }
 
     public class ActiveStatusEffect
@@ -73,7 +103,7 @@ namespace LegendOfBlood.Combat
     }
     #endregion
 
-    #region 2. Lá»šP COMBATANT - TRÃI TIM Cá»¦A Há»† THá»NG
+    #region 2. Lá»šP COMBATANT - TRÃ I TIM Cá»¦A Há»† THá» NG
     public class Combatant
     {
         public HeroData HeroRef { get; }
@@ -151,7 +181,7 @@ namespace LegendOfBlood.Combat
     }
     #endregion
 
-    #region 3. Há»† THá»NG CHIáº¾N Äáº¤U CHÃNH
+    #region 3. Há»† THá» NG CHIáº¾N Ä áº¤U CHÃ NH
     public class CombatSystem
     {
         private System.Random _rng;
@@ -216,12 +246,54 @@ namespace LegendOfBlood.Combat
 
             // Aura Traits
             bool playerHasAura = _playerTeam.Any(c => c.HeroRef.traitIDs.Any(t => t != null && t.Contains("AURA")));
-            if (playerHasAura) { _playerTeam.ForEach(c => c.AtkMultiplier += 0.1f); _combatLog.Add(LocalizationSystem.GetText("combat_log_aura_player") ?? "Äá»™i Player nháº­n HÃ o quang +10% ATK!"); }
+            if (playerHasAura) { _playerTeam.ForEach(c => c.AtkMultiplier += 0.1f); _combatLog.Add(LocalizationSystem.GetText("combat_log_aura_player") ?? "Ä á»™i Player nháº­n HÃ o quang +10% ATK!"); }
             bool enemyHasAura = _enemyTeam.Any(c => c.HeroRef.traitIDs.Any(t => t != null && t.Contains("AURA")));
-            if (enemyHasAura) { _enemyTeam.ForEach(c => c.AtkMultiplier += 0.1f); _combatLog.Add(LocalizationSystem.GetText("combat_log_aura_enemy") ?? "Äá»™i Äá»‹ch nháº­n HÃ o quang +10% ATK!"); }
+            if (enemyHasAura) { _enemyTeam.ForEach(c => c.AtkMultiplier += 0.1f); _combatLog.Add(LocalizationSystem.GetText("combat_log_aura_enemy") ?? "Ä á»™i Ä á»‹ch nháº­n HÃ o quang +10% ATK!"); }
 
-            LogFormation(_playerTeam, LocalizationSystem.GetText("combat_log_player_team") ?? "Äá»™i HÃ¬nh NgÆ°á»i ChÆ¡i");
-            LogFormation(_enemyTeam, LocalizationSystem.GetText("combat_log_enemy_team") ?? "Äá»™i HÃ¬nh Káº» Äá»‹ch");
+            LogFormation(_playerTeam, LocalizationSystem.GetText("combat_log_player_team") ?? "Ä á»™i HÃ¬nh NgÆ°á» i ChÆ¡i");
+            LogFormation(_enemyTeam, LocalizationSystem.GetText("combat_log_enemy_team") ?? "Đội Hình Kẻ Địch");
+
+            List<CombatReplayUnitSnapshot> allySnapshots = new List<CombatReplayUnitSnapshot>();
+            foreach (var c in _playerTeam)
+            {
+                int sIdx = initialPos.Find(p => p.InstanceID == c.InstanceID).SlotIndex;
+                allySnapshots.Add(new CombatReplayUnitSnapshot
+                {
+                    unitId = c.InstanceID,
+                    displayName = c.HeroRef.heroName,
+                    spriteId = c.HeroRef.id,
+                    maxHp = c.MaxHp,
+                    startHp = c.CurrentHp,
+                    slotIndex = sIdx,
+                    isAlly = true,
+                    combatPower = c.HeroRef.GetCombatPower(),
+                    level = c.HeroRef.level,
+                    heroGender = (int)c.HeroRef.gender,
+                    avatarIndex = c.HeroRef.avatarIndex
+                });
+            }
+
+            List<CombatReplayUnitSnapshot> enemySnapshots = new List<CombatReplayUnitSnapshot>();
+            foreach (var c in _enemyTeam)
+            {
+                int sIdx = initialPos.Find(p => p.InstanceID == c.InstanceID).SlotIndex;
+                enemySnapshots.Add(new CombatReplayUnitSnapshot
+                {
+                    unitId = c.InstanceID,
+                    displayName = c.HeroRef.heroName,
+                    spriteId = c.HeroRef.id,
+                    maxHp = c.MaxHp,
+                    startHp = c.CurrentHp,
+                    slotIndex = sIdx,
+                    isAlly = false,
+                    combatPower = c.HeroRef.GetCombatPower(),
+                    level = c.HeroRef.level,
+                    heroGender = (int)c.HeroRef.gender,
+                    avatarIndex = c.HeroRef.avatarIndex
+                });
+            }
+
+            UnityEngine.Debug.Log($"[CombatSystem] Replay snapshot created. Ally count: {allySnapshots.Count}, Enemy count: {enemySnapshots.Count}");
 
             int turn = 1;
             int maxTurns = 50; 
@@ -280,7 +352,17 @@ namespace LegendOfBlood.Combat
                 PlayerCasualties = _playerTeam.Where(c => !c.IsAlive()).Select(c => c.HeroRef).ToList(),
                 EnemySurvivors = _enemyTeam.Where(c => c.IsAlive()).Select(c => c.HeroRef).ToList(),
                 EnemyCasualties = _enemyTeam.Where(c => !c.IsAlive()).Select(c => c.HeroRef).ToList(),
-                InitialPositions = initialPos
+                EnemyOutcomes = _enemyTeam.Select(c => new EnemyOutcome
+                {
+                    enemyInstanceId = c.InstanceID,
+                    enemyTypeId = c.HeroRef.id,
+                    hpAfterBattle = c.CurrentHp,
+                    maxHp = c.MaxHp,
+                    isDead = !c.IsAlive()
+                }).ToList(),
+                InitialPositions = initialPos,
+                AllyReplayUnits = allySnapshots,
+                EnemyReplayUnits = enemySnapshots
             };
         }
 
@@ -703,4 +785,5 @@ namespace LegendOfBlood.Combat
     }
     #endregion
 }
+
 

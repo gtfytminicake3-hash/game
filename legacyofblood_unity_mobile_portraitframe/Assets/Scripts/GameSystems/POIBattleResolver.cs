@@ -38,39 +38,114 @@ namespace LegendOfBlood
             LootData loot = didWin ? BuildLoot(poi, node, expeditionManager) : new LootData();
             int exp = didWin ? BuildExperience(poi, node, expeditionManager) : 0;
 
-            // --- LưU TRẠNG THÁI QUÁI VẬT VÀO NODE ---
-            if (node != null && IsCombatNode(node))
-            {
-                if (didWin)
-                {
-                    // Thắng: xóa dữ liệu quái cũ để node được coi là Cleared
-                    node.SurvivingEnemies = null;
-                }
-                else
-                {
-                    // Thua: lưu lại danh sách quái còn sống. Do POIBattleResolver dùng CP-based
-                    // chứ không simulate từng turn nên chúớng ta cần tính HP còn lại theo tỉ lệ.
-                    // Tỉ lệ thiệt hại của địch = sức mạnh đội quân / (sức mạnh địch + sức mạnh đội quân)
-                    float damageFraction = Mathf.Clamp01((float)playerCp / (playerCp + enemyCp));
-                    var survivingEnemyClones = new List<HeroData>();
-                    foreach (var enemy in enemies)
-                    {
-                        var clone = enemy.Clone();
-                        float maxHp = clone.GetFinalStats().hp;
-                        // Giảm HP của quái theo tỉ lệ damage, nhưng không xuống dưới 1
-                        clone.currentHp = Mathf.Max(1f, maxHp * (1f - damageFraction));
-                        survivingEnemyClones.Add(clone);
-                    }
-                    node.SurvivingEnemies = survivingEnemyClones;
-                }
-            }
-            // -------------------------------------------
-
             return new POIBattleResolution
             {
                 DidWin = didWin,
                 WinChance = chance,
                 Roll = roll,
+                PlayerCombatPower = playerCp,
+                EnemyCombatPower = enemyCp,
+                Report = new ExpeditionReport
+                {
+                    poiId = poi?.poiId,
+                    poiName = poi?.poiName,
+                    combatResult = result,
+                    loot = loot,
+                    experienceGained = exp
+                }
+            };
+        }
+
+        public static POIBattleResolution ResolveNodeBattleWithCombatSimulation(
+            POIData poi,
+            SubStageNode node,
+            IReadOnlyList<string> squadHeroIds,
+            ProceduralDifficulty difficulty,
+            ExpeditionManager expeditionManager)
+        {
+            Debug.Log($"[POIBattleResolver] Start node {node.Id}");
+            
+            // 1. Clone Squad Heroes
+            List<HeroData> squad = BuildSquad(squadHeroIds);
+
+            // 2. Build Enemies from snapshot or expected monsters
+            List<HeroData> enemies = new List<HeroData>();
+            bool usingSnapshot = node.EnemyHpSnapshot != null && node.EnemyHpSnapshot.Count > 0;
+            Debug.Log($"[POIBattleResolver] using snapshot: {usingSnapshot}");
+
+            if (usingSnapshot)
+            {
+                foreach (var snapshot in node.EnemyHpSnapshot)
+                {
+                    if (snapshot.isDead || snapshot.hpAfterBattle <= 0) continue;
+                    
+                    int effectiveDifficulty = Mathf.Max(1, (int)difficulty + 1 + Mathf.Max(0, node.Floor / 3));
+                    HeroData monster = DataManager.Instance.GetMonsterByID(snapshot.enemyTypeId, effectiveDifficulty);
+                    if (monster != null)
+                    {
+                        monster.currentHp = snapshot.hpAfterBattle;
+                        enemies.Add(monster);
+                        Debug.Log($"[POIBattleResolver] Loaded enemy {monster.id} start hp: {monster.currentHp}, max hp: {monster.GetFinalStats().hp}");
+                    }
+                }
+            }
+            else
+            {
+                enemies = BuildEnemies(node, difficulty);
+                for (int i = 0; i < enemies.Count; i++)
+                {
+                    Debug.Log($"[POIBattleResolver] Fresh enemy {enemies[i].id} start hp: {enemies[i].currentHp}, max hp: {enemies[i].GetFinalStats().hp}");
+                }
+            }
+
+            // 3. Call CombatSystem.Simulate
+            CombatResult result = GameManager.Instance.CombatSystem.Simulate(squad, enemies);
+
+            // 4. Get outcomes
+            bool didWin = result.DidPlayerWin;
+            Debug.Log($"[POIBattleResolver] combat result isVictory: {didWin}");
+
+            if (result.EnemyOutcomes != null)
+            {
+                foreach (var outcome in result.EnemyOutcomes)
+                {
+                    Debug.Log($"[POIBattleResolver] Enemy outcome: id={outcome.enemyInstanceId}, hpAfterBattle={outcome.hpAfterBattle}, isDead={outcome.isDead}");
+                }
+            }
+
+            if (result.PlayerSurvivors != null)
+            {
+                foreach (var hero in result.PlayerSurvivors)
+                {
+                    Debug.Log($"[POIBattleResolver] Hero outcome: id={hero.id}, hpAfterBattle={hero.currentHp}, isDead=false");
+                }
+            }
+            if (result.PlayerCasualties != null)
+            {
+                foreach (var hero in result.PlayerCasualties)
+                {
+                    Debug.Log($"[POIBattleResolver] Hero outcome: id={hero.id}, hpAfterBattle={hero.currentHp}, isDead=true");
+                }
+            }
+
+            LootData loot = didWin ? BuildLoot(poi, node, expeditionManager) : new LootData();
+            int exp = didWin ? BuildExperience(poi, node, expeditionManager) : 0;
+
+            int playerCp = SumCombatPower(squad);
+            int enemyCp = Mathf.Max(1, SumCombatPower(enemies));
+            
+            bool isCombatNode = IsCombatNode(node);
+            float chance = isCombatNode ? CalculateWinChance(playerCp, enemyCp) : 1f;
+            if (isCombatNode) chance = Mathf.Clamp(chance, 0.05f, 0.99f); // Never promise 100% win for combat
+
+            Debug.Log($"[POIBattleResolver] Node {node.Id} ({node.Type}). Resolver Win Chance (Estimated): {chance:P0}. Player Power: {playerCp}. Enemy Power: {enemyCp}. Battle Mode: CombatSystem.");
+            Debug.Log($"[POIBattleResolver] Final Victory: {didWin}");
+
+            return new POIBattleResolution
+            {
+                DidWin = didWin,
+                WinChance = chance, 
+                Roll = 1f,      
                 PlayerCombatPower = playerCp,
                 EnemyCombatPower = enemyCp,
                 Report = new ExpeditionReport
@@ -102,18 +177,6 @@ namespace LegendOfBlood
             var enemies = new List<HeroData>();
             if (node == null || DataManager.Instance == null) return enemies;
 
-            // Nếu node đã có danh sách quái còn sống từ lần thua trước -> dùng lại với HP đã bị cào
-            if (node.SurvivingEnemies != null && node.SurvivingEnemies.Count > 0)
-            {
-                // Clone lại để thống nhất: không sửa trực tiếp dữ liệu gốc
-                foreach (var enemy in node.SurvivingEnemies)
-                {
-                    enemies.Add(enemy.Clone());
-                }
-                return enemies;
-            }
-
-            // Không có dữ liệu cũ -> tạo mới từ định nghĩa node như bình thường
             int effectiveDifficulty = Mathf.Max(1, (int)difficulty + 1 + Mathf.Max(0, node.Floor / 3));
             foreach (string monsterId in ExpandMonsterIds(node.ExpectedMonsters))
             {

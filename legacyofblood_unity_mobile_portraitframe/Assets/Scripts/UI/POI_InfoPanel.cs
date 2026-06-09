@@ -32,13 +32,6 @@ namespace LegendOfBlood
         private static Dictionary<string, List<string>> _activeSquads = new Dictionary<string, List<string>>();
         private ShapeDrivenMapData _currentMapData;
 
-        public static void UnlockSquadAndMap(string poiId)
-        {
-            if (_activeMaps.ContainsKey(poiId)) _activeMaps.Remove(poiId);
-            if (_activeSquads.ContainsKey(poiId)) _activeSquads.Remove(poiId);
-            Debug.Log($"[POI_InfoPanel] Squad and Map unlocked for POI: {poiId}");
-        }
-
         private void Awake()
         {
             PanelType = UIPanelType.POI_Info;
@@ -85,6 +78,16 @@ namespace LegendOfBlood
 
         public void Show(POIData poiData, Action onExplore, Action onDifficultySelected = null)
         {
+            RectTransform myRt = GetComponent<RectTransform>();
+            if (myRt != null)
+            {
+                myRt.anchorMin = Vector2.zero;
+                myRt.anchorMax = Vector2.one;
+                myRt.offsetMin = Vector2.zero;
+                myRt.offsetMax = Vector2.zero;
+                myRt.localScale = Vector3.one;
+            }
+
             _currentPoiData = poiData;
             _onExploreCallback = onExplore;
             _onDifficultySelectedCallback = onDifficultySelected ?? onExplore;
@@ -338,8 +341,6 @@ namespace LegendOfBlood
             if (poiNameText != null) poiNameText.text = $"{_currentPoiData.poiName.ToUpper()} [{_currentDifficulty}]";
             DrawProceduralMap(mapContentContainer, _currentMapData);
         }
-
-        // (Removed IsMergeNode and LockUnselectedBranchPath. Now handled by BranchRouteProgressionService)
         #endregion
 
         #region PROCEDURAL MAP GENERATION
@@ -407,52 +408,10 @@ namespace LegendOfBlood
                 Vector2 posTo = new Vector2((seg.To.x - 2) * columnSpacing, startY + seg.To.y * floorStepY);
                 var nFrom = nodes.Find(x => x.Floor == seg.From.y && x.Slot == seg.From.x);
                 var nTo = nodes.Find(x => x.Floor == seg.To.y && x.Slot == seg.To.x);
+                bool isActiveLine = nTo != null && nTo.Status != NodeStatus.Locked;
+                if (nFrom != null && nFrom.Status == NodeStatus.Locked) isActiveLine = false;
                 
-                EdgeState eState = EdgeState.Future;
-                bool isReversed = false;
-
-                if (nFrom != null && nTo != null)
-                {
-                    string edgeKey1 = LegendOfBlood.Map.BranchRouteProgressionService.GetEdgeKey(nFrom.Id, nTo.Id);
-                    string edgeKey2 = LegendOfBlood.Map.BranchRouteProgressionService.GetEdgeKey(nTo.Id, nFrom.Id);
-                    
-                    if (mapData.EdgeStates.TryGetValue(edgeKey1, out EdgeState st1))
-                    {
-                        eState = st1;
-                    }
-                    else if (mapData.EdgeStates.TryGetValue(edgeKey2, out EdgeState st2))
-                    {
-                        eState = st2;
-                        isReversed = true;
-                    }
-                }
-
-                // Default logic
-                Color edgeColor = new Color(0.3f, 0.3f, 0.3f, 0.5f); // Future / Dim
-                
-                if (eState == EdgeState.BlockedByChoice)
-                {
-                    edgeColor = new Color(0.1f, 0.1f, 0.1f, 0.3f);
-                }
-                else if (eState == EdgeState.Active)
-                {
-                    if (nFrom != null && nTo != null)
-                    {
-                        var parentNode = isReversed ? nTo : nFrom;
-                        var childNode = isReversed ? nFrom : nTo;
-
-                        if (parentNode.Status == NodeStatus.Cleared && childNode.Status == NodeStatus.Available)
-                        {
-                            edgeColor = new Color(0.8f, 0.6f, 0.2f, 1f); // Bright
-                        }
-                        else if (parentNode.Status == NodeStatus.Cleared && childNode.Status == NodeStatus.Cleared)
-                        {
-                            edgeColor = new Color(0.8f, 0.6f, 0.2f, 1f); // Bright for history
-                        }
-                    }
-                }
-
-                DrawSegmentLine(parent, posFrom, posTo, edgeColor);
+                DrawSegmentLine(parent, posFrom, posTo, isActiveLine);
             }
 
             foreach (var node in nodes)
@@ -524,30 +483,21 @@ namespace LegendOfBlood
             }
             
             Button btn = img.GetComponent<Button>();
-            if (node.Status == NodeStatus.Cleared)
+            if (btn != null) btn.interactable = true;
+
+            if (node.Status == NodeStatus.Cleared) img.color = Color.gray;
+            else if (node.Status == NodeStatus.InProgress || node.Status == NodeStatus.Available)
             {
-                img.color = Color.gray;
-                if (btn != null) btn.interactable = false;
+                if (img.gameObject.GetComponent<PulseAnimation>() == null) img.gameObject.AddComponent<PulseAnimation>();
             }
-            else if (node.Status == NodeStatus.Available)
-            {
-                if (img.gameObject.GetComponent<PulseAnimation>() == null) 
-                    img.gameObject.AddComponent<PulseAnimation>();
-                if (btn != null) btn.interactable = true;
-            }
-            else if (node.Status == NodeStatus.Locked || node.Status == NodeStatus.FutureLocked)
+            else if (node.Status == NodeStatus.Locked)
             {
                 img.color = new Color(img.color.r * 0.3f, img.color.g * 0.3f, img.color.b * 0.3f, 1f);
-                if (btn != null) btn.interactable = false;
-            }
-            else if (node.Status == NodeStatus.BlockedByChoice)
-            {
-                img.color = new Color(0.1f, 0.1f, 0.1f, 1f); // Rất mờ
-                if (btn != null) btn.interactable = false;
+                if (btn != null) btn.interactable = true;
             }
         }
 
-        private void DrawSegmentLine(Transform parent, Vector2 from, Vector2 to, Color edgeColor)
+        private void DrawSegmentLine(Transform parent, Vector2 from, Vector2 to, bool isActiveLine)
         {
             GameObject lineObj = new GameObject("Line_Segment");
             lineObj.transform.SetParent(parent, false);
@@ -556,8 +506,8 @@ namespace LegendOfBlood
             RectTransform rt = lineObj.AddComponent<RectTransform>();
             Image img = lineObj.AddComponent<Image>();
             
-            img.color = edgeColor;
-            img.raycastTarget = false;
+            img.color = isActiveLine ? new Color(0.8f, 0.6f, 0.2f, 1f) : new Color(0.3f, 0.3f, 0.3f, 0.5f); 
+            img.raycastTarget = false; 
 
             Vector2 dir = (to - from);
             float distance = dir.magnitude;
@@ -596,200 +546,116 @@ namespace LegendOfBlood
                 np = np.parent;
             }
 
-            nodeDetailPopup.Show(node, () =>
-            {
-                if (node.Status != NodeStatus.Available) return;
-                if (_currentSquadIDs == null || _currentSquadIDs.Count == 0) return;
-
-                // === BRANCH CHOICE LOCKING ===
-                LegendOfBlood.Map.BranchRouteProgressionService.CommitChoice(_currentMapData, node.Id);
-
-                // === DEBUG: Battle Start ===
-                int enemyHpBefore = node.SurvivingEnemies != null
-                    ? (int)node.SurvivingEnemies.Sum(e => e.currentHp)
-                    : -1; // -1 = chưa có dữ liệu (lần đầu)
-                Debug.Log($"[NodeBattle] START: NodeId={node.Id}, Type={node.Type}, Status={node.Status}, " +
-                          $"EnemyHpBefore={enemyHpBefore}, SquadCount={_currentSquadIDs.Count}");
-
-                var fakePOI = _currentPoiData;
-                fakePOI.difficultyLevel = Mathf.Max(1, (int)_currentDifficulty + 1);
-                POIBattleResolution resolution = POIBattleResolver.Resolve(
-                    fakePOI, node, _currentSquadIDs, _currentDifficulty,
-                    GameManager.Instance.ExpeditionManager);
-
-                bool isBossNode = (node.Type == SubStageNodeType.Boss);
-                int enemyHpAfter = node.SurvivingEnemies != null
-                    ? (int)node.SurvivingEnemies.Sum(e => e.currentHp)
-                    : 0;
-
-                // === DEBUG: Battle End ===
-                Debug.Log($"[NodeBattle] END: NodeId={node.Id}, IsBoss={isBossNode}, IsVictory={resolution.DidWin}, " +
-                          $"EnemyHpAfter={enemyHpAfter}, " +
-                          $"HeroOutcomes: Survivors={resolution.Report?.combatResult?.PlayerSurvivors?.Count ?? 0}, " +
-                          $"Casualties={resolution.Report?.combatResult?.PlayerCasualties?.Count ?? 0}");
-
-                if (resolution.DidWin)
+            nodeDetailPopup.Show(node, () => {
+                if (node.Status == NodeStatus.Available)
                 {
-                    // === VICTORY PATH ===
-                    if (isBossNode)
+                    if (_currentSquadIDs == null || _currentSquadIDs.Count == 0) return;
+
+                    var fakePOI = _currentPoiData;
+                    fakePOI.difficultyLevel = Mathf.Max(1, (int)_currentDifficulty + 1);
+                    POIBattleResolution resolution = POIBattleResolver.ResolveNodeBattleWithCombatSimulation(fakePOI, node, _currentSquadIDs, _currentDifficulty, GameManager.Instance.ExpeditionManager);
+
+                    if (resolution.DidWin)
                     {
-                        // Boss đã thắng: đặt flag, tạo report chuẩn
-                        resolution.Report.isBossVictory = true;
-                        resolution.Report.bossNodeId = node.Id.ToString();
-                        resolution.Report.squadIds = new System.Collections.Generic.List<string>(_currentSquadIDs);
-
-                        // === TẠO SNAPSHOT ===
-                        resolution.Report.heroOutcomeSnapshots = new System.Collections.Generic.List<HeroBattleOutcomeSnapshot>();
-                        if (resolution.Report.combatResult.PlayerSurvivors != null)
-                        {
-                            foreach (var survivor in resolution.Report.combatResult.PlayerSurvivors)
-                            {
-                                float maxHp = survivor.GetFinalStats().hp;
-                                int severity = survivor.currentHp < maxHp ? 1 : 0;
-                                resolution.Report.heroOutcomeSnapshots.Add(new HeroBattleOutcomeSnapshot
-                                {
-                                    heroId = survivor.id,
-                                    hpAfterBattle = survivor.currentHp,
-                                    maxHp = maxHp,
-                                    isDead = false,
-                                    injurySeverity = severity
-                                });
-                                Debug.Log($"[BossVictory] Snapshot Survivor: {survivor.id}, HP: {survivor.currentHp}/{maxHp}");
-                            }
-                        }
-                        if (resolution.Report.combatResult.PlayerCasualties != null)
-                        {
-                            foreach (var casualty in resolution.Report.combatResult.PlayerCasualties)
-                            {
-                                resolution.Report.heroOutcomeSnapshots.Add(new HeroBattleOutcomeSnapshot
-                                {
-                                    heroId = casualty.id,
-                                    hpAfterBattle = 0,
-                                    maxHp = casualty.GetFinalStats().hp,
-                                    isDead = true,
-                                    injurySeverity = 2
-                                });
-                                Debug.Log($"[BossVictory] Snapshot Casualty: {casualty.id}");
-                            }
-                        }
-
-                        Debug.Log($"[NodeBattle] BOSS VICTORY report created. POI={resolution.Report.poiName}, " +
-                                  $"BossNodeId={node.Id}, SnapshotCount={resolution.Report.heroOutcomeSnapshots.Count}");
-
-                        var expMgr = GameManager.Instance.ExpeditionManager;
-                        if (expMgr != null)
-                        {
-                            // Khởi tạo chuyến đi trở về thay vì end trực tiếp.
-                            // Lưu ý: KHÔNG HỒI MÁU CHO SQUAD TẠI ĐÂY.
-                            expMgr.StartReturnTripFromBossVictory(resolution.Report, _currentSquadIDs, _currentPoiData);
-                            
-                            // Lưu ý: Không xoá _activeSquads ở đây nữa, 
-                            // Squad sẽ được xoá lock trong CompleteExpeditionAfterBossVictory của ExpeditionManager
-                            _activeMaps.Remove(_currentPoiData.poiId);
-                        }
-                        else
-                        {
-                            DataManager.Instance?.Player?.UnclaimedReports?.Add(resolution.Report);
-                            DataManager.Instance?.SavePlayerData();
-                            _activeMaps.Remove(_currentPoiData.poiId);
-                            _activeSquads.Remove(_currentPoiData.poiId);
-                        }
-
-                        LegendOfBlood.ToastNotificationManager.Show(
-                            $"Đã hạ gục Boss! Thoại thuở chấn động {_currentPoiData.poiName}!", 3f);
-                        ExecuteNodeAction(node); // Mark cleared + close panel
+                        Debug.Log($"[POI_InfoPanel] Node {node.Id} Cleared.");
+                        node.EnemyHpSnapshot = null;
+                        Debug.Log($"[POI_InfoPanel] EnemyHpSnapshot cleared.");
+                    }
+                    
+                    if (GameManager.Instance.ExpeditionManager != null)
+                    {
+                        resolution.Report.nodeId = node.Id.ToString();
+                        GameManager.Instance.ExpeditionManager.StartNodeExpedition(_currentSquadIDs, resolution.Report);
+                        node.Status = NodeStatus.InProgress;
+                        DrawProceduralMap(mapContentContainer, _currentMapData);
+                        ToastNotificationManager.Show($"Đội thám hiểm đã tiến vào Node! Vui lòng chờ...");
                     }
                     else
                     {
-                        // Node thường thắng: AddReport (không hospital), unlock node tiếp
-                        var expMgr = GameManager.Instance.ExpeditionManager;
-                        if (expMgr != null)
-                            expMgr.AddReportToMailbox(resolution.Report);
-                        else
-                        {
-                            DataManager.Instance?.Player?.UnclaimedReports?.Add(resolution.Report);
-                            DataManager.Instance?.SavePlayerData();
-                        }
-
-                        // Hồi full HP cho sang node tiếp theo
-                        RestoreSquadHp();
-
-                        LegendOfBlood.ToastNotificationManager.Show(
-                            $"Chiến thắng! ({resolution.WinChance:P0}). Tiến lên node tiếp theo!", 3f);
-                        ExecuteNodeAction(node);
+                        Debug.LogError("ExpeditionManager missing! Fallback to instant resolution.");
                     }
+                }
+            }, () => { ExecuteNodeLose(node, null); _onExploreCallback?.Invoke(); });
+        }
+
+        public static void UnlockSquadAndMap(string poiId)
+        {
+            if (!string.IsNullOrEmpty(poiId))
+            {
+                if (_activeMaps.ContainsKey(poiId)) _activeMaps.Remove(poiId);
+                if (_activeSquads.ContainsKey(poiId)) _activeSquads.Remove(poiId);
+            }
+        }
+
+        public static void ApplyPendingNodeBattleResult(ExpeditionReport report)
+        {
+            if (report == null || string.IsNullOrEmpty(report.poiId) || string.IsNullOrEmpty(report.nodeId)) return;
+            if (!_activeMaps.ContainsKey(report.poiId)) return;
+
+            var mapData = _activeMaps[report.poiId];
+            var node = mapData.Nodes.Find(n => n.Id.ToString() == report.nodeId);
+            if (node == null) return;
+
+            var poiPanel = UnityEngine.Object.FindFirstObjectByType<POI_InfoPanel>(UnityEngine.FindObjectsInactive.Include);
+            
+            if (report.combatResult != null && report.combatResult.DidPlayerWin)
+            {
+                node.Status = NodeStatus.Cleared;
+                mapData.CurrentNodeId = node.Id;
+                if (node.Type == SubStageNodeType.Boss)
+                {
+                    _activeMaps.Remove(report.poiId);
+                    _activeSquads.Remove(report.poiId);
+                    if (poiPanel != null && poiPanel.gameObject.activeSelf && poiPanel._currentPoiData?.poiId == report.poiId)
+                        poiPanel.ClosePanel();
                 }
                 else
                 {
-                    // === DEFEAT PATH ===
-                    if (isBossNode)
+                    foreach (var n in mapData.Nodes) if (n.Floor == node.Floor && n.Id != node.Id) n.Status = NodeStatus.Locked;
+                    foreach (var nextId in node.OutgoingEdges) { var nNext = mapData.Nodes.Find(x => x.Id == nextId); if (nNext != null && nNext.Status != NodeStatus.Cleared) nNext.Status = NodeStatus.Available; }
+                }
+            }
+            else
+            {
+                node.Status = NodeStatus.Available;
+                mapData.CurrentNodeId = node.Id;
+                if (report.combatResult != null && report.combatResult.EnemyOutcomes != null)
+                {
+                    node.EnemyHpSnapshot = report.combatResult.EnemyOutcomes;
+                }
+                foreach (var n in mapData.Nodes)
+                {
+                    if (n.Floor > node.Floor && n.Status != NodeStatus.Cleared)
                     {
-                        // Boss thua: không thoát, không hospital, boss giữ máu, hero hồi lại
-                        Debug.Log($"[NodeBattle] BOSS LOSE: NodeId={node.Id}. Boss HP saved, squad revived. Expedition continues.");
-                        RestoreSquadHp(); // Hero hồi full để đánh lại boss
-                        LegendOfBlood.ToastNotificationManager.Show(
-                            $"Boss chưa đâu! ({resolution.WinChance:P0}). Quân đã được hồi phục, dám đánh lại không?", 3f);
-                        ExecuteNodeLose(node); // Giữ node available, không đóng panel
-                    }
-                    else
-                    {
-                        // Node thường thua: không hospital, hero hồi lại, quai giữ máu
-                        Debug.Log($"[NodeBattle] NODE LOSE: NodeId={node.Id}. Node remains available. Squad revived. Enemy HP saved in node.");
-                        RestoreSquadHp(); // Hero hồi full để đánh lại node
-                        LegendOfBlood.ToastNotificationManager.Show(
-                            $"Thất bại ({resolution.WinChance:P0}). Hùng quân đã hồi sinh! Quái vẫn giữ máu cũ!", 3f);
-                        ExecuteNodeLose(node);
+                        n.Status = NodeStatus.Locked;
                     }
                 }
-            }, () =>
-            {
-                // Nút Rút Quân - chưa implement, chỉ đóng panel tạm
-                Debug.Log("[NodeBattle] Player manually retreated from node.");
-                GameManager.Instance.UIManager.GoBack();
-            });
-        }
-
-        /// <summary>Hồi full máu và xóa trạng thái thương cho toàn bộ squad hiện tại.</summary>
-        private void RestoreSquadHp()
-        {
-            if (_currentSquadIDs == null || DataManager.Instance == null) return;
-            foreach (string heroId in _currentSquadIDs)
-            {
-                HeroData hero = DataManager.Instance.GetHeroByID(heroId);
-                if (hero == null) continue;
-                hero.currentHp = hero.GetFinalStats().hp;
-                hero.isLightlyInjured = false;
-                hero.isSeverelyInjured = false;
-            }
-            DataManager.Instance.SavePlayerData();
-            Debug.Log($"[NodeBattle] Squad HP fully restored. Count={_currentSquadIDs.Count}");
-        }
-
-        private void ExecuteNodeAction(SubStageNode node)
-        {
-            if (node.Type == SubStageNodeType.Boss)
-            {
-                Debug.Log($"[Branch Progression] Boss Node {node.Id} cleared. Initiating Return Trip.");
-                ClosePanel();
-                return;
             }
 
-            // Đánh dấu Node Cleared và cập nhật Progression qua Service
-            LegendOfBlood.Map.BranchRouteProgressionService.SetNodeCleared(_currentMapData, node.Id);
-
-            // Re-render
-            DrawProceduralMap(mapContentContainer, _currentMapData);
+            if (poiPanel != null && poiPanel.gameObject.activeSelf && poiPanel._currentPoiData?.poiId == report.poiId)
+            {
+                poiPanel.DrawProceduralMap(poiPanel.mapContentContainer, mapData);
+            }
         }
 
-        private void ExecuteNodeLose(SubStageNode failedNode)
+        private void ExecuteNodeLose(SubStageNode failedNode, POIBattleResolution resolution)
         {
-            // Giữ node trạng thái Available để đánh lại
             failedNode.Status = NodeStatus.Available;
             _currentMapData.CurrentNodeId = failedNode.Id;
-            Debug.Log($"[Branch Progression] DEFEAT at Node {failedNode.Id}. Node remains Available. Child nodes are NOT unlocked.");
 
-            // Hồi phục (đã được gọi trong RestoreSquadHp ở trước đó)
-            // Không khóa lại các node ở tầng cao hơn theo yêu cầu (không dùng Floor logic nữa)
+            if (resolution != null && resolution.Report != null && resolution.Report.combatResult != null)
+            {
+                var combatResult = resolution.Report.combatResult;
+                failedNode.EnemyHpSnapshot = combatResult.EnemyOutcomes;
+            }
+            
+            foreach (var node in _currentMapData.Nodes)
+            {
+                if (node.Floor > failedNode.Floor && node.Status != NodeStatus.Cleared)
+                {
+                    node.Status = NodeStatus.Locked;
+                }
+            }
 
             DrawProceduralMap(mapContentContainer, _currentMapData);
         }

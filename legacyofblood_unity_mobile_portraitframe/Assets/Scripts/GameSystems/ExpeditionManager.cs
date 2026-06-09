@@ -77,47 +77,55 @@ namespace LegendOfBlood
                         if (expedition.preCalculatedReport != null && !expedition.preCalculatedReport.combatResult.DidPlayerWin)
                         {
                             GameManager.Instance?.UINotificationManager?.ShowNotification(
-                                $"Đội thám hiểm tại {expedition.preCalculatedReport.poiName} đã THẤT BẠI và đang rút lui về căn cứ!");
+                                $"Äá»™i thÃ¡m hiá»ƒm táº¡i {expedition.preCalculatedReport.poiName} Ä‘Ã£ THáº¤T Báº I vÃ  Ä‘ang rÃºt lui vá» cÄƒn cá»©!");
                         }
                     }
                     else if (expedition.currentState == ExpeditionState.Returning)
                     {
-                        DataManager.Instance.Player.UnclaimedReports.Add(expedition.preCalculatedReport);
-                        _activeExpeditions.Remove(expedition);
-
-                        OnExpeditionFinished?.Invoke(expedition.expeditionId);
-                        OnNewReportReceived?.Invoke();
-
-                        GameManager.Instance?.UINotificationManager?.ShowNotification(
-                            $"Đội thám hiểm đã trở về từ {expedition.preCalculatedReport.poiName}. Vui lòng kiểm tra Hòm Thư!");
-
-                        if (expedition.preCalculatedReport.combatResult.DidPlayerWin && expedition.preCalculatedReport.poiId != null)
+                        if (!string.IsNullOrEmpty(expedition.nodeId))
                         {
-                            var poi = DataManager.Instance.GetPOIByID(expedition.preCalculatedReport.poiId);
-                            if (poi != null && poi.type != POIType.TowerOfTrials)
-                                OnPOICleared?.Invoke(poi);
-                        }
-
-                        // Chỉ xử lý hospital nếu là Boss Victory (NodeMap Boss hoặc WorldMap Boss)
-                        if (expedition.preCalculatedReport.isBossVictory)
-                        {
-                            // 1. Thêm report vào mailbox
-                            AddReportToMailbox(expedition.preCalculatedReport);
-                            // 2. Hospital logic
-                            ProcessHospitalAfterBossVictory(expedition.preCalculatedReport);
-                            // 3. Clear Node Map lock
-                            CompleteExpeditionAfterBossVictory(expedition.preCalculatedReport.poiId);
+                            ApplyPendingNodeBattleResult(expedition);
+                            hasChanges = true;
                         }
                         else
                         {
-                            // World Map Node Thường hoặc Tower
                             DataManager.Instance.Player.UnclaimedReports.Add(expedition.preCalculatedReport);
-                            OnNewReportReceived?.Invoke();
-                        }
+                            _activeExpeditions.Remove(expedition);
 
-                        Debug.Log($"[ExpeditionManager] Expedition {expedition.expeditionId} finished. " +
-                                  $"Hospital processed={expedition.preCalculatedReport.isBossVictory}.");
-                        hasChanges = true;
+                            OnExpeditionFinished?.Invoke(expedition.expeditionId);
+                            OnNewReportReceived?.Invoke();
+
+                            GameManager.Instance?.UINotificationManager?.ShowNotification(
+                                $"Äá»™i thÃ¡m hiá»ƒm Ä‘Ã£ trá»Ÿ vá» tá»« {expedition.preCalculatedReport.poiName}. Vui lÃ²ng kiá»ƒm tra HÃ²m ThÆ°!");
+
+                            if (expedition.preCalculatedReport.combatResult.DidPlayerWin && expedition.preCalculatedReport.poiId != null)
+                            {
+                                var poi = DataManager.Instance.GetPOIByID(expedition.preCalculatedReport.poiId);
+                                if (poi != null && poi.type != POIType.TowerOfTrials)
+                                    OnPOICleared?.Invoke(poi);
+                            }
+
+                            // Chá»‰ xá»­ lÃ½ hospital náº¿u lÃ  Boss Victory (NodeMap Boss hoáº·c WorldMap Boss)
+                            if (expedition.preCalculatedReport.isBossVictory)
+                            {
+                                // 1. ThÃªm report vÃ o mailbox
+                                AddReportToMailbox(expedition.preCalculatedReport);
+                                // 2. Hospital logic
+                                ProcessHospitalAfterBossVictory(expedition.preCalculatedReport);
+                                // 3. Clear Node Map lock
+                                CompleteExpeditionAfterBossVictory(expedition.preCalculatedReport.poiId);
+                            }
+                            else
+                            {
+                                // World Map Node ThÆ°á»ng hoáº·c Tower
+                                DataManager.Instance.Player.UnclaimedReports.Add(expedition.preCalculatedReport);
+                                OnNewReportReceived?.Invoke();
+                            }
+
+                            Debug.Log($"[ExpeditionManager] Expedition {expedition.expeditionId} finished. " +
+                                      $"Hospital processed={expedition.preCalculatedReport.isBossVictory}.");
+                            hasChanges = true;
+                        }
                     }
                 }
             }
@@ -131,8 +139,8 @@ namespace LegendOfBlood
         // =====================================================================
 
         /// <summary>
-        /// BƯỚC 1: Chỉ thêm report vào Hòm Thư. KHÔNG gọi hospital.
-        /// Hospital chỉ được xử lý sau khi Boss đã bị đánh bại.
+        /// BÆ¯á»šC 1: Chá»‰ thÃªm report vÃ o HÃ²m ThÆ°. KHÃ”NG gá»i hospital.
+        /// Hospital chá»‰ Ä‘Æ°á»£c xá»­ lÃ½ sau khi Boss Ä‘Ã£ bá»‹ Ä‘Ã¡nh báº¡i.
         /// </summary>
         public void AddReportToMailbox(ExpeditionReport report)
         {
@@ -147,9 +155,9 @@ namespace LegendOfBlood
         }
 
         /// <summary>
-        /// BƯỚC 2: Xử lý hospital SAU KHI boss bị đánh bại. Chỉ gọi với BossVictoryReport.
-        /// Guard check: nếu report.isBossVictory = false → bỏ qua, không làm gì.
-        /// Thứ tự bắt buộc: AddReportToMailbox → ProcessHospitalAfterBossVictory → CompleteExpeditionAfterBossVictory.
+        /// BÆ¯á»šC 2: Xá»­ lÃ½ hospital SAU KHI boss bá»‹ Ä‘Ã¡nh báº¡i. Chá»‰ gá»i vá»›i BossVictoryReport.
+        /// Guard check: náº¿u report.isBossVictory = false â†’ bá» qua, khÃ´ng lÃ m gÃ¬.
+        /// Thá»© tá»± báº¯t buá»™c: AddReportToMailbox â†’ ProcessHospitalAfterBossVictory â†’ CompleteExpeditionAfterBossVictory.
         /// </summary>
         public void ProcessHospitalAfterBossVictory(ExpeditionReport report)
         {
@@ -180,7 +188,7 @@ namespace LegendOfBlood
                         var realHero = DataManager.Instance.GetHeroByID(snapshot.heroId);
                         if (realHero != null)
                         {
-                            // Đảm bảo HP thật khớp với Snapshot trước khi nhập viện
+                            // Äáº£m báº£o HP tháº­t khá»›p vá»›i Snapshot trÆ°á»›c khi nháº­p viá»‡n
                             realHero.currentHp = snapshot.hpAfterBattle; 
                             injuredCount++;
                             Debug.Log($"[Hospital] Light injury: {realHero.heroName}, HP={snapshot.hpAfterBattle}/{snapshot.maxHp}");
@@ -203,14 +211,14 @@ namespace LegendOfBlood
         }
 
         /// <summary>
-        /// BƯỚC 3: Kết thúc expedition session SAU KHI hospital đã được xử lý.
-        /// Gọi cuối cùng trong chuỗi: AddReportToMailbox → ProcessHospitalAfterBossVictory → CompleteExpeditionAfterBossVictory.
+        /// BÆ¯á»šC 3: Káº¿t thÃºc expedition session SAU KHI hospital Ä‘Ã£ Ä‘Æ°á»£c xá»­ lÃ½.
+        /// Gá»i cuá»‘i cÃ¹ng trong chuá»—i: AddReportToMailbox â†’ ProcessHospitalAfterBossVictory â†’ CompleteExpeditionAfterBossVictory.
         /// </summary>
         public void CompleteExpeditionAfterBossVictory(string poiId)
         {
             Debug.Log($"[ExpeditionManager] Expedition completed after boss victory. POI={poiId}");
             
-            // Xoá lock squad và map trong POI_InfoPanel
+            // XoÃ¡ lock squad vÃ  map trong POI_InfoPanel
             POI_InfoPanel.UnlockSquadAndMap(poiId);
             
             Debug.Log($"[ExpeditionManager] Expedition session cleared. Squad editing is now unlocked.");
@@ -221,14 +229,14 @@ namespace LegendOfBlood
         // =====================================================================
 
         /// <summary>
-        /// Tạo chuyến đi Returning 5 giây sau khi thắng Boss Node Map.
-        /// Hết 5 giây, ExpeditionManager.Tick() sẽ gọi Hospital logic.
+        /// Táº¡o chuyáº¿n Ä‘i Returning 5 giÃ¢y sau khi tháº¯ng Boss Node Map.
+        /// Háº¿t 5 giÃ¢y, ExpeditionManager.Tick() sáº½ gá»i Hospital logic.
         /// </summary>
         public void StartReturnTripFromBossVictory(ExpeditionReport report, List<string> squadIds, POIData destination)
         {
             if (report == null || destination == null) return;
 
-            long returnTimeMs = 5000; // Tạm thời 5 giây theo yêu cầu
+            long returnTimeMs = 5000; // Táº¡m thá»i 5 giÃ¢y theo yÃªu cáº§u
             long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
 
             var newExpedition = new ActiveExpedition
@@ -236,9 +244,9 @@ namespace LegendOfBlood
                 expeditionId = Guid.NewGuid().ToString(),
                 heroIds = squadIds,
                 poiId = destination.poiId,
-                currentState = ExpeditionState.Returning, // Bắt đầu ở Returning
+                currentState = ExpeditionState.Returning, // Báº¯t Ä‘áº§u á»Ÿ Returning
                 stateEndTimestamp = currentTime + returnTimeMs,
-                travelDurationMs = returnTimeMs, // Dùng travel duration để chứa thời gian
+                travelDurationMs = returnTimeMs, // DÃ¹ng travel duration Ä‘á»ƒ chá»©a thá»i gian
                 combatDurationMs = 0,
                 completionTimestamp = currentTime + returnTimeMs,
                 preCalculatedReport = report
@@ -283,7 +291,7 @@ namespace LegendOfBlood
         }
 
         // =====================================================================
-        // START EXPEDITION (WorldMap path - không phải Node Map)
+        // START EXPEDITION (WorldMap path - khÃ´ng pháº£i Node Map)
         // =====================================================================
 
         public void StartExpedition(List<string> squadHeroIDs, POIData destination)
@@ -293,7 +301,7 @@ namespace LegendOfBlood
                 Debug.LogWarning("Max concurrent expeditions reached.");
                 string msg = global::LocalizationSystem.GetText("msg_max_expedition_reached");
                 if (string.IsNullOrEmpty(msg))
-                    msg = $"Đã đạt giới hạn số đội viễn chinh tối đa ({GetMaxConcurrentExpeditions()}). Hãy nâng cấp Doanh Trại để gửi thêm.";
+                    msg = $"ÄÃ£ Ä‘áº¡t giá»›i háº¡n sá»‘ Ä‘á»™i viá»…n chinh tá»‘i Ä‘a ({GetMaxConcurrentExpeditions()}). HÃ£y nÃ¢ng cáº¥p Doanh Tráº¡i Ä‘á»ƒ gá»­i thÃªm.";
                 GameManager.Instance?.UINotificationManager?.ShowNotification(msg);
                 return;
             }
@@ -322,7 +330,7 @@ namespace LegendOfBlood
                 combatResult = combatResult,
                 loot = CalculateLoot(destination, combatResult.DidPlayerWin),
                 experienceGained = CalculateExperience(destination, combatResult.DidPlayerWin),
-                isBossVictory = false // Node thường không kích hoạt hospital
+                isBossVictory = false // Node thÆ°á»ng khÃ´ng kÃ­ch hoáº¡t hospital
             };
 
             CreateAndDispatchActiveExpedition(squadHeroIDs, destination, travelTime, combatTimeMs, report);
@@ -347,7 +355,7 @@ namespace LegendOfBlood
                 combatResult = combatResult,
                 loot = CalculateBossLoot(bossId, combatResult.DidPlayerWin),
                 experienceGained = combatResult.DidPlayerWin ? 500 : 50,
-                // WorldMap Boss: isBossVictory chỉ true khi thắng
+                // WorldMap Boss: isBossVictory chá»‰ true khi tháº¯ng
                 isBossVictory = combatResult.DidPlayerWin,
                 bossNodeId = bossId,
                 squadIds = new List<string>(squadHeroIDs)
@@ -383,7 +391,7 @@ namespace LegendOfBlood
                 var floorResult = GameManager.Instance.CombatSystem.Simulate(participatingHeroes, enemyMonsters, floor, isHealingChallenge);
                 totalCombatTimeMs += floorResult.TotalTurns * COMBAT_TURN_DURATION_MS;
 
-                finalCombatLog.Add($"<color=yellow>--- Tầng {floor} ---</color>");
+                finalCombatLog.Add($"<color=yellow>--- Táº§ng {floor} ---</color>");
                 finalCombatLog.AddRange(floorResult.CombatLog);
 
                 if (floorResult.DidPlayerWin)
@@ -421,7 +429,7 @@ namespace LegendOfBlood
                 combatResult = finalResult,
                 loot = towerConquered ? CalculateTowerLoot(towerPoi.currentFloor) : new LootData(),
                 experienceGained = CalculateTowerExperience(floorsCleared),
-                isBossVictory = towerConquered // Tower: hospital chỉ khi chinh phục xong tháp
+                isBossVictory = towerConquered // Tower: hospital chá»‰ khi chinh phá»¥c xong thÃ¡p
             };
 
             if (towerConquered) OnTowerConquered?.Invoke(towerPoi);
@@ -431,7 +439,7 @@ namespace LegendOfBlood
         }
 
         private void CreateAndDispatchActiveExpedition(List<string> heroIds, POIData destination,
-            long travelTimeMs, long combatTimeMs, ExpeditionReport report)
+            long travelTimeMs, long combatTimeMs, ExpeditionReport report, string nodeId = null)
         {
             long totalDurationMs = travelTimeMs * 2 + combatTimeMs;
             long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
@@ -441,6 +449,7 @@ namespace LegendOfBlood
                 expeditionId = Guid.NewGuid().ToString(),
                 heroIds = heroIds,
                 poiId = destination.poiId,
+                nodeId = nodeId,
                 currentState = ExpeditionState.Traveling,
                 stateEndTimestamp = currentTime + travelTimeMs,
                 travelDurationMs = travelTimeMs,
@@ -650,5 +659,84 @@ namespace LegendOfBlood
         }
 
         #endregion
+
+        public void StartNodeExpedition(List<string> squadHeroIDs, ExpeditionReport report)
+        {
+            long travelTime = 0; // Nodes are immediate travel
+            long combatTimeMs = EXPLORATION_TIME_MS + (report.combatResult.TotalTurns * COMBAT_TURN_DURATION_MS);
+            
+            var destination = DataManager.Instance.GetPOIByID(report.poiId);
+            if (destination == null) destination = new POIData { poiId = report.poiId, poiName = report.poiName };
+            
+            CreateAndDispatchActiveExpedition(squadHeroIDs, destination, travelTime, combatTimeMs, report, report.nodeId);
+        }
+
+        public void ApplyPendingNodeBattleResult(ActiveExpedition pendingBattle)
+        {
+            if (pendingBattle == null) return;
+            
+            DataManager.Instance.Player.UnclaimedReports.Add(pendingBattle.preCalculatedReport);
+            _activeExpeditions.Remove(pendingBattle);
+
+            OnExpeditionFinished?.Invoke(pendingBattle.expeditionId);
+            OnNewReportReceived?.Invoke();
+            
+            if (!string.IsNullOrEmpty(pendingBattle.nodeId))
+            {
+                LegendOfBlood.POI_InfoPanel.ApplyPendingNodeBattleResult(pendingBattle.preCalculatedReport);
+            }
+            
+            if (GameManager.Instance != null && GameManager.Instance.UINotificationManager != null)
+            {
+                string resStr = pendingBattle.preCalculatedReport.combatResult.DidPlayerWin ? "Chiáº¿n tháº¯ng" : "Tháº¥t báº¡i";
+                GameManager.Instance.UINotificationManager.ShowNotification($"Káº¿t quáº£ Ä‘Ã¡nh Node: {resStr}. Vui lÃ²ng kiá»ƒm tra HÃ²m ThÆ°!");
+            }
+            
+            Debug.Log($"Applying battle result by debug fast forward using same timer flow for expedition {pendingBattle.expeditionId}");
+            Debug.Log($"report delivered to Mailbox");
+            Debug.Log($"replay EventLog count: {(pendingBattle.preCalculatedReport.combatResult?.EventLog?.Count ?? 0)}");
+        }
+
+        public void CompleteAllPendingNodeBattlesDebug()
+        {
+            Debug.Log("Debug fast forward pending node battles");
+            if (_activeExpeditions == null || _activeExpeditions.Count == 0)
+            {
+                Debug.Log("No pending node battle found");
+                return;
+            }
+
+            long currentTime = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            bool foundAny = false;
+
+            foreach (var expedition in _activeExpeditions.ToList())
+            {
+                if (!string.IsNullOrEmpty(expedition.nodeId))
+                {
+                    foundAny = true;
+                    Debug.Log($"battle id: {expedition.expeditionId}");
+                    Debug.Log($"node id: {expedition.nodeId}");
+                    Debug.Log($"old endsAt: {expedition.stateEndTimestamp}");
+                    
+                    expedition.stateEndTimestamp = currentTime;
+                    Debug.Log($"new endsAt: {expedition.stateEndTimestamp}");
+                    Debug.Log($"result victory: {expedition.preCalculatedReport.combatResult.DidPlayerWin}");
+                    Debug.Log($"EventLog count: {expedition.preCalculatedReport.combatResult?.EventLog?.Count}");
+                    
+                    ApplyPendingNodeBattleResult(expedition);
+                }
+            }
+
+            if (!foundAny)
+            {
+                Debug.Log("No pending node battle found");
+            }
+            else
+            {
+                DataManager.Instance.SavePlayerData();
+            }
+        }
+
     }
 }
+

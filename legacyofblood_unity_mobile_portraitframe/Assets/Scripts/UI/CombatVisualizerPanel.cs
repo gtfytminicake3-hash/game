@@ -37,7 +37,7 @@ namespace LegendOfBlood.Combat
 
         private void Awake()
         {
-            PanelType = UIPanelType.Battle; // Tương ứng với loại mà UIManager đang check
+            PanelType = UIPanelType.Battle; // TÃ†Â°Ã†Â¡ng Ã¡Â»Â©ng vÃ¡Â»â€ºi loÃ¡ÂºÂ¡i mÃƒÂ  UIManager Ã„â€˜ang check
 
             if (skipButtonText != null) skipButtonText.text = global::LocalizationSystem.GetText("btn_skip");
             if (victoryTitleText != null) victoryTitleText.text = global::LocalizationSystem.GetText("combat_result_title");
@@ -56,60 +56,58 @@ namespace LegendOfBlood.Combat
             base.Start();
         }
 
-        public void PlayCombat(CombatResult result, List<HeroData> initialAllies, List<HeroData> initialEnemies, List<string> monsterIds = null)
+                public void PlayCombat(CombatResult result, List<HeroData> initialAllies, List<HeroData> initialEnemies, List<string> monsterIds = null)
         {
             _cachedResult = result;
             if (victoryScreen != null) victoryScreen.SetActive(false);
             if (defeatScreen != null) defeatScreen.SetActive(false);
             
-            // Cập nhật title text nếu POI có truyền thông tin xuống, tạm thời để combat title UI xử lý.
-            // Có thể truyền thêm tham số string poiName vào sau quá trình refactor tổng.
-
+            Transform battleTitle = transform.Find("BattleTitle");
+            if (battleTitle != null) battleTitle.gameObject.SetActive(false);
+            
             ClearBoard();
 
-            // Khởi tạo Dàn Diễn viên
-            int allyIndex = 0;
-            foreach (var h in initialAllies)
+            if (result.AllyReplayUnits != null && result.AllyReplayUnits.Count > 0)
             {
-                string id = $"P_{h.profession}_{allyIndex}";
-                int slotIndex = allyIndex % 9;
-                if (_cachedResult.InitialPositions != null)
+                foreach (var snap in result.AllyReplayUnits)
                 {
-                    var pos = _cachedResult.InitialPositions.Find(p => p.InstanceID == id && p.IsAlly);
-                    if (!string.IsNullOrEmpty(pos.InstanceID)) slotIndex = pos.SlotIndex;
+                    var unitUI = InstantiateSnapshotInSlot(snap);
+                    _unitMap[snap.unitId] = unitUI;
+                    UnityEngine.Debug.Log($"[CombatVisualizer] Spawn {snap.unitId} - {snap.displayName} (Ally: {snap.isAlly})");
                 }
-
-                var unit = InstantiateUnitInSlot(h, true, slotIndex);
-                _unitMap[id] = unit;
-                allyIndex++;
-            }
-
-            int enemyIndex = 0;
-            if (initialEnemies != null)
-            {
-                foreach (var e in initialEnemies)
+                
+                foreach (var snap in result.EnemyReplayUnits)
                 {
-                    string id = $"E_{e.profession}_{enemyIndex}";
-                    int slotIndex = enemyIndex % 9;
+                    var unitUI = InstantiateSnapshotInSlot(snap);
+                    _unitMap[snap.unitId] = unitUI;
+                    UnityEngine.Debug.Log($"[CombatVisualizer] Spawn {snap.unitId} - {snap.displayName} (Ally: {snap.isAlly})");
+                }
+            }
+            else
+            {
+                UnityEngine.Debug.LogWarning("[CombatVisualizer] Replay snapshot missing, using legacy fallback.");
+                int allyIndex = 0;
+                foreach (var h in initialAllies)
+                {
+                    string id = $"P_{h.profession}_{allyIndex}";
+                    int slotIndex = allyIndex % 9;
                     if (_cachedResult.InitialPositions != null)
                     {
-                        var pos = _cachedResult.InitialPositions.Find(p => p.InstanceID == id && !p.IsAlly);
+                        var pos = _cachedResult.InitialPositions.Find(p => p.InstanceID == id && p.IsAlly);
                         if (!string.IsNullOrEmpty(pos.InstanceID)) slotIndex = pos.SlotIndex;
                     }
 
-                    var unit = InstantiateUnitInSlot(e, false, slotIndex);
+                    var unit = InstantiateUnitInSlot(h, id, true, slotIndex);
                     _unitMap[id] = unit;
-                    enemyIndex++;
+                    allyIndex++;
                 }
-            } 
-            else if (monsterIds != null)
-            {
-                foreach (var monId in monsterIds)
+
+                int enemyIndex = 0;
+                if (initialEnemies != null)
                 {
-                    HeroData m = DataManager.Instance.GetMonsterByID(monId);
-                    if (m != null)
+                    foreach (var e in initialEnemies)
                     {
-                        string id = $"E_{m.profession}_{enemyIndex}";
+                        string id = $"E_{e.profession}_{enemyIndex}";
                         int slotIndex = enemyIndex % 9;
                         if (_cachedResult.InitialPositions != null)
                         {
@@ -117,115 +115,162 @@ namespace LegendOfBlood.Combat
                             if (!string.IsNullOrEmpty(pos.InstanceID)) slotIndex = pos.SlotIndex;
                         }
 
-                        var unit = InstantiateUnitInSlot(m, false, slotIndex);
+                        var unit = InstantiateUnitInSlot(e, id, false, slotIndex);
                         _unitMap[id] = unit;
+                        enemyIndex++;
                     }
-                    enemyIndex++;
-                }
+                } 
             }
 
-            // Bắt đầu nhại lại kịch bản
             if (_cachedResult.EventLog != null && _cachedResult.EventLog.Count > 0)
             {
+                if (_playbackRoutine != null) StopCoroutine(_playbackRoutine);
                 _playbackRoutine = StartCoroutine(PlaybackRoutine());
             }
             else
             {
-                // Nếu không có eventlog (do lỗi gọi nhầm hàm cũ), hiển thị kết quả luôn
                 ShowResultScreen();
             }
+
+            StartCoroutine(LogAfterOneFrame());
         }
 
-        private BattleUnitUI InstantiateUnitInSlot(HeroData hData, bool isAlly, int slotIndex)
+        private IEnumerator LogAfterOneFrame()
         {
-            if (battleUnitPrefab == null)
+            yield return null; // Wait for end of frame
+            int remainingUnits = 0;
+            foreach (var unit in _unitMap.Values)
             {
-                Debug.LogWarning("[CombatVisualizerPanel] battleUnitPrefab is NULL! Tự động tạo một Prefab ảo (Fallback) để chống crash.");
-                battleUnitPrefab = CreateFallbackPrefab();
+                if (unit != null && unit.gameObject != null) remainingUnits++;
+            }
+            Debug.Log($"[PostFrameCheck] Cards still existing after first frame: {remainingUnits}");
+        }
+
+        
+        private BattleUnitUI InstantiateSnapshotInSlot(CombatReplayUnitSnapshot snap)
+        {
+            Transform container = snap.isAlly ? allyContainer : enemyContainer;
+            Transform parentSlot = (container.childCount > snap.slotIndex) ? container.GetChild(snap.slotIndex) : container;
+
+            // Fix layout
+            var grid = container.GetComponent<UnityEngine.UI.GridLayoutGroup>();
+            if (grid != null)
+            {
+                grid.cellSize = new Vector2(55, 85);
+                grid.spacing = new Vector2(10, 10);
+                grid.padding = new RectOffset(10, 10, 10, 10);
             }
 
+            GameObject go = Instantiate(battleUnitPrefab, parentSlot);
+            go.SetActive(true);
+            
+            RectTransform rt = go.GetComponent<RectTransform>();
+            if (rt != null)
+            {
+                rt.anchoredPosition = Vector2.zero;
+                rt.localScale = Vector3.one;
+                rt.localRotation = Quaternion.identity;
+                go.transform.SetAsLastSibling();
+            }
+            BattleUnitUI unit = go.GetComponent<BattleUnitUI>();
+            
+            Sprite sprite = LegendOfBlood.CardArtResolver.GetUnitSprite(snap);
+            unit.SetupReplayUnit(snap, sprite);
+            
+            // Cleanup visuals not needed for replay and the bugged background
+            if (unit.hpSlider != null)
+            {
+                Transform badBg = unit.hpSlider.transform.Find("Background");
+                if (badBg != null) badBg.gameObject.SetActive(false);
+            }
+
+            string[] visualsToHide = { "ClassBadge", "RankBadge", "RarityFrame", "Glow" };
+            foreach (string v in visualsToHide)
+            {
+                Transform found = go.transform.Find(v);
+                if (found != null) found.gameObject.SetActive(false);
+            }
+            
+            return unit;
+        }
+
+                private BattleUnitUI InstantiateUnitInSlot(HeroData hData, string unitId, bool isAlly, int slotIndex)
+        {
             Transform container = isAlly ? allyContainer : enemyContainer;
             Transform parentSlot = (container.childCount > slotIndex) ? container.GetChild(slotIndex) : container;
 
             GameObject go = Instantiate(battleUnitPrefab, parentSlot);
+            go.SetActive(true);
+            
+            RectTransform rt = go.GetComponent<RectTransform>();
+            if (rt != null)
+            {
+                rt.anchoredPosition = Vector2.zero;
+                rt.localScale = Vector3.one;
+                rt.localRotation = Quaternion.identity;
+                go.transform.SetAsLastSibling();
+            }
             BattleUnitUI unit = go.GetComponent<BattleUnitUI>();
             
-            // Tìm hình ảnh
-            Sprite portrait = hData.GetAvatarSprite();
+            int maxHp = (int)hData.GetFinalStats().hp;
+            int startHp = UnityEngine.Mathf.Max(0, (int)hData.currentHp);
             
-            unit.Setup(portrait, (int)hData.GetFinalStats().hp, (int)hData.currentHp);
+            UnityEngine.Sprite sprite = LegendOfBlood.CardArtResolver.GetUnitSprite(hData, !isAlly);
+            unit.Setup(sprite, maxHp, startHp);
+
+            UnityEngine.Debug.Log($"[Spawn] Spawned hero card: {hData.heroName}, ID: {unitId}, Parent slot: {parentSlot.name}, Active: {go.activeSelf}");
+
             return unit;
-        }
-
-        private GameObject CreateFallbackPrefab()
-        {
-            GameObject unitTemplate = new GameObject("BattleUnitTemplate_Fallback");
-            unitTemplate.SetActive(false);
-            RectTransform utRect = unitTemplate.AddComponent<RectTransform>();
-            utRect.sizeDelta = new Vector2(200, 300);
-            
-            Image avatarImg = new GameObject("Avatar").AddComponent<Image>();
-            avatarImg.transform.SetParent(unitTemplate.transform, false);
-            avatarImg.rectTransform.anchorMin = Vector2.zero; avatarImg.rectTransform.anchorMax = Vector2.one;
-            avatarImg.rectTransform.sizeDelta = Vector2.zero;
-            avatarImg.color = Color.gray; 
-
-            Slider hpSlider = new GameObject("HpSlider").AddComponent<Slider>();
-            hpSlider.transform.SetParent(unitTemplate.transform, false);
-            hpSlider.interactable = false;
-            hpSlider.transition = Selectable.Transition.None;
-            RectTransform hsRect = hpSlider.GetComponent<RectTransform>();
-            hsRect.anchorMin = new Vector2(0, 1); hsRect.anchorMax = new Vector2(1, 1); 
-            hsRect.pivot = new Vector2(0.5f, 0); hsRect.anchoredPosition = new Vector2(0, 10);
-            hsRect.sizeDelta = new Vector2(0, 30);
-            
-            GameObject bgObj = new GameObject("Background"); bgObj.transform.SetParent(hpSlider.transform, false);
-            Image bgImg = bgObj.AddComponent<Image>(); bgImg.color = Color.red;
-            bgImg.rectTransform.anchorMin = Vector2.zero; bgImg.rectTransform.anchorMax = Vector2.one; bgImg.rectTransform.sizeDelta = Vector2.zero;
-            
-            GameObject fillArea = new GameObject("Fill Area"); fillArea.transform.SetParent(hpSlider.transform, false);
-            RectTransform faRect = fillArea.AddComponent<RectTransform>(); faRect.anchorMin = Vector2.zero; faRect.anchorMax = Vector2.one; faRect.sizeDelta = Vector2.zero;
-            
-            GameObject fillObj = new GameObject("Fill"); fillObj.transform.SetParent(fillArea.transform, false);
-            Image fillImg = fillObj.AddComponent<Image>(); fillImg.color = Color.green;
-            fillImg.rectTransform.anchorMin = Vector2.zero; fillImg.rectTransform.anchorMax = Vector2.one; fillImg.rectTransform.sizeDelta = Vector2.zero;
-            hpSlider.fillRect = fillImg.rectTransform;
-
-            TextMeshProUGUI hpTxt = new GameObject("HpText").AddComponent<TextMeshProUGUI>();
-            hpTxt.transform.SetParent(hpSlider.transform, false);
-            hpTxt.rectTransform.anchorMin = Vector2.zero; hpTxt.rectTransform.anchorMax = Vector2.one;
-            hpTxt.rectTransform.sizeDelta = Vector2.zero;
-            hpTxt.text = "100/100"; hpTxt.fontSize = 20;
-            hpTxt.color = Color.white; hpTxt.alignment = TextAlignmentOptions.Center;
-
-            GameObject dmgCgObj = new GameObject("DamageTextContainer");
-            dmgCgObj.transform.SetParent(unitTemplate.transform, false);
-            RectTransform dmgRect = dmgCgObj.AddComponent<RectTransform>();
-            CanvasGroup dmgCg = dmgCgObj.AddComponent<CanvasGroup>();
-            dmgRect.anchorMin = new Vector2(0, 0.5f); dmgRect.anchorMax = new Vector2(1, 1.5f);
-            
-            TextMeshProUGUI dmgTxt = new GameObject("DamageText").AddComponent<TextMeshProUGUI>();
-            dmgTxt.transform.SetParent(dmgCg.transform, false);
-            dmgTxt.rectTransform.anchorMin = Vector2.zero; dmgTxt.rectTransform.anchorMax = Vector2.one;
-            dmgTxt.rectTransform.sizeDelta = Vector2.zero;
-            dmgTxt.text = "-999"; dmgTxt.fontSize = 40;
-            dmgTxt.fontStyle = FontStyles.Bold; dmgTxt.alignment = TextAlignmentOptions.Center;
-
-            BattleUnitUI unitScript = unitTemplate.AddComponent<BattleUnitUI>();
-            unitScript.avatarImage = avatarImg;
-            unitScript.hpSlider = hpSlider;
-            unitScript.hpText = hpTxt;
-            unitScript.damageTextCanvasGroup = dmgCg;
-            unitScript.damageText = dmgTxt;
-
-            return unitTemplate;
         }
 
         private void ClearBoard()
         {
+            int allySlotCount = allyContainer.childCount;
+            int enemySlotCount = enemyContainer.childCount;
+            int destroyedAllyCards = 0;
+            int destroyedEnemyCards = 0;
+
             _unitMap.Clear();
-            foreach (Transform t in allyContainer) Destroy(t.gameObject);
-            foreach (Transform t in enemyContainer) Destroy(t.gameObject);
+
+            foreach (Transform childOrSlot in allyContainer)
+            {
+                if (childOrSlot.GetComponent<BattleUnitUI>() != null)
+                {
+                    UnityEngine.Object.Destroy(childOrSlot.gameObject);
+                    destroyedAllyCards++;
+                }
+                else
+                {
+                    foreach (Transform child in childOrSlot)
+                    {
+                        if (child.GetComponent<BattleUnitUI>() != null)
+                        {
+                            UnityEngine.Object.Destroy(child.gameObject);
+                            destroyedAllyCards++;
+                        }
+                    }
+                }
+            }
+
+            foreach (Transform childOrSlot in enemyContainer)
+            {
+                if (childOrSlot.GetComponent<BattleUnitUI>() != null)
+                {
+                    UnityEngine.Object.Destroy(childOrSlot.gameObject);
+                    destroyedEnemyCards++;
+                }
+                else
+                {
+                    foreach (Transform child in childOrSlot)
+                    {
+                        if (child.GetComponent<BattleUnitUI>() != null)
+                        {
+                            UnityEngine.Object.Destroy(child.gameObject);
+                            destroyedEnemyCards++;
+                        }
+                    }
+                }
+            }
         }
 
         private IEnumerator PlaybackRoutine()
@@ -237,7 +282,7 @@ namespace LegendOfBlood.Combat
                     case CombatEventType.Attack:
                         if (!string.IsNullOrEmpty(ev.SourceID) && _unitMap.ContainsKey(ev.SourceID) && _unitMap[ev.SourceID] != null)
                         {
-                            Vector3 targetPos = _unitMap[ev.SourceID].transform.position + Vector3.right * 1f; // Nhích lên 1 chút nếu không có target
+                            Vector3 targetPos = _unitMap[ev.SourceID].transform.position + Vector3.right * 1f; // NhÃƒÂ­ch lÃƒÂªn 1 chÃƒÂºt nÃ¡ÂºÂ¿u khÃƒÂ´ng cÃƒÂ³ target
                             if (ev.TargetID != null && _unitMap.ContainsKey(ev.TargetID) && _unitMap[ev.TargetID] != null) 
                                 targetPos = _unitMap[ev.TargetID].transform.position;
                             
@@ -265,19 +310,19 @@ namespace LegendOfBlood.Combat
                         break;
 
                     case CombatEventType.TurnStart:
-                        // Delay mỏng đầu mỗi turn để dễ thở
+                        // Delay mÃ¡Â»Âng Ã„â€˜Ã¡ÂºÂ§u mÃ¡Â»â€”i turn Ã„â€˜Ã¡Â»Æ’ dÃ¡Â»â€¦ thÃ¡Â»Å¸
                         yield return new WaitForSeconds(0.2f * _actionDelay);
                         break;
                 }
 
-                // Dừng chờ sau mỗi Action lớn (Attack/Heal)
+                // DÃ¡Â»Â«ng chÃ¡Â»Â sau mÃ¡Â»â€”i Action lÃ¡Â»â€ºn (Attack/Heal)
                 if (ev.EventType == CombatEventType.Attack || ev.EventType == CombatEventType.Heal)
                 {
                     yield return new WaitForSeconds(0.6f * _actionDelay);
                 }
             }
             
-            // Diễn xong, đợi 1 giây rồi show kết quả
+            // DiÃ¡Â»â€¦n xong, Ã„â€˜Ã¡Â»Â£i 1 giÃƒÂ¢y rÃ¡Â»â€œi show kÃ¡ÂºÂ¿t quÃ¡ÂºÂ£
             yield return new WaitForSeconds(1f);
             ShowResultScreen();
         }
@@ -304,14 +349,14 @@ namespace LegendOfBlood.Combat
                 StopCoroutine(_playbackRoutine);
             }
             
-            // Khi bấm Skip, ép tất cả thanh máu về trạng thái cuối trận
+            // Khi bÃ¡ÂºÂ¥m Skip, ÃƒÂ©p tÃ¡ÂºÂ¥t cÃ¡ÂºÂ£ thanh mÃƒÂ¡u vÃ¡Â»Â trÃ¡ÂºÂ¡ng thÃƒÂ¡i cuÃ¡Â»â€˜i trÃ¡ÂºÂ­n
             ApplyFinalState();
             ShowResultScreen();
         }
 
         private void ApplyFinalState()
         {
-            // Trạng thái cuối nằm ở _cachedResult
+            // TrÃ¡ÂºÂ¡ng thÃƒÂ¡i cuÃ¡Â»â€˜i nÃ¡ÂºÂ±m Ã¡Â»Å¸ _cachedResult
             UpdateTeamState(_cachedResult.PlayerSurvivors, true, true);
             UpdateTeamState(_cachedResult.PlayerCasualties, true, false);
             UpdateTeamState(_cachedResult.EnemySurvivors, false, true);
@@ -323,26 +368,26 @@ namespace LegendOfBlood.Combat
             if (teamList == null) return;
             string prefix = isAlly ? "P_" : "E_";
             
-             // Để đơn giản khi Skip, ta chỉ làm mờ những con đã chết bằng cách ép máu = 0
-            // và tắt GameObject đi luôn cho sạch thay vì để lỗi hình ảnh trắng bóc.
+             // Ã„ÂÃ¡Â»Æ’ Ã„â€˜Ã†Â¡n giÃ¡ÂºÂ£n khi Skip, ta chÃ¡Â»â€° lÃƒÂ m mÃ¡Â»Â nhÃ¡Â»Â¯ng con Ã„â€˜ÃƒÂ£ chÃ¡ÂºÂ¿t bÃ¡ÂºÂ±ng cÃƒÂ¡ch ÃƒÂ©p mÃƒÂ¡u = 0
+            // vÃƒÂ  tÃ¡ÂºÂ¯t GameObject Ã„â€˜i luÃƒÂ´n cho sÃ¡ÂºÂ¡ch thay vÃƒÂ¬ Ã„â€˜Ã¡Â»Æ’ lÃ¡Â»â€”i hÃƒÂ¬nh Ã¡ÂºÂ£nh trÃ¡ÂºÂ¯ng bÃƒÂ³c.
             if (!isAlive)
             {
                  foreach(var kv in _unitMap)
                  {
                      if (kv.Key.StartsWith(prefix))
                      {
-                         // Kiểm tra null trước khi thao tác vì obj có thể đã bị unity destroy
+                         // KiÃ¡Â»Æ’m tra null trÃ†Â°Ã¡Â»â€ºc khi thao tÃƒÂ¡c vÃƒÂ¬ obj cÃƒÂ³ thÃ¡Â»Æ’ Ã„â€˜ÃƒÂ£ bÃ¡Â»â€¹ unity destroy
                          if (kv.Value == null || kv.Value.gameObject == null) continue;
 
-                         // Nếu HeroData trong listCasualties trùng khớp Profession/ID với Key
+                         // NÃ¡ÂºÂ¿u HeroData trong listCasualties trÃƒÂ¹ng khÃ¡Â»â€ºp Profession/ID vÃ¡Â»â€ºi Key
                          foreach(var dead in teamList)
                          {
                              if (kv.Key.Contains(dead.profession.ToString()))
                              {
                                  if (kv.Value != null && kv.Value.gameObject.activeInHierarchy)
                                  {
-                                     kv.Value.TakeDamage(99999, false); // Nổ máu ảo để xám ảnh
-                                     kv.Value.gameObject.SetActive(false); // Ẩn luôn unit đã chết khi skip cho sạch bàn cờ
+                                     kv.Value.TakeDamage(99999, false); // NÃ¡Â»â€¢ mÃƒÂ¡u Ã¡ÂºÂ£o Ã„â€˜Ã¡Â»Æ’ xÃƒÂ¡m Ã¡ÂºÂ£nh
+                                     kv.Value.gameObject.SetActive(false); // Ã¡ÂºÂ¨n luÃƒÂ´n unit Ã„â€˜ÃƒÂ£ chÃ¡ÂºÂ¿t khi skip cho sÃ¡ÂºÂ¡ch bÃƒÂ n cÃ¡Â»Â
                                  }
                              }
                          }
@@ -370,3 +415,6 @@ namespace LegendOfBlood.Combat
         }
     }
 }
+
+
+

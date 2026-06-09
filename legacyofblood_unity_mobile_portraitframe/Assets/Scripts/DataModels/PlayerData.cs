@@ -39,30 +39,29 @@ namespace LegendOfBlood
     }
 
     [Serializable]
-    public class ExpeditionReport
-    {
-        public string poiId;
-        public string poiName;
-        public Combat.CombatResult combatResult;
-        public LootData loot;
-        public int experienceGained;
-
-        // === BOSS VICTORY TRACKING ===
-        // true = trận đánh Boss thắng → kích hoạt hospital + kết thúc expedition
-        public bool isBossVictory;
-        public string bossNodeId;       // ID của boss node đã bị đánh bại
-        public System.Collections.Generic.List<string> squadIds; // IDs của squad đi thám hiểm
-        public System.Collections.Generic.List<HeroBattleOutcomeSnapshot> heroOutcomeSnapshots; // Snapshot thương vong sau trận Boss
-    }
-
-    [Serializable]
-    public class HeroBattleOutcomeSnapshot
+    public class HeroOutcomeSnapshot
     {
         public string heroId;
         public float hpAfterBattle;
         public float maxHp;
         public bool isDead;
-        public int injurySeverity; // 0 = None, 1 = Light, 2 = Severe
+        public int injurySeverity;
+    }
+
+    [Serializable]
+    public class ExpeditionReport
+    {
+        public string poiId;
+        public string nodeId;
+        public string poiName;
+        public Combat.CombatResult combatResult;
+        public LootData loot;
+        public int experienceGained;
+        
+        public bool isBossVictory;
+        public string bossNodeId;
+        public List<string> squadIds;
+        public List<HeroOutcomeSnapshot> heroOutcomeSnapshots;
     }
 
     [Serializable]
@@ -71,6 +70,7 @@ namespace LegendOfBlood
         public string expeditionId;
         public List<string> heroIds;
         public string poiId;
+        public string nodeId;
         
         public ExpeditionState currentState;
         public long stateEndTimestamp; // Thời điểm kết thúc trạng thái hiện tại
