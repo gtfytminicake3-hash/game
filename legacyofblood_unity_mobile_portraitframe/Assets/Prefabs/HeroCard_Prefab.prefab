@@ -699,6 +699,7 @@ MonoBehaviour:
   archerIcon: {fileID: -5414287645184229653, guid: 86881b01f101f364ab201a4cb0a64d61, type: 3}
   mageIcon: {fileID: 8039999832180073680, guid: 22d2c4598c52bbb4ba1c9514c075ee7e, type: 3}
   healerIcon: {fileID: -54405366562832703, guid: 6f3fecaa5e3e2964fba55640a8948a7d, type: 3}
+  lineageHelper: {fileID: 0}
 --- !u!1 &7748263897625005478
 GameObject:
   m_ObjectHideFlags: 0

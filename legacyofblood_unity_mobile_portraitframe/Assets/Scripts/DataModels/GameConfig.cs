@@ -10,6 +10,66 @@ namespace LegendOfBlood.GameConfigs
 {
     // Các lớp dữ liệu này chỉ được sử dụng bên trong GameConfig, nên có thể để ở đây.
     [System.Serializable]
+    public class BreedingMutationConfig
+    {
+        [Tooltip("Tỷ lệ đột biến cơ bản (ra Trait mới hoàn toàn)")]
+        [Range(0f, 1f)]
+        public float baseMutationChance = 0.05f;
+
+        [Tooltip("Tỷ lệ đột biến cộng thêm mỗi cấp của Breeding Pen")]
+        [Range(0f, 1f)]
+        public float mutationChancePerLevel = 0.01f;
+
+        [Tooltip("Có yêu cầu vật liệu (Material) khi sinh sản không? (Phase 3)")]
+        public bool requireMaterials = false;
+    }
+
+    [System.Serializable]
+    public class TraitInheritanceWeight
+    {
+        [Tooltip("Trọng số kế thừa Trait từ Cha")]
+        public int fatherWeight = 40;
+
+        [Tooltip("Trọng số kế thừa Trait từ Mẹ")]
+        public int motherWeight = 40;
+
+        [Tooltip("Trọng số xuất hiện Trait ngẫu nhiên (Đột biến)")]
+        public int mutationWeight = 20;
+    }
+
+    [System.Serializable]
+    public class BreedingRecipe
+    {
+        public string recipeId;
+        public int priority = 1;
+        
+        [Tooltip("The required father trait ID. Leave empty if any.")]
+        public string requireFatherTraitId;
+        
+        [Tooltip("The required mother trait ID. Leave empty if any.")]
+        public string requireMotherTraitId;
+        
+        [Tooltip("Optional required material ID (null-safe stub).")]
+        public string requireMaterialId;
+        public int requireMaterialAmount;
+
+        [Tooltip("The trait ID generated if recipe matches.")]
+        public string resultTraitId;
+    }
+
+    [System.Serializable]
+    public class BreedingConfig
+    {
+        public BreedingMutationConfig mutationConfig = new BreedingMutationConfig();
+        public TraitInheritanceWeight inheritanceWeight = new TraitInheritanceWeight();
+        
+        [Tooltip("Số lượng Trait tối đa một Hero con có thể nhận được lúc sinh ra")]
+        public int maxInheritedTraits = 2;
+
+        public List<BreedingRecipe> recipes = new List<BreedingRecipe>();
+    }
+
+    [System.Serializable]
     public class EvolutionRewardData
     {
         public int level;
@@ -168,6 +228,10 @@ namespace LegendOfBlood.GameConfigs
         [Header("Shop Systems")]
         [Tooltip("Danh sách toàn bộ các món đồ có thể xuất hiện ngẫu nhiên trong Arena Shop mỗi ngày.")]
         public List<ArenaShopPoolItem> ArenaShopPool;
+
+        [Header("Breeding System")]
+        [Tooltip("Cấu hình sinh sản: Đột biến, Di truyền, Công thức lai tạo.")]
+        public BreedingConfig BreedingSettings = new BreedingConfig();
     }
 }
 // --- END OF FILE GameConfig.cs (FIXED AGAIN) ---

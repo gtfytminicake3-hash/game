@@ -16,7 +16,7 @@ namespace LegendOfBlood
     { 
         None, Poison, Slow, CritUp, DefDown, HealOverTime, Shield,
         // Hiệu ứng Combo mới
-        Aegis, Stun, Taunt, AtkDown, PoisonMark, Weakness, NextAttackCrit, LifeSeed, DamageLink, DeathImmunity, AtkUp
+        Aegis, Stun, Taunt, AtkDown, PoisonMark, Weakness, NextAttackCrit, LifeSeed, DamageLink, DeathImmunity, AtkUp, DefUp, SpdUp
     }
     /// <summary>
     /// Định nghĩa ScriptableObject cho một Skill (Kỹ năng).

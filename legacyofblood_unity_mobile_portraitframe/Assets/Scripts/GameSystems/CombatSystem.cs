@@ -115,9 +115,13 @@ namespace LegendOfBlood.Combat
         public float MaxHp { get; private set; }
         public float CurrentHp { get; set; }
         public List<ActiveStatusEffect> ActiveEffects { get; private set; }
+        
+        // --- NEW: Trait Caching ---
+        public List<TraitEffect> CachedCombatTraits { get; private set; }
+        public bool IsDefending { get; set; } = false;
         public float AtkMultiplier { get; set; } = 1.0f;
         
-        public bool HasRevivedOnce { get; set; } = false;
+        public int ReviveCount { get; set; } = 0;
         
         // --- NEW COMBO PROPS ---
         public Combatant LinkedAlly { get; set; }
@@ -138,6 +142,19 @@ namespace LegendOfBlood.Combat
             Skills = new List<Skill>();
             SkillCooldowns = new Dictionary<string, int>();
             ActiveEffects = new List<ActiveStatusEffect>();
+            CachedCombatTraits = new List<TraitEffect>();
+
+            if (DataManager.Instance != null && HeroRef.traitIDs != null)
+            {
+                foreach (var tid in HeroRef.traitIDs)
+                {
+                    var trait = DataManager.Instance.GetTraitByID(tid);
+                    if (trait != null && trait.combatEffects != null)
+                    {
+                        CachedCombatTraits.AddRange(trait.combatEffects);
+                    }
+                }
+            }
         }
 
         public float GetCurrentAtk() 
@@ -151,13 +168,17 @@ namespace LegendOfBlood.Combat
         public float GetCurrentDef() 
         {
             float def = HeroRef.GetFinalStats().def;
-            float defDown = ActiveEffects.Where(e => e.Type == StatusEffectType.DefDown).Sum(e => Math.Abs(e.Value));
-            return Mathf.Max(0, def - defDown);
+            float buffBonus = ActiveEffects.Where(e => e.Type == StatusEffectType.DefUp).Sum(e => e.Value);
+            float debuffMalus = ActiveEffects.Where(e => e.Type == StatusEffectType.DefDown).Sum(e => Math.Abs(e.Value));
+            return Mathf.Max(0, def * (1f + buffBonus) - debuffMalus);
         }
         
         public float GetCurrentSpd() 
         {
-            return HeroRef.GetFinalStats().spd + ActiveEffects.Where(e => e.Type == StatusEffectType.Slow).Sum(e => e.Value); // Slow value is negative
+            float spd = HeroRef.GetFinalStats().spd;
+            float buffBonus = ActiveEffects.Where(e => e.Type == StatusEffectType.SpdUp).Sum(e => e.Value);
+            float debuffMalus = ActiveEffects.Where(e => e.Type == StatusEffectType.Slow).Sum(e => Math.Abs(e.Value));
+            return Mathf.Max(0, spd * (1f + buffBonus) - debuffMalus);
         }
         
         public float GetCurrentCritChance() 
@@ -244,14 +265,16 @@ namespace LegendOfBlood.Combat
             AssignGridSlots(_playerTeam, true, initialPos);
             AssignGridSlots(_enemyTeam, false, initialPos);
 
-            // Aura Traits
-            bool playerHasAura = _playerTeam.Any(c => c.HeroRef.traitIDs.Any(t => t != null && t.Contains("AURA")));
-            if (playerHasAura) { _playerTeam.ForEach(c => c.AtkMultiplier += 0.1f); _combatLog.Add(LocalizationSystem.GetText("combat_log_aura_player") ?? "Ä á»™i Player nháº­n HÃ o quang +10% ATK!"); }
-            bool enemyHasAura = _enemyTeam.Any(c => c.HeroRef.traitIDs.Any(t => t != null && t.Contains("AURA")));
-            if (enemyHasAura) { _enemyTeam.ForEach(c => c.AtkMultiplier += 0.1f); _combatLog.Add(LocalizationSystem.GetText("combat_log_aura_enemy") ?? "Ä á»™i Ä á»‹ch nháº­n HÃ o quang +10% ATK!"); }
+            // Process Aura Traits (Data-Driven)
+            TraitProcessor.ProcessAuraTraits(this, _playerTeam, _enemyTeam);
+            TraitProcessor.ProcessAuraTraits(this, _enemyTeam, _playerTeam);
 
-            LogFormation(_playerTeam, LocalizationSystem.GetText("combat_log_player_team") ?? "Ä á»™i HÃ¬nh NgÆ°á» i ChÆ¡i");
+            LogFormation(_playerTeam, LocalizationSystem.GetText("combat_log_player_team") ?? "Đội Hình Người Chơi");
             LogFormation(_enemyTeam, LocalizationSystem.GetText("combat_log_enemy_team") ?? "Đội Hình Kẻ Địch");
+
+            // --- BATTLE START HOOK ---
+            foreach (var c in _playerTeam.Where(x => x.IsAlive())) TraitProcessor.ProcessBattleStart(this, c, _playerTeam, _enemyTeam);
+            foreach (var c in _enemyTeam.Where(x => x.IsAlive())) TraitProcessor.ProcessBattleStart(this, c, _enemyTeam, _playerTeam);
 
             List<CombatReplayUnitSnapshot> allySnapshots = new List<CombatReplayUnitSnapshot>();
             foreach (var c in _playerTeam)
@@ -300,20 +323,26 @@ namespace LegendOfBlood.Combat
             
             while (IsTeamAlive(_playerTeam) && (_isHealingChallenge ? !IsTeamFullyHealed(_enemyTeam) : IsTeamAlive(_enemyTeam)))
             {
-                _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_turn_header") ?? "--- LÆ°á»£t {0} ---", turn));
+                _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_turn_header") ?? "--- Lượt {0} ---", turn));
                 _eventLog.Add(new CombatEvent { EventType = CombatEventType.TurnStart, Value = turn });
                 var turnOrder = _playerTeam.Concat(_enemyTeam).Where(c => c.IsAlive()).OrderByDescending(c => c.GetCurrentSpd()).ToList();
 
                 foreach (var combatant in turnOrder)
                 {
                     if (!combatant.IsAlive()) continue;
+                    
+                    // --- TURN START HOOK ---
+                    var allies = combatant.IsPlayerTeam ? _playerTeam : _enemyTeam;
+                    var enemies = combatant.IsPlayerTeam ? _enemyTeam : _playerTeam;
+                    TraitProcessor.ProcessTurnStart(this, combatant, allies, enemies);
+                    
                     ProcessStartOfTurnEffects(combatant); // Status effects DMG processing & duration decrement
                     if (!combatant.IsAlive()) continue;
 
                     if (combatant.ActiveEffects.Any(e => e.Type == StatusEffectType.Stun))
                     {
                         string cName = combatant.HeroRef.heroName;
-                        _combatLog.Add($"<color=#aaaaaa>{cName} bá»‹ khÃ³a hÃ nh Ä‘á»™ng (Máº¥t lÆ°á»£t)!</color>");
+                        _combatLog.Add($"<color=#aaaaaa>{cName} bị khóa hành động (Mất lượt)!</color>");
                         TickCooldowns(combatant); 
                         continue;
                     }
@@ -331,7 +360,7 @@ namespace LegendOfBlood.Combat
                 }
 
                 turn++;
-                if (turn > maxTurns) { _combatLog.Add(LocalizationSystem.GetText("combat_log_draw_timeout") ?? "Tráº­n Ä‘áº¥u hÃ²a do háº¿t lÆ°á»£t."); break; }
+                if (turn > maxTurns) { _combatLog.Add(LocalizationSystem.GetText("combat_log_draw_timeout") ?? "Trận đấu hòa do hết lượt."); break; }
             }
 
             foreach(var combatant in _playerTeam.Concat(_enemyTeam))
@@ -340,7 +369,7 @@ namespace LegendOfBlood.Combat
             }
 
             bool playerWon = IsTeamAlive(_playerTeam) && (_isHealingChallenge ? IsTeamFullyHealed(_enemyTeam) : !IsTeamAlive(_enemyTeam));
-            _combatLog.Add(playerWon ? (LocalizationSystem.GetText("combat_log_victory") ?? "Chiáº¿n tháº¯ng!") : (LocalizationSystem.GetText("combat_log_defeat") ?? "Tháº¥t báº¡i!"));
+            _combatLog.Add(playerWon ? (LocalizationSystem.GetText("combat_log_victory") ?? "Chiến thắng!") : (LocalizationSystem.GetText("combat_log_defeat") ?? "Thất bại!"));
 
             return new CombatResult
             {
@@ -390,7 +419,7 @@ namespace LegendOfBlood.Combat
             }
         }
 
-        #region Logic Cá»‘t LÃµi cá»§a Tráº­n Äáº¥u
+        #region Logic Cốt Lõi của Trận Đấu
         private CombatAction DecideAction(Combatant actor)
         {
             var usableSkills = actor.Skills.Where(s => actor.SkillCooldowns.ContainsKey(s.id) && actor.SkillCooldowns[s.id] <= 0).ToList();
@@ -441,7 +470,7 @@ namespace LegendOfBlood.Combat
                 var targets = GetTargets(actor, skill.targeting, skillAllies, skillEnemies);
                 if (!targets.Any() && skill.targeting != TargetingType.Self && skill.targeting != TargetingType.AllAllies) return;
                 
-                string sCastStr = LocalizationSystem.GetText("combat_log_skill_cast") ?? "{0} thi triá»ƒn thuáº­t {1}!";
+                string sCastStr = LocalizationSystem.GetText("combat_log_skill_cast") ?? "{0} thi triển thuật {1}!";
                 _combatLog.Add(string.Format(sCastStr, actor.HeroRef.heroName, LocalizationSystem.GetText(skill.skillName)));
                 _eventLog.Add(new CombatEvent { EventType = CombatEventType.SkillCast, SourceID = actor.InstanceID, Message = LocalizationSystem.GetText(skill.skillName) });
                 
@@ -540,14 +569,14 @@ namespace LegendOfBlood.Combat
             }
         }
 
-        private void PerformAttack(Combatant attacker, Combatant target, float powerRatio, Skill skill)
+        private void PerformAttack(Combatant attacker, Combatant target, float powerRatio, Skill skill, bool isTraitDamage = false)
         {
             float baseDamage = attacker.GetCurrentAtk() * powerRatio;
 
             if (attacker.HeroRef.traitIDs.Any(t => t != null && t.Contains("PREDATOR")) && target.CurrentHp < target.MaxHp * 0.3f)
             {
                 baseDamage *= 1.5f; 
-                _combatLog.Add(LocalizationSystem.GetText("combat_log_predator_trigger") ?? "Nanh vuá»‘t káº» sÄƒn má»“i kÃ­ch hoáº¡t +50% SÃ¡t thÆ°Æ¡ng!");
+                _combatLog.Add(LocalizationSystem.GetText("combat_log_predator_trigger") ?? "Nanh vuốt kẻ săn mồi kích hoạt +50% Sát thương!");
             }
 
             float def = target.GetCurrentDef() * (1f - target.TempDefIgnore);
@@ -565,7 +594,7 @@ namespace LegendOfBlood.Combat
 
             int damageInt = Mathf.FloorToInt(finalDamage);
 
-            // Link Huyáº¿t Máº¡ch
+            // Link Huyết Mạch
             if (target.LinkedAlly != null && target.LinkedAlly.IsAlive() && target.ActiveEffects.Any(e=>e.Type == StatusEffectType.DamageLink))
             {
                  int shared = damageInt / 2;
@@ -585,73 +614,108 @@ namespace LegendOfBlood.Combat
 
             target.CurrentHp -= damageInt;
             
-            string atkStr = LocalizationSystem.GetText("combat_log_attack_normal") ?? "{0} giÃ¡ng Ä‘Ã²n lÃªn {1} gÃ¢y {2} sÃ¡t thÆ°Æ¡ng!";
+            string atkStr = LocalizationSystem.GetText("combat_log_attack_normal") ?? "{0} giáng đòn lên {1} gây {2} sát thương!";
             string log = string.Format(atkStr, attacker.HeroRef.heroName, target.HeroRef.heroName, damageInt);
-            if (isCrit) log += LocalizationSystem.GetText("combat_log_attack_crit") ?? " <color=#ff0000>(ChÃ­ máº¡ng!)</color>";
+            if (isCrit) log += LocalizationSystem.GetText("combat_log_attack_crit") ?? " <color=#ff0000>(Chí mạng!)</color>";
             
             if (attacker.HeroRef.traitIDs.Any(t => t != null && t.Contains("LIFESTEAL")))
             {
                 int healAmount = Mathf.FloorToInt(damageInt * 0.2f);
                 attacker.CurrentHp = Mathf.Min(attacker.MaxHp, attacker.CurrentHp + healAmount);
-                log += $" <color=#00ff00>(+{healAmount} HP HÃºt mÃ¡u)</color>";
+                log += $" <color=#00ff00>(+{healAmount} HP Hút máu)</color>";
                 _eventLog.Add(new CombatEvent { EventType = CombatEventType.Heal, SourceID = attacker.InstanceID, TargetID = attacker.InstanceID, Value = healAmount });
             }
 
             _combatLog.Add(log);
             _eventLog.Add(new CombatEvent { EventType = CombatEventType.Attack, SourceID = attacker.InstanceID, TargetID = target.InstanceID, Value = damageInt, IsCrit = isCrit });
 
+            // --- DAMAGE DEALT / RECEIVED HOOK ---
+            TraitProcessor.ProcessDamageDealt(this, attacker, target, damageInt, isCrit, isTraitDamage);
+            TraitProcessor.ProcessDamageReceived(this, target, attacker, damageInt, isTraitDamage);
+
             if (skill != null && skill.appliedEffect != StatusEffectType.None)
             {
                 if (_rng.NextDouble() < skill.effectChance) AddStatusEffect(attacker, target, skill.appliedEffect, skill.effectDuration, 0f, 1);
             }
             
-            CheckDeath(target);
+            CheckDeath(target, attacker);
         }
 
         private void PerformHeal(Combatant healer, Combatant target, Skill skill, float ratio)
         {
             if (skill.id == "SK_HEALER_03") {
                 var dbs = target.ActiveEffects.Where(e => e.Type == StatusEffectType.DefDown || e.Type == StatusEffectType.Poison || e.Type == StatusEffectType.Slow).ToList();
-                if (dbs.Any()) { target.ActiveEffects.Remove(dbs.First()); _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_cleanse") ?? "{0} xÃ³a giáº£i debuff cho {1}!", healer.HeroRef.heroName, target.HeroRef.heroName)); }
+                if (dbs.Any()) { target.ActiveEffects.Remove(dbs.First()); _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_cleanse") ?? "{0} xóa giải debuff cho {1}!", healer.HeroRef.heroName, target.HeroRef.heroName)); }
             }
             float healAmount = healer.GetCurrentAtk() * ratio;
             int healInt = Mathf.FloorToInt(healAmount);
             target.CurrentHp = Mathf.Min(target.MaxHp, target.CurrentHp + healInt);
-            _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_heal") ?? "<color=#00ff00>{0} há»“i {1} mÃ¡u cho {2}!</color>", healer.HeroRef.heroName, healInt, target.HeroRef.heroName));
+            _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_heal") ?? "<color=#00ff00>{0} hồi {1} máu cho {2}!</color>", healer.HeroRef.heroName, healInt, target.HeroRef.heroName));
             _eventLog.Add(new CombatEvent { EventType = CombatEventType.Heal, SourceID = healer.InstanceID, TargetID = target.InstanceID, Value = healInt });
             if (skill.appliedEffect != StatusEffectType.None) AddStatusEffect(healer, target, skill.appliedEffect, skill.effectDuration, 0f, 1);
         }
         
-        private void CheckDeath(Combatant target)
+        private void CheckDeath(Combatant target, Combatant attacker = null)
         {
             if (!target.IsAlive()) 
             {
+                var victimEnemies = target.IsPlayerTeam ? _enemyTeam : _playerTeam;
+
+                // --- DEATH HOOK (Revive check inside) ---
+                bool isRevived = TraitProcessor.ProcessDeath(this, target, victimEnemies);
+                if (isRevived) return;
+
                 if (target.ActiveEffects.Any(e => e.Type == StatusEffectType.DeathImmunity))
                 {
                      target.ActiveEffects.RemoveAll(e => e.Type == StatusEffectType.DeathImmunity);
                      target.CurrentHp = 1;
-                     _combatLog.Add($"<color=#ffff00>[KhiÃªn Báº¥t Tá»­] Ä‘Ã£ vá»¡, {target.HeroRef.heroName} thoÃ¡t cháº¿t ká»³ diá»‡u vá»›i 1 HP!</color>");
+                     _combatLog.Add($"<color=#ffff00>[Khiên Bất Tử] Bảo vệ {target.HeroRef.heroName} thoát chết kỳ diệu với 1 HP!</color>");
                      return;
                 }
 
-                if (target.HeroRef.traitIDs.Any(t => t != null && t.Contains("REVIVE")) && !target.HasRevivedOnce)
-                {
-                    target.HasRevivedOnce = true;
-                    int rHp = Mathf.FloorToInt(target.MaxHp * 0.3f);
-                    target.CurrentHp = rHp;
-                    _combatLog.Add($"<color=#ffff00>{target.HeroRef.heroName} kÃ­ch hoáº¡t TÃ¡i Sinh há»“i {rHp} HP!</color>");
-                    _eventLog.Add(new CombatEvent { EventType = CombatEventType.Heal, SourceID = target.InstanceID, TargetID = target.InstanceID, Value = rHp });
-                }
-                else
-                {
-                    _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_death") ?? "<color=#ff0000>{0} Ä‘Ã£ gá»¥c ngÃ£!</color>", target.HeroRef.heroName));
-                    _eventLog.Add(new CombatEvent { EventType = CombatEventType.Death, TargetID = target.InstanceID });
+                _combatLog.Add(LocalizationSystem.GetText("combat_log_die_format")?.Replace("{0}", target.HeroRef.heroName) ?? $"{target.HeroRef.heroName} đã gục ngã!");
+                _eventLog.Add(new CombatEvent { EventType = CombatEventType.Death, TargetID = target.InstanceID });
+                
+                // --- KILL HOOK ---
+                if (attacker != null) {
+                    var attackerAllies = attacker.IsPlayerTeam ? _playerTeam : _enemyTeam;
+                    TraitProcessor.ProcessKill(this, attacker, target, attackerAllies);
                 }
             }
         }
         #endregion
 
-        #region Logic Phá»¥ Trá»£
+        #region Helpers cho TraitProcessor (PUBLIC / INTERNAL)
+        public void LogMessage(string msg) { _combatLog.Add(msg); }
+        public void LogEvent(CombatEvent ev) { _eventLog.Add(ev); }
+        
+        public void AddStatusEffect(Combatant caster, Combatant target, StatusEffectType type, int duration, float value, int stacks = 1)
+        {
+            if (type == StatusEffectType.PoisonMark || type == StatusEffectType.Aegis || type == StatusEffectType.Weakness || type == StatusEffectType.LifeSeed)
+            {
+                var existing = target.ActiveEffects.FirstOrDefault(e => e.Type == type);
+                if (existing != null) { existing.StackCount += stacks; existing.Duration = duration; return; }
+            }
+            target.ActiveEffects.RemoveAll(e => e.Type == type && type != StatusEffectType.PoisonMark && type != StatusEffectType.Aegis);
+            target.ActiveEffects.Add(new ActiveStatusEffect(type, duration, value, caster, stacks));
+        }
+
+        public void HealTarget(Combatant healer, Combatant target, int amount)
+        {
+            target.CurrentHp = Mathf.Min(target.MaxHp, target.CurrentHp + amount);
+            _eventLog.Add(new CombatEvent { EventType = CombatEventType.Heal, SourceID = healer.InstanceID, TargetID = target.InstanceID, Value = amount });
+        }
+
+        public void DealTraitDamage(Combatant target, int amount)
+        {
+            target.CurrentHp -= amount;
+            _combatLog.Add($"<color=#ff8800>[Trait Damage] {target.HeroRef.heroName} gánh chịu {amount} sát thương!</color>");
+            _eventLog.Add(new CombatEvent { EventType = CombatEventType.TakeDamage, TargetID = target.InstanceID, Value = amount });
+            CheckDeath(target, null);
+        }
+        #endregion
+
+        #region Logic Phụ Trợ
         private void ArrangeFormation(List<Combatant> team)
         {
             var warriors = team.Where(c => c.HeroRef.profession == Profession.Warrior).ToList();
@@ -704,17 +768,6 @@ namespace LegendOfBlood.Combat
             }
         }
 
-        private void AddStatusEffect(Combatant caster, Combatant target, StatusEffectType type, int duration, float value, int stacks = 1)
-        {
-            if (type == StatusEffectType.PoisonMark || type == StatusEffectType.Aegis || type == StatusEffectType.Weakness || type == StatusEffectType.LifeSeed)
-            {
-                var existing = target.ActiveEffects.FirstOrDefault(e => e.Type == type);
-                if (existing != null) { existing.StackCount += stacks; existing.Duration = duration; return; }
-            }
-            target.ActiveEffects.RemoveAll(e => e.Type == type && type != StatusEffectType.PoisonMark && type != StatusEffectType.Aegis);
-            target.ActiveEffects.Add(new ActiveStatusEffect(type, duration, value, caster, stacks));
-        }
-
         private int GetAndClearStack(Combatant target, StatusEffectType type)
         {
             var eff = target.ActiveEffects.FirstOrDefault(e => e.Type == type);
@@ -737,13 +790,13 @@ namespace LegendOfBlood.Combat
                     case StatusEffectType.Poison:
                         int pDmg = Mathf.FloorToInt(effect.Value);
                         combatant.CurrentHp -= pDmg;
-                        _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_poison_tick") ?? "{0} chá»‹u {1} sÃ¡t thÆ°Æ¡ng tá»« Äá»™c!", combatant.HeroRef.heroName, pDmg));
+                        _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_poison_tick") ?? "{0} chịu {1} sát thương từ Độc!", combatant.HeroRef.heroName, pDmg));
                         _eventLog.Add(new CombatEvent { EventType = CombatEventType.TakeDamage, TargetID = combatant.InstanceID, Value = pDmg });
                         CheckDeath(combatant); break;
                     case StatusEffectType.HealOverTime:
                         int hHeal = Mathf.FloorToInt(effect.Value);
                         combatant.CurrentHp = Mathf.Min(combatant.MaxHp, combatant.CurrentHp + hHeal);
-                        _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_regen_tick") ?? "{0} há»“i {1} HP tá»« Há»“i mÃ¡u!", combatant.HeroRef.heroName, hHeal));
+                        _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_regen_tick") ?? "{0} hồi {1} HP từ Hồi máu!", combatant.HeroRef.heroName, hHeal));
                         _eventLog.Add(new CombatEvent { EventType = CombatEventType.Heal, TargetID = combatant.InstanceID, Value = hHeal });
                         break;
                 }
@@ -755,7 +808,7 @@ namespace LegendOfBlood.Combat
             {
                 int regen = Mathf.FloorToInt(combatant.MaxHp * 0.05f);
                 combatant.CurrentHp = Mathf.Min(combatant.MaxHp, combatant.CurrentHp + regen);
-                _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_trait_regen") ?? "{0} tá»± chá»¯a lÃ nh {1} HP!", combatant.HeroRef.heroName, regen));
+                _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_trait_regen") ?? "{0} tự chữa lành {1} HP!", combatant.HeroRef.heroName, regen));
                 _eventLog.Add(new CombatEvent { EventType = CombatEventType.Heal, TargetID = combatant.InstanceID, Value = regen });
             }
         }
@@ -776,14 +829,207 @@ namespace LegendOfBlood.Combat
             var front = string.Join(", ", team.Where(c => c.Position == RowPosition.Front).Select(c => c.HeroRef.heroName));
             var middle = string.Join(", ", team.Where(c => c.Position == RowPosition.Middle).Select(c => c.HeroRef.heroName));
             var back = string.Join(", ", team.Where(c => c.Position == RowPosition.Back).Select(c => c.HeroRef.heroName));
-            var empty = LocalizationSystem.GetText("combat_log_row_empty") ?? "[Trá»‘ng]";
-            _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_row_front") ?? "Tiá»n Tuyáº¿n: {0}", string.IsNullOrEmpty(front) ? empty : front));
-            _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_row_mid") ?? "Trung Tuyáº¿n: {0}", string.IsNullOrEmpty(middle) ? empty : middle));
-            _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_row_back") ?? "Háº­u Tuyáº¿n: {0}", string.IsNullOrEmpty(back) ? empty : back));
+            var empty = LocalizationSystem.GetText("combat_log_row_empty") ?? "[Trống]";
+            _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_row_front") ?? "Tiền Tuyến: {0}", string.IsNullOrEmpty(front) ? empty : front));
+            _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_row_mid") ?? "Trung Tuyến: {0}", string.IsNullOrEmpty(middle) ? empty : middle));
+            _combatLog.Add(string.Format(LocalizationSystem.GetText("combat_log_row_back") ?? "Hậu Tuyến: {0}", string.IsNullOrEmpty(back) ? empty : back));
         }
         #endregion
     }
     #endregion
+
+    public static class TraitProcessor
+    {
+        public static void ProcessBattleStart(CombatSystem sys, Combatant combatant, List<Combatant> allies, List<Combatant> enemies)
+        {
+            if (combatant.CachedCombatTraits == null) return;
+            foreach (var effect in combatant.CachedCombatTraits)
+            {
+                if (UnityEngine.Random.value > effect.procChance) continue;
+                
+                if (effect.type == TraitEffectType.ON_BATTLE_START_BUFF_TEAM)
+                {
+                    foreach (var ally in allies.Where(a => a.IsAlive())) {
+                        sys.AddStatusEffect(combatant, ally, effect.buffType, effect.duration > 0 ? effect.duration : 99, effect.stackValue, effect.maxStack > 0 ? effect.maxStack : 1);
+                    }
+                    sys.LogMessage($"<color=#00ffff>[Trait] {combatant.HeroRef.heroName} kích hoạt buff đầu trận cho toàn đội!</color>");
+                }
+                else if (effect.type == TraitEffectType.ON_BATTLE_START_DEBUFF_ENEMY)
+                {
+                    sys.LogMessage($"<color=#ff8800>[Trait] {combatant.HeroRef.heroName} giáng debuff đầu trận lên toàn đội địch!</color>");
+                    foreach (var enemy in enemies.Where(e => e.IsAlive())) {
+                        sys.AddStatusEffect(combatant, enemy, effect.buffType, effect.duration > 0 ? effect.duration : 99, effect.stackValue, effect.maxStack > 0 ? effect.maxStack : 1);
+                    }
+                }
+                else if (effect.type == TraitEffectType.ON_BATTLE_START_SHIELD)
+                {
+                    float shieldVal = combatant.MaxHp * effect.maxHpRatio;
+                    sys.AddStatusEffect(combatant, combatant, StatusEffectType.Shield, effect.duration > 0 ? effect.duration : 2, shieldVal, 1);
+                    sys.LogMessage($"<color=#00ffff>[Trait] {combatant.HeroRef.heroName} tự tạo khiên bảo vệ!</color>");
+                }
+            }
+        }
+
+        public static void ProcessTurnStart(CombatSystem sys, Combatant combatant, List<Combatant> allies, List<Combatant> enemies)
+        {
+            if (combatant.CachedCombatTraits == null) return;
+            foreach (var effect in combatant.CachedCombatTraits)
+            {
+                if (UnityEngine.Random.value > effect.procChance) continue;
+
+                if (effect.type == TraitEffectType.ON_TURN_START_HEAL_SELF)
+                {
+                    int heal = Mathf.FloorToInt(combatant.MaxHp * effect.maxHpRatio);
+                    sys.HealTarget(combatant, combatant, heal);
+                    sys.LogMessage($"<color=#00ff00>[Trait] {combatant.HeroRef.heroName} tự hồi {heal} HP đầu lượt!</color>");
+                }
+                else if (effect.type == TraitEffectType.ON_TURN_START_STACK_ATK)
+                {
+                    sys.AddStatusEffect(combatant, combatant, StatusEffectType.AtkUp, effect.duration > 0 ? effect.duration : 99, effect.stackValue, 1);
+                    sys.LogMessage($"<color=#ffff00>[Trait] {combatant.HeroRef.heroName} tăng sức mạnh đầu lượt!</color>");
+                }
+            }
+        }
+
+        public static void ProcessDamageDealt(CombatSystem sys, Combatant attacker, Combatant target, int damage, bool isCrit, bool isTraitDamage)
+        {
+            if (isTraitDamage || attacker.CachedCombatTraits == null) return;
+            foreach (var effect in attacker.CachedCombatTraits)
+            {
+                if (UnityEngine.Random.value > effect.procChance) continue;
+
+                if (effect.type == TraitEffectType.ON_DAMAGE_DEALT_LIFESTEAL)
+                {
+                    int heal = Mathf.FloorToInt(damage * (effect.maxHpRatio > 0 ? effect.maxHpRatio : effect.stackValue)); 
+                    sys.HealTarget(attacker, attacker, heal);
+                }
+                else if (isCrit && effect.type == TraitEffectType.ON_CRIT_PROC_STUN)
+                {
+                    sys.AddStatusEffect(attacker, target, StatusEffectType.Stun, effect.duration > 0 ? effect.duration : 1, 0f, 1);
+                    sys.LogMessage($"<color=#ff8800>[Trait] Đòn chí mạng của {attacker.HeroRef.heroName} gây choáng {target.HeroRef.heroName}!</color>");
+                }
+            }
+        }
+
+        public static void ProcessDamageReceived(CombatSystem sys, Combatant target, Combatant attacker, int damage, bool isTraitDamage)
+        {
+            if (isTraitDamage || target.CachedCombatTraits == null || !target.IsAlive() || attacker == null || !attacker.IsAlive()) return;
+            foreach (var effect in target.CachedCombatTraits)
+            {
+                if (UnityEngine.Random.value > effect.procChance) continue;
+
+                if (effect.type == TraitEffectType.ON_HIT_REFLECT)
+                {
+                    int reflectDmg = Mathf.FloorToInt(target.GetCurrentAtk() * effect.atkRatio);
+                    if (reflectDmg > 0)
+                    {
+                        sys.LogMessage($"<color=#ff5555>[Trait] {target.HeroRef.heroName} phản đòn gây {reflectDmg} sát thương lên {attacker.HeroRef.heroName}!</color>");
+                        sys.DealTraitDamage(attacker, reflectDmg);
+                    }
+                }
+                else if (effect.type == TraitEffectType.ON_HIT_COUNTER)
+                {
+                    int counterDmg = Mathf.FloorToInt(target.GetCurrentAtk() * effect.atkRatio);
+                    if (counterDmg > 0)
+                    {
+                        sys.LogMessage($"<color=#ff5555>[Trait] {target.HeroRef.heroName} đánh trả {attacker.HeroRef.heroName} gây {counterDmg} sát thương!</color>");
+                        sys.DealTraitDamage(attacker, counterDmg);
+                    }
+                }
+            }
+        }
+
+        public static void ProcessKill(CombatSystem sys, Combatant killer, Combatant victim, List<Combatant> killerAllies)
+        {
+            if (killer.CachedCombatTraits == null) return;
+            foreach (var effect in killer.CachedCombatTraits)
+            {
+                if (UnityEngine.Random.value > effect.procChance) continue;
+
+                if (effect.type == TraitEffectType.ON_KILL_HEAL_TEAM)
+                {
+                    foreach (var ally in killerAllies.Where(a => a.IsAlive())) {
+                        int heal = Mathf.FloorToInt(ally.MaxHp * effect.maxHpRatio);
+                        sys.HealTarget(killer, ally, heal);
+                    }
+                    sys.LogMessage($"<color=#00ff00>[Trait] {killer.HeroRef.heroName} hạ gục kẻ địch, hồi máu cho toàn đội!</color>");
+                }
+                else if (effect.type == TraitEffectType.ON_KILL_STACK_STAT)
+                {
+                    sys.AddStatusEffect(killer, killer, effect.buffType, effect.duration > 0 ? effect.duration : 99, effect.stackValue, effect.maxStack > 0 ? effect.maxStack : 1);
+                    sys.LogMessage($"<color=#ffff00>[Trait] {killer.HeroRef.heroName} nhận thêm sức mạnh sau khi hạ gục kẻ địch!</color>");
+                }
+            }
+        }
+
+        public static bool ProcessDeath(CombatSystem sys, Combatant victim, List<Combatant> victimEnemies)
+        {
+            if (victim.CachedCombatTraits == null) return false;
+            
+            bool revived = false;
+            foreach (var effect in victim.CachedCombatTraits)
+            {
+                if (UnityEngine.Random.value > effect.procChance) continue;
+
+                if (effect.type == TraitEffectType.ON_DEATH_REVIVE_CHANCE)
+                {
+                    int maxRevives = effect.maxStack > 0 ? effect.maxStack : 1;
+                    if (victim.ReviveCount < maxRevives)
+                    {
+                        victim.ReviveCount++;
+                        int heal = Mathf.FloorToInt(victim.MaxHp * effect.reviveHpPercent);
+                        if (heal <= 0) heal = 1;
+                        victim.CurrentHp = heal;
+                        revived = true;
+                        sys.LogMessage($"<color=#ffff00>[Trait] {victim.HeroRef.heroName} sống dậy từ cái chết (Lần {victim.ReviveCount}/{maxRevives}) với {heal} HP!</color>");
+                        sys.LogEvent(new CombatEvent { EventType = CombatEventType.Heal, SourceID = victim.InstanceID, TargetID = victim.InstanceID, Value = heal });
+                    }
+                }
+                else if (effect.type == TraitEffectType.ON_DEATH_EXPLODE && !revived)
+                {
+                    sys.LogMessage($"<color=#ff0000>[Trait] {victim.HeroRef.heroName} tử nạn và phát nổ!</color>");
+                    foreach (var enemy in victimEnemies.Where(e => e.IsAlive())) {
+                        int dmg = Mathf.FloorToInt(victim.GetCurrentAtk() * effect.atkRatio);
+                        if (dmg <= 0 && effect.maxHpRatio > 0) dmg = Mathf.FloorToInt(victim.MaxHp * effect.maxHpRatio);
+                        if (dmg > 0) sys.DealTraitDamage(enemy, dmg);
+                    }
+                }
+            }
+            return revived;
+        }
+
+        public static void ProcessAuraTraits(CombatSystem sys, List<Combatant> team, List<Combatant> enemyTeam)
+        {
+            foreach (var buffer in team.Where(c => c.CachedCombatTraits != null && c.IsAlive()))
+            {
+                foreach (var effect in buffer.CachedCombatTraits.Where(e => e.type == TraitEffectType.AURA))
+                {
+                    if (UnityEngine.Random.value > effect.procChance) continue;
+
+                    if (effect.stackValue > 0)
+                    {
+                        sys.LogMessage($"<color=#00ffff>[Trait] {buffer.HeroRef.heroName} kích hoạt Hào quang Aura cho đội!</color>");
+                        foreach (var ally in team.Where(a => a.IsAlive()))
+                        {
+                            if (buffer.HeroRef.traitIDs != null)
+                            {
+                                if (buffer.HeroRef.traitIDs.Contains("TNK_05")) sys.AddStatusEffect(buffer, ally, StatusEffectType.DefUp, 99, effect.stackValue, 1);
+                                else if (buffer.HeroRef.traitIDs.Contains("HEA_05")) sys.AddStatusEffect(buffer, ally, StatusEffectType.SpdUp, 99, effect.stackValue, 1);
+                                else if (buffer.HeroRef.traitIDs.Contains("ROY_03")) 
+                                {
+                                    sys.AddStatusEffect(buffer, ally, StatusEffectType.AtkUp, 99, effect.stackValue, 1);
+                                    sys.AddStatusEffect(buffer, ally, StatusEffectType.DefUp, 99, effect.stackValue, 1);
+                                    sys.AddStatusEffect(buffer, ally, StatusEffectType.SpdUp, 99, effect.stackValue, 1);
+                                }
+                                else sys.AddStatusEffect(buffer, ally, StatusEffectType.AtkUp, 99, effect.stackValue, 1); // fallback
+                                sys.LogEvent(new CombatEvent { EventType = CombatEventType.StatusEffect, Message = "Aura", SourceID = buffer.InstanceID.ToString(), TargetID = ally.InstanceID.ToString() });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 

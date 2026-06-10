@@ -321,6 +321,7 @@ MonoBehaviour:
   archerIcon: {fileID: 0}
   mageIcon: {fileID: 0}
   healerIcon: {fileID: 0}
+  lineageHelper: {fileID: 0}
 --- !u!1 &692013946292199905
 GameObject:
   m_ObjectHideFlags: 0
@@ -1599,6 +1600,7 @@ MonoBehaviour:
   progressGroup: {fileID: 6716472771920705131}
   progressFill: {fileID: 8126753581355317754}
   progressText: {fileID: 5693497066695240838}
+  recipeHelper: {fileID: 0}
   heroPickerPanel: {fileID: 0}
 --- !u!1 &3024977886679162287
 GameObject:
@@ -2403,6 +2405,7 @@ MonoBehaviour:
   archerIcon: {fileID: 0}
   mageIcon: {fileID: 0}
   healerIcon: {fileID: 0}
+  lineageHelper: {fileID: 0}
 --- !u!1 &4049196571134885674
 GameObject:
   m_ObjectHideFlags: 0
@@ -3566,6 +3569,7 @@ MonoBehaviour:
   archerIcon: {fileID: 0}
   mageIcon: {fileID: 0}
   healerIcon: {fileID: 0}
+  lineageHelper: {fileID: 0}
 --- !u!1 &5765547002508257343
 GameObject:
   m_ObjectHideFlags: 0

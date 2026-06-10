@@ -142,5 +142,43 @@ namespace LegendOfBlood.Tests
 
             Assert.IsTrue(children[0].traitIDs.Contains("S_01"), "Child must inherit the guaranteed trait from BreedingOptions.");
         }
+
+        [Test]
+        public void TestP2_BreedingBasic_LineageAndFallback()
+        {
+            // Set up parents with null or missing traits to trigger fallbacks and test safe skips
+            HeroData father = new HeroData("F1", "Adam", Gender.Male);
+            father.isMature = true;
+            father.generation = 2;
+            father.traitIDs = null; // Test null trait list
+
+            HeroData mother = new HeroData("M1", "Eve", Gender.Female);
+            mother.isMature = true;
+            mother.generation = 3;
+            mother.traitIDs = new List<string> { "NON_EXISTENT_TRAIT_123" }; // Test missing trait skip
+
+            // Ensure gold is sufficient by mocking cost = 0
+            _breedingSystem.baseBreedingCost = 0;
+            _breedingSystem.costPerBreedingCount = 0;
+
+            // Generate child (Using private method via reflection to bypass Inventory/GameManager checks, OR just use Breed if we mock Inventory)
+            // Wait, Breed() calls GameManager.Instance.InventoryManager which will throw NullReferenceException since GameManager is null!
+            // Let's use reflection to call GenerateOffspring directly.
+            var method = typeof(BreedingSystem).GetMethod("GenerateOffspring", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            HeroData child = (HeroData)method.Invoke(_breedingSystem, new object[] { father, mother });
+
+            // 1. Breed 2 parent tạo được child
+            Assert.IsNotNull(child, "Breeding must generate a child");
+            
+            // 2. Child có fatherId/motherId/generation đúng
+            Assert.AreEqual("F1", child.fatherId, "Child must have correct fatherId");
+            Assert.AreEqual("M1", child.motherId, "Child must have correct motherId");
+            Assert.AreEqual(4, child.generation, "Child generation must be max(parent1, parent2) + 1");
+
+            // 3. Trait inheritance không crash khi traitIDs rỗng/null, missing trait skipped
+            // Since trait data in DataManager is empty in this test, it should gracefully return an empty list or only the generated ones, without crashing.
+            Assert.IsNotNull(child.traitIDs, "Child trait list must be initialized even if parents had nulls");
+            Assert.IsFalse(child.traitIDs.Contains("NON_EXISTENT_TRAIT_123"), "Missing trait must be safely skipped");
+        }
     }
 }

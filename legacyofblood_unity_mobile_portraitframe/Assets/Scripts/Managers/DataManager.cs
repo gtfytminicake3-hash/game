@@ -627,6 +627,16 @@ namespace LegendOfBlood
             return hero;
         }
 
+        // --- NEW BREEDING CONFIG GETTER ---
+        public GameConfigs.BreedingConfig GetBreedingConfig()
+        {
+            if (_gameConfig != null && _gameConfig.BreedingSettings != null)
+            {
+                return _gameConfig.BreedingSettings;
+            }
+            return new GameConfigs.BreedingConfig(); // Safe fallback
+        }
+
         #endregion
     }
 

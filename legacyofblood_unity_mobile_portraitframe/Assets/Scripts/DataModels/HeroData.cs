@@ -56,6 +56,14 @@ namespace LegendOfBlood
         public int breedingCount = 0;
         public int maxBreedingCount = 10;
         public Profession? guaranteedProfession = null;
+
+        // --- NEW P0: Lineage (Gia phả) ---
+        [Tooltip("ID hero bố. Rỗng nếu hero được triệu hồi.")]
+        public string fatherId = "";
+        [Tooltip("ID hero mẹ. Rỗng nếu hero được triệu hồi.")]
+        public string motherId = "";
+        [Tooltip("Thế hệ. 0 = triệu hồi, 1+ = sinh sản.")]
+        public int generation = 0;
         #endregion
 
         #region Status & Timers
@@ -243,10 +251,11 @@ namespace LegendOfBlood
             }
 
             // --- CỘNG DỒN TRAIT ---
-            if (traitIDs != null)
+            if (traitIDs != null && DataManager.Instance != null)
             {
                 foreach (string traitId in traitIDs)
                 {
+                    if (string.IsNullOrEmpty(traitId)) continue;
                     Trait trait = DataManager.Instance.GetTraitByID(traitId);
                     if (trait == null || trait.effects == null) continue;
                     foreach (var effect in trait.effects)
@@ -357,6 +366,8 @@ namespace LegendOfBlood
             traitIDs ??= new List<string>();
             skillIDs ??= new List<string>();
             Equipments ??= new Dictionary<EquipmentSlot, EquipmentData>();
+            fatherId ??= "";
+            motherId ??= "";
         }
 
         public void OnBeforeSerialize() { }

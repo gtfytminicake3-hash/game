@@ -326,6 +326,7 @@ MonoBehaviour:
   archerIcon: {fileID: 0}
   mageIcon: {fileID: 0}
   healerIcon: {fileID: 0}
+  lineageHelper: {fileID: 0}
 --- !u!1 &2952682395730373741
 GameObject:
   m_ObjectHideFlags: 0

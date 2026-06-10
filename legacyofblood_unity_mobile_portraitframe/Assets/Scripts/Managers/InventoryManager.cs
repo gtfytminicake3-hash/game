@@ -385,7 +385,24 @@ namespace LegendOfBlood
             
             // Phát sự kiện
             OnItemChanged?.Invoke(itemID, newCount);
-            Debug.Log($"Added {amount} of item '{itemID}'. New total: {newCount}");
+            
+            // Lưu dữ liệu nếu cần thiết (tuỳ logic)
+            // GameManager.Instance.SaveGame();
+        }
+
+        public bool ConsumeItem(string itemID, int amount)
+        {
+            if (_playerData == null || string.IsNullOrEmpty(itemID) || amount <= 0) return false;
+            
+            int currentCount = GetItemCount(itemID);
+            if (currentCount < amount) return false;
+
+            int newCount = currentCount - amount;
+            if (newCount == 0) _playerData.items.Remove(itemID);
+            else _playerData.items[itemID] = newCount;
+
+            OnItemChanged?.Invoke(itemID, newCount);
+            return true;
         }
 
         /// <summary>

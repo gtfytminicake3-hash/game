@@ -41,6 +41,9 @@ namespace LegendOfBlood
         [Header("Panels")]
         [SerializeField] private StatAllocationPanel statAllocationPanel;
         [SerializeField] private TraitUpgradePanel traitUpgradePanel;
+        
+        [Header("Helpers")]
+        [SerializeField] private LegendOfBlood.UI.Helpers.HeroLineageUIHelper lineageHelper;
 
         private HeroData _currentHero;
         private List<GameObject> _instantiatedInfoItems = new List<GameObject>();
@@ -134,6 +137,9 @@ namespace LegendOfBlood
         public void SetupReadOnly(HeroData hero)
         {
             PopulateData(hero);
+            
+            if (lineageHelper != null) lineageHelper.BindLineage(hero);
+
             if (statAllocationButton != null) statAllocationButton.gameObject.SetActive(false);
             if (traitUpgradeButton != null) traitUpgradeButton.gameObject.SetActive(false);
             if (useExpItemButton != null) useExpItemButton.gameObject.SetActive(false);
@@ -147,6 +153,8 @@ namespace LegendOfBlood
                 ClosePanel();
                 return;
             }
+
+            if (lineageHelper != null) lineageHelper.BindLineage(_currentHero);
 
             heroNameText.text = _currentHero.heroName;
             levelText.text = string.Format(global::LocalizationSystem.GetText("level_format"), _currentHero.level);
@@ -239,6 +247,14 @@ namespace LegendOfBlood
                 }
 
                 GameObject itemInstance = Instantiate(infoItemPrefab, container);
+                
+                // Tooltip binding
+                var tooltipHelper = itemInstance.GetComponent<LegendOfBlood.UI.Helpers.TraitTooltipUIHelper>();
+                if (tooltipHelper != null && isTrait)
+                {
+                    Trait trait = DataManager.Instance.GetTraitByID(id);
+                    tooltipHelper.BindTraitInfo(trait);
+                }
                 
                 Image iconImage = itemInstance.GetComponent<Image>();
                 if (iconImage != null && itemIcon != null)

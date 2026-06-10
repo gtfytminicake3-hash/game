@@ -26,6 +26,9 @@ namespace LegendOfBlood
         [SerializeField] private Sprite archerIcon;
         [SerializeField] private Sprite mageIcon;
         [SerializeField] private Sprite healerIcon;
+        
+        [Header("Helpers")]
+        [SerializeField] private LegendOfBlood.UI.Helpers.HeroLineageUIHelper lineageHelper;
 
         private HeroData _heroData;
         private bool _missingRefWarningLogged;
@@ -42,6 +45,8 @@ namespace LegendOfBlood
             EnsureReferences();
             _heroData = heroData;
             UpdateUI();
+            
+            if (lineageHelper != null) lineageHelper.BindLineage(_heroData);
 
             if (cardButton != null)
             {

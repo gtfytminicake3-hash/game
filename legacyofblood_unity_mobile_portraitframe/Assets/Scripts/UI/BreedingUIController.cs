@@ -53,6 +53,9 @@ namespace LegendOfBlood
         [SerializeField] private Image progressFill;
         [SerializeField] private TextMeshProUGUI progressText;
 
+        [Header("Helpers")]
+        [SerializeField] private LegendOfBlood.UI.Helpers.BreedingRecipeUIHelper recipeHelper;
+
         // Tham chiếu đến HeroPickerPanel trong scene để gọi nó
         public HeroPickerPanel heroPickerPanel;
 
@@ -282,6 +285,8 @@ namespace LegendOfBlood
                 if (motherCard != null) motherCard.Clear();
                 selectMotherButton.GetComponentInChildren<TextMeshProUGUI>().text = global::LocalizationSystem.GetText("breeding_select_mother");
             }
+
+            if (recipeHelper != null) recipeHelper.UpdateRecipeUI(_selectedFather, _selectedMother);
 
             // Kích hoạt nút Lai tạo chỉ khi đã chọn đủ cả hai
             breedButton.interactable = (_selectedFather != null && _selectedMother != null && !_isBreeding);

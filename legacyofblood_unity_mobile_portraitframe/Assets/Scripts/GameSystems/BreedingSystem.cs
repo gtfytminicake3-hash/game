@@ -76,9 +76,60 @@ namespace LegendOfBlood
                     return false;
                 }
             }
+            else
+            {
+#if !UNITY_EDITOR
+                errorMessage = "Không tìm thấy InventoryManager! Tạm thời không thể lai tạo.";
+                return false;
+#endif
+            }
+
+            // Recipe Check
+            var recipe = GetHighestPriorityRecipe(parent1, parent2);
+            if (recipe != null && !string.IsNullOrEmpty(recipe.requireMaterialId) && recipe.requireMaterialAmount > 0)
+            {
+                if (GameManager.Instance != null && GameManager.Instance.InventoryManager != null)
+                {
+                    if (GameManager.Instance.InventoryManager.GetItemCount(recipe.requireMaterialId) < recipe.requireMaterialAmount)
+                    {
+                        errorMessage = $"Không đủ vật liệu lai tạo! Cần {recipe.requireMaterialAmount} {recipe.requireMaterialId}.";
+                        return false;
+                    }
+                }
+                else
+                {
+#if !UNITY_EDITOR
+                    errorMessage = "Không tìm thấy InventoryManager để kiểm tra vật liệu lai tạo.";
+                    return false;
+#endif
+                }
+            }
 
             errorMessage = "";
             return true;
+        }
+
+        public GameConfigs.BreedingRecipe GetHighestPriorityRecipe(HeroData p1, HeroData p2)
+        {
+            if (DataManager.Instance == null) return null;
+            var config = DataManager.Instance.GetBreedingConfig();
+            if (config == null || config.recipes == null || config.recipes.Count == 0) return null;
+
+            GameConfigs.BreedingRecipe bestRecipe = null;
+            foreach (var recipe in config.recipes)
+            {
+                bool matchP1 = string.IsNullOrEmpty(recipe.requireFatherTraitId) || (p1.traitIDs != null && p1.traitIDs.Contains(recipe.requireFatherTraitId));
+                bool matchP2 = string.IsNullOrEmpty(recipe.requireMotherTraitId) || (p2.traitIDs != null && p2.traitIDs.Contains(recipe.requireMotherTraitId));
+                
+                if (matchP1 && matchP2)
+                {
+                    if (bestRecipe == null || recipe.priority > bestRecipe.priority)
+                    {
+                        bestRecipe = recipe;
+                    }
+                }
+            }
+            return bestRecipe;
         }
 
         public int CalculateBreedingCost(HeroData parent1, HeroData parent2)
@@ -106,14 +157,32 @@ namespace LegendOfBlood
 
             // Deduct cost
             int cost = CalculateBreedingCost(parent1, parent2);
-            GameManager.Instance.InventoryManager.SpendResource(ResourceType.Gold, cost);
+            if (GameManager.Instance != null && GameManager.Instance.InventoryManager != null)
+            {
+                GameManager.Instance.InventoryManager.SpendResource(ResourceType.Gold, cost);
+            }
+
+            // Recipe logic
+            var recipe = GetHighestPriorityRecipe(parent1, parent2);
+            if (recipe != null)
+            {
+                if (!string.IsNullOrEmpty(recipe.requireMaterialId) && recipe.requireMaterialAmount > 0)
+                {
+                    if (GameManager.Instance != null && GameManager.Instance.InventoryManager != null)
+                    {
+                        GameManager.Instance.InventoryManager.ConsumeItem(recipe.requireMaterialId, recipe.requireMaterialAmount);
+                    }
+                }
+                if (options == null) options = new BreedingOptions();
+                options.GuaranteedTraitID = recipe.resultTraitId;
+            }
 
             // Increment breeding counts
             parent1.breedingCount++;
             parent2.breedingCount++;
 
             // Create baby
-            HeroData child = GenerateOffspring(parent1, parent2);
+            HeroData child = GenerateOffspring(parent1, parent2, options);
             
             // Note: Don't add to inventory here! BreedingUIController does it for us via DataManager.Instance.AddHero()!
             // Wait, Inventory vs DataManager? Usually DataManager.AddHero adds to AllHeroes, and then Inventory fetches it.
@@ -127,11 +196,16 @@ namespace LegendOfBlood
             return new List<HeroData> { child };
         }
 
-        private HeroData GenerateOffspring(HeroData parent1, HeroData parent2)
+        private HeroData GenerateOffspring(HeroData parent1, HeroData parent2, BreedingOptions options = null)
         {
             // 1. Gender Random
             Gender childGender = UnityEngine.Random.value > 0.5f ? Gender.Male : Gender.Female;
             HeroData child = new HeroData(Guid.NewGuid().ToString(), GenerateChildName(parent1, parent2), childGender);
+
+            // --- LINEAGE ---
+            child.fatherId = parent1.gender == Gender.Male ? parent1.id : parent2.id;
+            child.motherId = parent1.gender == Gender.Female ? parent1.id : parent2.id;
+            child.generation = Mathf.Max(parent1.generation, parent2.generation) + 1;
 
             // 2. Potential (Rarity)
             int basePot;
@@ -177,6 +251,16 @@ namespace LegendOfBlood
 
             // 4. Traits Inheritance
             child.traitIDs = InheritTraits(parent1, parent2);
+            
+            // 4.5. Guaranteed Trait from Recipe
+            if (options != null && !string.IsNullOrEmpty(options.GuaranteedTraitID))
+            {
+                if (child.traitIDs == null) child.traitIDs = new List<string>();
+                if (!child.traitIDs.Contains(options.GuaranteedTraitID))
+                {
+                    child.traitIDs.Add(options.GuaranteedTraitID);
+                }
+            }
 
             // 5. Maturation (Children are born as babies!)
             child.isMature = false;
@@ -197,36 +281,102 @@ namespace LegendOfBlood
         private List<string> InheritTraits(HeroData p1, HeroData p2)
         {
             var inherited = new HashSet<string>();
-            
-            // Mix traits from both parents
-            if (p1.traitIDs != null)
+
+            bool hasData = DataManager.Instance != null && DataManager.Instance.AllTraits != null;
+            GameConfigs.BreedingConfig config = DataManager.Instance != null ? DataManager.Instance.GetBreedingConfig() : null;
+
+            if (config == null || !hasData)
             {
-                foreach (var t in p1.traitIDs)
+                // --- OLD FALLBACK (if config or trait data is missing) ---
+                if (p1.traitIDs != null)
                 {
-                    if (UnityEngine.Random.value < 0.5f) inherited.Add(t);
+                    foreach (var t in p1.traitIDs)
+                        if (!string.IsNullOrEmpty(t) && UnityEngine.Random.value < 0.5f) inherited.Add(t);
+                }
+                
+                if (p2.traitIDs != null)
+                {
+                    foreach (var t in p2.traitIDs)
+                        if (!string.IsNullOrEmpty(t) && UnityEngine.Random.value < 0.5f) inherited.Add(t);
+                }
+
+                if (UnityEngine.Random.value < 0.2f && hasData)
+                {
+                    var keys = new List<string>(DataManager.Instance.AllTraits.Keys);
+                    if (keys.Count > 0) inherited.Add(keys[UnityEngine.Random.Range(0, keys.Count)]);
                 }
             }
-            
-            if (p2.traitIDs != null)
+            else
             {
-                foreach (var t in p2.traitIDs)
+                // --- NEW WEIGHTED ALGORITHM ---
+                int penLevel = 1; // Fallback
+                if (DataManager.Instance.AllBuildings != null)
                 {
-                    if (UnityEngine.Random.value < 0.5f) inherited.Add(t);
+                    var pen = DataManager.Instance.AllBuildings.Find(b => b.id == "BreedingPen");
+                    if (pen != null) penLevel = pen.level;
+                }
+
+                int maxTraits = config.maxInheritedTraits;
+                int fatherWeight = config.inheritanceWeight.fatherWeight;
+                int motherWeight = config.inheritanceWeight.motherWeight;
+                int mutationWeight = config.inheritanceWeight.mutationWeight;
+                int totalWeight = fatherWeight + motherWeight + mutationWeight;
+
+                float actualMutationChance = config.mutationConfig.baseMutationChance + (penLevel * config.mutationConfig.mutationChancePerLevel);
+
+                var traitKeys = new List<string>(DataManager.Instance.AllTraits.Keys);
+
+                for (int i = 0; i < maxTraits; i++)
+                {
+                    // 1. Direct Mutation chance (from building/base config)
+                    if (UnityEngine.Random.value < actualMutationChance && traitKeys.Count > 0)
+                    {
+                        inherited.Add(traitKeys[UnityEngine.Random.Range(0, traitKeys.Count)]);
+                        continue;
+                    }
+
+                    // 2. Weighted selection
+                    if (totalWeight <= 0) continue;
+                    int roll = UnityEngine.Random.Range(0, totalWeight);
+
+                    if (roll < fatherWeight)
+                    {
+                        if (p1.traitIDs != null && p1.traitIDs.Count > 0)
+                        {
+                            string t = p1.traitIDs[UnityEngine.Random.Range(0, p1.traitIDs.Count)];
+                            if (!string.IsNullOrEmpty(t)) inherited.Add(t);
+                        }
+                    }
+                    else if (roll < fatherWeight + motherWeight)
+                    {
+                        if (p2.traitIDs != null && p2.traitIDs.Count > 0)
+                        {
+                            string t = p2.traitIDs[UnityEngine.Random.Range(0, p2.traitIDs.Count)];
+                            if (!string.IsNullOrEmpty(t)) inherited.Add(t);
+                        }
+                    }
+                    else
+                    {
+                        if (traitKeys.Count > 0) inherited.Add(traitKeys[UnityEngine.Random.Range(0, traitKeys.Count)]);
+                    }
                 }
             }
 
-            // Small chance for a new completely random trait (mutation)
-            if (UnityEngine.Random.value < 0.2f && DataManager.Instance != null && DataManager.Instance.AllTraits != null)
+            // Validate and clean up
+            var finalList = new List<string>();
+            foreach (var t in inherited)
             {
-                var keys = new List<string>(DataManager.Instance.AllTraits.Keys);
-                if (keys.Count > 0)
+                if (string.IsNullOrEmpty(t)) continue;
+                
+                if (hasData && !DataManager.Instance.AllTraits.ContainsKey(t))
                 {
-                    string randomTrait = keys[UnityEngine.Random.Range(0, keys.Count)];
-                    inherited.Add(randomTrait);
+                    Debug.LogWarning($"[Breeding] TraitID '{t}' không tồn tại. Skipping an toàn.");
+                    continue;
                 }
+                finalList.Add(t);
             }
 
-            return new List<string>(inherited);
+            return finalList;
         }
 
         private string GenerateChildName(HeroData p1, HeroData p2)
